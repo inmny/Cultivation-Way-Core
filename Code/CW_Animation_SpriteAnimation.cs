@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Cultivation_Way.Animation
 {
-    internal class NewSpriteAnimation
+    internal class CW_SpriteAnimation
     {
         public float frameInterval = 0.1f;
         public float nextFrameTime = 0.1f;
@@ -23,13 +23,13 @@ namespace Cultivation_Way.Animation
         public GameObject m_gameobject;
         public Action callback;
         public Action reachAction;
-        public NewEffectController controller;
-        public void create(NewEffectController pController)
+        public CW_EffectController controller;
+        public void create(CW_EffectController pController)
         {
             controller = pController;
             m_gameobject = UnityEngine.Object.Instantiate(controller.prefab);
             currFrame = m_gameobject.GetComponent<SpriteRenderer>();
-            m_gameobject.transform.SetParent(NewEffectManager.instance.transform);
+            m_gameobject.transform.SetParent(CW_EffectManager.instance.transform);
             direction = AnimPlayType.Forward;
         }
         public void start()

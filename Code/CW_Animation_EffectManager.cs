@@ -4,14 +4,14 @@ using UnityEngine;
 using ReflectionUtility;
 namespace Cultivation_Way.Animation
 {
-    internal class NewEffectManager : MonoBehaviour
+    internal class CW_EffectManager : MonoBehaviour
     {
         private bool initialized = false;
-        public static NewEffectManager instance;
+        public static CW_EffectManager instance;
         public static GameObject prefab = new GameObject();
 
-        public List<NewEffectController> list;
-        public Dictionary<string, NewEffectController> controllers = new Dictionary<string, NewEffectController>();
+        public List<CW_EffectController> list;
+        public Dictionary<string, CW_EffectController> controllers = new Dictionary<string, CW_EffectController>();
 
         private void Awake()
         {
@@ -38,9 +38,9 @@ namespace Cultivation_Way.Animation
                 list[i].update(Time.fixedDeltaTime);
             }
         }
-        private NewEffectController load(string id, float frameInterval, string layerOrder, int limit,string extendPath="")
+        private CW_EffectController load(string id, float frameInterval, string layerOrder, int limit,string extendPath="")
         {
-            NewEffectController controller = new NewEffectController();
+            CW_EffectController controller = new CW_EffectController();
             controller.create(Resources.LoadAll<Sprite>("effects/" + extendPath+id), limit, frameInterval, layerOrder);
             controllers[id] = controller;
             controller.prefab.transform.name = id;
@@ -50,42 +50,42 @@ namespace Cultivation_Way.Animation
         {
             MapBox.instance.stackEffects.CallMethod("loadEffect", id, useBasicPrefab, frameInterval, layerOrder, limit);
         }
-        public static NewSpriteAnimation spawnOn(string id,WorldTile pTile, Vector3 scale)
+        public static CW_SpriteAnimation spawnOn(string id,WorldTile pTile, Vector3 scale)
         {
-            NewEffectController controller;
+            CW_EffectController controller;
             if(instance.controllers.TryGetValue(id,out controller))
             {
                 return controller.add(pTile, scale);
             }
             return null;
         }
-        public static NewSpriteAnimation spawnOn(string id,BaseSimObject pObject, Vector3 scale)
+        public static CW_SpriteAnimation spawnOn(string id,BaseSimObject pObject, Vector3 scale)
         {
-            NewEffectController controller;
+            CW_EffectController controller;
             if (instance.controllers.TryGetValue(id, out controller))
             {
                 return controller.add(pObject.gameObject.transform,scale);
             }
             return null;
         }
-        public static NewSpriteAnimation spawnOn(string id, Vector3 pos, Vector3 scale)
+        public static CW_SpriteAnimation spawnOn(string id, Vector3 pos, Vector3 scale)
         {
-            NewEffectController controller;
+            CW_EffectController controller;
             if (instance.controllers.TryGetValue(id, out controller))
             {
                 return controller.add(pos, scale);
             }
             return null;
         }
-        public static NewSpriteAnimation spawnOn(string id, WorldTile pTile, float scale)
+        public static CW_SpriteAnimation spawnOn(string id, WorldTile pTile, float scale)
         {
             return spawnOn(id, pTile, new Vector3(scale, scale, scale));
         }
-        public static NewSpriteAnimation spawnOn(string id, BaseSimObject pObject, float scale)
+        public static CW_SpriteAnimation spawnOn(string id, BaseSimObject pObject, float scale)
         {
             return spawnOn(id, pObject, new Vector3(scale, scale, scale));
         }
-        public static NewSpriteAnimation spawnOn(string id, Vector3 pos, float scale)
+        public static CW_SpriteAnimation spawnOn(string id, Vector3 pos, float scale)
         {
             return spawnOn(id, pos, new Vector3(scale, scale, scale));
         }
