@@ -81,6 +81,9 @@
     <Compile Include="Code\CW_Library_Element.cs" />
     <Compile Include="Code\CW_Library_Manager.cs" />
     <Compile Include="Code\Main.cs" />
+    <Compile Include="Code\NewEffectController.cs" />
+    <Compile Include="Code\NewEffectManager.cs" />
+    <Compile Include="Code\NewSpriteAnimation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
