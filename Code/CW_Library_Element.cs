@@ -26,11 +26,11 @@ namespace Cultivation_Way.Library
         public CW_BaseStats bonus_stats;
         internal CW_Asset_Element(string id, int[] base_elements, float promot = 1.0f, float rarity = 1.0f, bool auto_set_bonus_stats = true)
         {
-            if (base_elements == null || base_elements.Length != Constants.CW_Constants.base_element_types || promot < 0.01f || rarity < 0.99f) throw new Exception(String.Format("Init arguments error: {0},{1},{2}", base_elements==null?-1:base_elements.Length, promot, rarity));
+            if (base_elements == null || base_elements.Length != Others.CW_Constants.base_element_types || promot < 0.01f || rarity < 0.99f) throw new Exception(String.Format("Init arguments error: {0},{1},{2}", base_elements==null?-1:base_elements.Length, promot, rarity));
             this.promot = promot;
             this.rarity = rarity;
             this.base_elements = base_elements;
-            for(int i = 0; i < Constants.CW_Constants.base_element_types; i++)
+            for(int i = 0; i < Others.CW_Constants.base_element_types; i++)
             {
                 if (base_elements[i] < 0 || base_elements[i] > 100) throw new Exception(String.Format("Error Base Elements at {0}, value {1}", i, base_elements[i]));
             }
@@ -42,8 +42,8 @@ namespace Cultivation_Way.Library
             if (promot < 0.01f || rarity < 0.99f) throw new Exception(String.Format("Init arguments error: {0},{1}", promot, rarity));
             this.promot = promot;
             this.rarity = rarity;
-            this.base_elements = new int[Constants.CW_Constants.base_element_types] { water, fire, wood, iron, ground};
-            for (int i = 0; i < Constants.CW_Constants.base_element_types; i++)
+            this.base_elements = new int[Others.CW_Constants.base_element_types] { water, fire, wood, iron, ground};
+            for (int i = 0; i < Others.CW_Constants.base_element_types; i++)
             {
                 if (base_elements[i] < 0 || base_elements[i] > 100) throw new Exception(String.Format("Error Base Elements at {0}, value {1}", i, base_elements[i]));
             }

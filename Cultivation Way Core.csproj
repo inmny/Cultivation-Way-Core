@@ -75,15 +75,16 @@
     <None Include="mod.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\Constants.cs" />
+    <Compile Include="Code\Others.cs" />
+    <Compile Include="Code\CW_Animation_AnimationSetting.cs" />
     <Compile Include="Code\CW_BaseStats.cs" />
     <Compile Include="Code\CW_Element.cs" />
     <Compile Include="Code\CW_Library_Element.cs" />
     <Compile Include="Code\CW_Library_Manager.cs" />
     <Compile Include="Code\Main.cs" />
-    <Compile Include="Code\NewEffectController.cs" />
-    <Compile Include="Code\NewEffectManager.cs" />
-    <Compile Include="Code\NewSpriteAnimation.cs" />
+    <Compile Include="Code\CW_Animation_EffectController.cs" />
+    <Compile Include="Code\CW_Animation_EffectManager.cs" />
+    <Compile Include="Code\CW_Animation_SpriteAnimation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>

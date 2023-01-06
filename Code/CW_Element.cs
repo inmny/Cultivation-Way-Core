@@ -15,7 +15,7 @@ namespace Cultivation_Way
         public const int BASE_TYPE_IRON = 3;
         public const int BASE_TYPE_GROUND = 4;
         private const string UNIFORM_TYPE = "CW_uniform";
-        public int[] base_elements = new int[Constants.CW_Constants.base_element_types];
+        public int[] base_elements = new int[Others.CW_Constants.base_element_types];
         public string type_id;
         /// <summary>
         /// 创建CW_Element对象
@@ -26,7 +26,7 @@ namespace Cultivation_Way
         /// <param name="comp_type">是否即时确定元素类型</param>
         public CW_Element(int[] base_elements, bool normalize = false, int normalize_ceil = 100, bool comp_type = true)
         {
-            for(int i = 0; i < Constants.CW_Constants.base_element_types; i++)
+            for(int i = 0; i < Others.CW_Constants.base_element_types; i++)
             {
                 this.base_elements[i] = base_elements[i];
             }
@@ -42,7 +42,7 @@ namespace Cultivation_Way
         /// <param name="comp_type">是否即时确定元素类型</param>
         public CW_Element(bool random_generate = true, bool normalize = true, int normalize_ceil = 100, bool comp_type = true)
         {
-            base_elements = new int[Constants.CW_Constants.base_element_types];
+            base_elements = new int[Others.CW_Constants.base_element_types];
             if (random_generate)
             {
                 __random_generate(normalize_ceil);
@@ -93,7 +93,7 @@ namespace Cultivation_Way
             for (i = 0; i < length; i++)
             {
                 mul_result = 0; modulus_1 = 0; modulus_2 = 0;
-                for (j = 0; j < Constants.CW_Constants.base_element_types; j++)
+                for (j = 0; j < Others.CW_Constants.base_element_types; j++)
                 {
                     mul_result += asset_list[i].base_elements[j] * this.base_elements[j];
                     modulus_1 += this.base_elements[j] * this.base_elements[j];
@@ -114,33 +114,33 @@ namespace Cultivation_Way
         {
             float co = 0f;
             int i;
-            for(i = 0; i < Constants.CW_Constants.base_element_types; i++)
+            for(i = 0; i < Others.CW_Constants.base_element_types; i++)
             {
                 co += this.base_elements[i];
             }
             co = normalize_ceil / co;
-            for (i = 0; i < Constants.CW_Constants.base_element_types; i++)
+            for (i = 0; i < Others.CW_Constants.base_element_types; i++)
             {
                 this.base_elements[i] = (int)(this.base_elements[i] * co);
                 normalize_ceil -= this.base_elements[i];
             }
             if(normalize_ceil > 0)
             {
-                i = Toolbox.randomInt(0, Constants.CW_Constants.base_element_types);
+                i = Toolbox.randomInt(0, Others.CW_Constants.base_element_types);
                 this.base_elements[i] += normalize_ceil;
             }
         }
         private void __random_generate(int ceil = 100)
         {
-            for(int i = 0; i < Constants.CW_Constants.base_element_types; i++)
+            for(int i = 0; i < Others.CW_Constants.base_element_types; i++)
             {
                 base_elements[i] = Toolbox.randomInt(0, ceil + 1);
             }
         }
         private void __uniform_generate(int sum = 100)
         {
-            int uniform_val = sum / Constants.CW_Constants.base_element_types;
-            for (int i = 0; i < Constants.CW_Constants.base_element_types; i++)
+            int uniform_val = sum / Others.CW_Constants.base_element_types;
+            for (int i = 0; i < Others.CW_Constants.base_element_types; i++)
             {
                 base_elements[i] = uniform_val;
             }

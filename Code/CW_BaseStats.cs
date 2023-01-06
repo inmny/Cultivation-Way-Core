@@ -129,7 +129,7 @@ namespace Cultivation_Way
         {
             if (!except_element)
             {
-                for(int i = 0; i < Constants.CW_Constants.base_element_types; i++)
+                for(int i = 0; i < Others.CW_Constants.base_element_types; i++)
                 {
                     element.base_elements[i] += CW_basestats.element.base_elements[i];
                 }
