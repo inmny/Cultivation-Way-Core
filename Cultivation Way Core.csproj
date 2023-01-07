@@ -75,7 +75,12 @@
     <None Include="mod.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\CW_SpellAction_Anim.cs" />
+    <Compile Include="Code\CW_SpellAction_Damage.cs" />
+    <Compile Include="Code\CW_SpellAction_Spell.cs" />
     <Compile Include="Code\CW_Animation_TraceFunctions.cs" />
+    <Compile Include="Code\CW_Library_Spell.cs" />
+    <Compile Include="Code\CW_Spell.cs" />
     <Compile Include="Code\CW_Utils_ResourceHelper.cs" />
     <Compile Include="Code\Others.cs" />
     <Compile Include="Code\CW_Animation_AnimationSetting.cs" />
