@@ -6,7 +6,9 @@ namespace Cultivation_Way.Others
     {
         public const int save_version = 1;
         public const int base_element_types = 5;
-        
+        public const float default_anim_trace_grad = 0.1f;
+        public const string default_anim_layer_name = "EffectsTop";
+        public const bool is_debugging = true;
     }
     public class CW_Delegates
     {

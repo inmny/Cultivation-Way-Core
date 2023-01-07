@@ -11,10 +11,6 @@ namespace Cultivation_Way.Animation
         /// </summary>
         internal bool isOn;
         /// <summary>
-        /// 动画设置
-        /// </summary>
-        public CW_AnimationSetting setting;
-        /// <summary>
         /// 是否为默认图像集
         /// </summary>
         internal bool is_default_sprites;
@@ -50,23 +46,53 @@ namespace Cultivation_Way.Animation
         /// 组件
         /// </summary>
         internal GameObject gameObject;
+
         internal Vector2 src_vec;
         internal Vector2 dst_vec;
         internal BaseSimObject src_object;
         internal BaseSimObject dst_object;
-        public CW_SpriteAnimation(CW_AnimationSetting setting, Sprite[] sprites)
+        /// <summary>
+        /// 动画设置
+        /// </summary>
+        internal CW_AnimationSetting setting;
+
+        internal CW_SpriteAnimation(CW_AnimationSetting setting, Sprite[] sprites, GameObject prefab, Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_object, BaseSimObject dst_object)
         {
             isOn = true; is_default_sprites = true;
-            if (setting.is_default) { this.setting = setting; }
+            if (setting.possible_associated) { this.setting = setting; }
             else { this.setting = setting.__deepcopy(); }
+            this.apply_setting(src_vec, dst_vec, src_object, dst_object);
+            if (!isOn) return;
 
             this.sprites = sprites;
+
+            gameObject = UnityEngine.Object.Instantiate(prefab);
+            renderer = gameObject.GetComponent<SpriteRenderer>();
+            gameObject.transform.SetParent(CW_EffectManager.instance.transform);
+        }
+        // TODO: complete it
+        internal void apply_setting(Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_object, BaseSimObject dst_object)
+        {
+            this.src_vec = src_vec;
+            this.dst_vec = dst_vec;
+            this.src_object = src_object;
+            this.dst_object = dst_object;
+            if (setting.trace_type==AnimationTraceType.TRACK)
+            {
+                if (dst_object == null)
+                {
+                    isOn = false;
+                    if (Others.CW_Constants.is_debugging) throw new Exception("Null dst_object");
+                    return;
+                }
+                dst_vec = dst_object.currentPosition;
+            }
+            this.renderer.sortingLayerName = setting.layer_name;
         }
         internal void update(float elapsed)
         {
             if (!isOn)
             {
-                kill();
                 return;
             }
             play_time += elapsed;
@@ -124,7 +150,7 @@ namespace Cultivation_Way.Animation
             {
                 case AnimationLoopLimitType.NUMBER_LIMIT:
                     {
-                        if (loop_nr == setting.loop_nr_limit) end = true;
+                        if (loop_nr >= setting.loop_nr_limit) end = true;
                         break;
                     }
                 case AnimationLoopLimitType.TIME_LIMIT:
@@ -160,7 +186,28 @@ namespace Cultivation_Way.Animation
         }
         internal void kill()
         {
-            throw new NotImplementedException();
+            UnityEngine.Object.Destroy(gameObject);
+        }
+        /// <summary>
+        /// 修改动画设置，请在知道你在做什么的情况下谨慎操作
+        /// </summary>
+        /// <param name="setting">新的动画设置</param>
+        /// <param name="deepcopy">是否进行深拷贝，默认是</param>
+        public void change_setting(CW_AnimationSetting setting, bool deepcopy = true)
+        {
+            if (deepcopy) { this.setting = setting.__deepcopy(); this.setting.possible_associated = false; }
+            else { this.setting = setting; this.setting.possible_associated = true; }
+            apply_setting(src_vec, dst_vec, src_object, dst_object);
+        }
+        /// <summary>
+        /// 获取动画设置原本/拷贝，请在知道你在做什么的情况下谨慎操作
+        /// </summary>
+        /// <param name="safety">是否保证安全，此处安全是指是否与其他处共用setting对象</param>
+        /// <returns>动画设置</returns>
+        public CW_AnimationSetting get_setting(bool safety = true)
+        {
+            if(safety || !this.setting.possible_associated) return this.setting.__deepcopy();
+            return this.setting;
         }
         /// <summary>
         /// 获取运行状态
@@ -172,19 +219,31 @@ namespace Cultivation_Way.Animation
         /// <summary>
         /// 强制更新
         /// </summary>
-        /// <param name="elapsed"></param>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <param name="elapsed">更新时间间隔</param>
         public void force_update(float elapsed)
         {
             if (isOn) update(elapsed);
         }
+        /// <summary>
+        /// 强制停止
+        /// </summary>
+        /// <param name="stop_with_end_action">是否执行动画终止函数</param>
         public void force_stop(bool stop_with_end_action = false)
         {
             if (!isOn) return;
             isOn = false;
-            if (stop_with_end_action)
+            if (stop_with_end_action && setting.end_action != null)
             {
-                throw new NotImplementedException();
+                float dst_x = 0, dst_y = 0;
+                if (setting.trace_type == AnimationTraceType.TRACK)
+                {
+                    dst_x = dst_object.currentPosition.x; dst_y = dst_object.currentPosition.y;
+                }
+                else if(setting.trace_type!=AnimationTraceType.NONE)
+                {
+                    dst_x = dst_vec.x; dst_y = dst_vec.y;
+                }
+                setting.end_action(cur_frame_idx, src_vec.x, src_vec.y, dst_x, dst_y, play_time, gameObject.transform.position.x, gameObject.transform.position.y, src_object, dst_object);
             }
         }
     }
