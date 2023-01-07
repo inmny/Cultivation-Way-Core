@@ -129,12 +129,12 @@ namespace Cultivation_Way.Animation
                 if(setting.trace_type == AnimationTraceType.TRACK)
                 {
                     dst_x = dst_object.currentPosition.x; dst_y = dst_object.currentPosition.y;
-                    setting.trace_updater(src_vec.x, src_vec.y, dst_x, dst_y, play_time, ref next_x, ref next_y, setting.trace_grad);
+                    setting.trace_updater(src_vec.x, src_vec.y, dst_x, dst_y, play_time, setting.loop_time_limit, ref next_x, ref next_y, setting.trace_grad);
                 }
                 else
                 {
                     dst_x = dst_vec.x; dst_y = dst_vec.y;
-                    setting.trace_updater(src_vec.x, src_vec.y, dst_x, dst_y, play_time, ref next_x, ref next_y, setting.trace_grad);
+                    setting.trace_updater(src_vec.x, src_vec.y, dst_x, dst_y, play_time, setting.loop_time_limit, ref next_x, ref next_y, setting.trace_grad);
                 }
                 float delta_x = next_x - gameObject.transform.position.x;
                 float delta_y = next_y - gameObject.transform.position.y;

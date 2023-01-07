@@ -32,6 +32,9 @@ namespace Cultivation_Way.Animation
         FORWARD,
         BACKWARD
     }
+    /// <summary>
+    /// 动画设置
+    /// </summary>
     public class CW_AnimationSetting
     {
         internal bool possible_associated = true;
@@ -54,7 +57,7 @@ namespace Cultivation_Way.Animation
         /// <summary>
         /// 循环播放时间限制
         /// </summary>
-        public float loop_time_limit = float.MaxValue;
+        public float loop_time_limit = -1;
         /// <summary>
         /// 播放次数限制
         /// </summary>
@@ -62,7 +65,7 @@ namespace Cultivation_Way.Animation
         /// <summary>
         /// 循环路径长度限制
         /// </summary>
-        public float loop_trace_limit = float.MinValue;
+        public float loop_trace_limit = -1;
         /// <summary>
         /// 循环播放类型：重新开始/首尾相接
         /// </summary>
