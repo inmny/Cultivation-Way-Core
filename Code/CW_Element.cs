@@ -55,6 +55,15 @@ namespace Cultivation_Way
                 if (comp_type) type_id = UNIFORM_TYPE;
             }
         }
+        public CW_Element deepcopy()
+        {
+            CW_Element copy = new CW_Element();
+            for(int i = 0; i < base_elements.Length; i++)
+            {
+                copy.base_elements[i] = this.base_elements[i];
+            }
+            return copy;
+        }
         /// <summary>
         /// 计算类别，未来将支持自定义算法
         /// </summary>
@@ -79,6 +88,34 @@ namespace Cultivation_Way
         public void normalize(int normalize_ceil)
         {
             this.__normalize(normalize_ceil);
+        }
+        public CW_BaseStats comp_bonus_stats()
+        {
+            Library.CW_Asset_Element asset = get_type();
+            float promot = asset.promot;
+            CW_BaseStats combine_bonus = get_type().bonus_stats.deepcopy();
+            // 添加五元素的加成
+            // 火
+            combine_bonus.base_stats.mod_crit += base_elements[BASE_TYPE_FIRE] * promot;
+            combine_bonus.base_stats.damageCritMod += base_elements[BASE_TYPE_FIRE] * 1.5f * promot;
+            // 土
+            combine_bonus.base_stats.mod_armor += base_elements[BASE_TYPE_GROUND] * promot;
+            combine_bonus.mod_spell_armor += base_elements[BASE_TYPE_GROUND] * promot;
+            // 金
+            combine_bonus.base_stats.mod_damage += base_elements[BASE_TYPE_IRON] * 2 * promot;
+            combine_bonus.mod_anti_armor += base_elements[BASE_TYPE_IRON] * 0.5f * promot;
+            combine_bonus.mod_anti_spell_armor += base_elements[BASE_TYPE_IRON] * 0.5f * promot;
+            // 水
+            combine_bonus.mod_anti_crit += base_elements[BASE_TYPE_WATER] * 1.2f * promot;  
+            combine_bonus.anti_crit_damage += base_elements[BASE_TYPE_WATER] * 1.7f * promot;
+            combine_bonus.mod_wakan += base_elements[BASE_TYPE_WATER] * 2f * promot;
+            combine_bonus.base_stats.knockbackReduction += base_elements[BASE_TYPE_WATER] * promot;
+            // 木
+            combine_bonus.base_stats.mod_health += base_elements[BASE_TYPE_WOOD] * promot;
+            combine_bonus.mod_health_regen += base_elements[BASE_TYPE_WOOD] * 1.5f * promot;
+            combine_bonus.mod_wakan_regen += base_elements[BASE_TYPE_WOOD] * promot;
+
+            return combine_bonus;
         }
         private void __comp_type()
         {

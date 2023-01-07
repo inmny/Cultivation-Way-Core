@@ -61,9 +61,13 @@ namespace Cultivation_Way
         /// </summary>
         public float anti_injury;
         /// <summary>
-        /// 法伤减免，以最终伤害计算
+        /// 法抗
         /// </summary>
-        public float spell_relief;
+        public float spell_armor;
+        /// <summary>
+        /// 法抗系数
+        /// </summary>
+        public float mod_spell_armor;
         /// <summary>
         /// 生命回复每月
         /// </summary>
@@ -92,6 +96,16 @@ namespace Cultivation_Way
         /// 修炼速度系数
         /// </summary>
         public float mod_cultivation;
+        // TODO: 补充其他函数
+        public float anti_crit;
+        public float mod_anti_crit;
+        public float anti_crit_damage;
+        public float mod_anti_crit_damage;
+        public float s_anti_crit;
+        public float anti_spell_armor;
+        public float anti_armor;
+        public float mod_anti_armor;
+        public float mod_anti_spell_armor;
         /// <summary>
         /// 附加元素
         /// </summary>
@@ -114,16 +128,86 @@ namespace Cultivation_Way
             this.mod_soul = 0;
             this.mod_soul_regen = 0;
             this.mod_spell_range = 0;
+            this.mod_spell_armor = 0;
             this.mod_wakan = 0;
             this.mod_wakan_regen = 0;
             this.shied = 0;
             this.soul = 0;
             this.soul_regen = 0;
             this.spell_range = 0;
-            this.spell_relief = 0;
+            this.spell_armor = 0;
             this.vampire = 0;
             this.wakan = 0;
             this.wakan_regen = 0;
+        }
+        internal CW_BaseStats(CW_BaseStats copy)
+        {
+            this.base_stats = new BaseStats();
+            this.element = copy.element.deepcopy();
+            #region Extend Stats
+            this.age_bonus = copy.age_bonus;
+            this.anti_injury = copy.anti_injury;
+            this.health_regen = copy.health_regen;
+            this.mod_age = copy.mod_age;
+            this.mod_cultivation = copy.mod_cultivation;
+            this.mod_health_regen = copy.mod_health_regen;
+            this.mod_shied = copy.mod_shied;
+            this.mod_soul = copy.mod_soul;
+            this.mod_soul_regen = copy.mod_soul_regen;
+            this.mod_spell_armor = copy.mod_spell_armor;
+            this.mod_spell_range = copy.mod_spell_range;
+            this.mod_wakan = copy.mod_wakan;
+            this.mod_wakan_regen = copy.mod_wakan_regen;
+            this.shied = copy.shied;
+            this.soul = copy.soul;
+            this.soul_regen = copy.soul_regen;
+            this.spell_range = copy.spell_range;
+            this.spell_armor = copy.spell_armor;
+            this.vampire = copy.vampire;
+            this.wakan = copy.wakan;
+            this.wakan_regen = copy.wakan_regen;
+            #endregion
+            #region BaseStats
+            this.base_stats.personality_rationality = copy.base_stats.personality_rationality;
+            this.base_stats.personality_aggression = copy.base_stats.personality_aggression;
+            this.base_stats.personality_diplomatic = copy.base_stats.personality_diplomatic;
+            this.base_stats.personality_administration = copy.base_stats.personality_administration;
+            this.base_stats.opinion = copy.base_stats.opinion;
+            this.base_stats.loyalty_traits = copy.base_stats.loyalty_traits;
+            this.base_stats.loyalty_mood = copy.base_stats.loyalty_mood;
+            this.base_stats.scale = copy.base_stats.scale;
+            this.base_stats.damage = copy.base_stats.damage;
+            this.base_stats.attackSpeed = copy.base_stats.attackSpeed;
+            this.base_stats.speed = copy.base_stats.speed;
+            this.base_stats.health = copy.base_stats.health;
+            this.base_stats.armor = copy.base_stats.armor;
+            this.base_stats.diplomacy = copy.base_stats.diplomacy;
+            this.base_stats.warfare = copy.base_stats.warfare;
+            this.base_stats.stewardship = copy.base_stats.stewardship;
+            this.base_stats.intelligence = copy.base_stats.intelligence;
+            this.base_stats.army = copy.base_stats.army;
+            this.base_stats.cities = copy.base_stats.cities;
+            this.base_stats.zone_range = copy.base_stats.zone_range;
+            this.base_stats.bonus_towers = copy.base_stats.bonus_towers;
+            this.base_stats.dodge = copy.base_stats.dodge;
+            this.base_stats.accuracy = copy.base_stats.accuracy;
+            this.base_stats.targets = copy.base_stats.targets;
+            this.base_stats.projectiles = copy.base_stats.projectiles;
+            this.base_stats.crit = copy.base_stats.crit;
+            this.base_stats.damageCritMod = copy.base_stats.damageCritMod;
+            this.base_stats.range = copy.base_stats.range;
+            this.base_stats.size = copy.base_stats.size;
+            this.base_stats.areaOfEffect = copy.base_stats.areaOfEffect;
+            this.base_stats.knockback = copy.base_stats.knockback;
+            this.base_stats.knockbackReduction = copy.base_stats.knockbackReduction;
+            this.base_stats.mod_health = copy.base_stats.mod_health;
+            this.base_stats.mod_damage = copy.base_stats.mod_damage;
+            this.base_stats.mod_armor = copy.base_stats.mod_armor;
+            this.base_stats.mod_crit = copy.base_stats.mod_crit;
+            this.base_stats.mod_diplomacy = copy.base_stats.mod_diplomacy;
+            this.base_stats.mod_speed = copy.base_stats.mod_speed;
+            this.base_stats.mod_supply_timer = copy.base_stats.mod_supply_timer;
+            #endregion
         }
         public void addStats(CW_BaseStats CW_basestats, bool except_element = true)
         {
@@ -144,6 +228,7 @@ namespace Cultivation_Way
             this.mod_shied += CW_basestats.mod_shied;
             this.mod_soul += CW_basestats.mod_soul;
             this.mod_soul_regen += CW_basestats.mod_soul_regen;
+            this.mod_spell_armor += CW_basestats.mod_spell_armor;
             this.mod_spell_range += CW_basestats.mod_spell_range;
             this.mod_wakan += CW_basestats.mod_wakan;
             this.mod_wakan_regen += CW_basestats.mod_wakan_regen;
@@ -151,7 +236,7 @@ namespace Cultivation_Way
             this.soul += CW_basestats.soul;
             this.soul_regen += CW_basestats.soul_regen;
             this.spell_range += CW_basestats.spell_range;
-            this.spell_relief += CW_basestats.spell_relief;
+            this.spell_armor += CW_basestats.spell_armor;
             this.vampire += CW_basestats.vampire;
             this.wakan += CW_basestats.wakan;
             this.wakan_regen += CW_basestats.wakan_regen;
@@ -216,6 +301,7 @@ namespace Cultivation_Way
             this.mod_shied = 0;
             this.mod_soul = 0;
             this.mod_soul_regen = 0;
+            this.mod_spell_armor = 0;
             this.mod_spell_range = 0;
             this.mod_wakan = 0;
             this.mod_wakan_regen = 0;
@@ -223,7 +309,7 @@ namespace Cultivation_Way
             this.soul = 0;
             this.soul_regen = 0;
             this.spell_range = 0;
-            this.spell_relief = 0;
+            this.spell_armor = 0;
             this.vampire = 0;
             this.wakan = 0;
             this.wakan_regen = 0;
@@ -277,6 +363,10 @@ namespace Cultivation_Way
             this.base_stats.normalize();
             if(normalize_element) this.element.normalize(element_normalize_ceil);
             // Others Normalization.
+        }
+        public CW_BaseStats deepcopy()
+        {
+            return new CW_BaseStats(this);
         }
     }
 }

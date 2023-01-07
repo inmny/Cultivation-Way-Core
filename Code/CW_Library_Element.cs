@@ -24,7 +24,7 @@ namespace Cultivation_Way.Library
         /// 元素组合提供的属性加成
         /// </summary>
         public CW_BaseStats bonus_stats;
-        internal CW_Asset_Element(string id, int[] base_elements, float promot = 1.0f, float rarity = 1.0f, bool auto_set_bonus_stats = true)
+        internal CW_Asset_Element(string id, int[] base_elements, float promot = 1.0f, float rarity = 1.0f, CW_BaseStats bonus_stats = null)
         {
             if (base_elements == null || base_elements.Length != Others.CW_Constants.base_element_types || promot < 0.01f || rarity < 0.99f) throw new Exception(String.Format("Init arguments error: {0},{1},{2}", base_elements==null?-1:base_elements.Length, promot, rarity));
             this.promot = promot;
@@ -35,9 +35,10 @@ namespace Cultivation_Way.Library
                 if (base_elements[i] < 0 || base_elements[i] > 100) throw new Exception(String.Format("Error Base Elements at {0}, value {1}", i, base_elements[i]));
             }
             this.id = id;
-            if (auto_set_bonus_stats) set_bonus_stats();
+            if (bonus_stats == null) this.bonus_stats = bonus_stats;
+            else this.bonus_stats = new CW_BaseStats();
         }
-        internal CW_Asset_Element(string id, int water, int fire, int wood, int iron, int ground, float promot = 1.0f, float rarity = 1.0f, bool auto_set_bonus_stats = true)
+        internal CW_Asset_Element(string id, int water, int fire, int wood, int iron, int ground, float promot = 1.0f, float rarity = 1.0f, CW_BaseStats bonus_stats = null)
         {
             if (promot < 0.01f || rarity < 0.99f) throw new Exception(String.Format("Init arguments error: {0},{1}", promot, rarity));
             this.promot = promot;
@@ -48,11 +49,8 @@ namespace Cultivation_Way.Library
                 if (base_elements[i] < 0 || base_elements[i] > 100) throw new Exception(String.Format("Error Base Elements at {0}, value {1}", i, base_elements[i]));
             }
             this.id = id;
-            if (auto_set_bonus_stats) set_bonus_stats();
-        }
-        private void set_bonus_stats()
-        {
-            bonus_stats = new CW_BaseStats();
+            if (bonus_stats == null) this.bonus_stats = bonus_stats;
+            else this.bonus_stats = new CW_BaseStats();
         }
     }
     public class CW_Library_Element:AssetLibrary<CW_Asset_Element>
@@ -60,13 +58,23 @@ namespace Cultivation_Way.Library
         public override void init()
         {
             base.init();
-            add(new CW_Asset_Element("CW_water", 100, 0, 0, 0, 0, 10f, 10f));
-            add(new CW_Asset_Element("CW_fire", 0, 100, 0, 0, 0, 10f, 10f));
-            add(new CW_Asset_Element("CW_wood", 0, 0, 100, 0, 0, 10f, 10f));
-            add(new CW_Asset_Element("CW_iron", 0, 0, 0, 100, 0, 10f, 10f));
-            add(new CW_Asset_Element("CW_ground", 0, 0, 0, 0, 100, 10f, 10f));
-            add(new CW_Asset_Element("CW_common", 20, 20, 20, 20, 20, 100f, 1f));
-            add(new CW_Asset_Element("CW_uniform", 20, 20, 20, 20, 20, 100f, 10f));
+            add(new CW_Asset_Element("CW_water", 100, 0, 0, 0, 0, 1f, 10f));
+            add(new CW_Asset_Element("CW_fire", 0, 100, 0, 0, 0, 1f, 10f));
+            add(new CW_Asset_Element("CW_wood", 0, 0, 100, 0, 0, 1f, 10f));
+            add(new CW_Asset_Element("CW_iron", 0, 0, 0, 100, 0, 1f, 10f));
+            add(new CW_Asset_Element("CW_ground", 0, 0, 0, 0, 100, 1f, 10f));
+            add(new CW_Asset_Element("CW_water_fire", 50, 50, 0, 0, 0, 1f, 1f));
+            add(new CW_Asset_Element("CW_water_wood", 50, 0, 50, 0, 0, 1f, 1f));
+            add(new CW_Asset_Element("CW_water_iron", 50, 0, 0, 50, 0, 1f, 1f));
+            add(new CW_Asset_Element("CW_water_ground", 50, 0, 0, 0, 50, 1f, 1f));
+            add(new CW_Asset_Element("CW_fire_wood", 0, 50, 50, 0, 0, 1f, 1f));
+            add(new CW_Asset_Element("CW_fire_iron", 0, 50, 0, 50, 0, 1f, 1f));
+            add(new CW_Asset_Element("CW_fire_ground", 0, 50, 0, 0, 50, 1f, 1f));
+            add(new CW_Asset_Element("CW_wood_iron", 0, 0, 50, 50, 0, 1f, 1f));
+            add(new CW_Asset_Element("CW_wood_ground", 0, 0, 50, 0, 50, 1f, 1f));
+            add(new CW_Asset_Element("CW_iron_ground", 0, 0, 0, 50, 50, 1f, 1f));
+            add(new CW_Asset_Element("CW_common", 20, 20, 20, 20, 20, 1f, 1f));
+            add(new CW_Asset_Element("CW_uniform", 20, 20, 20, 20, 20, 10f, 10f));
             
         }
         /// <summary>
