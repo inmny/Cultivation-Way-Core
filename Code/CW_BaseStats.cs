@@ -106,6 +106,7 @@ namespace Cultivation_Way
         public float anti_armor;
         public float mod_anti_armor;
         public float mod_anti_spell_armor;
+        public bool anti_time_stop;
         /// <summary>
         /// 附加元素
         /// </summary>

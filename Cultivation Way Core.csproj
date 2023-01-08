@@ -77,7 +77,7 @@
     <None Include="mod.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Code\CW_ActorStats.cs" />
+    <Compile Include="Code\CW_Library_ActorStats.cs" />
     <Compile Include="Code\CW_SpellAction_Anim.cs" />
     <Compile Include="Code\CW_SpellAction_Damage.cs" />
     <Compile Include="Code\CW_SpellAction_Spell.cs" />

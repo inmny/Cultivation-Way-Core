@@ -95,25 +95,31 @@ namespace Cultivation_Way
             float promot = asset.promot;
             CW_BaseStats combine_bonus = get_type().bonus_stats.deepcopy();
             // 添加五元素的加成
+            float real_content;
             // 火
-            combine_bonus.base_stats.mod_crit += base_elements[BASE_TYPE_FIRE] * promot;
-            combine_bonus.base_stats.damageCritMod += base_elements[BASE_TYPE_FIRE] * 1.5f * promot;
+            real_content = base_elements[BASE_TYPE_FIRE] + base_elements[BASE_TYPE_WOOD] - base_elements[BASE_TYPE_WATER];
+            combine_bonus.base_stats.mod_crit += real_content * promot;
+            combine_bonus.base_stats.damageCritMod += real_content * 1.5f * promot;
             // 土
-            combine_bonus.base_stats.mod_armor += base_elements[BASE_TYPE_GROUND] * promot;
-            combine_bonus.mod_spell_armor += base_elements[BASE_TYPE_GROUND] * promot;
+            real_content = base_elements[BASE_TYPE_GROUND] + base_elements[BASE_TYPE_FIRE] - base_elements[BASE_TYPE_WOOD];
+            combine_bonus.base_stats.mod_armor += real_content * promot;
+            combine_bonus.mod_spell_armor += real_content * promot;
             // 金
-            combine_bonus.base_stats.mod_damage += base_elements[BASE_TYPE_IRON] * 2 * promot;
-            combine_bonus.mod_anti_armor += base_elements[BASE_TYPE_IRON] * 0.5f * promot;
-            combine_bonus.mod_anti_spell_armor += base_elements[BASE_TYPE_IRON] * 0.5f * promot;
+            real_content = base_elements[BASE_TYPE_IRON] + base_elements[BASE_TYPE_GROUND] - base_elements[BASE_TYPE_FIRE];
+            combine_bonus.base_stats.mod_damage += real_content * 2 * promot;
+            combine_bonus.mod_anti_armor += real_content * 0.5f * promot;
+            combine_bonus.mod_anti_spell_armor += real_content * 0.5f * promot;
             // 水
-            combine_bonus.mod_anti_crit += base_elements[BASE_TYPE_WATER] * 1.2f * promot;  
-            combine_bonus.anti_crit_damage += base_elements[BASE_TYPE_WATER] * 1.7f * promot;
-            combine_bonus.mod_wakan += base_elements[BASE_TYPE_WATER] * 2f * promot;
-            combine_bonus.base_stats.knockbackReduction += base_elements[BASE_TYPE_WATER] * promot;
+            real_content = base_elements[BASE_TYPE_WATER] + base_elements[BASE_TYPE_IRON] - base_elements[BASE_TYPE_GROUND];
+            combine_bonus.mod_anti_crit += real_content * 1.2f * promot;  
+            combine_bonus.anti_crit_damage += real_content * 1.7f * promot;
+            combine_bonus.mod_wakan += real_content * 2f * promot;
+            combine_bonus.base_stats.knockbackReduction += real_content * promot;
             // 木
-            combine_bonus.base_stats.mod_health += base_elements[BASE_TYPE_WOOD] * promot;
-            combine_bonus.mod_health_regen += base_elements[BASE_TYPE_WOOD] * 1.5f * promot;
-            combine_bonus.mod_wakan_regen += base_elements[BASE_TYPE_WOOD] * promot;
+            real_content = base_elements[BASE_TYPE_WOOD] + base_elements[BASE_TYPE_WATER] - base_elements[BASE_TYPE_IRON];
+            combine_bonus.base_stats.mod_health += real_content * promot;
+            combine_bonus.mod_health_regen += real_content * 1.5f * promot;
+            combine_bonus.mod_wakan_regen += real_content * promot;
 
             return combine_bonus;
         }
@@ -122,7 +128,7 @@ namespace Cultivation_Way
             int i, j;
             List<Library.CW_Asset_Element> asset_list = Library.CW_Library_Manager.instance.elements.list;
             int length = asset_list.Count;
-            float min_no_similarity = -1f;
+            float min_no_similarity = 10000f;
             float tmp_no_similarity;
             int mul_result;
             int modulus_1;

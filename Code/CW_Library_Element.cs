@@ -62,23 +62,23 @@ namespace Cultivation_Way.Library
         public override void init()
         {
             base.init();
-            add(new CW_Asset_Element("CW_water", 100, 0, 0, 0, 0, 1f, 10f));
-            add(new CW_Asset_Element("CW_fire", 0, 100, 0, 0, 0, 1f, 10f));
-            add(new CW_Asset_Element("CW_wood", 0, 0, 100, 0, 0, 1f, 10f));
-            add(new CW_Asset_Element("CW_iron", 0, 0, 0, 100, 0, 1f, 10f));
-            add(new CW_Asset_Element("CW_ground", 0, 0, 0, 0, 100, 1f, 10f));
-            add(new CW_Asset_Element("CW_water_fire", 50, 50, 0, 0, 0, 1f, 1f));
-            add(new CW_Asset_Element("CW_water_wood", 50, 0, 50, 0, 0, 1f, 1f));
-            add(new CW_Asset_Element("CW_water_iron", 50, 0, 0, 50, 0, 1f, 1f));
-            add(new CW_Asset_Element("CW_water_ground", 50, 0, 0, 0, 50, 1f, 1f));
-            add(new CW_Asset_Element("CW_fire_wood", 0, 50, 50, 0, 0, 1f, 1f));
-            add(new CW_Asset_Element("CW_fire_iron", 0, 50, 0, 50, 0, 1f, 1f));
-            add(new CW_Asset_Element("CW_fire_ground", 0, 50, 0, 0, 50, 1f, 1f));
-            add(new CW_Asset_Element("CW_wood_iron", 0, 0, 50, 50, 0, 1f, 1f));
-            add(new CW_Asset_Element("CW_wood_ground", 0, 0, 50, 0, 50, 1f, 1f));
-            add(new CW_Asset_Element("CW_iron_ground", 0, 0, 0, 50, 50, 1f, 1f));
+            add(new CW_Asset_Element("CW_water", 100, 0, 0, 0, 0, 1f, 6f));
+            add(new CW_Asset_Element("CW_fire", 0, 100, 0, 0, 0, 1f, 6f));
+            add(new CW_Asset_Element("CW_wood", 0, 0, 100, 0, 0, 1f, 6f));
+            add(new CW_Asset_Element("CW_iron", 0, 0, 0, 100, 0, 1f, 6f));
+            add(new CW_Asset_Element("CW_ground", 0, 0, 0, 0, 100, 1f, 6f));
+            add(new CW_Asset_Element("CW_water_fire", 50, 50, 0, 0, 0, 1f, 3f));
+            add(new CW_Asset_Element("CW_water_wood", 50, 0, 50, 0, 0, 1f, 3f));
+            add(new CW_Asset_Element("CW_water_iron", 50, 0, 0, 50, 0, 1f, 3f));
+            add(new CW_Asset_Element("CW_water_ground", 50, 0, 0, 0, 50, 1f, 3f));
+            add(new CW_Asset_Element("CW_fire_wood", 0, 50, 50, 0, 0, 1f, 3f));
+            add(new CW_Asset_Element("CW_fire_iron", 0, 50, 0, 50, 0, 1f, 3f));
+            add(new CW_Asset_Element("CW_fire_ground", 0, 50, 0, 0, 50, 1f, 3f));
+            add(new CW_Asset_Element("CW_wood_iron", 0, 0, 50, 50, 0, 1f, 3f));
+            add(new CW_Asset_Element("CW_wood_ground", 0, 0, 50, 0, 50, 1f, 3f));
+            add(new CW_Asset_Element("CW_iron_ground", 0, 0, 0, 50, 50, 1f, 3f));
             add(new CW_Asset_Element("CW_common", 20, 20, 20, 20, 20, 1f, 1f));
-            add(new CW_Asset_Element("CW_uniform", 20, 20, 20, 20, 20, 10f, 10f));
+            add(new CW_Asset_Element("CW_uniform", 20, 20, 20, 20, 20, 10f, 100f));
             
         }
         /// <summary>

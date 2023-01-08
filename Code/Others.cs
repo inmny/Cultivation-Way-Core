@@ -9,6 +9,7 @@ namespace Cultivation_Way.Others
         public const float default_anim_trace_grad = 0.1f;
         public const string default_anim_layer_name = "EffectsTop";
         public const bool is_debugging = true;
+        public const int wakan_regen_valid_percent = 40;
     }
     public class CW_Delegates
     {
