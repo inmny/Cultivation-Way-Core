@@ -36,8 +36,9 @@
     <Reference Include="0Harmony">
       <HintPath>Includes\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>Includes\Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assemblies\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NCMS">
@@ -69,12 +70,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assemblies\Assembly-CSharp.dll" />
     <Content Include="icon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="mod.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\CW_ActorStats.cs" />
     <Compile Include="Code\CW_SpellAction_Anim.cs" />
     <Compile Include="Code\CW_SpellAction_Damage.cs" />
     <Compile Include="Code\CW_SpellAction_Spell.cs" />

@@ -6,8 +6,13 @@ namespace Cultivation_Way.Animation
     public class CW_EffectController
     {
         internal int cur_anim_nr;
+
         internal GameObject prefab;
         internal CW_SpriteAnimation[] animations;
+        /// <summary>
+        /// 缩放
+        /// </summary>
+        public float scale;
         /// <summary>
         /// 动图
         /// </summary>
@@ -19,6 +24,7 @@ namespace Cultivation_Way.Animation
         internal CW_EffectController(int anim_limit, CW_AnimationSetting setting, Sprite[] anim, GameObject default_prefab)
         {
             prefab = UnityEngine.Object.Instantiate(default_prefab);
+            prefab.transform.localScale = new Vector3(scale, scale, prefab.transform.localScale.z);
             prefab.GetComponent<SpriteRenderer>().sortingLayerName = setting.layer_name;
             animations = new CW_SpriteAnimation[anim_limit];
             for(int i = 0; i < animations.Length; i++)
@@ -51,7 +57,10 @@ namespace Cultivation_Way.Animation
 
         internal CW_SpriteAnimation spawn_on(Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_obj, BaseSimObject dst_obj)
         {
-            throw new NotImplementedException();
+            CW_SpriteAnimation new_anim = new CW_SpriteAnimation(default_setting, anim, prefab, src_vec, dst_vec, src_obj, dst_obj);
+            if (!new_anim.isOn) return null;
+            animations[cur_anim_nr++] = new_anim;
+            return new_anim;
         }
     }
 }

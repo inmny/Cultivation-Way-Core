@@ -129,17 +129,21 @@ namespace Cultivation_Way.Animation
                 if(setting.trace_type == AnimationTraceType.TRACK)
                 {
                     dst_x = dst_object.currentPosition.x; dst_y = dst_object.currentPosition.y;
-                    setting.trace_updater(src_vec.x, src_vec.y, dst_x, dst_y, play_time, setting.loop_time_limit, ref next_x, ref next_y, setting.trace_grad);
+                    setting.trace_updater(src_vec.x, src_vec.y, dst_x, dst_y, play_time, setting.loop_time_limit, loop_nr, setting.loop_nr_limit, ref next_x, ref next_y, setting.trace_grad);
                 }
                 else
                 {
                     dst_x = dst_vec.x; dst_y = dst_vec.y;
-                    setting.trace_updater(src_vec.x, src_vec.y, dst_x, dst_y, play_time, setting.loop_time_limit, ref next_x, ref next_y, setting.trace_grad);
+                    setting.trace_updater(src_vec.x, src_vec.y, dst_x, dst_y, play_time, setting.loop_time_limit, loop_nr, setting.loop_nr_limit, ref next_x, ref next_y, setting.trace_grad);
                 }
                 float delta_x = next_x - gameObject.transform.position.x;
                 float delta_y = next_y - gameObject.transform.position.y;
                 trace_length += Mathf.Sqrt(delta_x * delta_x + delta_y * delta_y);
                 gameObject.transform.position = new Vector3(next_x, next_y);
+                if (setting.point_to_dst)
+                {
+                    gameObject.transform.rotation = Quaternion.LookRotation(gameObject.transform.position);
+                }
             }
             // 路径行为
             if (setting.frame_action != null) setting.frame_action(cur_frame_idx, src_x, src_y, dst_x, dst_y, play_time, gameObject.transform.position.x, gameObject.transform.position.y, src_object);
@@ -187,6 +191,22 @@ namespace Cultivation_Way.Animation
         internal void kill()
         {
             UnityEngine.Object.Destroy(gameObject);
+        }
+        /// <summary>
+        /// 设置大小
+        /// </summary>
+        /// <param name="scale">大小系数</param>
+        public void set_scale(float scale)
+        {
+            gameObject.transform.localScale = new Vector3(scale, scale, gameObject.transform.localScale.z);
+        }
+        /// <summary>
+        /// 缩放
+        /// </summary>
+        /// <param name="scale">缩放比例</param>
+        public void change_scale(float scale)
+        {
+            gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x * scale, gameObject.transform.localScale.y * scale, gameObject.transform.localScale.z);
         }
         /// <summary>
         /// 修改动画设置，请在知道你在做什么的情况下谨慎操作

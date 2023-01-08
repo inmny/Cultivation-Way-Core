@@ -94,6 +94,14 @@ namespace Cultivation_Way.Animation
         /// 图层
         /// </summary>
         public string layer_name = Others.CW_Constants.default_anim_layer_name;
+        /// <summary>
+        /// 始终旋转
+        /// </summary>
+        public bool always_roll = false;
+        /// <summary>
+        /// 指向终点
+        /// </summary>
+        public bool point_to_dst = false;
         internal CW_AnimationSetting __deepcopy()
         {
             CW_AnimationSetting copy = new CW_AnimationSetting();
@@ -112,6 +120,9 @@ namespace Cultivation_Way.Animation
             copy.frame_action = frame_action;
             copy.end_action = end_action;
             copy.trace_grad = trace_grad;
+            copy.layer_name = layer_name;
+            copy.always_roll = always_roll;
+            copy.point_to_dst = point_to_dst;
             return copy;
         }
         public void set_trace(AnimationTraceType type)

@@ -21,6 +21,10 @@ namespace Cultivation_Way.Library
         /// </summary>
         public int[] base_elements { get; }
         /// <summary>
+        /// 标签，同时为Library中的idx
+        /// </summary>
+        public int tag { get; }
+        /// <summary>
         /// 元素组合提供的属性加成
         /// </summary>
         public CW_BaseStats bonus_stats;
@@ -104,6 +108,10 @@ namespace Cultivation_Way.Library
         public CW_Asset_Element add_element(string id, int[] base_elements, float promot = 1.0f, float rarity = 1.0f)
         {
             return add(new CW_Asset_Element(id, base_elements, promot, rarity));
+        }
+        internal void register()
+        {
+
         }
     }
 }
