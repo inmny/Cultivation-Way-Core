@@ -31,16 +31,21 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 反时间停止（非游戏暂停
         /// </summary>
-        public bool anti_time_stop;
+        public bool anti_time_stop = false;
         /// <summary>
         /// 预设名
         /// </summary>
-        public string fixed_name;
+        public string fixed_name = null;
+        /// <summary>
+        /// 允许的修炼体系
+        /// </summary>
+        internal uint allow_cultisys = 0;
     }
     public class CW_Library_ActorStats : AssetLibrary<CW_ActorStats>
     {
         public override void init()
         {
+            base.init();
             foreach(ActorStats actor_stats in AssetManager.unitStats.list)
             {
                 this.__add(actor_stats, 1f, new int[] { 20, 20, 20, 20, 20 }, 0f, new List<string>(), false, null);

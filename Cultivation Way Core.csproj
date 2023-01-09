@@ -77,7 +77,19 @@
     <None Include="mod.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\CW_Actor.cs" />
+    <Compile Include="Code\CW_ActorData.cs" />
+    <Compile Include="Code\CW_ActorStatus.cs" />
+    <Compile Include="Code\CW_Building.cs" />
+    <Compile Include="Code\CW_BuildingData.cs" />
+    <Compile Include="Code\CW_Library_Family.cs" />
+    <Compile Include="Code\CW_MapChunk.cs" />
+    <Compile Include="Code\CW_Compose_ComposeSetting.cs" />
+    <Compile Include="Code\CW_Compose_ComposeTools.cs" />
     <Compile Include="Code\CW_Library_ActorStats.cs" />
+    <Compile Include="Code\CW_Library_Building.cs" />
+    <Compile Include="Code\CW_Library_CultiBook.cs" />
+    <Compile Include="Code\CW_Library_CultiSys.cs" />
     <Compile Include="Code\CW_SpellAction_Anim.cs" />
     <Compile Include="Code\CW_SpellAction_Damage.cs" />
     <Compile Include="Code\CW_SpellAction_Spell.cs" />

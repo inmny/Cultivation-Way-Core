@@ -128,6 +128,7 @@ namespace Cultivation_Way.Library
         {
             this.addition_element_tags.Add(element_id);
         }
+
     }
     public enum Spell_Search_Type
     {
