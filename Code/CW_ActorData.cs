@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Cultivation_Way
 {
@@ -18,5 +14,6 @@ namespace Cultivation_Way
         public string cultibook_id;
         public string special_body_id;
         public string family_name;
+        public List<Library.CW_Family_Member_Info> children_info;
     }
 }

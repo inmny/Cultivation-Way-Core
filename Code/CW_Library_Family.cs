@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 
 namespace Cultivation_Way.Library
 {
-    public class CW_Asset_Family : Asset
+    public class CW_Family_Member_Info
+    {
+        public string actor_id;
+        public string name;
+        public ActorGender gender;
+    }
+    // 暂不使用
+    internal class CW_Asset_Family : Asset
     {
 
     }
-    public class CW_Library_Family : AssetLibrary<CW_Asset_Family>
+    internal class CW_Library_Family : AssetLibrary<CW_Asset_Family>
     {
     }
 }

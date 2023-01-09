@@ -57,6 +57,7 @@ namespace Cultivation_Way.Library
         }
         public CW_ActorStats add(ActorStats stats, float culti_velo = 1f, int[] prefer_element = null, float prefer_element_scale = 0f, List<string> born_spells = null, bool anti_time_stop = false, string fixed_name = null)
         {
+            if (!AssetManager.unitStats.list.Contains(stats)) AssetManager.unitStats.add(stats);
             return __add(stats, culti_velo, prefer_element == null ? new int[] { 20, 20, 20, 20, 20 } : prefer_element, prefer_element_scale, born_spells == null ? new List<string>() : born_spells, anti_time_stop, fixed_name);
         }
         private CW_ActorStats __add(ActorStats stats, float culti_velo, int[] prefer_element, float prefer_element_scale, List<string> born_spells, bool anti_time_stop, string fixed_name)
