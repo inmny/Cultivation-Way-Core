@@ -82,7 +82,9 @@
     <Compile Include="Code\CW_ActorStatus.cs" />
     <Compile Include="Code\CW_Building.cs" />
     <Compile Include="Code\CW_BuildingData.cs" />
+    <Compile Include="Code\CW_ClassNick.cs" />
     <Compile Include="Code\CW_Library_Family.cs" />
+    <Compile Include="Code\CW_Library_Trait.cs" />
     <Compile Include="Code\CW_MapChunk.cs" />
     <Compile Include="Code\CW_Compose_ComposeSetting.cs" />
     <Compile Include="Code\CW_Compose_ComposeTools.cs" />
