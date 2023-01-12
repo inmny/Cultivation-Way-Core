@@ -58,5 +58,10 @@ namespace Cultivation_Way.Library
                 list[i].register();
             }
         }
+        // TODO: 安全保障
+        internal CW_BaseStats get_bonus_stats(int cultisys_tag, int level)
+        {
+            return list[cultisys_tag].bonus_stats[level];
+        }
     }
 }

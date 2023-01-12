@@ -39,8 +39,7 @@ namespace Cultivation_Way.Library
                 if (base_elements[i] < 0 || base_elements[i] > 100) throw new Exception(String.Format("Error Base Elements at {0}, value {1}", i, base_elements[i]));
             }
             this.id = id;
-            if (bonus_stats == null) this.bonus_stats = bonus_stats;
-            else this.bonus_stats = new CW_BaseStats();
+            this.bonus_stats = (bonus_stats==null?new CW_BaseStats():bonus_stats);
         }
         internal CW_Asset_Element(string id, int water, int fire, int wood, int iron, int ground, float promot = 1.0f, float rarity = 1.0f, CW_BaseStats bonus_stats = null)
         {
@@ -53,8 +52,7 @@ namespace Cultivation_Way.Library
                 if (base_elements[i] < 0 || base_elements[i] > 100) throw new Exception(String.Format("Error Base Elements at {0}, value {1}", i, base_elements[i]));
             }
             this.id = id;
-            if (bonus_stats == null) this.bonus_stats = bonus_stats;
-            else this.bonus_stats = new CW_BaseStats();
+            this.bonus_stats = (bonus_stats == null ? new CW_BaseStats() : bonus_stats);
         }
     }
     public class CW_Library_Element:AssetLibrary<CW_Asset_Element>
@@ -111,7 +109,7 @@ namespace Cultivation_Way.Library
         }
         internal void register()
         {
-
+            throw new NotImplementedException();
         }
     }
 }

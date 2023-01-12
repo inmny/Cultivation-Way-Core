@@ -26,6 +26,10 @@ namespace Cultivation_Way.Library
                 __add(new CW_Asset_Race(race));
             }
         }
+        internal void register()
+        {
+            throw new NotImplementedException();
+        }
         public override CW_Asset_Race add(CW_Asset_Race pAsset)
         {
             if(!AssetManager.raceLibrary.list.Contains(pAsset.origin_asset)) AssetManager.raceLibrary.add(pAsset.origin_asset);

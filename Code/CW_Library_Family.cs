@@ -19,5 +19,9 @@ namespace Cultivation_Way.Library
     }
     internal class CW_Library_Family : AssetLibrary<CW_Asset_Family>
     {
+        internal void register()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

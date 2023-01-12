@@ -40,6 +40,10 @@ namespace Cultivation_Way.Library
         /// 允许的修炼体系
         /// </summary>
         internal uint allow_cultisys = 0;
+        /// <summary>
+        /// 拓展属性加成
+        /// </summary>
+        public CW_BaseStats addition_stats;
     }
     public class CW_Library_ActorStats : AssetLibrary<CW_ActorStats>
     {
@@ -48,19 +52,19 @@ namespace Cultivation_Way.Library
             base.init();
             foreach(ActorStats actor_stats in AssetManager.unitStats.list)
             {
-                this.__add(actor_stats, 1f, new int[] { 20, 20, 20, 20, 20 }, 0f, new List<string>(), false, null);
+                this.__add(actor_stats, 1f, new int[] { 20, 20, 20, 20, 20 }, 0f, new List<string>(), false, null, new CW_BaseStats());
             }
         }
         internal void register()
         {
             throw new NotImplementedException();
         }
-        public CW_ActorStats add(ActorStats stats, float culti_velo = 1f, int[] prefer_element = null, float prefer_element_scale = 0f, List<string> born_spells = null, bool anti_time_stop = false, string fixed_name = null)
+        public CW_ActorStats add(ActorStats stats, float culti_velo = 1f, int[] prefer_element = null, float prefer_element_scale = 0f, List<string> born_spells = null, bool anti_time_stop = false, string fixed_name = null, CW_BaseStats addition_stats = null)
         {
             if (!AssetManager.unitStats.list.Contains(stats)) AssetManager.unitStats.add(stats);
-            return __add(stats, culti_velo, prefer_element == null ? new int[] { 20, 20, 20, 20, 20 } : prefer_element, prefer_element_scale, born_spells == null ? new List<string>() : born_spells, anti_time_stop, fixed_name);
+            return __add(stats, culti_velo, prefer_element == null ? new int[] { 20, 20, 20, 20, 20 } : prefer_element, prefer_element_scale, born_spells == null ? new List<string>() : born_spells, anti_time_stop, fixed_name, addition_stats==null?new CW_BaseStats():addition_stats);
         }
-        private CW_ActorStats __add(ActorStats stats, float culti_velo, int[] prefer_element, float prefer_element_scale, List<string> born_spells, bool anti_time_stop, string fixed_name)
+        private CW_ActorStats __add(ActorStats stats, float culti_velo, int[] prefer_element, float prefer_element_scale, List<string> born_spells, bool anti_time_stop, string fixed_name, CW_BaseStats addition_stats)
         {
             CW_ActorStats cw_actor_stats = new CW_ActorStats();
             cw_actor_stats.origin_stats = stats;
@@ -70,6 +74,7 @@ namespace Cultivation_Way.Library
             cw_actor_stats.born_spells = born_spells;
             cw_actor_stats.anti_time_stop = anti_time_stop;
             cw_actor_stats.fixed_name = fixed_name;
+            cw_actor_stats.addition_stats = addition_stats;
             this.list.Add(cw_actor_stats);
             this.dict.Add(stats.id, cw_actor_stats);
             return cw_actor_stats;

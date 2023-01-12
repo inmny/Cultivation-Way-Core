@@ -63,7 +63,7 @@ namespace Cultivation_Way
         /// <summary>
         /// 法抗
         /// </summary>
-        public float spell_armor;
+        public int spell_armor;
         /// <summary>
         /// 法抗系数
         /// </summary>
@@ -97,15 +97,45 @@ namespace Cultivation_Way
         /// </summary>
         public float mod_cultivation;
         // TODO: 补充其他函数
+        /// <summary>
+        /// 抗暴率
+        /// </summary>
         public float anti_crit;
+        /// <summary>
+        /// 抗暴率系数
+        /// </summary>
         public float mod_anti_crit;
+        /// <summary>
+        /// 抗暴伤率
+        /// </summary>
         public float anti_crit_damage;
+        /// <summary>
+        /// 抗暴伤系数
+        /// </summary>
         public float mod_anti_crit_damage;
+        /// <summary>
+        /// 总抗暴率
+        /// </summary>
         public float s_anti_crit;
-        public float anti_spell_armor;
-        public float anti_armor;
+        /// <summary>
+        /// 法穿
+        /// </summary>
+        public int anti_spell_armor;
+        /// <summary>
+        /// 物穿
+        /// </summary>
+        public int anti_armor;
+        /// <summary>
+        /// 物穿系数
+        /// </summary>
         public float mod_anti_armor;
+        /// <summary>
+        /// 法穿系数
+        /// </summary>
         public float mod_anti_spell_armor;
+        /// <summary>
+        /// 抗时停
+        /// </summary>
         public bool anti_time_stop;
         /// <summary>
         /// 附加元素
@@ -118,11 +148,20 @@ namespace Cultivation_Way
         public CW_BaseStats()
         {
             this.age_bonus = 0;
+            this.anti_armor = 0;
+            this.anti_crit = 0;
+            this.anti_crit_damage = 0;
             this.anti_injury = 0;
+            this.anti_spell_armor = 0;
+            this.anti_time_stop = false;
             this.base_stats = new BaseStats();
-            this.element = new CW_Element();
+            this.element = new CW_Element(random_generate: true, comp_type: false);
             this.health_regen = 0;
             this.mod_age = 0;
+            this.mod_anti_armor = 0;
+            this.mod_anti_crit = 0;
+            this.mod_anti_crit_damage = 0;
+            this.mod_anti_spell_armor = 0;
             this.mod_cultivation = 0;
             this.mod_health_regen = 0;
             this.mod_shied = 0;
@@ -137,9 +176,48 @@ namespace Cultivation_Way
             this.soul_regen = 0;
             this.spell_range = 0;
             this.spell_armor = 0;
+            this.s_anti_crit = 0;
             this.vampire = 0;
             this.wakan = 0;
             this.wakan_regen = 0;
+        }
+        internal CW_BaseStats(BaseStats baseStats)
+        {
+            this.element = new CW_Element(random_generate: true, comp_type: false);
+            #region Extend Stats
+            this.age_bonus = 0;
+            this.anti_armor = 0;
+            this.anti_crit = 0;
+            this.anti_crit_damage = 0;
+            this.anti_injury = 0;
+            this.anti_spell_armor = 0;
+            this.anti_time_stop = false;
+            this.health_regen = 0;
+            this.mod_age = 0;
+            this.mod_anti_armor = 0;
+            this.mod_anti_crit = 0;
+            this.mod_anti_crit_damage = 0;
+            this.mod_anti_spell_armor = 0;
+            this.mod_cultivation = 0;
+            this.mod_health_regen = 0;
+            this.mod_shied = 0;
+            this.mod_soul = 0;
+            this.mod_soul_regen = 0;
+            this.mod_spell_range = 0;
+            this.mod_spell_armor = 0;
+            this.mod_wakan = 0;
+            this.mod_wakan_regen = 0;
+            this.shied = 0;
+            this.soul = 0;
+            this.soul_regen = 0;
+            this.spell_range = 0;
+            this.spell_armor = 0;
+            this.s_anti_crit = 0;
+            this.vampire = 0;
+            this.wakan = 0;
+            this.wakan_regen = 0;
+            #endregion
+            this.base_stats = baseStats;
         }
         internal CW_BaseStats(CW_BaseStats copy)
         {
@@ -147,9 +225,18 @@ namespace Cultivation_Way
             this.element = copy.element.deepcopy();
             #region Extend Stats
             this.age_bonus = copy.age_bonus;
+            this.anti_armor = copy.anti_armor;
+            this.anti_crit = copy.anti_crit;
+            this.anti_crit_damage = copy.anti_crit_damage;
             this.anti_injury = copy.anti_injury;
+            this.anti_spell_armor = copy.anti_spell_armor;
+            this.anti_time_stop = copy.anti_time_stop;
             this.health_regen = copy.health_regen;
             this.mod_age = copy.mod_age;
+            this.mod_anti_armor = copy.mod_anti_armor;
+            this.mod_anti_crit = copy.mod_anti_crit;
+            this.mod_anti_crit_damage = copy.mod_anti_crit_damage;
+            this.mod_anti_spell_armor = copy.mod_anti_spell_armor;
             this.mod_cultivation = copy.mod_cultivation;
             this.mod_health_regen = copy.mod_health_regen;
             this.mod_shied = copy.mod_shied;
@@ -164,6 +251,7 @@ namespace Cultivation_Way
             this.soul_regen = copy.soul_regen;
             this.spell_range = copy.spell_range;
             this.spell_armor = copy.spell_armor;
+            this.s_anti_crit = copy.s_anti_crit;
             this.vampire = copy.vampire;
             this.wakan = copy.wakan;
             this.wakan_regen = copy.wakan_regen;
@@ -221,9 +309,18 @@ namespace Cultivation_Way
             }
             #region Extend Stats
             this.age_bonus += CW_basestats.age_bonus;
+            this.anti_armor += CW_basestats.anti_armor;
+            this.anti_crit += CW_basestats.anti_crit;
+            this.anti_crit_damage += CW_basestats.anti_crit_damage;
             this.anti_injury += CW_basestats.anti_injury;
+            this.anti_spell_armor += CW_basestats.anti_spell_armor;
+            this.anti_time_stop |= CW_basestats.anti_time_stop;
             this.health_regen += CW_basestats.health_regen;
             this.mod_age += CW_basestats.mod_age;
+            this.mod_anti_armor += CW_basestats.mod_anti_armor;
+            this.mod_anti_crit += CW_basestats.mod_anti_crit;
+            this.mod_anti_crit_damage += CW_basestats.mod_anti_crit_damage;
+            this.mod_anti_spell_armor += CW_basestats.mod_anti_spell_armor;
             this.mod_cultivation += CW_basestats.mod_cultivation;
             this.mod_health_regen += CW_basestats.mod_health_regen;
             this.mod_shied += CW_basestats.mod_shied;
@@ -238,6 +335,7 @@ namespace Cultivation_Way
             this.soul_regen += CW_basestats.soul_regen;
             this.spell_range += CW_basestats.spell_range;
             this.spell_armor += CW_basestats.spell_armor;
+            this.s_anti_crit += CW_basestats.s_anti_crit;
             this.vampire += CW_basestats.vampire;
             this.wakan += CW_basestats.wakan;
             this.wakan_regen += CW_basestats.wakan_regen;
@@ -290,20 +388,29 @@ namespace Cultivation_Way
         {
             if (!except_element)
             {
-                this.element = new CW_Element();
+                this.element = new CW_Element(random_generate: true, comp_type: false);
             }
             #region Extend Stats
             this.age_bonus = 0;
+            this.anti_armor = 0;
+            this.anti_crit = 0;
+            this.anti_crit_damage = 0;
             this.anti_injury = 0;
+            this.anti_spell_armor = 0;
+            this.anti_time_stop = false;
             this.health_regen = 0;
             this.mod_age = 0;
+            this.mod_anti_armor = 0;
+            this.mod_anti_crit = 0;
+            this.mod_anti_crit_damage = 0;
+            this.mod_anti_spell_armor = 0;
             this.mod_cultivation = 0;
             this.mod_health_regen = 0;
             this.mod_shied = 0;
             this.mod_soul = 0;
             this.mod_soul_regen = 0;
-            this.mod_spell_armor = 0;
             this.mod_spell_range = 0;
+            this.mod_spell_armor = 0;
             this.mod_wakan = 0;
             this.mod_wakan_regen = 0;
             this.shied = 0;
@@ -311,6 +418,7 @@ namespace Cultivation_Way
             this.soul_regen = 0;
             this.spell_range = 0;
             this.spell_armor = 0;
+            this.s_anti_crit = 0;
             this.vampire = 0;
             this.wakan = 0;
             this.wakan_regen = 0;
@@ -358,6 +466,37 @@ namespace Cultivation_Way
             this.base_stats.mod_speed = 0f;
             this.base_stats.mod_attackSpeed = 0f;
             #endregion
+        }
+        public void apply_mod()
+        {
+            this.base_stats.armor += (int)(this.base_stats.armor * this.base_stats.mod_armor / 100f);
+            this.base_stats.attackSpeed *= 1f + this.base_stats.mod_attackSpeed / 100f;
+            this.base_stats.crit *= 1f + this.base_stats.mod_crit / 100f;
+            this.base_stats.damage += (int)(this.base_stats.damage * this.base_stats.mod_damage / 100f);
+            this.base_stats.diplomacy += (int)(this.base_stats.diplomacy * this.base_stats.mod_diplomacy / 100f);
+            this.base_stats.health += (int)(this.base_stats.health * this.base_stats.mod_health / 100);
+            this.base_stats.speed *= 1f + this.base_stats.mod_speed / 100f;
+            this.age_bonus += (int)(this.age_bonus * this.mod_age / 100f);
+            this.anti_armor += (int)(this.anti_armor * this.mod_anti_armor / 100f);
+            this.anti_crit *= 1f + this.mod_anti_crit / 100f;
+            this.anti_crit_damage *= 1f + this.mod_anti_crit_damage / 100f;
+            this.anti_spell_armor += (int)(this.anti_spell_armor * this.mod_anti_spell_armor / 100f);
+            this.health_regen += (int)(this.health_regen * this.mod_health_regen / 100f);
+            this.shied += (int)(this.shied * this.mod_shied / 100f);
+            this.soul += (int)(this.soul * this.mod_soul / 100f);
+            this.soul_regen += (int)(this.soul_regen * this.mod_soul_regen / 100f);
+            this.spell_armor += (int)(this.spell_armor * this.mod_spell_armor / 100f);
+            this.spell_range *= 1f + this.mod_spell_range / 100f;
+            this.wakan += (int)(this.wakan * this.mod_wakan / 100f);
+            this.wakan_regen += (int)(this.wakan_regen * this.mod_wakan_regen / 100f);
+        }
+        public void apply_others()
+        {
+            //throw new NotImplementedException();
+        }
+        public void no_zero()
+        {
+            //throw new NotImplementedException();
         }
         public void normalize(bool normalize_element = true, int element_normalize_ceil = 100)
         {

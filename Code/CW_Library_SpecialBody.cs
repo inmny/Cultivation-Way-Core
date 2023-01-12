@@ -16,5 +16,9 @@ namespace Cultivation_Way.Library
     }
     public class CW_Library_SpecialBody : AssetLibrary<CW_Asset_SpecialBody>
     {
+        internal void register()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -26,6 +26,10 @@ namespace Cultivation_Way.Library
                 __add(new CW_Asset_Kingdom(kingdom));
             }
         }
+        internal void register()
+        {
+            throw new NotImplementedException();
+        }
         public override CW_Asset_Kingdom add(CW_Asset_Kingdom pAsset)
         {
             if (!AssetManager.kingdoms.list.Contains(pAsset.origin_asset)) AssetManager.kingdoms.add(pAsset.origin_asset);

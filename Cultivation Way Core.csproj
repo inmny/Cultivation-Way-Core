@@ -70,7 +70,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assemblies\Assembly-CSharp.dll" />
     <Content Include="icon.png" />
   </ItemGroup>
   <ItemGroup>
@@ -82,9 +81,12 @@
     <Compile Include="Code\CW_ActorStatus.cs" />
     <Compile Include="Code\CW_Building.cs" />
     <Compile Include="Code\CW_BuildingData.cs" />
+    <Compile Include="Code\CW_City.cs" />
+    <Compile Include="Code\CW_CityData.cs" />
     <Compile Include="Code\CW_ClassNick.cs" />
     <Compile Include="Code\CW_ItemData.cs" />
     <Compile Include="Code\CW_Library_Family.cs" />
+    <Compile Include="Code\CW_Library_Item.cs" />
     <Compile Include="Code\CW_Library_ItemAccessoryMaterial.cs" />
     <Compile Include="Code\CW_Library_ItemArmorMaterial.cs" />
     <Compile Include="Code\CW_Library_ItemAsset.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Code\CW_Library_Race.cs" />
     <Compile Include="Code\CW_Library_SpecialBody.cs" />
     <Compile Include="Code\CW_Library_Trait.cs" />
+    <Compile Include="Code\CW_Library_WorldEvent.cs" />
     <Compile Include="Code\CW_MapChunk.cs" />
     <Compile Include="Code\CW_Compose_ComposeSetting.cs" />
     <Compile Include="Code\CW_Compose_ComposeTools.cs" />
@@ -106,7 +109,9 @@
     <Compile Include="Code\CW_Animation_TraceFunctions.cs" />
     <Compile Include="Code\CW_Library_Spell.cs" />
     <Compile Include="Code\CW_Spell.cs" />
+    <Compile Include="Code\CW_Utils_ItemTools.cs" />
     <Compile Include="Code\CW_Utils_ResourceHelper.cs" />
+    <Compile Include="Code\CW_Utils_ReflectionHelper.cs" />
     <Compile Include="Code\Others.cs" />
     <Compile Include="Code\CW_Animation_AnimationSetting.cs" />
     <Compile Include="Code\CW_BaseStats.cs" />
@@ -117,6 +122,17 @@
     <Compile Include="Code\CW_Animation_EffectController.cs" />
     <Compile Include="Code\CW_Animation_EffectManager.cs" />
     <Compile Include="Code\CW_Animation_SpriteAnimation.cs" />
+    <Compile Include="Code\W_Content_Manager.cs" />
+    <Compile Include="Code\W_Content_Helper.cs" />
+    <Compile Include="Code\W_Harmony_Actor.cs" />
+    <Compile Include="Code\W_Harmony_Building.cs" />
+    <Compile Include="Code\W_Harmony_City.cs" />
+    <Compile Include="Code\W_Harmony_Item.cs" />
+    <Compile Include="Code\W_NOT_Arch_Data.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assemblies\" />
+    <Folder Include="GameResources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>

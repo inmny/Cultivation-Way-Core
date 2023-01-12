@@ -5,6 +5,7 @@ namespace Cultivation_Way.Others
 {
     public class CW_Constants
     {
+        public const string mod_id = "inmny.cw_core";
         public const int save_version = 1;
         public const int base_element_types = 5;
         public const float default_anim_trace_grad = 0.1f;
@@ -21,5 +22,6 @@ namespace Cultivation_Way.Others
         public delegate void CW_Animation_Frame_Action(int cur_frame_idx, float src_x, float src_y, float dst_x, float dst_y, float play_time, float anim_x, float anim_y, BaseSimObject pUser);
         public delegate void CW_Animation_End_Action(int cur_frame_idx, float src_x, float src_y, float dst_x, float dst_y, float play_time, float anim_x, float anim_y, BaseSimObject pUser, BaseSimObject pTarget);
         public delegate void CW_Spell_Action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile);
+        public delegate void CW_WorldEvent_Action();
     }
 }

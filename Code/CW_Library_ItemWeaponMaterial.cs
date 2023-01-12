@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cultivation_Way.Library
 {
-    public class CW_Library_ItemWeaponMaterial : ItemAssetLibrary<CW_Asset_Item>
+    public class CW_Library_ItemWeaponMaterial : AssetLibrary<CW_Asset_Item>
     {
         public override void init()
         {
@@ -16,19 +16,13 @@ namespace Cultivation_Way.Library
                 __add(asset);
             }
         }
-        public override ItemAsset add(ItemAsset pAsset)
+        internal void register()
         {
-            if(!AssetManager.items_material_weapon.list.Contains(pAsset)) AssetManager.items_material_weapon.add(pAsset);
-            return base.add(new CW_Asset_Item(pAsset));
+            throw new NotImplementedException();
         }
-        public CW_Asset_Item add(ItemAsset asset, CW_BaseStats addition_stats)
+        internal CW_Asset_Item __add(ItemAsset origin_asset)
         {
-            if (!AssetManager.items_material_weapon.list.Contains(asset)) AssetManager.items_material_weapon.add(asset);
-            return __add(asset, addition_stats);
-        }
-        internal CW_Asset_Item __add(ItemAsset asset, CW_BaseStats addition_stats = null)
-        {
-            return (CW_Asset_Item)base.add(new CW_Asset_Item(asset, addition_stats==null?new CW_BaseStats():addition_stats));
+            return base.add(new CW_Asset_Item(origin_asset));
         }
     }
 }

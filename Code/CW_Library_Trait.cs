@@ -19,6 +19,7 @@ namespace Cultivation_Way.Library
         {
             this.id = origin_trait.id;
             this.origin_asset = origin_trait;
+            this.addition_stats = new CW_BaseStats();
         }
     }
     public class CW_Library_Trait : AssetLibrary<CW_Asset_Trait>
@@ -30,6 +31,10 @@ namespace Cultivation_Way.Library
             {
                 __add(new CW_Asset_Trait(trait));
             }
+        }
+        internal void register()
+        {
+            throw new NotImplementedException();
         }
         public CW_Asset_Trait add(ActorTrait origin_trait, CW_BaseStats addition_stats, WorldAction action_when_get)
         {

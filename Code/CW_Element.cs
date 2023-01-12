@@ -40,12 +40,13 @@ namespace Cultivation_Way
         /// <param name="normalize">是否规格化</param>
         /// <param name="normalize_ceil">规格化上界</param>
         /// <param name="comp_type">是否即时确定元素类型</param>
-        public CW_Element(bool random_generate = true, bool normalize = true, int normalize_ceil = 100, bool comp_type = true)
+        public CW_Element(bool random_generate = true, bool normalize = true, int normalize_ceil = 100, bool comp_type = true, int[] prefer_elements = null, float prefer_scale = 0f)
         {
             base_elements = new int[Others.CW_Constants.base_element_types];
             if (random_generate)
             {
                 __random_generate(normalize_ceil);
+                if (prefer_elements != null && prefer_scale >= 0.01f) __prefer_to(prefer_elements, prefer_scale);
                 if (normalize) __normalize(normalize_ceil);
                 if (comp_type) __comp_type();
             }
@@ -187,6 +188,10 @@ namespace Cultivation_Way
             {
                 base_elements[i] = uniform_val;
             }
+        }
+        private void __prefer_to(int[] prefer_elements, float scale)
+        {
+            throw new NotImplementedException();
         }
     }
 }

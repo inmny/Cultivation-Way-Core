@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Cultivation_Way.Library
 {
-    public class CW_Library_ItemAccessoryMaterial : AssetLibrary<CW_Asset_Item>
+    public class CW_Library_Item : AssetLibrary<CW_Asset_Item>
     {
         public override void init()
         {
             base.init();
-            foreach (ItemAsset asset in AssetManager.items_material_accessory.list)
+            foreach (ItemAsset asset in AssetManager.items.list)
             {
                 __add(asset);
             }

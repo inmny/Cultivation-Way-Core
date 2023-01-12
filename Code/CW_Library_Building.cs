@@ -23,7 +23,10 @@ namespace Cultivation_Way.Library
                 add(asset);
             }
         }
-
+        public void register()
+        {
+            throw new NotImplementedException();
+        }
         public CW_Asset_Building add(BuildingAsset origin_asset, WorldAction destroy_action = null, CW_BaseStats addition_stats = null)
         {
             CW_Asset_Building building = new CW_Asset_Building() { id = origin_asset.id, addition_stats = addition_stats == null ? new CW_BaseStats() : addition_stats, destroy_action = destroy_action, origin_stats = origin_asset };
