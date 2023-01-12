@@ -10,9 +10,14 @@ using HarmonyLib;
 using ReflectionUtility;
 namespace Cultivation_Way.Content.Harmony
 {
-    class W_Harmony_Actor
+    internal class W_Harmony_Actor
     {
-
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Actor), "updateAge")]
+        public static bool actor_updateAge(Actor __instance)
+        {
+            return __new_updateAge(((CW_Actor)__instance).fast_data, ((CW_Actor)__instance).cw_data.status);
+        }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ActorBase), "updateStats")]
         public static bool actor_updateStats(ActorBase __instance)
@@ -60,16 +65,11 @@ namespace Cultivation_Way.Content.Harmony
             actor.setWorld();
             actor.cw_stats = actor_stats;
             actor.loadStats(actor_stats.origin_stats);
-            if (actor.stats.use_items)
-            {
-                actor.equipment.armor.data = new CW_ItemData();
-            }
             if (pData == null)
             {
                 actor.new_creature = true;
                 actor.CW_newCreature();
                 CW_Actor.func_newCreature(actor, (int)(W_Content_Helper.game_stats_data.gameTime + (double)MapBox.instance.units.Count));
-                actor.cw_data.actorID = actor.fast_data.actorID;
                 // 在func_newCreature中会调用updateStats，从而使得fast_data会指向本身的data
                 // actor.fast_data = (ActorStatus)CW_Actor.get_data(actor);
             }
@@ -100,7 +100,7 @@ namespace Cultivation_Way.Content.Harmony
             MapBox.instance.units.Add(actor);
             __result = actor;
         }
-        public static void __actor_updateStats(ActorBase actor_base)
+        private static void __actor_updateStats(ActorBase actor_base)
         {
             Actor actor = (Actor)actor_base;
             CW_Actor cw_actor = (CW_Actor)actor;
@@ -185,7 +185,15 @@ namespace Cultivation_Way.Content.Harmony
                 {
                     if(equipment_slots[i].data != null)
                     {
-                        CW_ItemTools.calc_item_values((CW_ItemData)equipment_slots[i].data);
+                        try
+                        {
+                            CW_ItemTools.calc_item_values((CW_ItemData)equipment_slots[i].data);
+                        }
+                        catch(InvalidCastException)
+                        {
+                            WorldBoxConsole.Console.print(cw_actor.fast_data.actorID+" have type error item in slot " + equipment_slots[i].type.ToString());
+                            WorldBoxConsole.Console.print(Utils.CW_ItemTools.item_to_string(equipment_slots[i].data));
+                        }
                         cw_actor.cw_cur_stats.addStats(CW_ItemTools.s_cw_stats);
                     }
                 }
@@ -233,9 +241,10 @@ namespace Cultivation_Way.Content.Harmony
                 cw_actor.cw_cur_stats.base_stats.armor = (int)(cw_actor.cw_cur_stats.base_stats.armor + cw_actor.cw_cur_stats.base_stats.armor * culture.stats.bonus_armor.value);
             }
             // 最后属性总结
-            cw_actor.cw_cur_stats.no_zero();
+            cw_actor.cw_cur_stats.no_zero_for_actor();
             cw_actor.cw_cur_stats.apply_others();
             cw_actor.cw_cur_stats.normalize();
+            cw_actor.cw_status.max_age = (int)(cw_actor.cw_stats.origin_stats.maxAge * (1f + cw_actor.cw_cur_stats.mod_age/100f));
             // 设置攻击样式以及武器贴图
             CW_Asset_Item weapon_asset = cw_actor.get_weapon_asset();
             CW_Actor.set_s_attackType(actor, weapon_asset.origin_asset.attackType);
@@ -279,5 +288,19 @@ namespace Cultivation_Way.Content.Harmony
             cw_actor.currentScale.z = cw_actor.cw_cur_stats.base_stats.scale;
             return;
         }
+        /// <summary>
+        /// 当年龄超上限，返回false；否则true
+        /// </summary>
+        internal static bool __new_updateAge(ActorStatus origin_status, CW_ActorStatus cw_status)
+        {
+            origin_status.age++;
+            CW_ActorStats cw_actor_stats = CW_Library_Manager.instance.units.get(origin_status.statsID);
+            CW_ActorStatus.actorstatus_updateAttributes(origin_status, cw_actor_stats.origin_stats, AssetManager.raceLibrary.get(cw_actor_stats.origin_stats.race), false);
+
+            if (cw_actor_stats.origin_stats.maxAge == 0 || !MapBox.instance.worldLaws.world_law_old_age.boolVal || origin_status.haveTrait("immortal")) return true;
+
+            return cw_status.max_age > origin_status.age || Toolbox.randomChance(Others.CW_Constants.exceed_max_age_chance);
+        }
+
     }
 }

@@ -97,5 +97,15 @@ namespace Cultivation_Way.Library
             }
             return;
         }
+        internal string select_better(string a, string b)
+        {
+            if (string.IsNullOrEmpty(a)) return b;
+            if (string.IsNullOrEmpty(b)) return a;
+            CW_Asset_CultiBook A = get(a);
+            CW_Asset_CultiBook B = get(b);
+            if (A == null) return B==null?null:b;
+            if (B == null) return a;
+            return A.level >= B.level ? a : b;
+        }
     }
 }

@@ -40,6 +40,8 @@ namespace Cultivation_Way
         /// <param name="normalize">是否规格化</param>
         /// <param name="normalize_ceil">规格化上界</param>
         /// <param name="comp_type">是否即时确定元素类型</param>
+        /// <param name="prefer_elements">偏好元素</param>
+        /// <param name="prefer_scale">偏好系数</param>
         public CW_Element(bool random_generate = true, bool normalize = true, int normalize_ceil = 100, bool comp_type = true, int[] prefer_elements = null, float prefer_scale = 0f)
         {
             base_elements = new int[Others.CW_Constants.base_element_types];
@@ -55,6 +57,23 @@ namespace Cultivation_Way
                 __uniform_generate(normalize_ceil);
                 if (comp_type) type_id = UNIFORM_TYPE;
             }
+        }
+        /// <summary>
+        /// 获取A与B的平均
+        /// </summary>
+        /// <param name="element_a"></param>
+        /// <param name="element_b"></param>
+        /// <returns></returns>
+        public static CW_Element get_middle(CW_Element element_a, CW_Element element_b)
+        {
+            CW_Element middle = new CW_Element();
+            int i;
+            for (i = 0; i < middle.base_elements.Length; i++)
+            {
+                middle.base_elements[i] = (element_a.base_elements[i] + element_b.base_elements[i]) >> 1;
+            }
+            middle.normalize();
+            return middle;
         }
         public CW_Element deepcopy()
         {
@@ -83,10 +102,25 @@ namespace Cultivation_Way
             return Library.CW_Library_Manager.instance.elements.get(this.type_id);
         }
         /// <summary>
+        /// 重新随机
+        /// </summary>
+        /// <param name="normalize">是否规格化</param>
+        /// <param name="normalize_ceil">规格化上界</param>
+        /// <param name="comp_type">是否即时确定元素类型</param>
+        /// <param name="prefer_elements">偏好元素</param>
+        /// <param name="prefer_scale">偏好系数</param>
+        public void re_random(bool normalize = true, int normalize_ceil = 100, bool comp_type = true, int[] prefer_elements = null, float prefer_scale = 0f)
+        {
+            __random_generate(normalize_ceil);
+            if (prefer_elements != null && prefer_scale >= 0.01f) __prefer_to(prefer_elements, prefer_scale);
+            if (normalize) __normalize(normalize_ceil);
+            if (comp_type) __comp_type();
+        }
+        /// <summary>
         /// 将元素含量规格化
         /// </summary>
         /// <param name="normalize_ceil">规格化上界</param>
-        public void normalize(int normalize_ceil)
+        public void normalize(int normalize_ceil = 100)
         {
             this.__normalize(normalize_ceil);
         }

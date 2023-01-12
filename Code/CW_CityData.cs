@@ -12,7 +12,7 @@ namespace Cultivation_Way
 
         public CW_CityData(City pCity) : base(pCity)
         {
-            
+            this.cw_pop_points = new List<CW_ActorData>();
         }
     }
 }

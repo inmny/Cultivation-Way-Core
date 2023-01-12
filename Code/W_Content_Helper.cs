@@ -32,12 +32,7 @@ namespace Cultivation_Way.Content
             switch (ModState.instance.load_unit_reason)
             {
                 case Load_Unit_Reason.CITY_SPAWN:
-                    List<CW_ActorData> list = ((CW_City)MapBox.instance.getCityByID(origin_data.cityID)).cw_city_data.cw_pop_points;
-                    foreach(CW_ActorData c in list)
-                    {
-                        if(c.actorID == origin_data.status.actorID) return c;
-                    }
-                    break;
+                    return Harmony.W_Harmony_City.tmp_data;
                 case Load_Unit_Reason.LOAD_SAVES:
                     throw new NotImplementedException();
                     break;

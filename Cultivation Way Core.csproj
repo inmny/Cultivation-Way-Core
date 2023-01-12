@@ -84,6 +84,8 @@
     <Compile Include="Code\CW_City.cs" />
     <Compile Include="Code\CW_CityData.cs" />
     <Compile Include="Code\CW_ClassNick.cs" />
+    <Compile Include="Code\W_Content_Cultisys.cs" />
+    <Compile Include="Code\W_Harmony_ActorStatus.cs" />
     <Compile Include="Code\CW_ItemData.cs" />
     <Compile Include="Code\CW_Library_Family.cs" />
     <Compile Include="Code\CW_Library_Item.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="Code\CW_Utils_ItemTools.cs" />
     <Compile Include="Code\CW_Utils_ResourceHelper.cs" />
     <Compile Include="Code\CW_Utils_ReflectionHelper.cs" />
+    <Compile Include="Code\CW_WorldConfig.cs" />
     <Compile Include="Code\Others.cs" />
     <Compile Include="Code\CW_Animation_AnimationSetting.cs" />
     <Compile Include="Code\CW_BaseStats.cs" />

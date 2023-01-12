@@ -145,6 +145,7 @@ namespace Cultivation_Way
         /// 原版属性
         /// </summary>
         public BaseStats base_stats;
+        private static Action<BaseStats, float> set_s_attackSpeed_seconds = Utils.CW_ReflectionHelper.create_setter<BaseStats, float>("s_attackSpeed_seconds");
         public CW_BaseStats()
         {
             this.age_bonus = 0;
@@ -300,6 +301,7 @@ namespace Cultivation_Way
         }
         public void addStats(CW_BaseStats CW_basestats, bool except_element = true)
         {
+            if (CW_basestats == null) return;
             if (!except_element)
             {
                 for(int i = 0; i < Others.CW_Constants.base_element_types; i++)
@@ -344,6 +346,7 @@ namespace Cultivation_Way
         }
         public void addStats(BaseStats pStats)
         {
+            if (pStats == null) return;
             this.base_stats.personality_rationality += pStats.personality_rationality;
             this.base_stats.personality_aggression += pStats.personality_aggression;
             this.base_stats.personality_diplomatic += pStats.personality_diplomatic;
@@ -492,17 +495,52 @@ namespace Cultivation_Way
         }
         public void apply_others()
         {
+            this.base_stats.s_crit_chance = this.base_stats.crit / 100f;
+            this.base_stats.zone_range = this.base_stats.stewardship / 10;
+            this.base_stats.cities = this.base_stats.stewardship / 6;
+            this.base_stats.army = this.base_stats.warfare + 5;
+            this.base_stats.bonus_towers = this.base_stats.warfare / 10;
+
+            this.base_stats.bonus_towers = this.base_stats.bonus_towers > 2 ? 2 : this.base_stats.bonus_towers;
+            this.base_stats.army = this.base_stats.army < 5 ? 5 : this.base_stats.army;
+            set_s_attackSpeed_seconds(this.base_stats, (300f - this.base_stats.attackSpeed) / (100f + this.base_stats.attackSpeed));
             //throw new NotImplementedException();
         }
-        public void no_zero()
+        public void no_zero_for_actor()
         {
-            //throw new NotImplementedException();
+            this.anti_armor = this.anti_armor < 0 ? 0 : this.anti_armor;
+            this.anti_crit = this.anti_crit < 0?0: this.anti_crit;
+            this.anti_crit_damage = this.anti_crit_damage < 0?0: this.anti_crit_damage;
+            this.anti_injury = this.anti_injury<0?0: this.anti_injury;
+            this.anti_spell_armor = this.anti_spell_armor<0? 0 : this.anti_spell_armor;
+            this.health_regen = this.health_regen<0?0: this.health_regen;
+            this.shied = this.shied<0?0: this.shied;
+            this.soul = this.soul<0?0: this.soul;
+            this.soul_regen = this.soul_regen<0?0: this.soul_regen;
+            this.spell_range = this.spell_range < 0?0: this.spell_range;
+            this.spell_armor = (this.spell_armor < 0)?0: this.spell_armor;
+            this.vampire = this.vampire < 0?0: this.vampire;
+            this.wakan = this.wakan < 0?0: this.wakan;
+            this.wakan_regen = this.wakan_regen<0?0: this.wakan_regen;
+
+            this.base_stats.damage = this.base_stats.damage < 0 ? 0 : this.base_stats.damage;
+            this.base_stats.attackSpeed = this.base_stats.attackSpeed<1 ? 1 : this.base_stats.attackSpeed;
+            this.base_stats.speed = this.base_stats.speed < 0 ? 0 : this.base_stats.speed;
+            this.base_stats.health = this.base_stats.health<0 ? 0 : this.base_stats.health;
+            this.base_stats.armor = this.base_stats.health < 0 ? 0 : this.base_stats.health;
+            this.base_stats.crit = this.base_stats.crit <0? 0 : this.base_stats.crit;
+            this.base_stats.damageCritMod = this.base_stats.damageCritMod< 0 ? 0 : this.base_stats.damageCritMod;
+            this.base_stats.knockback = this.base_stats.knockback < 0 ? 0 : this.base_stats.knockback;
+            this.base_stats.diplomacy = this.base_stats.diplomacy<0 ? 0 : this.base_stats.diplomacy;
+            this.base_stats.dodge = this.base_stats.dodge < 0 ? 0 : this.base_stats.dodge;
+            this.base_stats.accuracy = this.base_stats.accuracy < 10 ? 10 : this.base_stats.accuracy;
         }
         public void normalize(bool normalize_element = true, int element_normalize_ceil = 100)
         {
             this.base_stats.normalize();
             if(normalize_element) this.element.normalize(element_normalize_ceil);
             // Others Normalization.
+
         }
         public CW_BaseStats deepcopy()
         {

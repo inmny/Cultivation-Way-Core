@@ -19,6 +19,7 @@ namespace Cultivation_Way{
     class Main : MonoBehaviour{
         public static Main instance { get; private set; }
         public ModState mod_state;
+        public CW_WorldConfig world_config;
         private bool initialized = false;
         void Awake(){
             instance = this;
@@ -30,6 +31,7 @@ namespace Cultivation_Way{
                 initialized = true;
                 CW_Library_Manager.create();
                 mod_state = new ModState();
+                world_config = new CW_WorldConfig();
                 ModState.instance = mod_state;
                 mod_state.library_manager = CW_Library_Manager.instance;
                 mod_state.library_manager.init();

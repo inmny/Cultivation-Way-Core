@@ -28,7 +28,14 @@ namespace Cultivation_Way.Library
         public bool races_black_or_white;
         public List<string> units_list;
         public List<string> races_list;
-
+        public Others.CW_Delegates.CW_Cultisys_Judge judge;
+        public CW_Asset_CultiSys()
+        {
+            units_black_or_white = true;
+            units_list = new List<string>();
+            races_black_or_white = true;
+            races_list = new List<string>();
+        }
         internal void register()
         {
             bool tmp;
@@ -62,6 +69,17 @@ namespace Cultivation_Way.Library
         internal CW_BaseStats get_bonus_stats(int cultisys_tag, int level)
         {
             return list[cultisys_tag].bonus_stats[level];
+        }
+        public void set_cultisys(CW_ActorData cw_actor_data, string stats_id)
+        {
+            uint actor_allow_cultisys = CW_Library_Manager.instance.units.get(stats_id).allow_cultisys;
+            int cultisys_tag = 0;
+            while(actor_allow_cultisys > 0)
+            {
+                if((actor_allow_cultisys & 0x1) == 1 && list[cultisys_tag].judge(cw_actor_data)) cw_actor_data.cultisys |= (uint)(1 << cultisys_tag);
+                cultisys_tag++;
+                actor_allow_cultisys >>= 1;
+            }
         }
     }
 }

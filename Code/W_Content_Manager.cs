@@ -14,6 +14,7 @@ namespace Cultivation_Way.Content
             add_prefabs();
             add_actors();
             add_buildings();
+            add_cultisys();
             add_item_accesory_materials();
             add_item_armor_materials();
             add_item_weapon_materials();
@@ -24,6 +25,11 @@ namespace Cultivation_Way.Content
             add_traits();
             add_world_events();
             add_harmony();
+        }
+
+        private static void add_cultisys()
+        {
+            W_Content_Cultisys.add_cultisys();
         }
 
         private static void add_prefabs()
@@ -79,6 +85,8 @@ namespace Cultivation_Way.Content
         {
             //HarmonyLib.Harmony harmony = new HarmonyLib.Harmony(Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Actor), Others.CW_Constants.mod_id);
+            HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_City), Others.CW_Constants.mod_id);
+            HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Item), Others.CW_Constants.mod_id);
             WorldBoxConsole.Console.print("Finish Harmony");
         }
     }

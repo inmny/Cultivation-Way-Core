@@ -4,7 +4,6 @@ namespace Cultivation_Way
 {
     public class CW_ActorData
     {
-        public string actorID;
         public CW_ActorStatus status;
         public int[] cultisys_level;
         internal uint cultisys;
