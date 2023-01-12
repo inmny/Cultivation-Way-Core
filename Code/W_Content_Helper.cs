@@ -17,6 +17,7 @@ namespace Cultivation_Way.Content
         internal static Transform transformBuildings;
         internal static Transform transformTrees;
         internal static GameStatsData game_stats_data;
+        internal static List<SpriteGroupSystem<GroupSpriteObject>> list_systems;
         internal static void init()
         {
             get_actor_prefabs();
@@ -26,6 +27,7 @@ namespace Cultivation_Way.Content
             transformBuildings = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "transformBuildings") as Transform;
             transformTrees = transformBuildings.Find("Trees");
             game_stats_data = ReflectionUtility.Reflection.GetField(typeof(GameStats), MapBox.instance.gameStats, "data") as GameStatsData;
+            list_systems = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "list_systems") as List<SpriteGroupSystem<GroupSpriteObject>>;
         }
         internal static CW_ActorData get_load_cw_data(ActorData origin_data)
         {

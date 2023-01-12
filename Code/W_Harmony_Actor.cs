@@ -34,7 +34,44 @@ namespace Cultivation_Way.Content.Harmony
             __mapbox_createNewUnit(pStatsID, pTile, pJob, pZHeight, pData, ref __result);
             return false;
         }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(MapStats), "updateAge")]
+        public static bool mapbox_updateAge(float pElapsed)
+        {
+            if(MapBox.instance.mapStats.monthTime + pElapsed > 3f && DebugConfig.isOn(DebugOption.SystemUpdateUnits))
+            {
+                int i;
+                for (i = 0; i < W_Content_Helper.list_systems.Count; i++)
+                {
+                    W_Content_Helper.list_systems[i].clearList();
+                }
+                MapBox.instance.units.checkAddRemove();
+                List<Actor> simpleList = MapBox.instance.units.getSimpleList();
+                int count = MapBox.instance.units.Count;
+                for (i = 0; i < count; i++)
+                {
+                    CW_Actor actor = (CW_Actor)simpleList[i];
+                    actor.cw_status.shied += actor.cw_cur_stats.shied_regen;
+                    actor.cw_status.wakan += actor.cw_cur_stats.wakan_regen;
+                    actor.fast_data.health += actor.cw_cur_stats.health_regen;
+                    uint cultisys = actor.cw_data.cultisys;
+                    int cultisys_tag = 0;
+                    while (cultisys > 0)
+                    {
+                        if (((cultisys & 0x1) == 1) && (CW_Library_Manager.instance.cultisys.list[cultisys_tag].level_judge(actor.cw_data, CW_Library_Manager.instance.cultisys.list[cultisys_tag])))
+                        {
+                            actor.cw_data.cultisys_level[cultisys_tag]++;
+                            actor.setStatsDirty();
+                        }
+                        cultisys_tag++;
+                        cultisys >>= 1;
+                    }
+                }
 
+                MapBox.instance.units.checkAddRemove();
+            }
+            return true;
+        }
         private static void __mapbox_createNewUnit(string pStatsID, WorldTile pTile, string pJob, float pZHeight, ActorData pData, ref Actor __result)
         {
             //WorldBoxConsole.Console.print("try to create cw_actor");
@@ -145,7 +182,8 @@ namespace Cultivation_Way.Content.Harmony
                 len = CW_Library_Manager.instance.cultisys.list.Count;
                 for (i = 0; i < len && tmp1 > 0; i++)
                 {
-                    if ((tmp1 & 0x1) != 0) cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultisys.get_bonus_stats(i, cw_actor.cw_data.cultisys_level[i]));
+                    if ((tmp1 & 0x1) != 0) { cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultisys.get_bonus_stats(i, cw_actor.cw_data.cultisys_level[i]));}
+                    tmp1 >>= 1;
                 }
                 // 添加功法的属性影响
                 if(!string.IsNullOrEmpty(cw_actor.cw_data.cultibook_id) && CW_Library_Manager.instance.cultibooks.dict.ContainsKey(cw_actor.cw_data.cultibook_id)) cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id).bonus_stats);
@@ -245,6 +283,7 @@ namespace Cultivation_Way.Content.Harmony
             cw_actor.cw_cur_stats.apply_others();
             cw_actor.cw_cur_stats.normalize();
             cw_actor.cw_status.max_age = (int)(cw_actor.cw_stats.origin_stats.maxAge * (1f + cw_actor.cw_cur_stats.mod_age/100f));
+            CW_Actor.set_s_attackSpeed_seconds(actor, (300f - cw_actor.cw_cur_stats.base_stats.attackSpeed) / (100f + cw_actor.cw_cur_stats.base_stats.attackSpeed));
             // 设置攻击样式以及武器贴图
             CW_Asset_Item weapon_asset = cw_actor.get_weapon_asset();
             CW_Actor.set_s_attackType(actor, weapon_asset.origin_asset.attackType);

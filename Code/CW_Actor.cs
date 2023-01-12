@@ -47,7 +47,6 @@ namespace Cultivation_Way
         public static Action<Actor, ProfessionAsset> set_professionAsset = CW_ReflectionHelper.create_setter<Actor, ProfessionAsset>("professionAsset");
         public static Action<Actor, ActorStatus> set_data = CW_ReflectionHelper.create_setter<Actor, ActorStatus>("data");
         public static Action<Actor, List<ActorTrait>> set_s_special_effect_traits = CW_ReflectionHelper.create_setter<Actor, List<ActorTrait>>("s_special_effect_traits");
-
         #endregion
         #region Func
         public static Action<Actor> func_updateTargetScale = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("updateTargetScale");
@@ -124,6 +123,8 @@ namespace Cultivation_Way
             this.cw_status.wakan = 0;
             this.cw_status.wakan_level = 1;
             this.cw_status.max_age = this.cw_stats.origin_stats.maxAge;
+
+            CW_Library_Manager.instance.cultisys.set_cultisys(cw_data, this.stats.id);
         }
     }
 }

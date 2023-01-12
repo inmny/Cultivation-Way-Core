@@ -37,6 +37,8 @@ namespace Cultivation_Way{
                 mod_state.library_manager.init();
 
                 W_Content_Manager.add_content();
+
+                mod_state.library_manager.register();
             }
         }
     }

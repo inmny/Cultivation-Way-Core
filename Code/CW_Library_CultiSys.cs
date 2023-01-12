@@ -8,6 +8,7 @@ namespace Cultivation_Way.Library
 {
     public class CW_Asset_CultiSys : Asset
     {
+        public int tag { get; internal set; }
         internal uint _tag;
         public string sprite_name;
         public float[] grade_val;
@@ -29,12 +30,20 @@ namespace Cultivation_Way.Library
         public List<string> units_list;
         public List<string> races_list;
         public Others.CW_Delegates.CW_Cultisys_Judge judge;
+        public Others.CW_Delegates.CW_Cultisys_Judge level_judge;
         public CW_Asset_CultiSys()
         {
             units_black_or_white = true;
             units_list = new List<string>();
             races_black_or_white = true;
             races_list = new List<string>();
+            grade_val = new float[Others.CW_Constants.max_cultisys_level];
+            bonus_stats = new CW_BaseStats[Others.CW_Constants.max_cultisys_level];
+            for(int i = 0; i < Others.CW_Constants.max_cultisys_level; i++)
+            {
+                grade_val[i] = 100 * i;
+                bonus_stats[i] = new CW_BaseStats();
+            }
         }
         internal void register()
         {
@@ -61,6 +70,7 @@ namespace Cultivation_Way.Library
         {
             for(int i = 0; i < list.Count; i++)
             {
+                list[i].tag = i;
                 list[i]._tag = (uint)(1 << i);
                 list[i].register();
             }
@@ -68,7 +78,8 @@ namespace Cultivation_Way.Library
         // TODO: 安全保障
         internal CW_BaseStats get_bonus_stats(int cultisys_tag, int level)
         {
-            return list[cultisys_tag].bonus_stats[level];
+            if (level >= Others.CW_Constants.max_cultisys_level) WorldBoxConsole.Console.print(level); 
+            return list[cultisys_tag].bonus_stats[level>=Others.CW_Constants.max_cultisys_level?Others.CW_Constants.max_cultisys_level-1:level];
         }
         public void set_cultisys(CW_ActorData cw_actor_data, string stats_id)
         {
@@ -76,7 +87,7 @@ namespace Cultivation_Way.Library
             int cultisys_tag = 0;
             while(actor_allow_cultisys > 0)
             {
-                if((actor_allow_cultisys & 0x1) == 1 && list[cultisys_tag].judge(cw_actor_data)) cw_actor_data.cultisys |= (uint)(1 << cultisys_tag);
+                if((actor_allow_cultisys & 0x1) == 1 && list[cultisys_tag].judge(cw_actor_data, list[cultisys_tag])) cw_actor_data.cultisys |= (uint)(1 << cultisys_tag);
                 cultisys_tag++;
                 actor_allow_cultisys >>= 1;
             }

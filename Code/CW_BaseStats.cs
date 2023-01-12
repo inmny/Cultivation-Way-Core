@@ -21,6 +21,14 @@ namespace Cultivation_Way
         /// </summary>
         public float mod_shied;
         /// <summary>
+        /// 护盾恢复/月
+        /// </summary>
+        public int shied_regen;
+        /// <summary>
+        /// 护盾恢复系数
+        /// </summary>
+        public float mod_shied_regen;
+        /// <summary>
         /// 元神
         /// </summary>
         public int soul;
@@ -145,7 +153,6 @@ namespace Cultivation_Way
         /// 原版属性
         /// </summary>
         public BaseStats base_stats;
-        private static Action<BaseStats, float> set_s_attackSpeed_seconds = Utils.CW_ReflectionHelper.create_setter<BaseStats, float>("s_attackSpeed_seconds");
         public CW_BaseStats()
         {
             this.age_bonus = 0;
@@ -166,6 +173,7 @@ namespace Cultivation_Way
             this.mod_cultivation = 0;
             this.mod_health_regen = 0;
             this.mod_shied = 0;
+            this.mod_shied_regen = 0;
             this.mod_soul = 0;
             this.mod_soul_regen = 0;
             this.mod_spell_range = 0;
@@ -173,6 +181,7 @@ namespace Cultivation_Way
             this.mod_wakan = 0;
             this.mod_wakan_regen = 0;
             this.shied = 0;
+            this.shied_regen = 0;
             this.soul = 0;
             this.soul_regen = 0;
             this.spell_range = 0;
@@ -202,6 +211,7 @@ namespace Cultivation_Way
             this.mod_cultivation = 0;
             this.mod_health_regen = 0;
             this.mod_shied = 0;
+            this.mod_shied_regen = 0;
             this.mod_soul = 0;
             this.mod_soul_regen = 0;
             this.mod_spell_range = 0;
@@ -209,6 +219,7 @@ namespace Cultivation_Way
             this.mod_wakan = 0;
             this.mod_wakan_regen = 0;
             this.shied = 0;
+            this.shied_regen = 0;
             this.soul = 0;
             this.soul_regen = 0;
             this.spell_range = 0;
@@ -241,6 +252,7 @@ namespace Cultivation_Way
             this.mod_cultivation = copy.mod_cultivation;
             this.mod_health_regen = copy.mod_health_regen;
             this.mod_shied = copy.mod_shied;
+            this.mod_shied_regen = copy.mod_shied_regen;
             this.mod_soul = copy.mod_soul;
             this.mod_soul_regen = copy.mod_soul_regen;
             this.mod_spell_armor = copy.mod_spell_armor;
@@ -248,6 +260,7 @@ namespace Cultivation_Way
             this.mod_wakan = copy.mod_wakan;
             this.mod_wakan_regen = copy.mod_wakan_regen;
             this.shied = copy.shied;
+            this.shied_regen = copy.shied_regen;
             this.soul = copy.soul;
             this.soul_regen = copy.soul_regen;
             this.spell_range = copy.spell_range;
@@ -326,6 +339,7 @@ namespace Cultivation_Way
             this.mod_cultivation += CW_basestats.mod_cultivation;
             this.mod_health_regen += CW_basestats.mod_health_regen;
             this.mod_shied += CW_basestats.mod_shied;
+            this.mod_shied_regen += CW_basestats.mod_shied_regen;
             this.mod_soul += CW_basestats.mod_soul;
             this.mod_soul_regen += CW_basestats.mod_soul_regen;
             this.mod_spell_armor += CW_basestats.mod_spell_armor;
@@ -333,6 +347,7 @@ namespace Cultivation_Way
             this.mod_wakan += CW_basestats.mod_wakan;
             this.mod_wakan_regen += CW_basestats.mod_wakan_regen;
             this.shied += CW_basestats.shied;
+            this.shied_regen += CW_basestats.shied_regen;
             this.soul += CW_basestats.soul;
             this.soul_regen += CW_basestats.soul_regen;
             this.spell_range += CW_basestats.spell_range;
@@ -410,6 +425,7 @@ namespace Cultivation_Way
             this.mod_cultivation = 0;
             this.mod_health_regen = 0;
             this.mod_shied = 0;
+            this.mod_shied_regen = 0;
             this.mod_soul = 0;
             this.mod_soul_regen = 0;
             this.mod_spell_range = 0;
@@ -417,6 +433,7 @@ namespace Cultivation_Way
             this.mod_wakan = 0;
             this.mod_wakan_regen = 0;
             this.shied = 0;
+            this.shied_regen = 0;
             this.soul = 0;
             this.soul_regen = 0;
             this.spell_range = 0;
@@ -486,6 +503,7 @@ namespace Cultivation_Way
             this.anti_spell_armor += (int)(this.anti_spell_armor * this.mod_anti_spell_armor / 100f);
             this.health_regen += (int)(this.health_regen * this.mod_health_regen / 100f);
             this.shied += (int)(this.shied * this.mod_shied / 100f);
+            this.shied_regen += (int)(this.shied_regen * this.mod_shied_regen / 100f);
             this.soul += (int)(this.soul * this.mod_soul / 100f);
             this.soul_regen += (int)(this.soul_regen * this.mod_soul_regen / 100f);
             this.spell_armor += (int)(this.spell_armor * this.mod_spell_armor / 100f);
@@ -503,7 +521,7 @@ namespace Cultivation_Way
 
             this.base_stats.bonus_towers = this.base_stats.bonus_towers > 2 ? 2 : this.base_stats.bonus_towers;
             this.base_stats.army = this.base_stats.army < 5 ? 5 : this.base_stats.army;
-            set_s_attackSpeed_seconds(this.base_stats, (300f - this.base_stats.attackSpeed) / (100f + this.base_stats.attackSpeed));
+            
             //throw new NotImplementedException();
         }
         public void no_zero_for_actor()
@@ -515,6 +533,7 @@ namespace Cultivation_Way
             this.anti_spell_armor = this.anti_spell_armor<0? 0 : this.anti_spell_armor;
             this.health_regen = this.health_regen<0?0: this.health_regen;
             this.shied = this.shied<0?0: this.shied;
+            this.shied_regen = this.shied_regen<0?0: this.shied_regen;
             this.soul = this.soul<0?0: this.soul;
             this.soul_regen = this.soul_regen<0?0: this.soul_regen;
             this.spell_range = this.spell_range < 0?0: this.spell_range;
@@ -527,7 +546,7 @@ namespace Cultivation_Way
             this.base_stats.attackSpeed = this.base_stats.attackSpeed<1 ? 1 : this.base_stats.attackSpeed;
             this.base_stats.speed = this.base_stats.speed < 0 ? 0 : this.base_stats.speed;
             this.base_stats.health = this.base_stats.health<0 ? 0 : this.base_stats.health;
-            this.base_stats.armor = this.base_stats.health < 0 ? 0 : this.base_stats.health;
+            this.base_stats.armor = this.base_stats.armor < 0 ? 0 : this.base_stats.armor;
             this.base_stats.crit = this.base_stats.crit <0? 0 : this.base_stats.crit;
             this.base_stats.damageCritMod = this.base_stats.damageCritMod< 0 ? 0 : this.base_stats.damageCritMod;
             this.base_stats.knockback = this.base_stats.knockback < 0 ? 0 : this.base_stats.knockback;

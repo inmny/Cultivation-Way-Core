@@ -86,10 +86,11 @@ namespace Cultivation_Way.Library
         }
         internal void register()
         {
+            /**
             units.register();
             buildings.register();
-            cultibooks.register();
-            cultisys.register();
+            cultibooks.register();*/
+            cultisys.register();/**
             elements.register();
             families.register();
             items.register();
@@ -101,7 +102,7 @@ namespace Cultivation_Way.Library
             special_bodies.register();
             spells.register();
             traits.register();
-            events.register();
+            events.register();*/
         }
     }
 }
