@@ -8,7 +8,7 @@ namespace Cultivation_Way.Actions
 {
     public class CW_SpellAction_Damage
     {
-        public static void default_attack_enemy(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile)
+        public static void default_attack_enemy(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
             throw new NotImplementedException();
         }

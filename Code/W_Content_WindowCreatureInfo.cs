@@ -9,7 +9,7 @@ using Cultivation_Way.Library;
 using ReflectionUtility;
 using DG.Tweening;
 
-namespace Cultivation_Way
+namespace Cultivation_Way.Content
 {
     internal class TipButton : MonoBehaviour
     {

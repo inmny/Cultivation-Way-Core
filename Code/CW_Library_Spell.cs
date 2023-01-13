@@ -19,8 +19,13 @@ namespace Cultivation_Way.Library
     public enum CW_Spell_Triger_Type
     {
         ATTACK,
+        ATT_DEF,
+        ATT_MOV,
+        ATT_DEF_MOV,
+        ALL,
         DEFEND,
         MOVE,
+        DEF_MOV,
         OTHERS
     }
     public enum CW_Spell_Target_Type
@@ -137,6 +142,14 @@ namespace Cultivation_Way.Library
         public bool allow_actor(CW_Actor cw_actor, bool ignore_level_limit = false)
         {
             return ((cw_actor.cw_data.cultisys & this.allowed_cultisys) > 0) && (!banned_races.Contains(cw_actor.stats.race));
+        }
+        internal BaseSimObject select_target(BaseSimObject pUser, BaseSimObject pEnemy)
+        {
+            return this.anim_type == CW_Spell_Animation_Type.ON_USER ? pUser : pEnemy;
+        }
+        public float check_and_cost(BaseSimObject pUser)
+        {
+            throw new NotImplementedException();
         }
     }
     public enum Spell_Search_Type
