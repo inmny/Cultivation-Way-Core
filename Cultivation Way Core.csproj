@@ -175,11 +175,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="GameResources\ui\Icons\iconCultiBook.png" />
     <Content Include="GameResources\ui\Icons\iconShied.png" />
     <Content Include="GameResources\ui\Icons\iconWakan.png" />
     <Content Include="GameResources\ui\Icons\iconElement.png" />
     <Content Include="GameResources\ui\Icons\iconCultiSys.png" />
+    <Content Include="GameResources\ui\Icons\iconCultiBook_Bushido.png" />
+    <Content Include="GameResources\ui\Icons\iconCultiBook_immortal.png" />
     <Content Include="icon.png" />
   </ItemGroup>
   <ItemGroup>

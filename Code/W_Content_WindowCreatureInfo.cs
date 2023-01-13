@@ -470,7 +470,7 @@ namespace Cultivation_Way
                     TipButton button_cultibook = Instantiate(prefab_tip_button, traitsParent);
                     NCMS.Utils.Localization.Set("CW_cultibook_name", cultibook.name);
                     NCMS.Utils.Localization.Set("CW_cultibook_info", cultibook.get_info_without_name());
-                    button_cultibook.load("CW_cultibook_name", "CW_cultibook_info", "iconCultiBook", "normal");
+                    button_cultibook.load("CW_cultibook_name", "CW_cultibook_info", "iconCultiBook_immortal", "normal");
                     set_position_on_traits(button_cultibook.GetComponent<RectTransform>(), num++, total_count);
                 }
             }
@@ -480,6 +480,7 @@ namespace Cultivation_Way
                 TipButton button_cultisys = Instantiate(prefab_tip_button, traitsParent);
                 NCMS.Utils.Localization.Set("CW_cultisys_info", CW_Library_Manager.instance.cultisys.parse_cultisys(cw_actor.cw_data));
                 button_cultisys.load("cultisys", "CW_cultisys_info", "iconCultiSys", "normal");
+                button_cultisys.transform.localScale = new Vector3(0.65f, 0.80f);
                 set_position_on_traits(button_cultisys.GetComponent<RectTransform>(), num++, total_count);
             }
             if (cw_actor.fast_data.traits != null)

@@ -1,6 +1,7 @@
 ﻿using Cultivation_Way.Animation;
 using Cultivation_Way.Library;
 using UnityEngine;
+
 namespace Cultivation_Way.Others
 {
     public class CW_Constants
@@ -15,7 +16,7 @@ namespace Cultivation_Way.Others
         public const int wakan_regen_valid_percent = 40;
         public const int fix_cultibook_line = 1000;
         public const int cultibook_spell_limit = 4;
-        public const int cultibook_levelup_require = 2;
+        public const int cultibook_levelup_require = 5;
         public const int cultibook_max_level = 9;
         public const int cultibook_max_order = 4;
         public const float exceed_max_age_chance = 0.85f;
