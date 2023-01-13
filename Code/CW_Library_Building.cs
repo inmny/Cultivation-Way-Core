@@ -13,7 +13,7 @@ namespace Cultivation_Way.Library
         public CW_BaseStats addition_stats;
 
     }
-    public class CW_Library_Building : AssetLibrary<CW_Asset_Building>
+    public class CW_Library_Building : CW_Asset_Library<CW_Asset_Building>
     {
         public override void init()
         {
@@ -23,7 +23,7 @@ namespace Cultivation_Way.Library
                 add(asset);
             }
         }
-        public void register()
+        internal override void register()
         {
             throw new NotImplementedException();
         }

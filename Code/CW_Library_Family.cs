@@ -23,9 +23,13 @@ namespace Cultivation_Way.Library
     {
 
     }
-    internal class CW_Library_Family : AssetLibrary<CW_Asset_Family>
+    internal class CW_Library_Family : CW_Dynamic_Library<CW_Asset_Family>
     {
-        internal void register()
+        internal override void register()
+        {
+            throw new NotImplementedException();
+        }
+        internal override void reset()
         {
             throw new NotImplementedException();
         }

@@ -45,7 +45,7 @@ namespace Cultivation_Way.Library
         /// </summary>
         public CW_BaseStats addition_stats;
     }
-    public class CW_Library_ActorStats : AssetLibrary<CW_ActorStats>
+    public class CW_Library_ActorStats : CW_Asset_Library<CW_ActorStats>
     {
         public override void init()
         {
@@ -55,7 +55,7 @@ namespace Cultivation_Way.Library
                 this.__add(actor_stats, 1f, new int[] { 20, 20, 20, 20, 20 }, 0f, new List<string>(), false, null, new CW_BaseStats());
             }
         }
-        internal void register()
+        internal override void register()
         {
             throw new NotImplementedException();
         }

@@ -1,7 +1,7 @@
 {
   "name": "修真之路核心",
-  "author": "Inmny",
-  "version": "0.0.1",
+  "author": "启源",
+  "version": "0.0.2",
   "description": "提供修真之路运行环境",
   "targetGameBuild": 472,
   "iconPath": "icon.png"

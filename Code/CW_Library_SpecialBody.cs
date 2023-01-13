@@ -15,9 +15,13 @@ namespace Cultivation_Way.Library
         public CW_BaseStats bonus_stats;
 
     }
-    public class CW_Library_SpecialBody : AssetLibrary<CW_Asset_SpecialBody>
+    public class CW_Library_SpecialBody : CW_Dynamic_Library<CW_Asset_SpecialBody>
     {
-        internal void register()
+        internal override void register()
+        {
+            throw new NotImplementedException();
+        }
+        internal override void reset()
         {
             throw new NotImplementedException();
         }

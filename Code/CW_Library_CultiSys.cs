@@ -60,13 +60,13 @@ namespace Cultivation_Way.Library
             }
         }
     }
-    public class CW_Library_CultiSys : AssetLibrary<CW_Asset_CultiSys>
+    public class CW_Library_CultiSys : CW_Asset_Library<CW_Asset_CultiSys>
     {
         public override void init()
         {
             base.init();
         }
-        internal void register()
+        internal override void register()
         {
             for(int i = 0; i < list.Count; i++)
             {

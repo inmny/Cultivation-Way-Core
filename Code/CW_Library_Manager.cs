@@ -6,6 +6,22 @@ using System.Threading.Tasks;
 
 namespace Cultivation_Way.Library
 {
+    public abstract class CW_Asset_Library<T> : AssetLibrary<T> where T : Asset
+    {
+        internal abstract void register();
+        public override T get(string pID)
+        {
+            if (pID == null) return null;
+            T asset;
+            if (this.dict.TryGetValue(pID, out asset)) return asset;
+            throw new KeyNotFoundException("No found '"+pID+"' in this library");
+        }
+    }
+    public abstract class CW_Dynamic_Library<T> : CW_Asset_Library<T> where T : Asset
+    {
+        internal List<T> static_list;
+        internal abstract void reset();
+    }
     public class CW_Library_Manager
     {
         public static CW_Library_Manager instance;

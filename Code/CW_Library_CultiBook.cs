@@ -124,23 +124,20 @@ namespace Cultivation_Way.Library
             //throw new NotImplementedException();
         }
     }
-    public class CW_Library_CultiBook : AssetLibrary<CW_Asset_CultiBook>
+    public class CW_Library_CultiBook : CW_Dynamic_Library<CW_Asset_CultiBook>
     {
         public override void init()
         {
             base.init();
 
         }
-        internal void register()
+        internal override void reset()
         {
             throw new NotImplementedException();
         }
-        public override CW_Asset_CultiBook get(string pID)
+        internal override void register()
         {
-            if(string.IsNullOrEmpty(pID)) return null;
-            CW_Asset_CultiBook culti_book;
-            if (this.dict.TryGetValue(pID, out culti_book)) return culti_book;
-            throw new Exception("NO find cultibook '" + pID + "'");
+            throw new NotImplementedException();
         }
         public void delete(string cultibook_id, bool force_delete = false)
         {

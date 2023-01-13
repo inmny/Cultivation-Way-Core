@@ -16,7 +16,7 @@ namespace Cultivation_Way.Library
             this.origin_asset = origin_asset;
         }
     }
-    public class CW_Library_Race : AssetLibrary<CW_Asset_Race>
+    public class CW_Library_Race : CW_Asset_Library<CW_Asset_Race>
     {
         public override void init()
         {
@@ -26,7 +26,7 @@ namespace Cultivation_Way.Library
                 __add(new CW_Asset_Race(race));
             }
         }
-        internal void register()
+        internal override void register()
         {
             throw new NotImplementedException();
         }

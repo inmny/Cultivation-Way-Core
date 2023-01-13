@@ -55,7 +55,7 @@ namespace Cultivation_Way.Library
             this.bonus_stats = (bonus_stats == null ? new CW_BaseStats() : bonus_stats);
         }
     }
-    public class CW_Library_Element:AssetLibrary<CW_Asset_Element>
+    public class CW_Library_Element : CW_Asset_Library<CW_Asset_Element>
     {
         public override void init()
         {
@@ -107,7 +107,7 @@ namespace Cultivation_Way.Library
         {
             return add(new CW_Asset_Element(id, base_elements, promot, rarity));
         }
-        internal void register()
+        internal override void register()
         {
             throw new NotImplementedException();
         }

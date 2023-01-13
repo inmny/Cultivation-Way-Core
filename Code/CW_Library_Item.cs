@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cultivation_Way.Library
 {
-    public class CW_Library_Item : AssetLibrary<CW_Asset_Item>
+    public class CW_Library_Item : CW_Asset_Library<CW_Asset_Item>
     {
         public override void init()
         {
@@ -16,7 +16,7 @@ namespace Cultivation_Way.Library
                 __add(asset);
             }
         }
-        internal void register()
+        internal override void register()
         {
             throw new NotImplementedException();
         }
