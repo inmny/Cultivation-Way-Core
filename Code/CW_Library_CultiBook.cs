@@ -98,17 +98,20 @@ namespace Cultivation_Way.Library
         public void store()
         {
             CW_Library_Manager.instance.cultibooks.add(this);
+            WorldBoxConsole.Console.print("store '" + id + "'");
         }
         public void try_deprecate(bool force = false)
         {
             if (histroy_culti_nr >= Others.CW_Constants.fix_cultibook_line) is_fixed = true;
+            if (this.cur_culti_nr > 0) return;
+            WorldBoxConsole.Console.print("deprecate '" + id + "'");
             CW_Library_Manager.instance.cultibooks.delete(this.id, force);
         }
         internal string get_info_without_name()
         {
             StringBuilder string_builder = new StringBuilder();
             string_builder.AppendLine("创始人\t" + author_name);
-            string_builder.AppendLine("品阶\t" + order + "品" + level + "级");
+            string_builder.AppendLine("品阶\t\t" + order + "品" + level + "级");
             return string_builder.ToString();
         }
         internal void gen_bonus_stats(CW_Actor author)

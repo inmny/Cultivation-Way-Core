@@ -217,7 +217,7 @@ namespace Cultivation_Way
         }
         private void modify_cultibook()
         {
-            CW_Asset_CultiBook culti_book = CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id);
+            CW_Asset_CultiBook culti_book = CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id).deepcopy();
             if (culti_book == null) throw new Exception("No found cultibook '" + this.cw_data.cultibook_id + "'");
             culti_book.re_author(this);
             culti_book.order++;
