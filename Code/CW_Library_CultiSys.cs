@@ -30,7 +30,7 @@ namespace Cultivation_Way.Library
         public List<string> units_list;
         public List<string> races_list;
         public Others.CW_Delegates.CW_Cultisys_Judge judge;
-        public Others.CW_Delegates.CW_Cultisys_Judge level_judge;
+        public Others.CW_Delegates.CW_Cultisys_Level_Judge level_judge;
         public CW_Asset_CultiSys()
         {
             units_black_or_white = true;

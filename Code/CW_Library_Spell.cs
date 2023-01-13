@@ -154,6 +154,10 @@ namespace Cultivation_Way.Library
                 this.list[i].register();
             }
         }
+        internal static ulong make_tags(string element_id, params CW_Spell_Tag[] tags)
+        {
+            return 0;
+        }
         internal List<CW_Asset_Spell> search(ulong tags, Spell_Search_Type search_type)
         {
             List<CW_Asset_Spell> list = new List<CW_Asset_Spell>();

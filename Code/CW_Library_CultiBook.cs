@@ -98,13 +98,13 @@ namespace Cultivation_Way.Library
         public void store()
         {
             CW_Library_Manager.instance.cultibooks.add(this);
-            WorldBoxConsole.Console.print("store '" + id + "'");
+            //WorldBoxConsole.Console.print("store '" + id + "'");
         }
         public void try_deprecate(bool force = false)
         {
             if (histroy_culti_nr >= Others.CW_Constants.fix_cultibook_line) is_fixed = true;
             if (this.cur_culti_nr > 0) return;
-            WorldBoxConsole.Console.print("deprecate '" + id + "'");
+            //WorldBoxConsole.Console.print("deprecate '" + id + "'");
             CW_Library_Manager.instance.cultibooks.delete(this.id, force);
         }
         internal string get_info_without_name()
@@ -112,6 +112,11 @@ namespace Cultivation_Way.Library
             StringBuilder string_builder = new StringBuilder();
             string_builder.AppendLine("创始人\t" + author_name);
             string_builder.AppendLine("品阶\t\t" + order + "品" + level + "级");
+            for(int i = 0; i < this.spells.Length; i++)
+            {
+                if (this.spells[i] == null) break;
+                string_builder.AppendLine("法术["+i+"]\t"+this.spells[i]);
+            }
             return string_builder.ToString();
         }
         internal void gen_bonus_stats(CW_Actor author)
@@ -133,9 +138,9 @@ namespace Cultivation_Way.Library
         public override CW_Asset_CultiBook get(string pID)
         {
             if(string.IsNullOrEmpty(pID)) return null;
-            CW_Asset_CultiBook culti_book = null;
-            this.dict.TryGetValue(pID, out culti_book);
-            return culti_book;
+            CW_Asset_CultiBook culti_book;
+            if (this.dict.TryGetValue(pID, out culti_book)) return culti_book;
+            throw new Exception("NO find cultibook '" + pID + "'");
         }
         public void delete(string cultibook_id, bool force_delete = false)
         {
@@ -156,7 +161,7 @@ namespace Cultivation_Way.Library
             CW_Asset_CultiBook B = get(b);
             if (A == null) return B==null?null:b;
             if (B == null) return a;
-            return A.level >= B.level ? a : b;
+            return (A.order << 4 + A.level) >= (B.order << 4 + B.level) ? a : b;
         }
     }
 }

@@ -32,7 +32,6 @@ namespace Cultivation_Way.Content
                 immortal.bonus_stats[i].mod_wakan = 5 * (i+1);
                 immortal.bonus_stats[i].wakan_regen = (i + 1);
                 immortal.bonus_stats[i].mod_wakan_regen = (i + 1);
-                immortal.grade_val[i] = 20 * (i+1);
             }
        
 
@@ -45,13 +44,13 @@ namespace Cultivation_Way.Content
         {
             return true;
         }
-        private static bool immortal_level_judge(CW_ActorData cw_actor_data, CW_Asset_CultiSys cultisys)
+        private static bool immortal_level_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
         {
             //if(cw_actor_data.cultisys_level[cultisys.tag] < Others.CW_Constants.max_cultisys_level) WorldBoxConsole.Console.print(cw_actor_data.status.wakan + "/" + cultisys.grade_val[cw_actor_data.cultisys_level[cultisys.tag]]);
-            if( cw_actor_data.cultisys_level[cultisys.tag] <= Others.CW_Constants.max_cultisys_level-1-1 && cw_actor_data.status.wakan >= cultisys.grade_val[cw_actor_data.cultisys_level[cultisys.tag]])
+            if( cw_actor.cw_data.cultisys_level[cultisys.tag] <= Others.CW_Constants.max_cultisys_level-1-1 && cw_actor.cw_data.status.wakan == cw_actor.cw_cur_stats.wakan)
             {
-                cw_actor_data.status.wakan = (int)cultisys.grade_val[cw_actor_data.cultisys_level[cultisys.tag]] / 10;
-                //WorldBoxConsole.Console.print("Level up to "+(1+cw_actor_data.cultisys_level[cultisys.tag]));
+                cw_actor.cw_data.status.wakan = cw_actor.cw_data.status.wakan / 10;
+                //WorldBoxConsole.Console.print("Level up to "+(1+cw_actor.cw_data.cultisys_level[cultisys.tag]));
                 return true;
             }
             return false;

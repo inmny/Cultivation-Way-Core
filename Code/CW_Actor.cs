@@ -75,8 +75,15 @@ namespace Cultivation_Way
 
             if (!string.IsNullOrEmpty(cw_actor_data.cultibook_id)) 
             {
-                CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor_data.cultibook_id);
-                cultibook.cur_culti_nr++; cultibook.histroy_culti_nr++;
+                try
+                {
+                    CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor_data.cultibook_id);
+                    cultibook.cur_culti_nr++; cultibook.histroy_culti_nr++;
+                }
+                catch (Exception)
+                {
+                    throw new Exception(String.Format("Cultibook error for actor:{0} and actor:{1}",main_parent.fast_data.actorID,second_parent.fast_data.actorID));
+                }
             }
 
             cw_actor_data.cultisys_level = new int[CW_Library_Manager.instance.cultisys.list.Count];
@@ -118,13 +125,13 @@ namespace Cultivation_Way
             uint level_up_tag = 0;
             while (cultisys > 0)
             {
-                if (((cultisys & 0x1) == 1) && (CW_Library_Manager.instance.cultisys.list[cultisys_tag].level_judge(this.cw_data, CW_Library_Manager.instance.cultisys.list[cultisys_tag])))
+                if (((cultisys & 0x1) == 1) && (CW_Library_Manager.instance.cultisys.list[cultisys_tag].level_judge(this, CW_Library_Manager.instance.cultisys.list[cultisys_tag])))
                 {
                     this.cw_data.cultisys_level[cultisys_tag]++;
                     this.setStatsDirty();
                     if (this.cw_data.cultisys_level[cultisys_tag] == Others.CW_Constants.max_cultisys_level - 1)
                     {
-                        this.fast_data.favorite = true;
+                        //this.fast_data.favorite = true;
                     }
                     level_up_tag |= (uint)(1 << cultisys_tag);
                 }
@@ -136,6 +143,10 @@ namespace Cultivation_Way
                 cultisys_tag++;
                 cultisys >>= 1;
             }
+
+            List<CW_Asset_Spell> spells = CW_Library_Manager.instance.spells.search(CW_Library_Spell.make_tags(this.cw_data.element.comp_type(), CW_Spell_Tag.ATTACK, CW_Spell_Tag.SUMMON, CW_Spell_Tag.DEFEND), Spell_Search_Type.CONTAIN_ANY_TAGS);
+            this.learn_spell(spells.GetRandom().id);
+
             if((level_up_tag & (1<<max_cultisys_tag))!=0 && max_level % Others.CW_Constants.cultibook_levelup_require == Others.CW_Constants.cultibook_levelup_require - 1)
             {
                 if (string.IsNullOrEmpty(this.cw_data.cultibook_id))

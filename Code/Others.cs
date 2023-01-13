@@ -32,5 +32,6 @@ namespace Cultivation_Way.Others
         public delegate void CW_Spell_Action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile);
         public delegate void CW_WorldEvent_Action();
         public delegate bool CW_Cultisys_Judge(CW_ActorData cw_actor_data, CW_Asset_CultiSys cultisys);
+        public delegate bool CW_Cultisys_Level_Judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys);
     }
 }

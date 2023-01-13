@@ -70,6 +70,19 @@ namespace Cultivation_Way.Content.Harmony
             }
             return true;
         }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(MapBox), "destroyActor", new Type[] { typeof(Actor) })]
+        public static bool mapbox_destroyActor(Actor pActor)
+        {
+            if (pActor == null) throw new ArgumentNullException("pActor should not be null! In origin game, no possible to pass null to this function");
+            if (pActor.object_destroyed) { return true; }
+            // 回收功法
+            CW_Actor cw_actor = (CW_Actor)pActor;
+            CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id);
+            if (cultibook != null && --cultibook.cur_culti_nr==0) cultibook.try_deprecate();
+
+            return true;
+        }
         private static void __mapbox_createNewUnit(string pStatsID, WorldTile pTile, string pJob, float pZHeight, ActorData pData, ref Actor __result)
         {
             //WorldBoxConsole.Console.print("try to create cw_actor");
