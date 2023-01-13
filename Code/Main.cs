@@ -45,7 +45,7 @@ namespace Cultivation_Way{
 
                 mod_state.library_manager = CW_Library_Manager.instance;
                 mod_state.library_manager.init();
-
+                Utils.CW_ItemTools.init();
                 W_Content_Manager.add_content();
 
                 mod_state.library_manager.register();

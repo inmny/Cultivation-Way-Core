@@ -38,6 +38,7 @@ namespace Cultivation_Way.Library
         public CW_Library_ItemAccessoryMaterial item_accessory_materials;
         public CW_Library_ItemArmorMaterial item_armor_materials;
         public CW_Library_ItemWeaponMaterial item_weapon_materials;
+        public CW_Library_ItemModifier item_modifiers;
         public CW_Library_Kingdom kingdoms;
         public CW_Library_Race races;
         public CW_Library_SpecialBody special_bodies;
@@ -64,6 +65,7 @@ namespace Cultivation_Way.Library
             item_accessory_materials = new CW_Library_ItemAccessoryMaterial();
             item_armor_materials = new CW_Library_ItemArmorMaterial();
             item_weapon_materials = new CW_Library_ItemWeaponMaterial();
+            item_modifiers = new CW_Library_ItemModifier();
             kingdoms = new CW_Library_Kingdom();
             races = new CW_Library_Race();
             special_bodies = new CW_Library_SpecialBody();
@@ -80,6 +82,7 @@ namespace Cultivation_Way.Library
             item_accessory_materials.init();
             item_armor_materials.init();
             item_weapon_materials.init();
+            item_modifiers.init();
             kingdoms.init();
             races.init();
             special_bodies.init();

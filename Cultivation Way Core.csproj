@@ -198,6 +198,7 @@
     <Compile Include="Code\CW_City.cs" />
     <Compile Include="Code\CW_CityData.cs" />
     <Compile Include="Code\CW_ClassNick.cs" />
+    <Compile Include="Code\CW_Library_ItemModifier.cs" />
     <Compile Include="Code\W_Content_Cultisys.cs" />
     <Compile Include="Code\W_Content_WindowCreatureInfo.cs" />
     <Compile Include="Code\W_Harmony_Others.cs" />

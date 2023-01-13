@@ -143,10 +143,11 @@ namespace Cultivation_Way
                 cultisys_tag++;
                 cultisys >>= 1;
             }
-
-            List<CW_Asset_Spell> spells = CW_Library_Manager.instance.spells.search(CW_Library_Spell.make_tags(this.cw_data.element.comp_type(), CW_Spell_Tag.ATTACK, CW_Spell_Tag.SUMMON, CW_Spell_Tag.DEFEND), Spell_Search_Type.CONTAIN_ANY_TAGS);
-            this.learn_spell(spells.GetRandom().id);
-
+            if (level_up_tag != 0)
+            {
+                List<CW_Asset_Spell> spells = CW_Library_Manager.instance.spells.search(CW_Library_Spell.make_tags(this.cw_data.element.comp_type(), CW_Spell_Tag.ATTACK, CW_Spell_Tag.SUMMON, CW_Spell_Tag.DEFEND), Spell_Search_Type.CONTAIN_ANY_TAGS);
+                if (spells.Count > 0) this.learn_spell(spells.GetRandom().id);
+            }
             if((level_up_tag & (1<<max_cultisys_tag))!=0 && max_level % Others.CW_Constants.cultibook_levelup_require == Others.CW_Constants.cultibook_levelup_require - 1)
             {
                 if (string.IsNullOrEmpty(this.cw_data.cultibook_id))
