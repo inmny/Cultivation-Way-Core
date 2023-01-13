@@ -203,7 +203,7 @@
     <Compile Include="Code\W_Content_WindowCreatureInfo.cs" />
     <Compile Include="Code\W_Harmony_Others.cs" />
     <Compile Include="Code\W_Harmony_Spell.cs" />
-    <Compile Include="Code\W_Harmony_WindowCreatureInfo.cs" />
+    <Compile Include="Code\W_Harmony_Window.cs" />
     <Compile Include="Code\W_Harmony_ActorStatus.cs" />
     <Compile Include="Code\CW_ItemData.cs" />
     <Compile Include="Code\CW_Library_Family.cs" />
