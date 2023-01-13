@@ -8,6 +8,8 @@ using Cultivation_Way.Library;
 using Cultivation_Way.Utils;
 using HarmonyLib;
 using ReflectionUtility;
+using UnityEngine;
+
 namespace Cultivation_Way.Content.Harmony
 {
     internal class W_Harmony_Actor
@@ -16,7 +18,16 @@ namespace Cultivation_Way.Content.Harmony
         [HarmonyPatch(typeof(Actor), "updateAge")]
         public static bool actor_updateAge(Actor __instance)
         {
-            return __new_updateAge(((CW_Actor)__instance).fast_data, ((CW_Actor)__instance).cw_data.status);
+             if(!__new_updateAge(((CW_Actor)__instance).fast_data, ((CW_Actor)__instance).cw_data.status))
+            {
+                __instance.killHimself(false, AttackType.Age, true, true);
+                return false;
+            }
+            if (((CW_Actor)__instance).fast_data.age > __instance.stats.maxAge>>1 && Toolbox.randomChance(0.3f))
+            {
+                __instance.addTrait("wise", false);
+            }
+            return false;
         }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ActorBase), "updateStats")]
@@ -36,7 +47,7 @@ namespace Cultivation_Way.Content.Harmony
         }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(MapStats), "updateAge")]
-        public static bool mapbox_updateAge(float pElapsed)
+        public static bool mapstats_updateAge(float pElapsed)
         {
             if(MapBox.instance.mapStats.monthTime + pElapsed > 3f && DebugConfig.isOn(DebugOption.SystemUpdateUnits))
             {
@@ -51,21 +62,8 @@ namespace Cultivation_Way.Content.Harmony
                 for (i = 0; i < count; i++)
                 {
                     CW_Actor actor = (CW_Actor)simpleList[i];
-                    actor.cw_status.shied += actor.cw_cur_stats.shied_regen;
-                    actor.cw_status.wakan += actor.cw_cur_stats.wakan_regen;
-                    actor.fast_data.health += actor.cw_cur_stats.health_regen;
-                    uint cultisys = actor.cw_data.cultisys;
-                    int cultisys_tag = 0;
-                    while (cultisys > 0)
-                    {
-                        if (((cultisys & 0x1) == 1) && (CW_Library_Manager.instance.cultisys.list[cultisys_tag].level_judge(actor.cw_data, CW_Library_Manager.instance.cultisys.list[cultisys_tag])))
-                        {
-                            actor.cw_data.cultisys_level[cultisys_tag]++;
-                            actor.setStatsDirty();
-                        }
-                        cultisys_tag++;
-                        cultisys >>= 1;
-                    }
+                    actor.updateStatus_month();
+                    actor.checkLevelUp();
                 }
 
                 MapBox.instance.units.checkAddRemove();
@@ -282,6 +280,8 @@ namespace Cultivation_Way.Content.Harmony
             cw_actor.cw_cur_stats.no_zero_for_actor();
             cw_actor.cw_cur_stats.apply_others();
             cw_actor.cw_cur_stats.normalize();
+            cw_actor.cw_status.wakan = Mathf.Min(cw_actor.cw_status.wakan, cw_actor.cw_cur_stats.wakan);
+            cw_actor.fast_data.health = Mathf.Min(cw_actor.fast_data.health, cw_actor.cw_cur_stats.base_stats.health);
             cw_actor.cw_status.max_age = (int)(cw_actor.cw_stats.origin_stats.maxAge * (1f + cw_actor.cw_cur_stats.mod_age/100f));
             CW_Actor.set_s_attackSpeed_seconds(actor, (300f - cw_actor.cw_cur_stats.base_stats.attackSpeed) / (100f + cw_actor.cw_cur_stats.base_stats.attackSpeed));
             // 设置攻击样式以及武器贴图
@@ -321,7 +321,6 @@ namespace Cultivation_Way.Content.Harmony
             // 收尾
             CW_Actor.set_attackTimer(actor, 0f);
             CW_Actor.func_updateTargetScale(actor);
-            CW_Actor.set_s_attackSpeed_seconds(actor, (300f - cw_actor.cw_cur_stats.base_stats.attackSpeed) / (100f + cw_actor.cw_cur_stats.base_stats.attackSpeed));
             cw_actor.currentScale.x = cw_actor.cw_cur_stats.base_stats.scale;
             cw_actor.currentScale.y = cw_actor.cw_cur_stats.base_stats.scale;
             cw_actor.currentScale.z = cw_actor.cw_cur_stats.base_stats.scale;

@@ -45,7 +45,7 @@ namespace Cultivation_Way.Animation
                 if (Others.CW_Constants.is_debugging) throw new System.Exception(string.Format("Repeated Controller id with {0}", id));
                 return null;
             }
-            Sprite[] sprites = Utils.CW_Utils_ResourceHelper.load_sprites(path_to_anim);
+            Sprite[] sprites = Utils.CW_ResourceHelper.load_sprites(path_to_anim);
             if (sprites == null) return null;
             CW_EffectController controller = new CW_EffectController(anim_limit, controller_setting, sprites, default_prefab);
             return controller;
@@ -58,7 +58,7 @@ namespace Cultivation_Way.Animation
         }
         public CW_SpriteAnimation spawn_anim(string path_to_anim, WorldTile src_tile, WorldTile dst_tile = null, BaseSimObject src_obj = null, BaseSimObject dst_obj = null, CW_AnimationSetting anim_setting = null)
         {
-            Sprite[] sprites = Utils.CW_Utils_ResourceHelper.load_sprites(path_to_anim);
+            Sprite[] sprites = Utils.CW_ResourceHelper.load_sprites(path_to_anim);
             if (sprites == null) return null;
 
             CW_SpriteAnimation anim = new CW_SpriteAnimation(anim_setting == null ? default_setting.__deepcopy() : anim_setting, sprites, default_prefab, src_tile.pos, dst_tile==null?src_tile.pos : dst_tile.pos, src_obj, dst_obj);
@@ -70,7 +70,7 @@ namespace Cultivation_Way.Animation
         }
         public CW_SpriteAnimation spawn_anim(string path_to_anim, Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_obj = null, BaseSimObject dst_obj = null, CW_AnimationSetting anim_setting = null)
         {
-            Sprite[] sprites = Utils.CW_Utils_ResourceHelper.load_sprites(path_to_anim);
+            Sprite[] sprites = Utils.CW_ResourceHelper.load_sprites(path_to_anim);
             if (sprites == null) return null;
 
             CW_SpriteAnimation anim = new CW_SpriteAnimation(anim_setting==null?default_setting.__deepcopy():anim_setting, sprites, default_prefab, src_vec, dst_vec, src_obj, dst_obj);

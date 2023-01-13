@@ -56,7 +56,13 @@ namespace Cultivation_Way.Library
         public int rarity;
         public float might;
         public float cost;
+        /// <summary>
+        /// 暂不使用，学习等级
+        /// </summary>
         public int learn_level;
+        /// <summary>
+        /// 暂不使用，释放等级
+        /// </summary>
         public int cast_level;
 
         internal uint allowed_cultisys;
@@ -128,7 +134,10 @@ namespace Cultivation_Way.Library
         {
             this.addition_element_tags.Add(element_id);
         }
-
+        public bool allow_actor(CW_Actor cw_actor, bool ignore_level_limit = false)
+        {
+            return ((cw_actor.cw_data.cultisys & this.allowed_cultisys) > 0) && (!banned_races.Contains(cw_actor.stats.race));
+        }
     }
     public enum Spell_Search_Type
     {

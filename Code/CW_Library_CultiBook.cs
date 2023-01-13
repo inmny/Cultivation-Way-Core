@@ -24,11 +24,11 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 当前修炼人数，用于回收统计
         /// </summary>
-        internal int cur_culti_nr;
+        public int cur_culti_nr { get; internal set; }
         /// <summary>
         /// 历史修炼人数
         /// </summary>
-        public int histroy_culti_nr;
+        public int histroy_culti_nr { get; internal set; }
         /// <summary>
         /// 等阶
         /// </summary>
@@ -49,6 +49,31 @@ namespace Cultivation_Way.Library
         /// 属性加成
         /// </summary>
         public CW_BaseStats bonus_stats;
+        public CW_Asset_CultiBook(CW_Actor author)
+        {
+            this.id = author.fast_data.actorID+"_"+(int)Content.W_Content_Helper.game_stats_data.gameTime;
+            this.is_fixed = false;
+            this.cur_culti_nr = 0;
+            this.histroy_culti_nr = 0;
+            this.author_name = author.getName();
+            this.name = author.getName()+"创造的功法";
+            this.spells = new string[Others.CW_Constants.cultibook_spell_limit];
+            this.bonus_stats = new CW_BaseStats();
+        }
+
+        public CW_Asset_CultiBook()
+        {
+        }
+
+        internal void re_author(CW_Actor author)
+        {
+            this.id =author.fast_data.actorID + "_" + (int)Content.W_Content_Helper.game_stats_data.gameTime;
+            this.is_fixed = false;
+            this.cur_culti_nr = 0;
+            this.histroy_culti_nr = 0;
+            this.author_name = author.getName();
+            this.name = author.getName() + "修改的功法";
+        }
         public CW_Asset_CultiBook deepcopy()
         {
             CW_Asset_CultiBook ret = new CW_Asset_CultiBook();
@@ -74,6 +99,22 @@ namespace Cultivation_Way.Library
         {
             CW_Library_Manager.instance.cultibooks.add(this);
         }
+        public void try_deprecate(bool force = false)
+        {
+            if (histroy_culti_nr >= Others.CW_Constants.fix_cultibook_line) is_fixed = true;
+            CW_Library_Manager.instance.cultibooks.delete(this.id, force);
+        }
+        internal string get_info_without_name()
+        {
+            StringBuilder string_builder = new StringBuilder();
+            string_builder.AppendLine("创始人\t" + author_name);
+            string_builder.AppendLine("品阶\t" + order + "品" + level + "级");
+            return string_builder.ToString();
+        }
+        internal void gen_bonus_stats(CW_Actor author)
+        {
+            //throw new NotImplementedException();
+        }
     }
     public class CW_Library_CultiBook : AssetLibrary<CW_Asset_CultiBook>
     {
@@ -85,6 +126,13 @@ namespace Cultivation_Way.Library
         internal void register()
         {
             throw new NotImplementedException();
+        }
+        public override CW_Asset_CultiBook get(string pID)
+        {
+            if(string.IsNullOrEmpty(pID)) return null;
+            CW_Asset_CultiBook culti_book = null;
+            this.dict.TryGetValue(pID, out culti_book);
+            return culti_book;
         }
         public void delete(string cultibook_id, bool force_delete = false)
         {

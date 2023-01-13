@@ -18,6 +18,7 @@ namespace Cultivation_Way.Content
             add_item_accesory_materials();
             add_item_armor_materials();
             add_item_weapon_materials();
+            add_localized_text();
             add_kingdoms();
             add_races();
             add_special_bodies();
@@ -25,6 +26,11 @@ namespace Cultivation_Way.Content
             add_traits();
             add_world_events();
             add_harmony();
+        }
+
+        private static void add_localized_text()
+        {
+            Harmony.W_Harmony_Others.setLanguage_Postfix(ReflectionUtility.Reflection.GetField(typeof(LocalizedTextManager), LocalizedTextManager.instance, "language") as string);
         }
 
         private static void add_cultisys()
@@ -87,6 +93,8 @@ namespace Cultivation_Way.Content
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Actor), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_City), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Item), Others.CW_Constants.mod_id);
+            HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_WindowCreatureInfo), Others.CW_Constants.mod_id);
+            HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Others), Others.CW_Constants.mod_id);
             WorldBoxConsole.Console.print("Finish Harmony");
         }
     }

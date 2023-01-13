@@ -92,5 +92,23 @@ namespace Cultivation_Way.Library
                 actor_allow_cultisys >>= 1;
             }
         }
+        internal string parse_cultisys(CW_ActorData cw_actor_data)
+        {
+            uint cultisys = cw_actor_data.cultisys;
+            int cultisys_tag = 0;
+            StringBuilder string_builder = new StringBuilder();
+            CW_Asset_CultiSys cultisys_asset;
+            while (cultisys > 0)
+            {
+                if ((cultisys & 0x1) == 1)
+                {
+                    cultisys_asset = list[cultisys_tag];
+                    string_builder.AppendLine(LocalizedTextManager.getText("CW_cultisys_" + cultisys_asset.id) + "\t" + cw_actor_data.cultisys_level[cultisys_tag]);
+                }
+                cultisys >>= 1;
+                cultisys_tag++;
+            }
+            return string_builder.ToString();
+        }
     }
 }

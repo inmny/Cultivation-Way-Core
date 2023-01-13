@@ -133,6 +133,7 @@ namespace Cultivation_Way
             float real_content;
             // 火
             real_content = base_elements[BASE_TYPE_FIRE] + base_elements[BASE_TYPE_WOOD] - base_elements[BASE_TYPE_WATER];
+            combine_bonus.base_stats.crit += real_content * 0.2f * promot;
             combine_bonus.base_stats.mod_crit += real_content * promot;
             combine_bonus.base_stats.damageCritMod += real_content * 1.5f * promot;
             // 土
@@ -226,6 +227,16 @@ namespace Cultivation_Way
         private void __prefer_to(int[] prefer_elements, float scale)
         {
             throw new NotImplementedException();
+        }
+        internal string __to_string()
+        {
+            StringBuilder string_builder = new StringBuilder();
+            int i = 0;
+            for (i = 0; i < base_elements.Length; i++)
+            {
+                string_builder.AppendLine("$base_element_"+i+"$\t" + base_elements[i]+"%\t");
+            }
+            return string_builder.ToString();
         }
     }
 }

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Utils;
 using Cultivation_Way.Library;
+using UnityEngine;
+
 namespace Cultivation_Way
 {
     public class CW_Actor : Actor
@@ -70,6 +72,13 @@ namespace Cultivation_Way
             CW_ActorData cw_actor_data = new CW_ActorData();
             CW_ActorStatus cw_actor_status = new CW_ActorStatus();
             cw_actor_data.cultibook_id = CW_Library_Manager.instance.cultibooks.select_better(main_parent.cw_data.cultibook_id, second_parent.cw_data.cultibook_id);
+
+            if (!string.IsNullOrEmpty(cw_actor_data.cultibook_id)) 
+            {
+                CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor_data.cultibook_id);
+                cultibook.cur_culti_nr++; cultibook.histroy_culti_nr++;
+            }
+
             cw_actor_data.cultisys_level = new int[CW_Library_Manager.instance.cultisys.list.Count];
 
             cw_actor_data.element = CW_Element.get_middle(main_parent.cw_data.element, second_parent.cw_data.element);
@@ -93,6 +102,135 @@ namespace Cultivation_Way
 
             CW_Library_Manager.instance.cultisys.set_cultisys(cw_actor_data, main_parent.stats.id);
             return cw_actor_data;
+        }
+        public void updateStatus_month()
+        {
+            this.cw_status.shied += Mathf.Min(this.cw_cur_stats.shied_regen, this.cw_cur_stats.shied - this.cw_status.shied);
+            this.cw_status.wakan += Mathf.Min(this.cw_cur_stats.wakan_regen, this.cw_cur_stats.wakan - this.cw_status.wakan);
+            this.fast_data.health += Mathf.Min(this.cw_cur_stats.health_regen, this.cw_cur_stats.base_stats.health - this.fast_data.health);
+        }
+        public void checkLevelUp()
+        {
+            uint cultisys = this.cw_data.cultisys;
+            int cultisys_tag = 0;
+            int max_cultisys_tag = -1;
+            int max_level=-1;
+            uint level_up_tag = 0;
+            while (cultisys > 0)
+            {
+                if (((cultisys & 0x1) == 1) && (CW_Library_Manager.instance.cultisys.list[cultisys_tag].level_judge(this.cw_data, CW_Library_Manager.instance.cultisys.list[cultisys_tag])))
+                {
+                    this.cw_data.cultisys_level[cultisys_tag]++;
+                    this.setStatsDirty();
+                    if (this.cw_data.cultisys_level[cultisys_tag] == Others.CW_Constants.max_cultisys_level - 1)
+                    {
+                        this.fast_data.favorite = true;
+                    }
+                    level_up_tag |= (uint)(1 << cultisys_tag);
+                }
+                if(this.cw_data.cultisys_level[cultisys_tag] > max_level)
+                {
+                    max_level = this.cw_data.cultisys_level[cultisys_tag];
+                    max_cultisys_tag = cultisys_tag;
+                }
+                cultisys_tag++;
+                cultisys >>= 1;
+            }
+            if((level_up_tag & (1<<max_cultisys_tag))!=0 && max_level % Others.CW_Constants.cultibook_levelup_require == Others.CW_Constants.cultibook_levelup_require - 1)
+            {
+                if (string.IsNullOrEmpty(this.cw_data.cultibook_id))
+                {
+                    this.create_cultibook();
+                }
+                else
+                {
+                    this.modify_cultibook();
+                }
+            }
+        }
+        public void learn_spell(string spell_id)
+        {
+            // 此处不抛异常，数组中元素为null是正常情况
+            if (string.IsNullOrEmpty(spell_id)) throw new Exception("Try to learn 'null' spell");
+            if (this.cw_data.spells.Contains(spell_id)) return;
+
+            CW_Asset_Spell spell_asset = CW_Library_Manager.instance.spells.get(spell_id);
+            if (spell_asset == null) throw new Exception("No Found Spell '" + spell_id + "'");
+
+            if (spell_asset.allow_actor(this)) this.cw_data.spells.Add(spell_id);
+        }
+        public void learn_spells(string[] spell_ids)
+        {
+            if (spell_ids == null) throw new Exception("Null spells array");
+            foreach(string spell_id in spell_ids)
+            {
+                if(!string.IsNullOrEmpty(spell_id)) this.learn_spell(spell_id);
+            }
+        }
+        public void learn_cultibook(string cultibook_id) 
+        {
+            learn_cultibook(CW_Library_Manager.instance.cultibooks.get(cultibook_id));
+        }
+        public void learn_cultibook(CW_Asset_CultiBook cultibook) 
+        {
+            if (cultibook == null) throw new Exception("Try to learn 'null' cultibook");
+            cultibook.cur_culti_nr++;
+            cultibook.histroy_culti_nr++;
+            CW_Asset_CultiBook prev_cultibook = CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id);
+            if (prev_cultibook != null && --prev_cultibook.cur_culti_nr == 0) prev_cultibook.try_deprecate();
+
+            this.cw_data.cultibook_id = cultibook.id;
+            this.learn_spells(cultibook.spells);
+        }
+        private int gen_cultibook_level()
+        {
+            int level; float stop_chance = (1f + this.fast_data.intelligence) / (4f + this.fast_data.intelligence);
+            for (level = 0; level < Others.CW_Constants.cultibook_max_level; level++)
+            {
+                if (Toolbox.randomChance(stop_chance)) break;
+            }
+            return level;
+        }
+        private void __modify_cultibook_last_step(CW_Asset_CultiBook culti_book)
+        {
+            culti_book.level = gen_cultibook_level();
+            culti_book.store();
+            culti_book.gen_bonus_stats(this);
+            int i; int len_1 = this.cw_data.spells.Count; int j;
+            int len_2 = 0;
+            for (i = 0; i < Others.CW_Constants.cultibook_spell_limit; i++)
+            {
+                if (culti_book.spells[i] == null) { len_2 = i; break; }
+            }
+            for (i = 0; i < len_1; i++)
+            {
+                for (j = 0; j < len_2; j++)
+                {
+                    if (this.cw_data.spells[i] == culti_book.spells[j]) break;
+                }
+                if (j == len_2)
+                {
+                    culti_book.spells[j] = this.cw_data.spells[i];
+                    break;
+                }
+            }
+        }
+        private void modify_cultibook()
+        {
+            CW_Asset_CultiBook culti_book = CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id);
+            if (culti_book == null) throw new Exception("No found cultibook '" + this.cw_data.cultibook_id + "'");
+            culti_book.re_author(this);
+            culti_book.order++;
+            __modify_cultibook_last_step(culti_book);
+            this.learn_cultibook(culti_book);
+        }
+
+        private void create_cultibook()
+        {
+            CW_Asset_CultiBook culti_book = new CW_Asset_CultiBook(this);
+            culti_book.order = 0;
+            __modify_cultibook_last_step(culti_book);
+            this.learn_cultibook(culti_book);
         }
 
         public CW_Asset_Item get_weapon_asset()
