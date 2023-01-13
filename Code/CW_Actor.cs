@@ -231,8 +231,8 @@ namespace Cultivation_Way
         {
             CW_Asset_CultiBook culti_book = CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id).deepcopy();
             if (culti_book == null) throw new Exception("No found cultibook '" + this.cw_data.cultibook_id + "'");
-            culti_book.re_author(this);
             culti_book.order++;
+            culti_book.re_author(this);
             __modify_cultibook_last_step(culti_book);
             this.learn_cultibook(culti_book);
         }
@@ -240,7 +240,6 @@ namespace Cultivation_Way
         private void create_cultibook()
         {
             CW_Asset_CultiBook culti_book = new CW_Asset_CultiBook(this);
-            culti_book.order = 0;
             __modify_cultibook_last_step(culti_book);
             this.learn_cultibook(culti_book);
         }

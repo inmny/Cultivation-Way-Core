@@ -51,7 +51,8 @@ namespace Cultivation_Way.Library
         public CW_BaseStats bonus_stats;
         public CW_Asset_CultiBook(CW_Actor author)
         {
-            this.id = author.fast_data.actorID+"_"+(int)Content.W_Content_Helper.game_stats_data.gameTime;
+            this.order = 0;
+            this.id = author.fast_data.actorID+"_"+order;
             this.is_fixed = false;
             this.cur_culti_nr = 0;
             this.histroy_culti_nr = 0;
@@ -67,7 +68,7 @@ namespace Cultivation_Way.Library
 
         internal void re_author(CW_Actor author)
         {
-            this.id =author.fast_data.actorID + "_" + (int)Content.W_Content_Helper.game_stats_data.gameTime;
+            this.id =author.fast_data.actorID + "_" + order;
             this.is_fixed = false;
             this.cur_culti_nr = 0;
             this.histroy_culti_nr = 0;
