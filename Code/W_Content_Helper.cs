@@ -28,6 +28,7 @@ namespace Cultivation_Way.Content
             transformTrees = transformBuildings.Find("Trees");
             game_stats_data = ReflectionUtility.Reflection.GetField(typeof(GameStats), MapBox.instance.gameStats, "data") as GameStatsData;
             list_systems = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "list_systems") as List<SpriteGroupSystem<GroupSpriteObject>>;
+                
         }
         internal static CW_ActorData get_load_cw_data(ActorData origin_data)
         {

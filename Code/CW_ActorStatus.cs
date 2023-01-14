@@ -14,7 +14,6 @@ namespace Cultivation_Way
 		public bool can_culti;
 		public float wakan_level;
 		public int max_age;
-
 		public static Func<ActorStatus, HashSet<string>> get_s_traits_ids = CW_ReflectionHelper.create_getter<ActorStatus, HashSet<string>>("s_traits_ids");
 		public static void actorstatus_inheritTraits(ActorStatus origin_status, List<string> traits)
 		{
@@ -51,5 +50,14 @@ namespace Cultivation_Way
 				}
 			}
 		}
+		public void deepcopy_to(CW_ActorStatus cw_actor_status)
+        {
+			cw_actor_status.wakan = wakan;
+			cw_actor_status.shied = shied;
+			cw_actor_status.culti_velo = culti_velo;
+			cw_actor_status.can_culti = can_culti;
+			cw_actor_status.wakan_level = wakan_level;
+			cw_actor_status.max_age = max_age;
+        }
 	}
 }

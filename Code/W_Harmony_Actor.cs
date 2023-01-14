@@ -14,6 +14,7 @@ namespace Cultivation_Way.Content.Harmony
 {
     internal class W_Harmony_Actor
     {
+        private static CW_Actor new_created_actor;
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Actor), "updateAge")]
         public static bool actor_updateAge(Actor __instance)
@@ -83,6 +84,72 @@ namespace Cultivation_Way.Content.Harmony
 
             return true;
         }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Baby), "update")]
+        public static bool baby_update(Baby __instance, float pElapsed)
+        {
+            if (Config.paused || ScrollWindow.isWindowActive()) return false;
+            CW_Actor cw_actor = __instance.GetComponent<CW_Actor>();
+            if (!cw_actor.fast_data.alive) return false;
+            if (__instance.timerGrow > pElapsed) return true;
+            __instance.timerGrow -= pElapsed;
+            __baby_growup(cw_actor);
+            return false;
+        }
+
+        private static void __baby_growup(CW_Actor cw_actor)
+        {
+            CW_Actor new_cw_actor = (CW_Actor)MapBox.instance.createNewUnit(cw_actor.stats.growIntoID, cw_actor.currentTile, null, 0f, null);
+            new_cw_actor.startBabymakingTimeout();
+            new_cw_actor.fast_data.hunger = new_cw_actor.stats.maxHunger / 2;
+            W_Content_Helper.game_stats_data.creaturesBorn--;
+            if (cw_actor.stats.unit)
+            {
+                if (cw_actor.city != null) cw_actor.city.addNewUnit(new_cw_actor, true, true);
+                CW_Actor.func_setKingdom(new_cw_actor, cw_actor.kingdom);
+            }
+            new_cw_actor.fast_data.diplomacy = cw_actor.fast_data.diplomacy;
+            new_cw_actor.fast_data.intelligence = cw_actor.fast_data.intelligence;
+            new_cw_actor.fast_data.stewardship = cw_actor.fast_data.stewardship;
+            new_cw_actor.fast_data.warfare = cw_actor.fast_data.warfare;
+            new_cw_actor.fast_data.culture = cw_actor.fast_data.culture;
+            new_cw_actor.fast_data.experience = cw_actor.fast_data.experience;
+            new_cw_actor.fast_data.level = cw_actor.fast_data.level;
+            new_cw_actor.fast_data.setName(cw_actor.fast_data.firstName);
+            if (cw_actor.fast_data.skin != -1) new_cw_actor.fast_data.skin = cw_actor.fast_data.skin;
+            if (cw_actor.fast_data.skin_set != -1) new_cw_actor.fast_data.skin_set = cw_actor.fast_data.skin_set;
+            new_cw_actor.fast_data.age = cw_actor.fast_data.age;
+            new_cw_actor.fast_data.bornTime = cw_actor.fast_data.bornTime;
+            new_cw_actor.fast_data.health = cw_actor.fast_data.health;
+            new_cw_actor.fast_data.gender = cw_actor.fast_data.gender;
+            new_cw_actor.fast_data.kills = cw_actor.fast_data.kills;
+            new_cw_actor.fast_data.favorite = cw_actor.fast_data.favorite;
+            foreach (string text in cw_actor.fast_data.traits)
+            {
+                if (!(text == "peaceful"))
+                {
+                    new_cw_actor.addTrait(text, false);
+                }
+            }
+            if (MoveCamera.inSpectatorMode() && MoveCamera.focusUnit == cw_actor)
+            {
+                MoveCamera.focusUnit = new_cw_actor;
+            }
+            // 由于是值拷贝，cw_status不需要修改
+            cw_actor.cw_data.deepcopy_to(new_cw_actor.cw_data);
+            // 采用此方式防止功法误删
+            if (new_cw_actor.cw_data.cultibook_id != null)
+            {
+                new_cw_actor.cw_data.cultibook_id = null;
+                new_cw_actor.learn_cultibook(cw_actor.cw_data.cultibook_id);
+            }
+            // 未使用的对象组合
+            if (cw_actor.compose_actors != null && cw_actor.compose_actors.Count>0) throw new NotImplementedException();
+            if (cw_actor.compose_buildings != null && cw_actor.compose_buildings.Count>0) throw new NotImplementedException();
+
+            cw_actor.killHimself(true, AttackType.GrowUp, false, false);
+        }
+
         private static void __mapbox_createNewUnit(string pStatsID, WorldTile pTile, string pJob, float pZHeight, ActorData pData, ref Actor __result)
         {
             //WorldBoxConsole.Console.print("try to create cw_actor");

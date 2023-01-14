@@ -84,6 +84,14 @@ namespace Cultivation_Way
             }
             return copy;
         }
+        public void deepcopy_to(CW_Element element)
+        {
+            int i;
+            for (i = 0; i < base_elements.Length; i++)
+            {
+                element.base_elements[i] = this.base_elements[i];
+            }
+        }
         /// <summary>
         /// 计算类别，未来将支持自定义算法
         /// </summary>

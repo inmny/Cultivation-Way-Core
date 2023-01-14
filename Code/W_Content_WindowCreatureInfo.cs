@@ -206,7 +206,7 @@ namespace Cultivation_Way.Content
             GameObject TipButtonPrefab = Instantiate<GameObject>(cw_wci.prefabTrait.gameObject, cw_wci.prefabTrait.transform.parent);
             Destroy(TipButtonPrefab.transform.GetComponent<TraitButton>());
             cw_wci.prefab_tip_button = TipButtonPrefab.AddComponent<TipButton>();
-            cw_wci.prefab_tip_button.transform.localScale = Vector3.one;
+            cw_wci.prefab_tip_button.transform.localScale = new Vector3(0.80f, 0.80f);
 
             return origin_inspect_unit_gameobject;
 		}

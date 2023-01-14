@@ -8,5 +8,9 @@ namespace Cultivation_Way.Compose
 {
     public class CW_ComposeSetting
     {
+        public CW_ComposeSetting deepcopy()
+        {
+            return this;
+        }
     }
 }
