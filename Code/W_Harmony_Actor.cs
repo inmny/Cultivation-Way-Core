@@ -220,7 +220,7 @@ namespace Cultivation_Way.Content.Harmony
             Actor actor = (Actor)actor_base;
             CW_Actor cw_actor = (CW_Actor)actor;
             
-            CW_Actor.set_statsDirty(actor, true);
+            CW_Actor.set_statsDirty(actor, false);
 
             if (!cw_actor.fast_data.alive) return;
             // 设定默认皮肤集合

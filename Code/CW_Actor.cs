@@ -186,6 +186,7 @@ namespace Cultivation_Way
         public void learn_cultibook(CW_Asset_CultiBook cultibook) 
         {
             if (cultibook == null) throw new Exception("Try to learn 'null' cultibook");
+            if (!Others.CW_Constants.cultibook_force_learn && this.cw_data.cultisys == 0) return;
             cultibook.cur_culti_nr++;
             cultibook.histroy_culti_nr++;
             CW_Asset_CultiBook prev_cultibook = CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id);

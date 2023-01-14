@@ -195,6 +195,7 @@
     <Compile Include="Code\CW_Actor.cs" />
     <Compile Include="Code\CW_ActorData.cs" />
     <Compile Include="Code\CW_ActorStatus.cs" />
+    <Compile Include="Code\CW_Addon.cs" />
     <Compile Include="Code\CW_Building.cs" />
     <Compile Include="Code\CW_BuildingData.cs" />
     <Compile Include="Code\CW_City.cs" />

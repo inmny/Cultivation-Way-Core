@@ -15,6 +15,9 @@ namespace Cultivation_Way{
     public class ModState
     {
         public static ModState instance;
+        public bool initialized = false;
+        public bool addons_loaded_all = false;
+        public bool registered = false;
         public NCMod mod_info;
         public CW_Library_Manager library_manager;
         public Load_Unit_Reason load_unit_reason = Load_Unit_Reason.CITY_SPAWN;
@@ -27,6 +30,7 @@ namespace Cultivation_Way{
         private bool initialized = false;
         void Awake(){
             instance = this;
+            print("[CW Core]: Awake");
         }
         void Update()
         {
@@ -49,7 +53,7 @@ namespace Cultivation_Way{
                 W_Content_Manager.add_content();
 
                 mod_state.library_manager.register();
-                
+                print("[CW Core]: Finish Initialization");
             }
         }
     }

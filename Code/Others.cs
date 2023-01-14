@@ -19,6 +19,7 @@ namespace Cultivation_Way.Others
         public const int cultibook_levelup_require = 5;
         public const int cultibook_max_level = 9;
         public const int cultibook_max_order = 4;
+        public const bool cultibook_force_learn = false;
         public const float exceed_max_age_chance = 0.85f;
         public const int max_unique_legendary_names_count = 128;
         public const int max_cultisys_level = 20;
