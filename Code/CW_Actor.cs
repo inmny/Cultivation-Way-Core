@@ -17,6 +17,7 @@ namespace Cultivation_Way
         public CW_ActorStatus cw_status = null;
         public List<CW_Actor> compose_actors = null;
         public List<CW_Building> compose_buildings = null;
+        internal WorldTimer fast_shake_timer = null;
         /// <summary>
         /// 仅提供高效访问，待权限开放后删除
         /// </summary>
@@ -30,7 +31,7 @@ namespace Cultivation_Way
         public static Func<Actor, PersonalityAsset> get_s_personality = CW_ReflectionHelper.create_getter<Actor, PersonalityAsset>("s_personality");
         public static Func<Actor, bool> get_event_full_heal = CW_ReflectionHelper.create_getter<Actor, bool>("event_full_heal");
         public static Func<Actor, List<ActorTrait>> get_s_special_effect_traits = CW_ReflectionHelper.create_getter<Actor, List<ActorTrait>>("s_special_effect_traits");
-
+        internal static Func<Actor, WorldTimer> get_shake_timer = CW_ReflectionHelper.create_getter<Actor, WorldTimer>("shakeTimer");
         #endregion
         #region Setter
         public static Action<Actor, bool> set_statsDirty = CW_ReflectionHelper.create_setter<Actor, bool>("statsDirty");
@@ -59,6 +60,7 @@ namespace Cultivation_Way
         public static Action<Actor, Kingdom> func_setKingdom = (Action<Actor, Kingdom>)CW_ReflectionHelper.get_method<Actor>("setKingdom");
         public static Action<Actor, WorldTile, float> func_spawnOn = (Action<Actor, WorldTile, float>)CW_ReflectionHelper.get_method<Actor>("spawnOn");
         public static Action<Actor> func_create = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("create");
+        internal static Action<Actor, float, bool, AttackType, BaseSimObject, bool> func_getHit = (Action<Actor, float, bool, AttackType, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("getHit");
 
         #endregion
         public void add_child(ActorStatus orgin_status)
@@ -66,6 +68,19 @@ namespace Cultivation_Way
             if (this.cw_data.children_info == null) this.cw_data.children_info = new List<CW_Family_Member_Info>();
             this.cw_data.children_info.Add(new CW_Family_Member_Info(orgin_status));
             this.fast_data.children++;
+        }
+        public void get_hit(float damage, bool flash = true, Others.CW_Enums.CW_AttackType type = Others.CW_Enums.CW_AttackType.Other, BaseSimObject attacker = null, bool skip_if_shake = true)
+        {
+            func_getHit(this, damage, flash, (AttackType)type, attacker, skip_if_shake);
+        }
+        internal bool __get_hit(float damage, Others.CW_Enums.CW_AttackType attack_type, BaseSimObject attacker, bool pSkipIfShake)
+        {
+            if ((pSkipIfShake && this.fast_shake_timer.isActive) || this.fast_data.health <= 0) return false;
+            damage *= (1 - this.cw_cur_stats.base_stats.armor / 100f);
+            if(damage < 0) damage = 0;
+            this.fast_data.health -= (int)damage;
+            if (this.fast_data.health < 1) this.fast_data.health = 1;
+            return true;
         }
         public static CW_ActorData procrete(CW_Actor main_parent, CW_Actor second_parent)
         {
@@ -168,8 +183,8 @@ namespace Cultivation_Way
 
             CW_Asset_Spell spell_asset = CW_Library_Manager.instance.spells.get(spell_id);
             if (spell_asset == null) throw new Exception("No Found Spell '" + spell_id + "'");
-
             if (spell_asset.allow_actor(this)) this.cw_data.spells.Add(spell_id);
+            print(string.Format("{0} successfully learn '{1}' spell", this.fast_data.actorID, spell_id));
         }
         public void learn_spells(string[] spell_ids)
         {

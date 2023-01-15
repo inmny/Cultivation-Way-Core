@@ -51,6 +51,10 @@ namespace Cultivation_Way.Animation
         /// </summary>
         public int stop_frame_idx = -1;
         /// <summary>
+        /// 动画冻结帧
+        /// </summary>
+        public int anim_froze_frame_idx = -1;
+        /// <summary>
         /// 循环限制
         /// </summary>
         public AnimationLoopLimitType loop_limit_type = AnimationLoopLimitType.NUMBER_LIMIT;
@@ -99,6 +103,10 @@ namespace Cultivation_Way.Animation
         /// </summary>
         public bool always_roll = false;
         /// <summary>
+        /// 每帧旋转角度
+        /// </summary>
+        public float roll_angle_per_frame = 10;
+        /// <summary>
         /// 指向终点
         /// </summary>
         public bool point_to_dst = false;
@@ -122,11 +130,13 @@ namespace Cultivation_Way.Animation
             copy.trace_grad = trace_grad;
             copy.layer_name = layer_name;
             copy.always_roll = always_roll;
+            copy.roll_angle_per_frame = roll_angle_per_frame;
             copy.point_to_dst = point_to_dst;
             return copy;
         }
         public void set_trace(AnimationTraceType type)
         {
+            this.trace_type = type;
             switch (type)
             {
                 case AnimationTraceType.NONE:

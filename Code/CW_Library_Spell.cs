@@ -83,10 +83,11 @@ namespace Cultivation_Way.Library
         public CW_Spell_Target_Camp target_camp;
         public CW_Spell_Triger_Type triger_type;
         public CW_Spell_Animation_Type anim_type;
+        public CW_Delegates.CW_Spell_Cost_Action cost_action;
         public CW_Delegates.CW_Spell_Action spell_action;
         public CW_Delegates.CW_Spell_Action anim_action;
         public CW_Delegates.CW_Spell_Action damage_action;
-        public CW_Asset_Spell(string id, string anim_id, CW_Delegates.CW_Spell_Action spell_action, CW_Element element, int rarity = 1, float might = 1, float cost = 1, int learn_level = 1, int cast_level = 1, bool cultisys_black_or_white_list = true, List<string> cultisys_list = null, List<string> banned_races = null, CW_Spell_Target_Type target_type = CW_Spell_Target_Type.ACTOR, CW_Spell_Target_Camp target_camp = CW_Spell_Target_Camp.ENEMY, CW_Spell_Triger_Type triger_type = CW_Spell_Triger_Type.ATTACK, CW_Spell_Animation_Type anim_type = CW_Spell_Animation_Type.ON_TARGET, CW_Delegates.CW_Spell_Action damage_action = null, CW_Delegates.CW_Spell_Action anim_action = null, string element_type_limit = null)
+        public CW_Asset_Spell(string id, string anim_id, CW_Delegates.CW_Spell_Action spell_action, CW_Element element, int rarity = 1, float might = 1, float cost = 1, int learn_level = 1, int cast_level = 1, bool cultisys_black_or_white_list = true, List<string> cultisys_list = null, List<string> banned_races = null, CW_Spell_Target_Type target_type = CW_Spell_Target_Type.ACTOR, CW_Spell_Target_Camp target_camp = CW_Spell_Target_Camp.ENEMY, CW_Spell_Triger_Type triger_type = CW_Spell_Triger_Type.ATTACK, CW_Spell_Animation_Type anim_type = CW_Spell_Animation_Type.ON_TARGET, CW_Delegates.CW_Spell_Action damage_action = null, CW_Delegates.CW_Spell_Action anim_action = null, string element_type_limit = null, CW_Delegates.CW_Spell_Cost_Action cost_action = null)
         {
             if (String.IsNullOrEmpty(anim_id)) anim_id = id;
             if (spell_action == null) throw new Exception("spell_action cannot be null");
@@ -100,7 +101,7 @@ namespace Cultivation_Way.Library
             this.cast_level = cast_level;
             this.cultisys_black_or_white_list = cultisys_black_or_white_list;
             this.cultisys_list = cultisys_list == null ? new List<string>() : cultisys_list;
-            this.banned_races = banned_races;
+            this.banned_races = banned_races == null ? new List<string>() : banned_races;
             this.target_type = target_type;
             this.target_camp = target_camp;
             this.triger_type = triger_type;
@@ -110,6 +111,8 @@ namespace Cultivation_Way.Library
             this.damage_action = damage_action == null ? Actions.CW_SpellAction_Damage.default_attack_enemy : damage_action;
             // TODO: 添加anim_action自动适配参数
             this.anim_action = anim_action == null ? Actions.CW_SpellAction_Anim.default_on_enemy : anim_action;
+            // TODO: cost_action
+            this.cost_action = cost_action == null ? Actions.CW_SpellAction_Cost.default_spell_cost : cost_action;
             this.element_type_limit = element_type_limit;
             this.base_elements_contained = new bool[element.base_elements.Length];
             this.tags = 0;
@@ -128,8 +131,23 @@ namespace Cultivation_Way.Library
                 if (CW_Library_Manager.instance.elements.get(addition_element_tags[i]) == null) throw new Exception(String.Format("No such element '{0}' in register spell '{1}'", addition_element_tags[i], id));
                 this.tags |= 1ul << (CW_Library_Manager.instance.elements.get(addition_element_tags[i]).tag + base_elements_contained.Length);
             }
-            // TODO: 添加修炼体系
-            throw new NotImplementedException();
+            WorldBoxConsole.Console.print("Spell tag:" + Convert.ToString((long)tags, 16));
+            if (cultisys_black_or_white_list)
+            {// 黑名单
+                this.allowed_cultisys = 0xffffffff;
+                foreach(string cultisys in cultisys_list)
+                {
+                    this.allowed_cultisys &= ~CW_Library_Manager.instance.cultisys.get(cultisys)._tag;
+                }
+            }
+            else
+            {// 白名单
+                this.allowed_cultisys = 0;
+                foreach (string cultisys in cultisys_list)
+                {
+                    this.allowed_cultisys &= CW_Library_Manager.instance.cultisys.get(cultisys)._tag;
+                }
+            }
         }
         public void add_tag(CW_Spell_Tag tag)
         {
@@ -149,7 +167,7 @@ namespace Cultivation_Way.Library
         }
         public float check_and_cost(BaseSimObject pUser)
         {
-            throw new NotImplementedException();
+            return cost_action(this, pUser);
         }
     }
     public enum Spell_Search_Type
@@ -169,10 +187,20 @@ namespace Cultivation_Way.Library
         }
         internal static ulong make_tags(string element_id, params CW_Spell_Tag[] tags)
         {
-            return 0;
+            //throw new NotImplementedException();
+            ulong tag = 0;
+            foreach(CW_Spell_Tag tag_tag in tags)
+            {
+                tag |= 1ul << (int)tag_tag;
+            }
+            // TODO: 添加元素标签
+            return tag;
         }
+        static bool first_search = true;
         internal List<CW_Asset_Spell> search(ulong tags, Spell_Search_Type search_type)
         {
+            if(first_search) WorldBoxConsole.Console.print("Try to search by tags:" + Convert.ToString((long)tags, 16));
+            first_search = false;
             List<CW_Asset_Spell> list = new List<CW_Asset_Spell>();
             switch (search_type)
             {
@@ -186,10 +214,9 @@ namespace Cultivation_Way.Library
                     }
                 case Spell_Search_Type.CONTAIN_ANY_TAGS:
                     {
-                        tags = ~tags;
                         foreach (CW_Asset_Spell asset in this.list)
                         {
-                            if ((asset.tags ^ tags) == 0ul) list.Add(asset);
+                            if ((asset.tags & tags) != 0ul) list.Add(asset);
                         }
                         break;
                     }

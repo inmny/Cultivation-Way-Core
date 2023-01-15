@@ -16,6 +16,13 @@ namespace Cultivation_Way.Content.Harmony
     {
         private static CW_Actor new_created_actor;
         [HarmonyPrefix]
+        [HarmonyPatch(typeof(Actor), "getHit")]
+        public static bool actor_getHit(Actor __instance, ref float pDamage, bool pFlash = true, AttackType pType = AttackType.Other, BaseSimObject pAttacker = null, bool pSkipIfShake = true)
+        {
+            if (((CW_Actor)__instance).__get_hit(pDamage, (Others.CW_Enums.CW_AttackType)pType, pAttacker, pSkipIfShake)) pDamage = 0f;
+            return true;
+        }
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(Actor), "updateAge")]
         public static bool actor_updateAge(Actor __instance)
         {
@@ -198,7 +205,7 @@ namespace Cultivation_Way.Content.Harmony
                 CW_Actor.set_data(actor, actor.fast_data);
                 CW_Actor.set_professionAsset(actor, AssetManager.professions.get(pData.status.profession));
             }
-
+            actor.fast_shake_timer = CW_Actor.get_shake_timer(actor);
             actor.transform.position = pTile.posV3;
             CW_Actor.func_spawnOn(actor, pTile, pZHeight);
             CW_Actor.func_create(actor);
@@ -419,6 +426,6 @@ namespace Cultivation_Way.Content.Harmony
 
             return cw_status.max_age > origin_status.age || Toolbox.randomChance(Others.CW_Constants.exceed_max_age_chance);
         }
-
+        
     }
 }

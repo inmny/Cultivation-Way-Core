@@ -5,7 +5,7 @@ using Cultivation_Way.Content;
 using Cultivation_Way.Library;
 using System.Collections.Generic;
 using System.Reflection;
-
+using Cultivation_Way.Animation;
 namespace Cultivation_Way{
     public enum Load_Unit_Reason
     {
@@ -19,6 +19,7 @@ namespace Cultivation_Way{
         public bool addons_loaded_all = false;
         public bool registered = false;
         public NCMod mod_info;
+        public CW_EffectManager effect_manager;
         public CW_Library_Manager library_manager;
         public Load_Unit_Reason load_unit_reason = Load_Unit_Reason.CITY_SPAWN;
     }
@@ -46,7 +47,7 @@ namespace Cultivation_Way{
                 {
                     if (ncmod.name == Others.CW_Constants.mod_name) { mod_state.mod_info = ncmod; break; }
                 }
-
+                mod_state.effect_manager = this.gameObject.AddComponent<CW_EffectManager>();
                 mod_state.library_manager = CW_Library_Manager.instance;
                 mod_state.library_manager.init();
                 Utils.CW_ItemTools.init();

@@ -61,14 +61,15 @@ namespace Cultivation_Way.Animation
             isOn = true; is_default_sprites = true;
             if (setting.possible_associated) { this.setting = setting; }
             else { this.setting = setting.__deepcopy(); }
-            this.apply_setting(src_vec, dst_vec, src_object, dst_object);
-            if (!isOn) return;
+            
+            
 
             this.sprites = sprites;
 
-            gameObject = UnityEngine.Object.Instantiate(prefab);
+            gameObject = UnityEngine.Object.Instantiate(prefab, CW_EffectManager.instance.transform);
             renderer = gameObject.GetComponent<SpriteRenderer>();
-            gameObject.transform.SetParent(CW_EffectManager.instance.transform);
+            
+            this.apply_setting(src_vec, dst_vec, src_object, dst_object);
         }
         // TODO: complete it
         internal void apply_setting(Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_object, BaseSimObject dst_object)
@@ -87,7 +88,9 @@ namespace Cultivation_Way.Animation
                 }
                 dst_vec = dst_object.currentPosition;
             }
+            WorldBoxConsole.Console.print("Is renderer null?>" + (renderer == null)+"\nIs setting null?>"+(setting==null));
             this.renderer.sortingLayerName = setting.layer_name;
+            gameObject.transform.localPosition = this.src_vec;
         }
         internal void update(float elapsed)
         {
@@ -108,11 +111,23 @@ namespace Cultivation_Way.Animation
             int change = setting.play_direction == AnimationPlayDirection.FORWARD ? 1 : -1;
             if (setting.loop_type == AnimationLoopType.ETOE && (loop_nr & 0x1) == 1) change = 0-change;
             **/
-            int change = ((setting.loop_type == AnimationLoopType.ETOE && (loop_nr & 0x1) == 1) ^ (setting.play_direction == AnimationPlayDirection.FORWARD)) ? 1 : -1;
-            int next_frame_idx = (cur_frame_idx + change + sprites.Length) % sprites.Length;
-            renderer.sprite = sprites[next_frame_idx];
-            cur_frame_idx = next_frame_idx;
-            if (cur_frame_idx == 0) loop_nr++;
+            if(cur_frame_idx != setting.anim_froze_frame_idx)
+            {
+                int change = ((setting.loop_type == AnimationLoopType.ETOE && (loop_nr & 0x1) == 1) ^ (setting.play_direction == AnimationPlayDirection.FORWARD)) ? 1 : -1;
+                int next_frame_idx = (cur_frame_idx + change + sprites.Length) % sprites.Length;
+                renderer.sprite = sprites[next_frame_idx];
+                cur_frame_idx = next_frame_idx;
+                if (cur_frame_idx == 0) loop_nr++;
+            }
+            else
+            {
+                loop_nr++;
+            }
+            //始终旋转
+            if (setting.always_roll)
+            {
+                gameObject.transform.Rotate(0, 0, setting.roll_angle_per_frame);
+            }
             // 检测到目标不存在后停止
             if (setting.trace_type == AnimationTraceType.TRACK && dst_object == null)
             {
@@ -138,11 +153,13 @@ namespace Cultivation_Way.Animation
                 }
                 float delta_x = next_x - gameObject.transform.position.x;
                 float delta_y = next_y - gameObject.transform.position.y;
+                WorldBoxConsole.Console.print(string.Format("delta x:{0},y:{1}", delta_x, delta_y));
                 trace_length += Mathf.Sqrt(delta_x * delta_x + delta_y * delta_y);
-                gameObject.transform.position = new Vector3(next_x, next_y);
+                gameObject.transform.Translate(new Vector3(next_x, next_y));
+                // 指向终点
                 if (setting.point_to_dst)
                 {
-                    gameObject.transform.rotation = Quaternion.LookRotation(gameObject.transform.position);
+                    gameObject.transform.rotation = Toolbox.LookAt2D(new Vector2(delta_x, delta_y));
                 }
             }
             // 路径行为
@@ -207,6 +224,10 @@ namespace Cultivation_Way.Animation
         public void change_scale(float scale)
         {
             gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x * scale, gameObject.transform.localScale.y * scale, gameObject.transform.localScale.z);
+        }
+        public void offset(Vector2 offset)
+        {
+            this.renderer.transform.localPosition = new Vector3(offset.x + renderer.transform.localPosition.x, offset.y + renderer.transform.localPosition.y, renderer.transform.localPosition.z);
         }
         /// <summary>
         /// 修改动画设置，请在知道你在做什么的情况下谨慎操作

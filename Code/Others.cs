@@ -23,6 +23,7 @@ namespace Cultivation_Way.Others
         public const float exceed_max_age_chance = 0.85f;
         public const int max_unique_legendary_names_count = 128;
         public const int max_cultisys_level = 20;
+        public const float default_spell_damage_co = 1;
     }
     public class CW_Delegates
     {
@@ -31,8 +32,30 @@ namespace Cultivation_Way.Others
         public delegate void CW_Animation_Frame_Action(int cur_frame_idx, float src_x, float src_y, float dst_x, float dst_y, float play_time, float anim_x, float anim_y, BaseSimObject pUser);
         public delegate void CW_Animation_End_Action(int cur_frame_idx, float src_x, float src_y, float dst_x, float dst_y, float play_time, float anim_x, float anim_y, BaseSimObject pUser, BaseSimObject pTarget);
         public delegate void CW_Spell_Action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost);
+        public delegate float CW_Spell_Cost_Action(CW_Asset_Spell spell_asset, BaseSimObject pUser);
         public delegate void CW_WorldEvent_Action();
         public delegate bool CW_Cultisys_Judge(CW_ActorData cw_actor_data, CW_Asset_CultiSys cultisys);
         public delegate bool CW_Cultisys_Level_Judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys);
+    }
+    public class CW_Enums
+    {
+        public enum CW_AttackType
+        {
+            Acid,
+            Fire,
+            Plague,
+            Tumor,
+            Other,
+            Hunger,
+            Eaten,
+            Age,
+            None,
+            GrowUp,
+            Poison,
+            Block,
+            Spell,
+            God
+        }
+        
     }
 }

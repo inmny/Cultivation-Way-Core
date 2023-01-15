@@ -118,8 +118,9 @@ namespace Cultivation_Way.Library
             item_weapon_materials.register();
             kingdoms.register();
             races.register();
-            special_bodies.register();
+            special_bodies.register();*/
             spells.register();
+            /**
             traits.register();
             events.register();*/
         }

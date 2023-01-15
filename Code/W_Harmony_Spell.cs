@@ -19,7 +19,6 @@ namespace Cultivation_Way.Content.Harmony
             CW_Actor cw_actor = (CW_Actor)__instance;
             if (cw_actor.cw_data.spells.Count == 0) return true;
             CW_Asset_Spell spell = CW_Library_Manager.instance.spells.get(cw_actor.cw_data.spells.GetRandom());
-
             if (!__can_cast(spell, cw_actor, spell.select_target(cw_actor, pTarget))) return true;
             bool ret = CW_Spell.cast(spell, cw_actor, pTarget, pTarget.currentTile);
             __result = ret;

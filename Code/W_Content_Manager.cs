@@ -11,7 +11,6 @@ namespace Cultivation_Way.Content
         internal static void add_content()
         {
             W_Content_Helper.init();
-            add_prefabs();
             add_actors();
             add_buildings();
             add_cultisys();
@@ -36,11 +35,6 @@ namespace Cultivation_Way.Content
         private static void add_cultisys()
         {
             W_Content_Cultisys.add_cultisys();
-        }
-
-        private static void add_prefabs()
-        {
-
         }
 
         private static void add_actors()
@@ -77,7 +71,7 @@ namespace Cultivation_Way.Content
         }
         private static void add_spells()
         {
-
+            W_Content_Spell.add_spells();
         }
         private static void add_traits()
         {

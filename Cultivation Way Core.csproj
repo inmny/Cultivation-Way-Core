@@ -177,6 +177,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GameResources\effects\example\fx_example_t_0.png" />
+    <Content Include="GameResources\effects\example\fx_example_t_1.png" />
+    <Content Include="GameResources\effects\example\fx_example_t_2.png" />
+    <Content Include="GameResources\effects\example\fx_example_t_3.png" />
+    <Content Include="GameResources\effects\example\fx_example_t_4.png" />
+    <Content Include="GameResources\effects\example\fx_example_t_5.png" />
+    <Content Include="GameResources\effects\example\fx_example_t_6.png" />
+    <Content Include="GameResources\effects\gold_blade\anim-0.png" />
+    <Content Include="GameResources\effects\gold_blade\anim-1.png" />
+    <Content Include="GameResources\effects\gold_blade\anim-2.png" />
+    <Content Include="GameResources\effects\gold_blade\anim-3.png" />
     <Content Include="GameResources\ui\Icons\iconShied.png" />
     <Content Include="GameResources\ui\Icons\iconWakan.png" />
     <Content Include="GameResources\ui\Icons\iconElement.png" />
@@ -196,13 +207,18 @@
     <Compile Include="Code\CW_ActorData.cs" />
     <Compile Include="Code\CW_ActorStatus.cs" />
     <Compile Include="Code\CW_Addon.cs" />
+    <Compile Include="Code\CW_Animation_Tester.cs" />
     <Compile Include="Code\CW_Building.cs" />
     <Compile Include="Code\CW_BuildingData.cs" />
     <Compile Include="Code\CW_City.cs" />
     <Compile Include="Code\CW_CityData.cs" />
     <Compile Include="Code\CW_ClassNick.cs" />
+    <Compile Include="Code\CW_Extensions_Kingdom.cs" />
     <Compile Include="Code\CW_Library_ItemModifier.cs" />
+    <Compile Include="Code\CW_SpellAction_Cost.cs" />
+    <Compile Include="Code\CW_Utils_SpellHelper.cs" />
     <Compile Include="Code\W_Content_Cultisys.cs" />
+    <Compile Include="Code\W_Content_Spell.cs" />
     <Compile Include="Code\W_Content_WindowCreatureInfo.cs" />
     <Compile Include="Code\W_Harmony_Others.cs" />
     <Compile Include="Code\W_Harmony_Spell.cs" />
