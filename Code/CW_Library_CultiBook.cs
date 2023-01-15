@@ -107,6 +107,7 @@ namespace Cultivation_Way.Library
             if (this.cur_culti_nr > 0) return;
             //WorldBoxConsole.Console.print("deprecate '" + id + "'");
             CW_Library_Manager.instance.cultibooks.delete(this.id, force);
+            if (CW_Library_Manager.instance.cultibooks.dict.ContainsKey(this.id)) WorldBoxConsole.Console.print(string.Format("Deprecate cultibook '{0}' failed", id));
         }
         internal string get_info_without_name()
         {

@@ -90,15 +90,8 @@ namespace Cultivation_Way
 
             if (!string.IsNullOrEmpty(cw_actor_data.cultibook_id)) 
             {
-                try
-                {
-                    CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor_data.cultibook_id);
-                    cultibook.cur_culti_nr++; cultibook.histroy_culti_nr++;
-                }
-                catch (Exception)
-                {
-                    throw new Exception(String.Format("Cultibook error for actor:{0} and actor:{1}",main_parent.fast_data.actorID,second_parent.fast_data.actorID));
-                }
+                CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor_data.cultibook_id);
+                cultibook.cur_culti_nr++; cultibook.histroy_culti_nr++;
             }
 
             cw_actor_data.cultisys_level = new int[CW_Library_Manager.instance.cultisys.list.Count];
@@ -184,7 +177,7 @@ namespace Cultivation_Way
             CW_Asset_Spell spell_asset = CW_Library_Manager.instance.spells.get(spell_id);
             if (spell_asset == null) throw new Exception("No Found Spell '" + spell_id + "'");
             if (spell_asset.allow_actor(this)) this.cw_data.spells.Add(spell_id);
-            print(string.Format("{0} successfully learn '{1}' spell", this.fast_data.actorID, spell_id));
+            //print(string.Format("{0} successfully learn '{1}'", this.fast_data.actorID, spell_id));
         }
         public void learn_spells(string[] spell_ids)
         {

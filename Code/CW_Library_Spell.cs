@@ -87,10 +87,22 @@ namespace Cultivation_Way.Library
         public CW_Delegates.CW_Spell_Action spell_action;
         public CW_Delegates.CW_Spell_Action anim_action;
         public CW_Delegates.CW_Spell_Action damage_action;
-        public CW_Asset_Spell(string id, string anim_id, CW_Delegates.CW_Spell_Action spell_action, CW_Element element, int rarity = 1, float might = 1, float cost = 1, int learn_level = 1, int cast_level = 1, bool cultisys_black_or_white_list = true, List<string> cultisys_list = null, List<string> banned_races = null, CW_Spell_Target_Type target_type = CW_Spell_Target_Type.ACTOR, CW_Spell_Target_Camp target_camp = CW_Spell_Target_Camp.ENEMY, CW_Spell_Triger_Type triger_type = CW_Spell_Triger_Type.ATTACK, CW_Spell_Animation_Type anim_type = CW_Spell_Animation_Type.ON_TARGET, CW_Delegates.CW_Spell_Action damage_action = null, CW_Delegates.CW_Spell_Action anim_action = null, string element_type_limit = null, CW_Delegates.CW_Spell_Cost_Action cost_action = null)
+        public CW_Asset_Spell(
+            string id, string anim_id, 
+            CW_Element element, string element_type_limit = null, 
+            int rarity = 1, float might = 1, float cost = 0.01f, int learn_level = 1, int cast_level = 1,
+            bool cultisys_black_or_white_list = true, List<string> cultisys_list = null, List<string> banned_races = null, 
+            CW_Spell_Target_Type target_type = CW_Spell_Target_Type.ACTOR, 
+            CW_Spell_Target_Camp target_camp = CW_Spell_Target_Camp.ENEMY, 
+            CW_Spell_Triger_Type triger_type = CW_Spell_Triger_Type.ATTACK, 
+            CW_Spell_Animation_Type anim_type = CW_Spell_Animation_Type.ON_TARGET, 
+            CW_Delegates.CW_Spell_Action damage_action = null, 
+            CW_Delegates.CW_Spell_Action anim_action = null, 
+            CW_Delegates.CW_Spell_Action spell_action = null,  
+            CW_Delegates.CW_Spell_Cost_Action cost_action = null)
         {
             if (String.IsNullOrEmpty(anim_id)) anim_id = id;
-            if (spell_action == null) throw new Exception("spell_action cannot be null");
+            //if (spell_action == null) throw new Exception("spell_action cannot be null");
             this.id = id;
             this.anim_id = anim_id;
             this.element = element;
@@ -108,11 +120,11 @@ namespace Cultivation_Way.Library
             this.anim_type = anim_type;
             this.spell_action = spell_action;
             // TODO: 添加damage_action自动适配参数
-            this.damage_action = damage_action == null ? Actions.CW_SpellAction_Damage.default_attack_enemy : damage_action;
+            this.damage_action = damage_action;
             // TODO: 添加anim_action自动适配参数
-            this.anim_action = anim_action == null ? Actions.CW_SpellAction_Anim.default_on_enemy : anim_action;
+            this.anim_action = anim_action;
             // TODO: cost_action
-            this.cost_action = cost_action == null ? Actions.CW_SpellAction_Cost.default_spell_cost : cost_action;
+            this.cost_action = cost_action;
             this.element_type_limit = element_type_limit;
             this.base_elements_contained = new bool[element.base_elements.Length];
             this.tags = 0;

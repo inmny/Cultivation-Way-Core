@@ -200,6 +200,7 @@
     <None Include="GameResources\cw_locales\cz.json" />
     <None Include="GameResources\cw_locales\en.json" />
     <None Include="GameResources\cw_locales\tc.json" />
+    <None Include="GameResources\effects\sprites.json" />
     <None Include="mod.json" />
   </ItemGroup>
   <ItemGroup>

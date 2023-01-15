@@ -32,6 +32,10 @@ namespace Cultivation_Way.Animation
         {
             spawn_anim("gold_blade", "u_0", "u_1", 0, 0, 0, 0, 1f);
         }
+        private static void spawn_anim_on_specific_units(string anim_id)
+        {
+            spawn_anim(anim_id, "u_0", "u_1", 0, 0, 0, 0, 1f);
+        }
         private static bool spawn_anim(string anim_id, string src_id, string dst_id, int src_x, int src_y, int dst_x, int dst_y, float scale)
         {
             WorldBoxConsole.Console.print("Test anim:" + anim_id + ", scale:" + scale);

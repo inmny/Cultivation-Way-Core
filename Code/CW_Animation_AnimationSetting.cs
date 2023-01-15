@@ -114,7 +114,7 @@ namespace Cultivation_Way.Animation
         {
             CW_AnimationSetting copy = new CW_AnimationSetting();
 
-            copy.possible_associated = possible_associated;
+            copy.possible_associated = false;
             copy.loop_limit_type = loop_limit_type;
             copy.loop_time_limit = loop_time_limit;
             copy.loop_nr_limit = loop_nr_limit;
@@ -132,6 +132,7 @@ namespace Cultivation_Way.Animation
             copy.always_roll = always_roll;
             copy.roll_angle_per_frame = roll_angle_per_frame;
             copy.point_to_dst = point_to_dst;
+            copy.anim_froze_frame_idx = anim_froze_frame_idx;
             return copy;
         }
         public void set_trace(AnimationTraceType type)

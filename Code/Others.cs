@@ -8,9 +8,10 @@ namespace Cultivation_Way.Others
     {
         public const string mod_name = "修真之路核心";
         public const string mod_id = "inmny.cw_core";
+        public const float anim_dst_error = 0.2f;
         public const int save_version = 1;
         public const int base_element_types = 5;
-        public const float default_anim_trace_grad = 0.1f;
+        public const float default_anim_trace_grad = 2f;
         public const string default_anim_layer_name = "EffectsTop";
         public const bool is_debugging = true;
         public const int wakan_regen_valid_percent = 40;
@@ -28,9 +29,10 @@ namespace Cultivation_Way.Others
     public class CW_Delegates
     {
         // TODO: reduce the parameters cost
-        public delegate void CW_Animation_Trace_Update(float src_x, float src_y, float dst_x, float dst_y, float play_time, float total_time, int loop_nr, int loop_nr_limit, ref float anim_x, ref float anim_y, float grad);
-        public delegate void CW_Animation_Frame_Action(int cur_frame_idx, float src_x, float src_y, float dst_x, float dst_y, float play_time, float anim_x, float anim_y, BaseSimObject pUser);
-        public delegate void CW_Animation_End_Action(int cur_frame_idx, float src_x, float src_y, float dst_x, float dst_y, float play_time, float anim_x, float anim_y, BaseSimObject pUser, BaseSimObject pTarget);
+        public delegate void CW_Animation_Trace_Update(ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim, ref float delta_x, ref float delta_y);
+        public delegate void CW_Animation_Frame_Action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim);
+        public delegate void CW_Animation_End_Action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim);
+
         public delegate void CW_Spell_Action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost);
         public delegate float CW_Spell_Cost_Action(CW_Asset_Spell spell_asset, BaseSimObject pUser);
         public delegate void CW_WorldEvent_Action();

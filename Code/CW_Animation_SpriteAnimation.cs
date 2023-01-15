@@ -55,12 +55,12 @@ namespace Cultivation_Way.Animation
         /// 动画设置
         /// </summary>
         internal CW_AnimationSetting setting;
+        internal float cost_for_spell;
 
         internal CW_SpriteAnimation(CW_AnimationSetting setting, Sprite[] sprites, GameObject prefab, Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_object, BaseSimObject dst_object)
         {
             isOn = true; is_default_sprites = true;
-            if (setting.possible_associated) { this.setting = setting; }
-            else { this.setting = setting.__deepcopy(); }
+            this.setting = setting;
             
             
 
@@ -88,7 +88,7 @@ namespace Cultivation_Way.Animation
                 }
                 dst_vec = dst_object.currentPosition;
             }
-            WorldBoxConsole.Console.print("Is renderer null?>" + (renderer == null)+"\nIs setting null?>"+(setting==null));
+            //WorldBoxConsole.Console.print("Is renderer null?>" + (renderer == null)+"\nIs setting null?>"+(setting==null));
             this.renderer.sortingLayerName = setting.layer_name;
             gameObject.transform.localPosition = this.src_vec;
         }
@@ -102,31 +102,34 @@ namespace Cultivation_Way.Animation
             if (elapsed < next_frame_time)
             {
                 next_frame_time -= elapsed;
-                return;
-            }
-            next_frame_time += setting.frame_interval; // TODO: 可能直接设置为frame_interval更合理
-            
-            // 切换至下一帧图像
-            /** Original Version
-            int change = setting.play_direction == AnimationPlayDirection.FORWARD ? 1 : -1;
-            if (setting.loop_type == AnimationLoopType.ETOE && (loop_nr & 0x1) == 1) change = 0-change;
-            **/
-            if(cur_frame_idx != setting.anim_froze_frame_idx)
-            {
-                int change = ((setting.loop_type == AnimationLoopType.ETOE && (loop_nr & 0x1) == 1) ^ (setting.play_direction == AnimationPlayDirection.FORWARD)) ? 1 : -1;
-                int next_frame_idx = (cur_frame_idx + change + sprites.Length) % sprites.Length;
-                renderer.sprite = sprites[next_frame_idx];
-                cur_frame_idx = next_frame_idx;
-                if (cur_frame_idx == 0) loop_nr++;
             }
             else
             {
-                loop_nr++;
+                next_frame_time += setting.frame_interval; // TODO: 可能直接设置为frame_interval更合理
+
+                // 切换至下一帧图像
+                /** Original Version
+                int change = setting.play_direction == AnimationPlayDirection.FORWARD ? 1 : -1;
+                if (setting.loop_type == AnimationLoopType.ETOE && (loop_nr & 0x1) == 1) change = 0-change;
+                **/
+                if (cur_frame_idx != setting.anim_froze_frame_idx)
+                {
+                    int change = ((setting.loop_type == AnimationLoopType.ETOE && (loop_nr & 0x1) == 1) ^ (setting.play_direction == AnimationPlayDirection.FORWARD)) ? 1 : -1;
+                    int next_frame_idx = (cur_frame_idx + change + sprites.Length) % sprites.Length;
+                    renderer.sprite = sprites[next_frame_idx];
+                    cur_frame_idx = next_frame_idx;
+                    if (cur_frame_idx == 0) loop_nr++;
+                }
+                else
+                {
+                    loop_nr++;
+                }
             }
+            
             //始终旋转
             if (setting.always_roll)
             {
-                gameObject.transform.Rotate(0, 0, setting.roll_angle_per_frame);
+                gameObject.transform.Rotate(0, 0, setting.roll_angle_per_frame * elapsed);
             }
             // 检测到目标不存在后停止
             if (setting.trace_type == AnimationTraceType.TRACK && dst_object == null)
@@ -134,28 +137,30 @@ namespace Cultivation_Way.Animation
                 isOn = false;
                 return;
             }
-            float src_x, src_y; float dst_x = 0, dst_y = 0;
-            src_x = src_vec.x; src_y = src_vec.y;
+            
             // 轨迹更新
             if (setting.trace_type != AnimationTraceType.NONE)
             {
-                float next_x = gameObject.transform.position.x;
-                float next_y = gameObject.transform.position.y;
+
+                float delta_x = 0;
+                float delta_y = 0;
+                
                 if(setting.trace_type == AnimationTraceType.TRACK)
                 {
-                    dst_x = dst_object.currentPosition.x; dst_y = dst_object.currentPosition.y;
-                    setting.trace_updater(src_vec.x, src_vec.y, dst_x, dst_y, play_time, setting.loop_time_limit, loop_nr, setting.loop_nr_limit, ref next_x, ref next_y, setting.trace_grad);
+                    dst_vec = dst_object.currentPosition;
+                    setting.trace_updater(ref src_vec, ref dst_object.currentPosition, this, ref delta_x, ref delta_y);
                 }
                 else
                 {
-                    dst_x = dst_vec.x; dst_y = dst_vec.y;
-                    setting.trace_updater(src_vec.x, src_vec.y, dst_x, dst_y, play_time, setting.loop_time_limit, loop_nr, setting.loop_nr_limit, ref next_x, ref next_y, setting.trace_grad);
+                    setting.trace_updater(ref src_vec, ref dst_vec, this, ref delta_x, ref delta_y);
                 }
-                float delta_x = next_x - gameObject.transform.position.x;
-                float delta_y = next_y - gameObject.transform.position.y;
-                WorldBoxConsole.Console.print(string.Format("delta x:{0},y:{1}", delta_x, delta_y));
+                delta_x *= elapsed; delta_y *= elapsed;
+                float next_x = gameObject.transform.position.x + delta_x;
+                float next_y = gameObject.transform.position.y + delta_y;
+                //WorldBoxConsole.Console.print(string.Format("next x:{0},y:{1}", next_x, next_y));
                 trace_length += Mathf.Sqrt(delta_x * delta_x + delta_y * delta_y);
-                gameObject.transform.Translate(new Vector3(next_x, next_y));
+
+                gameObject.transform.position = new Vector3(next_x, next_y, gameObject.transform.position.z);
                 // 指向终点
                 if (setting.point_to_dst)
                 {
@@ -163,7 +168,7 @@ namespace Cultivation_Way.Animation
                 }
             }
             // 路径行为
-            if (setting.frame_action != null) setting.frame_action(cur_frame_idx, src_x, src_y, dst_x, dst_y, play_time, gameObject.transform.position.x, gameObject.transform.position.y, src_object);
+            if (setting.frame_action != null) setting.frame_action(cur_frame_idx, ref src_vec, ref dst_vec, this);
 
             // 按照设置进行判断是否结束
             bool end = false;
@@ -181,7 +186,7 @@ namespace Cultivation_Way.Animation
                     }
                 case AnimationLoopLimitType.DST_LIMIT:
                     {
-                        if (Toolbox.Dist(dst_x,dst_y,gameObject.transform.position.x,gameObject.transform.position.y) < setting.trace_grad) end = true;
+                        if (Toolbox.Dist(dst_vec.x,dst_vec.y,gameObject.transform.position.x,gameObject.transform.position.y) < Others.CW_Constants.anim_dst_error) end = true;
                         break;
                     }
                 case AnimationLoopLimitType.TRACE_LIMIT:
@@ -202,7 +207,7 @@ namespace Cultivation_Way.Animation
             if (end)
             {
                 isOn = false;
-                if (setting.end_action != null) setting.end_action(cur_frame_idx, src_x, src_y, dst_x, dst_y, play_time, gameObject.transform.position.x, gameObject.transform.position.y, src_object, dst_object);
+                if (setting.end_action != null) setting.end_action(cur_frame_idx, ref src_vec, ref dst_vec, this);
             }
         }
         internal void kill()
@@ -275,16 +280,11 @@ namespace Cultivation_Way.Animation
             isOn = false;
             if (stop_with_end_action && setting.end_action != null)
             {
-                float dst_x = 0, dst_y = 0;
-                if (setting.trace_type == AnimationTraceType.TRACK)
+                if (setting.trace_type == AnimationTraceType.TRACK && this.dst_object!=null)
                 {
-                    dst_x = dst_object.currentPosition.x; dst_y = dst_object.currentPosition.y;
+                    dst_vec = dst_object.currentPosition;
                 }
-                else if(setting.trace_type!=AnimationTraceType.NONE)
-                {
-                    dst_x = dst_vec.x; dst_y = dst_vec.y;
-                }
-                setting.end_action(cur_frame_idx, src_vec.x, src_vec.y, dst_x, dst_y, play_time, gameObject.transform.position.x, gameObject.transform.position.y, src_object, dst_object);
+                setting.end_action(cur_frame_idx, ref src_vec, ref dst_vec, this);
             }
         }
     }

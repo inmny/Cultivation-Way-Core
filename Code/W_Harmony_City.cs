@@ -108,6 +108,8 @@ namespace Cultivation_Way.Content.Harmony
                 }
                 else
                 {
+                    Library.CW_Asset_CultiBook cultibook = Library.CW_Library_Manager.instance.cultibooks.get(cw_city_data.cw_pop_points[idx].cultibook_id);
+                    if (cultibook != null && --cultibook.cur_culti_nr == 0) cultibook.try_deprecate(); 
                     cw_city_data.popPoints.RemoveAt(idx);
                     cw_city_data.cw_pop_points.RemoveAt(idx);
                 }

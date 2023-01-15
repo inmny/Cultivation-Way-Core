@@ -11,9 +11,14 @@ namespace Cultivation_Way.Actions
     {
         public static void default_on_enemy(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
-            if(spell_asset.anim_type == CW_Spell_Animation_Type.ON_TARGET)
+            switch (spell_asset.anim_type)
             {
-                CW_EffectManager.instance.spawn_anim(spell_asset.anim_id, pTarget == null ? pTargetTile.pos : pTarget.currentPosition, pTarget == null ? pTargetTile.pos : pTarget.currentPosition, pUser, pTarget, 1f);
+                case CW_Spell_Animation_Type.ON_TARGET:
+                    CW_EffectManager.instance.spawn_anim(spell_asset.anim_id, pTarget == null ? pTargetTile.pos : pTarget.currentPosition, pTarget == null ? pTargetTile.pos : pTarget.currentPosition, pUser, pTarget, 1f).cost_for_spell = cost;
+                    break;
+                case CW_Spell_Animation_Type.USER_TO_TARGET:
+                    CW_EffectManager.instance.spawn_anim(spell_asset.anim_id, pUser.currentPosition, pTarget == null ? pTargetTile.pos : pTarget.currentPosition, pUser, pTarget, 1f).cost_for_spell = cost;
+                    break;
             }
             
         }

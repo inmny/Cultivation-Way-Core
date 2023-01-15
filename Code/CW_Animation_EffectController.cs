@@ -33,7 +33,7 @@ namespace Cultivation_Way.Animation
             SpriteRenderer renderer = prefab.GetComponent<SpriteRenderer>();
             renderer.sortingLayerName = setting.layer_name;
             renderer.transform.localPosition = new Vector3(base_offset.x + renderer.transform.localPosition.x, base_offset.y + renderer.transform.localPosition.y, renderer.transform.localPosition.z);
-            animations = new CW_SpriteAnimation[anim_limit];
+            animations = new CW_SpriteAnimation[anim_limit+1];
             for (int i = 0; i < animations.Length; i++)
             {
                 animations[i] = null;
@@ -90,6 +90,7 @@ namespace Cultivation_Way.Animation
         {
             CW_SpriteAnimation new_anim = new CW_SpriteAnimation(default_setting, anim, prefab, src_vec, dst_vec, src_obj, dst_obj);
             if (!new_anim.isOn) return null;
+            if (cur_anim_nr == animations.Length - 2) { new_anim.kill(); return null; }
             animations[cur_anim_nr++] = new_anim;
             new_anim.change_scale(scale);
             return new_anim;
@@ -98,6 +99,7 @@ namespace Cultivation_Way.Animation
         {
             CW_SpriteAnimation new_anim = new CW_SpriteAnimation(default_setting, anim, prefab, src_vec, dst_vec, src_obj, dst_obj);
             if (!new_anim.isOn) return null;
+            if (cur_anim_nr == animations.Length - 2) { new_anim.kill(); return null; }
             animations[cur_anim_nr++] = new_anim;
             new_anim.change_scale(scale);
             new_anim.offset(offset);
