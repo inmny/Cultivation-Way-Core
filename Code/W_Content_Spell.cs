@@ -21,14 +21,15 @@ namespace Cultivation_Way.Content
         private static void add_gold_blade_spell()
         {
             CW_AnimationSetting gold_blade_setting = new CW_AnimationSetting();
-            gold_blade_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
-            gold_blade_setting.loop_trace_limit = -1;
+            gold_blade_setting.loop_limit_type = AnimationLoopLimitType.TRACE_LIMIT;
+            gold_blade_setting.loop_trace_limit = 33;
             gold_blade_setting.loop_nr_limit = -1;
             gold_blade_setting.point_to_dst = true;
             gold_blade_setting.anim_froze_frame_idx = 3;
             gold_blade_setting.frame_interval = 0.05f;
             gold_blade_setting.trace_grad = 5;
-            gold_blade_setting.set_trace(AnimationTraceType.TRACK);
+            gold_blade_setting.set_trace(AnimationTraceType.LINE);
+
             gold_blade_setting.end_action = example_spell_end_action;
             gold_blade_setting.frame_action = gold_blade_frame_action;
             CW_EffectManager.instance.load_as_controller("gold_blade_anim", "effects/gold_blade/", controller_setting: gold_blade_setting, base_scale: 0.08f);
