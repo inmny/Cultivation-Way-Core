@@ -8,7 +8,11 @@ namespace Cultivation_Way.Actions
 {
     public class CW_SpellAction_Damage
     {
-        public static void default_attack_enemy(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
+        public static void no_damage(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
+        {
+            return;
+        }
+        public static void defualt_damage(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
             float damage = cost * Others.CW_Constants.default_spell_damage_co;
             switch (spell_asset.target_type)

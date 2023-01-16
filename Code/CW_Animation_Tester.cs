@@ -30,7 +30,7 @@ namespace Cultivation_Way.Animation
         }
         private static void spawn_gold_blade()
         {
-            spawn_anim("gold_blade", "u_0", "u_1", 0, 0, 0, 0, 1f);
+            spawn_anim("gold_blade_anim", "u_0", "u_1", 0, 0, 0, 0, 1f);
         }
         private static void spawn_anim_on_specific_units(string anim_id)
         {

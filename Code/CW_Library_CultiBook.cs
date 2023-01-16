@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Diagnostics;
 namespace Cultivation_Way.Library
 {
     public class CW_Asset_CultiBook : Asset
@@ -101,23 +101,38 @@ namespace Cultivation_Way.Library
             CW_Library_Manager.instance.cultibooks.add(this);
             //WorldBoxConsole.Console.print("store '" + id + "'");
         }
+        private static List<string> funcs = new List<string>();
         public void try_deprecate(bool force = false)
         {
+            /**
+            StackTrace ss= new StackTrace(true);
+            for (int i = 0; i < ss.FrameCount; i++)
+            {
+                Type t = ss.GetFrame(i).GetMethod().DeclaringType;
+                if (ss.GetFrame(i).GetFileLineNumber() != 0)
+                {
+                    string stack_path = t.FullName + " " + ss.GetFrame(i).GetFileLineNumber();
+                    if (funcs.Contains(stack_path)) continue;
+                    WorldBoxConsole.Console.print(stack_path);
+                    funcs.Add(stack_path);
+                }
+            }
+            */
             if (histroy_culti_nr >= Others.CW_Constants.fix_cultibook_line) is_fixed = true;
             if (this.cur_culti_nr > 0) return;
             //WorldBoxConsole.Console.print("deprecate '" + id + "'");
             CW_Library_Manager.instance.cultibooks.delete(this.id, force);
-            if (CW_Library_Manager.instance.cultibooks.dict.ContainsKey(this.id)) WorldBoxConsole.Console.print(string.Format("Deprecate cultibook '{0}' failed", id));
+            //WorldBoxConsole.Console.print(string.Format("Deprecate cultibook '{0}'", id));
         }
         internal string get_info_without_name()
         {
             StringBuilder string_builder = new StringBuilder();
-            string_builder.AppendLine("创始人\t" + author_name);
-            string_builder.AppendLine("品阶\t\t" + order + "品" + level + "级");
+            string_builder.AppendLine("\t创始人\t\t\t" + author_name+"\t");
+            string_builder.AppendLine("\t品阶\t\t\t\t" + order + "品" + level + "级\t");
             for(int i = 0; i < this.spells.Length; i++)
             {
                 if (this.spells[i] == null) break;
-                string_builder.AppendLine("法术["+i+"]\t"+this.spells[i]);
+                string_builder.AppendLine("\t法术["+i+"]\t\t\t"+this.spells[i]+"\t");
             }
             return string_builder.ToString();
         }

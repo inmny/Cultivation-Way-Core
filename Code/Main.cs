@@ -56,6 +56,14 @@ namespace Cultivation_Way{
                 mod_state.library_manager.register();
                 print("[CW Core]: Finish Initialization");
             }
+            if(MapBox.instance.mapStats.year % 100 == 1 && MapBox.instance.mapStats.month == 1)
+            {
+                
+            }
+        }
+        private void gc()
+        {
+            GC.Collect();
         }
     }
 }

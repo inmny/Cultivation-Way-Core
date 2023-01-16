@@ -17,6 +17,7 @@ namespace Cultivation_Way.Content
         internal static Transform transformBuildings;
         internal static Transform transformTrees;
         internal static GameStatsData game_stats_data;
+        internal static IslandsCalculator islands_calculator;
         internal static List<SpriteGroupSystem<GroupSpriteObject>> list_systems;
         internal static void init()
         {
@@ -27,22 +28,27 @@ namespace Cultivation_Way.Content
             transformBuildings = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "transformBuildings") as Transform;
             transformTrees = transformBuildings.Find("Trees");
             game_stats_data = ReflectionUtility.Reflection.GetField(typeof(GameStats), MapBox.instance.gameStats, "data") as GameStatsData;
+            islands_calculator = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "islandsCalculator") as IslandsCalculator;
             list_systems = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "list_systems") as List<SpriteGroupSystem<GroupSpriteObject>>;
                 
         }
         internal static CW_ActorData get_load_cw_data(ActorData origin_data)
         {
+            CW_ActorData ret = null;
             switch (ModState.instance.load_unit_reason)
             {
                 case Load_Unit_Reason.CITY_SPAWN:
-                    return Harmony.W_Harmony_City.tmp_data;
+                    ret = Harmony.W_Harmony_City.tmp_data;
+                    Harmony.W_Harmony_City.tmp_data = null;
+                    break;
                 case Load_Unit_Reason.LOAD_SAVES:
                     throw new NotImplementedException();
                     break;
                 default:
-                    return null;
+                    break;
             }
-            return null;
+
+            return ret;
         }
         internal static GameObject get_actor_prefab(string path)
         {

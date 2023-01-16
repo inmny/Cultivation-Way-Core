@@ -26,17 +26,20 @@ namespace Cultivation_Way.Animation
 
         private void Update()
         {
-            int i;
-            for (i = 0; i < controllers.Count; i++)
+            int i; int time;
+            for (time = 0; time < Config.timeScale; time++)
             {
-                controllers[i].update(Time.fixedDeltaTime);
-            }
-            for (i = 0; i < single_anims.Count; i++)
-            {
-                single_anims[i].update(Time.fixedDeltaTime);
-                if (!single_anims[i].isOn)
+                for (i = 0; i < controllers.Count; i++)
                 {
-                    single_anims.RemoveAt(i); i--;
+                    controllers[i].update(Time.fixedDeltaTime);
+                }
+                for (i = 0; i < single_anims.Count; i++)
+                {
+                    single_anims[i].update(Time.fixedDeltaTime);
+                    if (!single_anims[i].isOn)
+                    {
+                        single_anims.RemoveAt(i); i--;
+                    }
                 }
             }
         }

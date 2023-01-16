@@ -72,10 +72,11 @@ namespace Cultivation_Way.Animation
             {
                 if (animations[i] != null && !animations[i].isOn) 
                 {
-                    animations[i].kill();
+                    CW_SpriteAnimation anim_to_kill  = animations[i];
                     animations[i] = animations[cur_anim_nr - 1];
                     animations[cur_anim_nr - 1] = null;
                     cur_anim_nr--;
+                    anim_to_kill.kill();
                 }
             }
         }

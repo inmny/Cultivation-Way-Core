@@ -86,13 +86,13 @@ namespace Cultivation_Way
         {
             CW_ActorData cw_actor_data = new CW_ActorData();
             CW_ActorStatus cw_actor_status = new CW_ActorStatus();
-            cw_actor_data.cultibook_id = CW_Library_Manager.instance.cultibooks.select_better(main_parent.cw_data.cultibook_id, second_parent.cw_data.cultibook_id);
-
+            /**
             if (!string.IsNullOrEmpty(cw_actor_data.cultibook_id)) 
             {
                 CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor_data.cultibook_id);
                 cultibook.cur_culti_nr++; cultibook.histroy_culti_nr++;
             }
+            */
 
             cw_actor_data.cultisys_level = new int[CW_Library_Manager.instance.cultisys.list.Count];
 
@@ -116,6 +116,7 @@ namespace Cultivation_Way
             cw_actor_status.wakan_level = 1;
 
             CW_Library_Manager.instance.cultisys.set_cultisys(cw_actor_data, main_parent.stats.id);
+            cw_actor_data.pre_learn_cultibook(CW_Library_Manager.instance.cultibooks.get(CW_Library_Manager.instance.cultibooks.select_better(main_parent.cw_data.cultibook_id, second_parent.cw_data.cultibook_id)));
             return cw_actor_data;
         }
         public void updateStatus_month()

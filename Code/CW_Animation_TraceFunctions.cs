@@ -11,8 +11,10 @@ namespace Cultivation_Way.Animation
     {
         public static void trace_line(ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim, ref float delta_x, ref float delta_y)
         {
-            delta_x = anim.setting.trace_grad;
-            delta_y = anim.setting.trace_grad;
+            float dist = Toolbox.DistVec2Float(src_vec, dst_vec);
+
+            delta_x = (dst_vec.x - src_vec.x) * anim.setting.trace_grad / dist;
+            delta_y = (dst_vec.y - src_vec.y) * anim.setting.trace_grad / dist;
         }
         public static void trace_track(ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim, ref float delta_x, ref float delta_y)
         {

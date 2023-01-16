@@ -8,7 +8,7 @@ namespace Cultivation_Way.Actions
 {
     public class CW_SpellAction_Cost
     {
-        public static float default_spell_cost(CW_Asset_Spell spell_asset, BaseSimObject user)
+        public static float default_cost(CW_Asset_Spell spell_asset, BaseSimObject user)
         {
             if (user.objectType == MapObjectType.Actor)
             {

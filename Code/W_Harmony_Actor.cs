@@ -83,12 +83,16 @@ namespace Cultivation_Way.Content.Harmony
         public static bool mapbox_destroyActor(Actor pActor)
         {
             if (pActor == null) throw new ArgumentNullException("pActor should not be null! In origin game, no possible to pass null to this function");
+            WorldBoxConsole.Console.print(string.Format("Repeat destroy actor {0}", ((CW_Actor)pActor).fast_data.actorID));
             if (pActor.object_destroyed) { return true; }
+            ((CW_Actor)pActor).cw_data = null;
+            ((CW_Actor)pActor).cw_status = null;
             // 回收功法
+            /**
             CW_Actor cw_actor = (CW_Actor)pActor;
             CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id);
-            if (cultibook != null && --cultibook.cur_culti_nr==0) cultibook.try_deprecate();
-
+            if (cultibook != null && --cultibook.cur_culti_nr==0) cultibook.try_deprecate(); cw_actor.cw_data.cultibook_id = null;
+            */
             return true;
         }
         [HarmonyPrefix]
@@ -148,6 +152,7 @@ namespace Cultivation_Way.Content.Harmony
             if (new_cw_actor.cw_data.cultibook_id != null)
             {
                 new_cw_actor.cw_data.cultibook_id = null;
+                new_cw_actor.cw_data.spells.Clear();
                 new_cw_actor.learn_cultibook(cw_actor.cw_data.cultibook_id);
             }
             // 未使用的对象组合
@@ -204,6 +209,15 @@ namespace Cultivation_Way.Content.Harmony
                 actor.cw_status = actor.cw_data.status;
                 CW_Actor.set_data(actor, actor.fast_data);
                 CW_Actor.set_professionAsset(actor, AssetManager.professions.get(pData.status.profession));
+                if (ModState.instance.load_unit_reason == Load_Unit_Reason.CITY_SPAWN)
+                {
+                    // 已经进行了预学习，只需再学习法术即可。
+                    CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(actor.cw_data.cultibook_id);
+                    if (cultibook != null)
+                    {
+                        actor.learn_spells(cultibook.spells);
+                    }
+                }
             }
             actor.fast_shake_timer = CW_Actor.get_shake_timer(actor);
             actor.transform.position = pTile.posV3;

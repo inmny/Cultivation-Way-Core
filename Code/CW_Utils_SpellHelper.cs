@@ -77,5 +77,25 @@ namespace Cultivation_Way.Utils
 				CW_Building.func_getHit((Building)target, damage, true, (AttackType)Others.CW_Enums.CW_AttackType.Spell, user, true);
 			}
 		}
+		public static TileIsland get_random_ground_island(bool pMinRegions = true)
+        {
+			if (Content.W_Content_Helper.islands_calculator.islands_ground.Count == 0)
+			{
+				return null;
+			}
+			if (!pMinRegions)
+			{
+				return Content.W_Content_Helper.islands_calculator.islands_ground.GetRandom();
+			}
+			for (int i = 0; i < Content.W_Content_Helper.islands_calculator.islands_ground.Count; i++)
+			{
+				Content.W_Content_Helper.islands_calculator.islands_ground.ShuffleOne(i);
+				if (Content.W_Content_Helper.islands_calculator.islands_ground[i].regions.Count >= 4)
+				{
+					return Content.W_Content_Helper.islands_calculator.islands_ground[i];
+				}
+			}
+			return null;
+		}
 	}
 }
