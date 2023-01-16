@@ -16,6 +16,9 @@ namespace Cultivation_Way.Library
         DOWNWARD,
         CUSTOM
     }
+    /// <summary>
+    /// 法术触发类型，目前只支持ATTACK, DEFEND
+    /// </summary>
     public enum CW_Spell_Triger_Type
     {
         ATTACK,
@@ -59,7 +62,7 @@ namespace Cultivation_Way.Library
     {
         public string anim_id;
         public int rarity;
-        public float might;
+        public float free_val;
         public float cost;
         /// <summary>
         /// 暂不使用，学习等级
@@ -83,14 +86,14 @@ namespace Cultivation_Way.Library
         public CW_Spell_Target_Camp target_camp;
         public CW_Spell_Triger_Type triger_type;
         public CW_Spell_Animation_Type anim_type;
-        public CW_Delegates.CW_Spell_Cost_Action cost_action;
+        public CW_Delegates.CW_Spell_Cost_Action check_and_cost_action;
         public CW_Delegates.CW_Spell_Action spell_action;
         public CW_Delegates.CW_Spell_Action anim_action;
         public CW_Delegates.CW_Spell_Action damage_action;
         public CW_Asset_Spell(
             string id, string anim_id, 
             CW_Element element, string element_type_limit = null, 
-            int rarity = 1, float might = 1, float cost = 0.01f, int learn_level = 1, int cast_level = 1,
+            int rarity = 1, float free_val = 1, float cost = 0.01f, int learn_level = 1, int cast_level = 1,
             bool cultisys_black_or_white_list = true, List<string> cultisys_list = null, List<string> banned_races = null, 
             CW_Spell_Target_Type target_type = CW_Spell_Target_Type.ACTOR, 
             CW_Spell_Target_Camp target_camp = CW_Spell_Target_Camp.ENEMY, 
@@ -99,7 +102,7 @@ namespace Cultivation_Way.Library
             CW_Delegates.CW_Spell_Action damage_action = null, 
             CW_Delegates.CW_Spell_Action anim_action = null, 
             CW_Delegates.CW_Spell_Action spell_action = null,  
-            CW_Delegates.CW_Spell_Cost_Action cost_action = null)
+            CW_Delegates.CW_Spell_Cost_Action check_and_cost_action = null)
         {
             if (String.IsNullOrEmpty(anim_id)) anim_id = id;
             //if (spell_action == null) throw new Exception("spell_action cannot be null");
@@ -107,7 +110,7 @@ namespace Cultivation_Way.Library
             this.anim_id = anim_id;
             this.element = element;
             this.rarity = rarity;
-            this.might = might;
+            this.free_val = free_val;
             this.cost = cost;
             this.learn_level = learn_level;
             this.cast_level = cast_level;
@@ -123,8 +126,8 @@ namespace Cultivation_Way.Library
             this.damage_action = damage_action;
             // TODO: 添加anim_action自动适配参数
             this.anim_action = anim_action;
-            // TODO: cost_action
-            this.cost_action = cost_action;
+            // TODO: check_and_cost_action
+            this.check_and_cost_action = check_and_cost_action;
             this.element_type_limit = element_type_limit;
             this.base_elements_contained = new bool[element.base_elements.Length];
             this.tags = 0;
@@ -179,7 +182,7 @@ namespace Cultivation_Way.Library
         }
         public float check_and_cost(BaseSimObject pUser)
         {
-            return cost_action(this, pUser);
+            return check_and_cost_action(this, pUser);
         }
     }
     public enum Spell_Search_Type

@@ -76,10 +76,27 @@ namespace Cultivation_Way
         internal bool __get_hit(float damage, Others.CW_Enums.CW_AttackType attack_type, BaseSimObject attacker, bool pSkipIfShake)
         {
             if ((pSkipIfShake && this.fast_shake_timer.isActive) || this.fast_data.health <= 0) return false;
+
             damage *= (1 - this.cw_cur_stats.base_stats.armor / 100f);
+
             if(damage < 0) damage = 0;
+
             this.fast_data.health -= (int)damage;
-            if (this.fast_data.health < 1) this.fast_data.health = 1;
+            // 释放防御类法术
+            if (this.cw_data.spells.Count > 0)
+            {
+                CW_Asset_Spell spell = CW_Library_Manager.instance.spells.get(this.cw_data.spells.GetRandom());
+                if(spell.triger_type == CW_Spell_Triger_Type.DEFEND)
+                {// TODO: 可能需要增加对自身位置的参数选择
+                    CW_Spell.cast(spell, this, attacker, attacker==null?null:attacker.currentTile);
+                }
+            }
+
+            if (this.fast_data.health < 1)
+            {
+                this.fast_data.health = 1;
+            }
+
             return true;
         }
         public static CW_ActorData procrete(CW_Actor main_parent, CW_Actor second_parent)

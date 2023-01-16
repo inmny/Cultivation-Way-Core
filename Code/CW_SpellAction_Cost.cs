@@ -8,7 +8,7 @@ namespace Cultivation_Way.Actions
 {
     public class CW_SpellAction_Cost
     {
-        public static float default_cost(CW_Asset_Spell spell_asset, BaseSimObject user)
+        public static float default_check_and_cost(CW_Asset_Spell spell_asset, BaseSimObject user)
         {
             if (user.objectType == MapObjectType.Actor)
             {
@@ -31,6 +31,19 @@ namespace Cultivation_Way.Actions
                     }
                 }
                 return cost;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+        public static float low_health_check_and_cost(CW_Asset_Spell spell_asset, BaseSimObject user)
+        {
+            if (user.objectType == MapObjectType.Actor)
+            {
+                CW_Actor cw_actor = (CW_Actor)user;
+                if (cw_actor.fast_data.health > spell_asset.free_val * cw_actor.cw_cur_stats.base_stats.health) return 0;
+                return default_check_and_cost(spell_asset, user);
             }
             else
             {

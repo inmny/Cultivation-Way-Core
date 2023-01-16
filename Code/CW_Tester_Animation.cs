@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Cultivation_Way.Library;
-namespace Cultivation_Way.Animation
+namespace Cultivation_Way.Tester
 {
-    internal static class CW_Tester
+    internal static class CW_Anim_Tester
     {
         private static bool force_spell(string spell_id, string src_id, string dst_id, int dst_x, int dst_y, float scale)
         {
@@ -31,6 +31,10 @@ namespace Cultivation_Way.Animation
         private static void spawn_gold_blade()
         {
             spawn_anim("gold_blade_anim", "u_0", "u_1", 0, 0, 0, 0, 1f);
+        }
+        private static void spawn_gold_escape()
+        {
+            spawn_anim("gold_escape_anim", "u_0", "u_1", 0, 0, 0, 0, 0.1f);
         }
         private static void spawn_anim_on_specific_units(string anim_id)
         {

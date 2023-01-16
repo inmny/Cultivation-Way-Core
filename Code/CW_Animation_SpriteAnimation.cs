@@ -186,7 +186,7 @@ namespace Cultivation_Way.Animation
                     }
                 case AnimationLoopLimitType.DST_LIMIT:
                     {
-                        if (Toolbox.Dist(dst_vec.x,dst_vec.y,gameObject.transform.position.x,gameObject.transform.position.y) < Others.CW_Constants.anim_dst_error) end = true;
+                        if ((int)(dst_vec.x+0.4f)==(int)gameObject.transform.position.x && (int)(dst_vec.y+0.4f)==(int)gameObject.transform.position.y) end = true;
                         break;
                     }
                 case AnimationLoopLimitType.TRACE_LIMIT:

@@ -28,14 +28,14 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "gold_escape", anim_id: "gold_escape_anim",
                 new CW_Element(new int[] { 0, 0, 0, 100, 0 }),
-                rarity: 1, might: 1, cost: 0.1f, learn_level: 1, cast_level: 1,
+                rarity: 1, free_val: 0.15f, cost: 0.1f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.DEFEND,
                 anim_type: CW_Spell_Animation_Type.ON_USER,
                 damage_action: CW_SpellAction_Damage.no_damage,
-                anim_action: CW_SpellAction_Anim.default_anim,
-                cost_action: CW_SpellAction_Cost.default_cost
+                anim_action: gold_escape_anim_action,
+                check_and_cost_action: CW_SpellAction_Cost.low_health_check_and_cost
                 );
             spell.add_tag(CW_Spell_Tag.DEFEND);
             CW_Library_Manager.instance.spells.add(spell);
@@ -58,14 +58,14 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "gold_blade", anim_id: "gold_blade_anim",
                 new CW_Element(new int[] { 0, 0, 0, 100, 0 }),
-                rarity: 1, might: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
                 anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
                 damage_action: CW_SpellAction_Damage.defualt_damage,
                 anim_action: CW_SpellAction_Anim.default_anim,
-                cost_action: CW_SpellAction_Cost.default_cost
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
                 );
             spell.add_tag(CW_Spell_Tag.ATTACK);
             CW_Library_Manager.instance.spells.add(spell);
@@ -77,10 +77,17 @@ namespace Cultivation_Way.Content
             CW_EffectManager.instance.load_as_controller("example_spell_anim", "effects/example/", controller_setting: anim_setting, base_scale: 0.015f);
 
             CW_Asset_Spell spell = new CW_Asset_Spell(
-                    "example", "example_spell_anim", new CW_Element(), null, 1, 1, 0.05f, 1, 1, true, null, null, CW_Spell_Target_Type.ACTOR, CW_Spell_Target_Camp.ENEMY, CW_Spell_Triger_Type.ATTACK, CW_Spell_Animation_Type.ON_TARGET, CW_SpellAction_Damage.defualt_damage, CW_SpellAction_Anim.default_anim, null, CW_SpellAction_Cost.default_cost
+                    "example", "example_spell_anim", new CW_Element(), null, 1, 1, 0.05f, 1, 1, true, null, null, CW_Spell_Target_Type.ACTOR, CW_Spell_Target_Camp.ENEMY, CW_Spell_Triger_Type.ATTACK, CW_Spell_Animation_Type.ON_TARGET, CW_SpellAction_Damage.defualt_damage, CW_SpellAction_Anim.default_anim, null, CW_SpellAction_Cost.default_check_and_cost
                     );
             spell.add_tag(CW_Spell_Tag.ATTACK);
             CW_Library_Manager.instance.spells.add(spell);
+        }
+        private static void gold_escape_anim_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
+        {
+            if (pUser == null) return;
+            CW_SpriteAnimation anim = CW_EffectManager.instance.spawn_anim(spell_asset.anim_id, pUser.currentPosition, pUser.currentPosition, pUser, pUser, ((CW_Actor)pUser).cw_cur_stats.base_stats.scale);
+            if (anim == null) return;
+            anim.cost_for_spell = cost;
         }
         private static void gold_escape_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
@@ -110,7 +117,8 @@ namespace Cultivation_Way.Content
                 { 
                     ((CW_Actor)anim.src_object).cancelAllBeh(null);
                     CW_Actor.func_spawnOn((CW_Actor)anim.src_object, target, 0f);
-                    anim.set_position(target.posV); 
+                    ((CW_Actor)anim.src_object).updatePos();
+                    anim.set_position(anim.src_object.currentPosition); 
                 }
             }
         }

@@ -204,6 +204,7 @@
     <Content Include="GameResources\effects\gold_escape\golden_teleport-7.png" />
     <Content Include="GameResources\effects\gold_escape\golden_teleport-8.png" />
     <Content Include="GameResources\effects\gold_escape\golden_teleport-9.png" />
+    <Content Include="GameResources\effects\single_gold_sword\gold_sword.png" />
     <Content Include="GameResources\ui\Icons\iconShied.png" />
     <Content Include="GameResources\ui\Icons\iconWakan.png" />
     <Content Include="GameResources\ui\Icons\iconElement.png" />
@@ -218,6 +219,7 @@
     <None Include="GameResources\cw_locales\tc.json" />
     <None Include="GameResources\effects\gold_blade\sprites.json" />
     <None Include="GameResources\effects\gold_escape\sprites.json" />
+    <None Include="GameResources\effects\single_gold_sword\sprites.json" />
     <None Include="GameResources\effects\sprites.json" />
     <None Include="mod.json" />
   </ItemGroup>
@@ -226,7 +228,7 @@
     <Compile Include="Code\CW_ActorData.cs" />
     <Compile Include="Code\CW_ActorStatus.cs" />
     <Compile Include="Code\CW_Addon.cs" />
-    <Compile Include="Code\CW_Animation_Tester.cs" />
+    <Compile Include="Code\CW_Tester_Animation.cs" />
     <Compile Include="Code\CW_Building.cs" />
     <Compile Include="Code\CW_BuildingData.cs" />
     <Compile Include="Code\CW_City.cs" />
@@ -235,6 +237,7 @@
     <Compile Include="Code\CW_Extensions_Kingdom.cs" />
     <Compile Include="Code\CW_Library_ItemModifier.cs" />
     <Compile Include="Code\CW_SpellAction_Cost.cs" />
+    <Compile Include="Code\CW_Tester_Spell.cs" />
     <Compile Include="Code\CW_Utils_SpellHelper.cs" />
     <Compile Include="Code\W_Content_Cultisys.cs" />
     <Compile Include="Code\W_Content_Spell.cs" />
