@@ -163,7 +163,7 @@ namespace Cultivation_Way
                 {
                     this.create_cultibook();
                 }
-                else
+                else if(max_level+1>(CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id).order +1)*Others.CW_Constants.cultibook_levelup_require)
                 {
                     this.modify_cultibook();
                 }
@@ -196,10 +196,32 @@ namespace Cultivation_Way
         {
             if (cultibook == null) throw new Exception("Try to learn 'null' cultibook");
             if (!Others.CW_Constants.cultibook_force_learn && this.cw_data.cultisys == 0) return;
+
             cultibook.cur_culti_nr++;
             cultibook.histroy_culti_nr++;
             CW_Asset_CultiBook prev_cultibook = CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id);
-            if (prev_cultibook != null && --prev_cultibook.cur_culti_nr == 0) prev_cultibook.try_deprecate();
+            if (prev_cultibook != null)
+            {
+                prev_cultibook.cur_culti_nr--;
+                if (prev_cultibook.cur_culti_nr <= 0) prev_cultibook.try_deprecate();
+            }
+
+            this.cw_data.cultibook_id = cultibook.id;
+            this.learn_spells(cultibook.spells);
+        }
+        private void __force_learn_cultibook(string cultibook_id)
+        {
+            CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cultibook_id);
+            if (cultibook == null) throw new Exception("Try to learn 'null' cultibook");
+
+            cultibook.cur_culti_nr++;
+            cultibook.histroy_culti_nr++;
+            CW_Asset_CultiBook prev_cultibook = CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id);
+            if (prev_cultibook != null)
+            {
+                prev_cultibook.cur_culti_nr--;
+                if (prev_cultibook.cur_culti_nr <= 0) prev_cultibook.try_deprecate();
+            }
 
             this.cw_data.cultibook_id = cultibook.id;
             this.learn_spells(cultibook.spells);

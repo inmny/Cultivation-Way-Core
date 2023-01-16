@@ -104,7 +104,6 @@ namespace Cultivation_Way.Library
         private static List<string> funcs = new List<string>();
         public void try_deprecate(bool force = false)
         {
-            /**
             StackTrace ss= new StackTrace(true);
             for (int i = 0; i < ss.FrameCount; i++)
             {
@@ -117,7 +116,6 @@ namespace Cultivation_Way.Library
                     funcs.Add(stack_path);
                 }
             }
-            */
             if (histroy_culti_nr >= Others.CW_Constants.fix_cultibook_line) is_fixed = true;
             if (this.cur_culti_nr > 0) return;
             //WorldBoxConsole.Console.print("deprecate '" + id + "'");

@@ -89,10 +89,12 @@ namespace Cultivation_Way.Content.Harmony
                 count++;
                 tmp = Toolbox.randomInt(0, cw_city_data.popPoints.Count);
 
-                /**
                 Library.CW_Asset_CultiBook cultibook = Library.CW_Library_Manager.instance.cultibooks.get(cw_city_data.cw_pop_points[tmp].cultibook_id);
-                if (cultibook != null && --cultibook.cur_culti_nr == 0) cultibook.try_deprecate();
-                */
+                if (cultibook != null)
+                {
+                    cultibook.cur_culti_nr--;
+                    if (cultibook.cur_culti_nr <= 0) cultibook.try_deprecate();
+                }
 
                 cw_city_data.popPoints.Swap(tmp, cw_city_data.popPoints.Count - 1);
                 cw_city_data.cw_pop_points.Swap(tmp, cw_city_data.popPoints.Count - 1);
@@ -114,10 +116,13 @@ namespace Cultivation_Way.Content.Harmony
                 }
                 else
                 {
-                    /**
                     Library.CW_Asset_CultiBook cultibook = Library.CW_Library_Manager.instance.cultibooks.get(cw_city_data.cw_pop_points[idx].cultibook_id);
-                    if (cultibook != null && --cultibook.cur_culti_nr == 0) cultibook.try_deprecate(); 
-                    */
+                    if (cultibook != null)
+                    {
+                        cultibook.cur_culti_nr--;
+                        if (cultibook.cur_culti_nr <= 0) cultibook.try_deprecate();
+                    }
+
                     cw_city_data.popPoints.RemoveAt(idx);
                     cw_city_data.cw_pop_points.RemoveAt(idx);
                 }
