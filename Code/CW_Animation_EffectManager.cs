@@ -2,6 +2,8 @@
 using System.Linq;
 using UnityEngine;
 using ReflectionUtility;
+using UnityEngine.UI;
+
 namespace Cultivation_Way.Animation
 {
     public class CW_EffectManager : MonoBehaviour
@@ -26,6 +28,7 @@ namespace Cultivation_Way.Animation
 
         private void Update()
         {
+            if (!Others.CW_Constants.is_debugging && (Config.paused || ScrollWindow.isWindowActive())) return;
             int i; int time;
             for (time = 0; time < Config.timeScale; time++)
             {

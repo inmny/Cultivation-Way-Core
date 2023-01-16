@@ -17,7 +17,37 @@ namespace Cultivation_Way.Content
             add_example_spell();
             add_gold_blade_spell();
             add_gold_escape_spell();
+            add_single_gold_sword_spell();
         }
+
+        private static void add_single_gold_sword_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.frame_interval = 1;
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.point_to_dst = true;
+            anim_setting.anim_froze_frame_idx = -1;
+            anim_setting.trace_grad = 40;
+            anim_setting.set_trace(AnimationTraceType.TRACK);
+
+            CW_EffectManager.instance.load_as_controller("single_gold_sword_anim", "effects/single_gold_sword/", anim_limit:10000, controller_setting: anim_setting, base_scale: 0.15f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "gold_sword", anim_id: "single_gold_sword_anim",
+                new CW_Element(new int[] { 0, 0, 0, 100, 0 }),
+                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: CW_SpellAction_Damage.defualt_damage,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+
         private static void add_gold_escape_spell()
         {
             CW_AnimationSetting anim_setting = new CW_AnimationSetting();
@@ -49,16 +79,15 @@ namespace Cultivation_Way.Content
             anim_setting.point_to_dst = true;
             anim_setting.anim_froze_frame_idx = 3;
             anim_setting.frame_interval = 0.05f;
-            anim_setting.trace_grad = 5;
+            anim_setting.trace_grad = 15f;
             anim_setting.set_trace(AnimationTraceType.LINE);
 
-            anim_setting.end_action = example_spell_end_action;
             anim_setting.frame_action = gold_blade_frame_action;
             CW_EffectManager.instance.load_as_controller("gold_blade_anim", "effects/gold_blade/", controller_setting: anim_setting, base_scale: 0.08f);
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "gold_blade", anim_id: "gold_blade_anim",
                 new CW_Element(new int[] { 0, 0, 0, 100, 0 }),
-                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 1, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,

@@ -113,7 +113,6 @@ namespace Cultivation_Way.Animation
         internal CW_AnimationSetting __deepcopy()
         {
             CW_AnimationSetting copy = new CW_AnimationSetting();
-
             copy.possible_associated = false;
             copy.loop_limit_type = loop_limit_type;
             copy.loop_time_limit = loop_time_limit;

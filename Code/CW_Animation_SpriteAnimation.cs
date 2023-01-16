@@ -62,13 +62,11 @@ namespace Cultivation_Way.Animation
             isOn = true; is_default_sprites = true;
             this.setting = setting;
             
-            
-
             this.sprites = sprites;
 
             gameObject = UnityEngine.Object.Instantiate(prefab, CW_EffectManager.instance.transform);
             renderer = gameObject.GetComponent<SpriteRenderer>();
-            
+
             this.apply_setting(src_vec, dst_vec, src_object, dst_object);
         }
         // TODO: complete it
@@ -86,7 +84,7 @@ namespace Cultivation_Way.Animation
                     if (Others.CW_Constants.is_debugging) throw new Exception("Null dst_object");
                     return;
                 }
-                dst_vec = dst_object.currentPosition;
+                this.dst_vec = dst_object.currentPosition;
             }
             //WorldBoxConsole.Console.print("Is renderer null?>" + (renderer == null)+"\nIs setting null?>"+(setting==null));
             this.renderer.sortingLayerName = setting.layer_name;
@@ -148,7 +146,8 @@ namespace Cultivation_Way.Animation
                 if(setting.trace_type == AnimationTraceType.TRACK)
                 {
                     dst_vec = dst_object.currentPosition;
-                    setting.trace_updater(ref src_vec, ref dst_object.currentPosition, this, ref delta_x, ref delta_y);
+                    Vector2 tmp_src_vec = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+                    setting.trace_updater(ref tmp_src_vec, ref dst_object.currentPosition, this, ref delta_x, ref delta_y);
                 }
                 else
                 {
@@ -157,15 +156,15 @@ namespace Cultivation_Way.Animation
                 delta_x *= elapsed; delta_y *= elapsed;
                 float next_x = gameObject.transform.position.x + delta_x;
                 float next_y = gameObject.transform.position.y + delta_y;
-                //WorldBoxConsole.Console.print(string.Format("next x:{0},y:{1}", next_x, next_y));
-                trace_length += Mathf.Sqrt(delta_x * delta_x + delta_y * delta_y);
+                //WorldBoxConsole.Console.print(string.Format("delta x:{0},y:{1}", delta_x, delta_y));
+                if(setting.loop_limit_type==AnimationLoopLimitType.TRACE_LIMIT) trace_length += Mathf.Sqrt(delta_x * delta_x + delta_y * delta_y);
 
-                gameObject.transform.position = new Vector3(next_x, next_y, gameObject.transform.position.z);
                 // 指向终点
                 if (setting.point_to_dst)
                 {
-                    gameObject.transform.rotation = Toolbox.LookAt2D(new Vector2(delta_x, delta_y));
+                    gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, Toolbox.getAngle(gameObject.transform.position.x, gameObject.transform.position.y, dst_vec.x, dst_vec.y) * 57.29578f));
                 }
+                gameObject.transform.position = new Vector3(next_x, next_y);
             }
             // 路径行为
             if (setting.frame_action != null) setting.frame_action(cur_frame_idx, ref src_vec, ref dst_vec, this);
@@ -186,7 +185,7 @@ namespace Cultivation_Way.Animation
                     }
                 case AnimationLoopLimitType.DST_LIMIT:
                     {
-                        if ((int)(dst_vec.x+0.4f)==(int)gameObject.transform.position.x && (int)(dst_vec.y+0.4f)==(int)gameObject.transform.position.y) end = true;
+                        if (Toolbox.Dist(dst_vec.x,dst_vec.y,gameObject.transform.position.x,gameObject.transform.position.y) < Others.CW_Constants.anim_dst_error) end = true;
                         break;
                     }
                 case AnimationLoopLimitType.TRACE_LIMIT:

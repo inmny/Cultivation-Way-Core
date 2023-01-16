@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 namespace Cultivation_Way.Animation
 {
     public class CW_EffectController
@@ -30,9 +32,11 @@ namespace Cultivation_Way.Animation
             this.base_offset = Vector2.zero;
             prefab = UnityEngine.Object.Instantiate(default_prefab);
             prefab.transform.localScale = new Vector3(base_scale, base_scale, prefab.transform.localScale.z);
+
             SpriteRenderer renderer = prefab.GetComponent<SpriteRenderer>();
             renderer.sortingLayerName = setting.layer_name;
             renderer.transform.localPosition = new Vector3(base_offset.x + renderer.transform.localPosition.x, base_offset.y + renderer.transform.localPosition.y, renderer.transform.localPosition.z);
+
             animations = new CW_SpriteAnimation[anim_limit+1];
             for (int i = 0; i < animations.Length; i++)
             {

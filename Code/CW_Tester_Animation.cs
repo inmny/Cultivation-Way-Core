@@ -5,10 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using Cultivation_Way.Library;
+using ReflectionUtility;
+using Cultivation_Way.Utils;
 namespace Cultivation_Way.Tester
 {
     internal static class CW_Anim_Tester
     {
+        private static Func<StackEffects, Vector3, Vector3, string, float, Projectile> s_p = (Func<StackEffects, Vector3, Vector3, string, float, Projectile>)CW_ReflectionHelper.get_method<StackEffects>("startProjectile");
         private static bool force_spell(string spell_id, string src_id, string dst_id, int dst_x, int dst_y, float scale)
         {
             CW_Asset_Spell spell_asset = CW_Library_Manager.instance.spells.get(spell_id);
@@ -35,6 +38,33 @@ namespace Cultivation_Way.Tester
         private static void spawn_gold_escape()
         {
             spawn_anim("gold_escape_anim", "u_0", "u_1", 0, 0, 0, 0, 0.1f);
+        }
+        private static void spawn_gold_swords(int amount)
+        {
+            for(int i = 0; i < amount; i++)
+            {
+                spawn_anim("single_gold_sword_anim", "u_0", "u_1", 0, 0, 0, 0, 1f);
+            }
+        }
+        private static void spawn_arrows(int amount, string src_id, string dst_id)
+        {
+            Actor src_actor = MapBox.instance.getActorByID(src_id);
+            Actor dst_actor = MapBox.instance.getActorByID(dst_id);
+            if(src_actor == null || dst_actor == null)
+            {
+                Debug.LogError(string.Format("src:{0},dst:{1}", src_actor, dst_actor));
+            }
+            try
+            {
+                for (int i = 0; i < amount; i++)
+                {
+                    s_p(MapBox.instance.stackEffects, src_actor.currentPosition, dst_actor.currentPosition, "arrow", 0);
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.LogError(e.StackTrace);
+            }
         }
         private static void spawn_anim_on_specific_units(string anim_id)
         {
