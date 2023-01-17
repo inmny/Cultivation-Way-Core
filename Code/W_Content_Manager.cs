@@ -79,7 +79,7 @@ namespace Cultivation_Way.Content
         }
         private static void add_world_events()
         {
-
+            W_Content_WorldEvent.add_events();
         }
         private static void add_harmony()
         {

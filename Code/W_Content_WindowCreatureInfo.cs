@@ -287,7 +287,7 @@ namespace Cultivation_Way.Content
 
             text_description.text = "";
             text_values.text = "";
-            showStat("creature_statistics_age", cw_actor.fast_data.age);
+            showStat("creature_statistics_age", cw_actor.fast_data.age + "/"+cw_actor.cw_status.max_age);
             if (cw_actor.stats.inspect_kills) showStat("creature_statistics_kills", cw_actor.fast_data.kills);
 
             if (cw_actor.stats.inspect_experience) showStat("creature_statistics_character_experience", cw_actor.fast_data.experience + "/" + cw_actor.getExpToLevelup());

@@ -8,6 +8,7 @@ namespace Cultivation_Way.Library
 {
     public class CW_Asset_CultiSys : Asset
     {
+        // TODO: 添加经验获取函数
         public int tag { get; internal set; }
         internal uint _tag;
         public string sprite_name;
@@ -81,13 +82,13 @@ namespace Cultivation_Way.Library
             if (level >= Others.CW_Constants.max_cultisys_level) WorldBoxConsole.Console.print(level); 
             return list[cultisys_tag].bonus_stats[level>=Others.CW_Constants.max_cultisys_level?Others.CW_Constants.max_cultisys_level-1:level];
         }
-        public void set_cultisys(CW_ActorData cw_actor_data, string stats_id)
+        public void set_cultisys(CW_Actor actor)
         {
-            uint actor_allow_cultisys = CW_Library_Manager.instance.units.get(stats_id).allow_cultisys;
+            uint actor_allow_cultisys = actor.cw_stats.allow_cultisys;
             int cultisys_tag = 0;
-            while(actor_allow_cultisys > 0)
+            while (actor_allow_cultisys > 0)
             {
-                if((actor_allow_cultisys & 0x1) == 1 && list[cultisys_tag].judge(cw_actor_data, list[cultisys_tag])) cw_actor_data.cultisys |= (uint)(1 << cultisys_tag);
+                if ((actor_allow_cultisys & 0x1) == 1 && list[cultisys_tag].judge(actor, list[cultisys_tag])) actor.cw_data.cultisys |= (uint)(1 << cultisys_tag);
                 cultisys_tag++;
                 actor_allow_cultisys >>= 1;
             }

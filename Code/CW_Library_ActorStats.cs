@@ -43,7 +43,7 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 拓展属性加成
         /// </summary>
-        public CW_BaseStats addition_stats;
+        public CW_BaseStats cw_stats;
     }
     public class CW_Library_ActorStats : CW_Asset_Library<CW_ActorStats>
     {
@@ -74,7 +74,8 @@ namespace Cultivation_Way.Library
             cw_actor_stats.born_spells = born_spells;
             cw_actor_stats.anti_time_stop = anti_time_stop;
             cw_actor_stats.fixed_name = fixed_name;
-            cw_actor_stats.addition_stats = addition_stats;
+            addition_stats.addStats(stats.baseStats);
+            cw_actor_stats.cw_stats = addition_stats;
             this.list.Add(cw_actor_stats);
             this.dict.Add(stats.id, cw_actor_stats);
             return cw_actor_stats;

@@ -29,5 +29,12 @@ namespace Cultivation_Way.Content.Harmony
 
             }
         }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(MapBox), "setMapSize")]
+        public static bool setMapSize_Prefix(int pWidth, int pHeight)
+        {
+            World_Data.instance.map_chunk_manager.reset(pWidth * Config.CITY_ZONE_SIZE, pHeight * Config.CITY_ZONE_SIZE);
+            return true;
+        }
     }
 }

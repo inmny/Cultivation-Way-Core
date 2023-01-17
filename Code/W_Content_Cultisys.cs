@@ -20,7 +20,7 @@ namespace Cultivation_Way.Content
                     level_judge = immortal_level_judge
                 }
             );
-            WorldBoxConsole.Console.print(immortal == null);
+            //WorldBoxConsole.Console.print(immortal == null);
             for (i = 0; i < Others.CW_Constants.max_cultisys_level; i++)
             {
                 immortal.bonus_stats[i].age_bonus = 10 * i;
@@ -33,23 +33,54 @@ namespace Cultivation_Way.Content
                 immortal.bonus_stats[i].wakan_regen = (i + 1);
                 immortal.bonus_stats[i].mod_wakan_regen = (i + 1);
             }
-       
+
+
+            CW_Asset_CultiSys bushido = CW_Library_Manager.instance.cultisys.add(
+                new CW_Asset_CultiSys()
+                {
+                    id = "bushido",
+                    sprite_name = "icon_bushido",
+                    judge = bushido_judge,
+                    level_judge = bushido_level_judge
+                }
+            );
+            //WorldBoxConsole.Console.print(bushido == null);
+            for (i = 0; i < Others.CW_Constants.max_cultisys_level; i++)
+            {
+                bushido.bonus_stats[i].age_bonus = 10 * i;
+                bushido.bonus_stats[i].base_stats.health = 50 * (i+1);
+                bushido.bonus_stats[i].health_regen = 5 * (i+1);
+                bushido.bonus_stats[i].base_stats.armor = 5*i;
+                bushido.bonus_stats[i].base_stats.damage = 4 * (i + 1);
+            }
 
         }
-        private static bool immortal_judge(CW_ActorData cw_actor_data, CW_Asset_CultiSys cultisys)
+        private static bool immortal_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
         {
-            return cw_actor_data.status.can_culti;
+            return cw_actor.cw_status.can_culti;
         }
-        private static bool bushido_judge(CW_ActorData cw_actor_data, CW_Asset_CultiSys cultisys)
+        private static bool bushido_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
         {
-            return true;
+            return cw_actor.cw_cur_stats.base_stats.health * cw_actor.cw_cur_stats.base_stats.damage * cw_actor.cw_cur_stats.base_stats.armor / ((cw_actor.cw_stats.cw_stats.base_stats.health+1) * (cw_actor.cw_stats.cw_stats.base_stats.damage+1) * (cw_actor.cw_stats.cw_stats.base_stats.armor+1)) > 1.2f;
+        }
+        private static bool bushido_level_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
+        {
+            if (cw_actor.cw_data.cultisys_level[cultisys.tag] <= Others.CW_Constants.max_cultisys_level - 1 - 1 && cw_actor.fast_data.health == cw_actor.cw_cur_stats.base_stats.health)
+            {
+                cw_actor.fast_data.health = (int)(cw_actor.cw_cur_stats.base_stats.health * 0.4f);
+
+                if (cw_actor.cw_data.cultisys_level[cultisys.tag] == 9) cw_actor.fast_data.age = 0;
+
+                return true;
+            }
+            return false;
         }
         private static bool immortal_level_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
         {
             //if(cw_actor_data.cultisys_level[cultisys.tag] < Others.CW_Constants.max_cultisys_level) WorldBoxConsole.Console.print(cw_actor_data.status.wakan + "/" + cultisys.grade_val[cw_actor_data.cultisys_level[cultisys.tag]]);
             if( cw_actor.cw_data.cultisys_level[cultisys.tag] <= Others.CW_Constants.max_cultisys_level-1-1 && cw_actor.cw_data.status.wakan == cw_actor.cw_cur_stats.wakan)
             {
-                cw_actor.cw_data.status.wakan = cw_actor.cw_data.status.wakan / 10;
+                cw_actor.cw_data.status.wakan = (int)(cw_actor.cw_data.status.wakan * 0.4f);
                 //WorldBoxConsole.Console.print("Level up to "+(1+cw_actor.cw_data.cultisys_level[cultisys.tag]));
                 return true;
             }

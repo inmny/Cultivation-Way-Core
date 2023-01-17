@@ -14,6 +14,7 @@ namespace Cultivation_Way.Others
         public const float default_anim_trace_grad = 2f;
         public const string default_anim_layer_name = "EffectsTop";
         public const bool is_debugging = true;
+        public const int wakan_level_co = 1000;
         public const int wakan_regen_valid_percent = 40;
         public const int fix_cultibook_line = 1000;
         public const int cultibook_spell_limit = 4;
@@ -25,6 +26,13 @@ namespace Cultivation_Way.Others
         public const int max_unique_legendary_names_count = 128;
         public const int max_cultisys_level = 20;
         public const float default_spell_damage_co = 1;
+        public const float chunk_wakan_compress_co = 0.9f;
+        public const float chunk_wakan_spread_grad = 0.01f;
+        public const float chunk_wakan_level_spread_grad = 0.1f;
+        public const float chunk_wakan_lyse_grad = 0.1f;
+        public const float chunk_wakan_lyse_base = 1f;
+        public const uint cultisys_immortol_tag = 0x1;
+        public const uint cultisys_bushido_tag = 0x10;
     }
     public class CW_Delegates
     {
@@ -35,8 +43,8 @@ namespace Cultivation_Way.Others
 
         public delegate void CW_Spell_Action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost);
         public delegate float CW_Spell_Cost_Action(CW_Asset_Spell spell_asset, BaseSimObject pUser);
-        public delegate void CW_WorldEvent_Action();
-        public delegate bool CW_Cultisys_Judge(CW_ActorData cw_actor_data, CW_Asset_CultiSys cultisys);
+        public delegate void CW_WorldEvent_Action(CW_Asset_WorldEvent event_asset);
+        public delegate bool CW_Cultisys_Judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys);
         public delegate bool CW_Cultisys_Level_Judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys);
     }
     public class CW_Enums

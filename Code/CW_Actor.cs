@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Utils;
 using Cultivation_Way.Library;
+using Cultivation_Way.Extensions;
 using UnityEngine;
 
 namespace Cultivation_Way
@@ -63,6 +64,14 @@ namespace Cultivation_Way
         internal static Action<Actor, float, bool, AttackType, BaseSimObject, bool> func_getHit = (Action<Actor, float, bool, AttackType, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("getHit");
 
         #endregion
+        public bool has_cultisys(string cultisys_id)
+        {
+            return (this.cw_data.cultisys & CW_Library_Manager.instance.cultisys.get(cultisys_id)._tag) > 0;
+        }
+        internal bool has_cultisys(uint cultisys_tag)
+        {
+            return (this.cw_data.cultisys & cultisys_tag) > 0;
+        }
         public void add_child(ActorStatus orgin_status)
         {
             if (this.cw_data.children_info == null) this.cw_data.children_info = new List<CW_Family_Member_Info>();
@@ -77,7 +86,9 @@ namespace Cultivation_Way
         {
             if ((pSkipIfShake && this.fast_shake_timer.isActive) || this.fast_data.health <= 0) return false;
 
-            damage *= (1 - this.cw_cur_stats.base_stats.armor / 100f);
+            float damage_reduce = 0;
+            damage_reduce = this.cw_cur_stats.base_stats.armor / (100 + this.cw_cur_stats.base_stats.armor);
+            damage *= 1 - damage_reduce;
 
             if(damage < 0) damage = 0;
 
@@ -103,13 +114,6 @@ namespace Cultivation_Way
         {
             CW_ActorData cw_actor_data = new CW_ActorData();
             CW_ActorStatus cw_actor_status = new CW_ActorStatus();
-            /**
-            if (!string.IsNullOrEmpty(cw_actor_data.cultibook_id)) 
-            {
-                CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor_data.cultibook_id);
-                cultibook.cur_culti_nr++; cultibook.histroy_culti_nr++;
-            }
-            */
 
             cw_actor_data.cultisys_level = new int[CW_Library_Manager.instance.cultisys.list.Count];
 
@@ -132,14 +136,41 @@ namespace Cultivation_Way
             cw_actor_status.wakan = 0;
             cw_actor_status.wakan_level = 1;
 
-            CW_Library_Manager.instance.cultisys.set_cultisys(cw_actor_data, main_parent.stats.id);
+            //CW_Library_Manager.instance.cultisys.set_cultisys(cw_actor_data, main_parent.stats.id);
             cw_actor_data.pre_learn_cultibook(CW_Library_Manager.instance.cultibooks.get(CW_Library_Manager.instance.cultibooks.select_better(main_parent.cw_data.cultibook_id, second_parent.cw_data.cultibook_id)));
             return cw_actor_data;
         }
         public void updateStatus_month()
         {
             this.cw_status.shied += Mathf.Min(this.cw_cur_stats.shied_regen, this.cw_cur_stats.shied - this.cw_status.shied);
-            this.cw_status.wakan += Mathf.Min(this.cw_cur_stats.wakan_regen, this.cw_cur_stats.wakan - this.cw_status.wakan);
+            if (this.cw_status.can_culti && this.cw_status.wakan < this.cw_cur_stats.wakan)
+            {
+                int wakan_get = 0; CW_MapChunk chunk = this.currentTile.get_cw_chunk();
+                float chunk_co = chunk.wakan_level * chunk.wakan_level;
+                // 计算人物应得的level 1灵气量
+                if (this.cw_status.wakan * Others.CW_Constants.wakan_regen_valid_percent < this.cw_cur_stats.wakan * 100)
+                {// 灵气恢复属性的加成
+                    wakan_get += (int)(this.cw_cur_stats.wakan_regen * chunk_co);
+                }// 修炼获取
+                wakan_get += (int)((1 + this.cw_cur_stats.mod_cultivation) * (1+this.cw_data.status.culti_velo) * chunk_co)*10;
+                // 计算区块能够提供的level 1灵气量
+                float wakan_chunk_provide = Utils.CW_Utils_Others.get_raw_wakan(chunk.wakan, chunk.wakan_level);
+                // 取较小者
+                if (wakan_get > wakan_chunk_provide) wakan_get = (int)wakan_chunk_provide;
+                // 计算实际应用于人物灵气等级的灵气量
+                float wakan_actor_get = Utils.CW_Utils_Others.compress_raw_wakan(wakan_get, this.cw_status.wakan_level);
+                // 防止溢出
+                if (wakan_actor_get > this.cw_cur_stats.wakan - this.cw_status.wakan) wakan_actor_get = this.cw_cur_stats.wakan - this.cw_status.wakan;
+                // 人物实际获取灵气
+                this.cw_status.wakan += (int)wakan_actor_get;
+                // 取人物实际获取的灵气量转为level 1的灵气量
+                wakan_actor_get = Utils.CW_Utils_Others.get_raw_wakan(wakan_actor_get, this.cw_status.wakan_level);
+                // 取人物获取量与应得量较小者
+                wakan_get = (int)Mathf.Min(wakan_actor_get, wakan_get);
+                // 从区块移除对应量原始灵气
+                chunk.wakan -= Utils.CW_Utils_Others.compress_raw_wakan(wakan_get, chunk.wakan_level);
+            }
+            
             this.fast_data.health += Mathf.Min(this.cw_cur_stats.health_regen, this.cw_cur_stats.base_stats.health - this.fast_data.health);
         }
         public void checkLevelUp()
@@ -322,7 +353,7 @@ namespace Cultivation_Way
             this.cw_status.wakan_level = 1;
             this.cw_status.max_age = this.cw_stats.origin_stats.maxAge;
 
-            CW_Library_Manager.instance.cultisys.set_cultisys(cw_data, this.stats.id);
+            //CW_Library_Manager.instance.cultisys.set_cultisys(cw_data, this.stats.id);
         }
     }
 }

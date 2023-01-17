@@ -228,6 +228,8 @@
     <Compile Include="Code\CW_ActorData.cs" />
     <Compile Include="Code\CW_ActorStatus.cs" />
     <Compile Include="Code\CW_Addon.cs" />
+    <Compile Include="Code\CW_Extensions_WorldTile.cs" />
+    <Compile Include="Code\CW_MapChunk_Manager.cs" />
     <Compile Include="Code\CW_Tester_Animation.cs" />
     <Compile Include="Code\CW_Building.cs" />
     <Compile Include="Code\CW_BuildingData.cs" />
@@ -238,10 +240,12 @@
     <Compile Include="Code\CW_Library_ItemModifier.cs" />
     <Compile Include="Code\CW_SpellAction_Cost.cs" />
     <Compile Include="Code\CW_Tester_Spell.cs" />
+    <Compile Include="Code\CW_Utils_Others.cs" />
     <Compile Include="Code\CW_Utils_SpellHelper.cs" />
     <Compile Include="Code\W_Content_Cultisys.cs" />
     <Compile Include="Code\W_Content_Spell.cs" />
     <Compile Include="Code\W_Content_WindowCreatureInfo.cs" />
+    <Compile Include="Code\W_Content_WorldEvent.cs" />
     <Compile Include="Code\W_Harmony_Others.cs" />
     <Compile Include="Code\W_Harmony_Spell.cs" />
     <Compile Include="Code\W_Harmony_Window.cs" />
@@ -292,12 +296,15 @@
     <Compile Include="Code\W_Harmony_City.cs" />
     <Compile Include="Code\W_Harmony_Item.cs" />
     <Compile Include="Code\W_NOT_Arch_Data.cs" />
+    <Compile Include="Code\Z_Useless.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assemblies\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
-    <VisualStudio AllowExistingFolder="true" />
+    <VisualStudio AllowExistingFolder="true">
+      <UserProperties gameresources_4cw_3locales_4cz_1json__JsonSchema="https://citation-file-format.github.io/1.2.0/schema.json" />
+    </VisualStudio>
   </ProjectExtensions>
 </Project>

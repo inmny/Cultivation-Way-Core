@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Library;
 using Cultivation_Way.Utils;
+using Cultivation_Way.Extensions;
 using HarmonyLib;
 using ReflectionUtility;
 using UnityEngine;
@@ -26,12 +27,21 @@ namespace Cultivation_Way.Content.Harmony
         [HarmonyPatch(typeof(Actor), "updateAge")]
         public static bool actor_updateAge(Actor __instance)
         {
-             if(!__new_updateAge(((CW_Actor)__instance).fast_data, ((CW_Actor)__instance).cw_data.status))
+            CW_Actor cw_actor = (CW_Actor)__instance;
+            // 单独为武道添加的经验获取方式
+            if (cw_actor.fast_data.health < cw_actor.cw_cur_stats.base_stats.health && cw_actor.has_cultisys(Others.CW_Constants.cultisys_bushido_tag))
+            {
+                cw_actor.fast_data.age++;
+                // 允许血量超限
+                cw_actor.fast_data.health += (int)(0.01f * cw_actor.cw_cur_stats.base_stats.health);
+                cw_actor.checkLevelUp();
+            }
+            if(!__new_updateAge(cw_actor.fast_data, cw_actor.cw_data.status))
             {
                 __instance.killHimself(false, AttackType.Age, true, true);
                 return false;
             }
-            if (((CW_Actor)__instance).fast_data.age > __instance.stats.maxAge>>1 && Toolbox.randomChance(0.3f))
+            if (cw_actor.fast_data.age > __instance.stats.maxAge>>1 && Toolbox.randomChance(0.3f))
             {
                 __instance.addTrait("wise", false);
             }
@@ -84,15 +94,21 @@ namespace Cultivation_Way.Content.Harmony
         {
             if (pActor == null) throw new ArgumentNullException("pActor should not be null! In origin game, no possible to pass null to this function");
             if (pActor.object_destroyed) { return true; }
-            // 回收功法
 
             CW_Actor cw_actor = (CW_Actor)pActor;
-            
+            // 回收功法
             CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id);
             if (cultibook != null)
             {
                 cultibook.cur_culti_nr--;
                 if (cultibook.cur_culti_nr <= 0) cultibook.try_deprecate();
+            }
+            // 灵气归还
+            if (cw_actor.cw_status.wakan > 0)
+            {
+                CW_MapChunk chunk = cw_actor.currentTile.get_cw_chunk();
+                chunk.wakan += Utils.CW_Utils_Others.compress_raw_wakan(CW_Utils_Others.get_raw_wakan(cw_actor.cw_status.wakan, cw_actor.cw_status.wakan_level), chunk.wakan_level);
+                //MonoBehaviour.print(string.Format("Reuse {0} raw wakan", (int)CW_Utils_Others.get_raw_wakan(cw_actor.cw_status.wakan, cw_actor.cw_status.wakan_level)));
             }
             return true;
         }
@@ -200,6 +216,7 @@ namespace Cultivation_Way.Content.Harmony
                 CW_Actor.func_newCreature(actor, (int)(W_Content_Helper.game_stats_data.gameTime + (double)MapBox.instance.units.Count));
                 // 在func_newCreature中会调用updateStats，从而使得fast_data会指向本身的data
                 // actor.fast_data = (ActorStatus)CW_Actor.get_data(actor);
+                CW_Library_Manager.instance.cultisys.set_cultisys(actor);
             }
             else
             {
@@ -210,6 +227,11 @@ namespace Cultivation_Way.Content.Harmony
                 actor.cw_status = actor.cw_data.status;
                 CW_Actor.set_data(actor, actor.fast_data);
                 CW_Actor.set_professionAsset(actor, AssetManager.professions.get(pData.status.profession));
+
+                __actor_updateStats(actor);
+
+                CW_Library_Manager.instance.cultisys.set_cultisys(actor);
+
                 if (ModState.instance.load_unit_reason == Load_Unit_Reason.CITY_SPAWN)
                 {
                     // 已经进行了预学习，只需再学习法术即可。
@@ -255,8 +277,7 @@ namespace Cultivation_Way.Content.Harmony
             int i, len; uint tmp1;
             cw_actor.cw_cur_stats.clear();
             // 基础属性样板
-            cw_actor.cw_cur_stats.addStats(cw_actor.stats.baseStats);
-            cw_actor.cw_cur_stats.addStats(cw_actor.cw_stats.addition_stats);
+            cw_actor.cw_cur_stats.addStats(cw_actor.cw_stats.cw_stats);
             cw_actor.cw_cur_stats.base_stats.diplomacy += cw_actor.fast_data.diplomacy;
             cw_actor.cw_cur_stats.base_stats.stewardship += cw_actor.fast_data.stewardship;
             cw_actor.cw_cur_stats.base_stats.intelligence += cw_actor.fast_data.intelligence;
@@ -275,18 +296,19 @@ namespace Cultivation_Way.Content.Harmony
                 cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id).bonus_stats);
             }
             // 添加修炼产生的属性增幅
+            
+            // 添加体系的属性影响
+            tmp1 = cw_actor.cw_data.cultisys;
+            len = CW_Library_Manager.instance.cultisys.list.Count;
+            for (i = 0; i < len && tmp1 > 0; i++)
+            {
+                if ((tmp1 & 0x1) != 0) { cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultisys.get_bonus_stats(i, cw_actor.cw_data.cultisys_level[i]));}
+                tmp1 >>= 1;
+            }
             if (cw_actor.cw_status.can_culti)
             {
-                // 添加体系的属性影响
-                tmp1 = cw_actor.cw_data.cultisys;
-                len = CW_Library_Manager.instance.cultisys.list.Count;
-                for (i = 0; i < len && tmp1 > 0; i++)
-                {
-                    if ((tmp1 & 0x1) != 0) { cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultisys.get_bonus_stats(i, cw_actor.cw_data.cultisys_level[i]));}
-                    tmp1 >>= 1;
-                }
                 // 添加功法的属性影响
-                if(!string.IsNullOrEmpty(cw_actor.cw_data.cultibook_id) && CW_Library_Manager.instance.cultibooks.dict.ContainsKey(cw_actor.cw_data.cultibook_id)) cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id).bonus_stats);
+                if (!string.IsNullOrEmpty(cw_actor.cw_data.cultibook_id) && CW_Library_Manager.instance.cultibooks.dict.ContainsKey(cw_actor.cw_data.cultibook_id)) cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id).bonus_stats);
             }
             // 添加心情的属性影响
             if (string.IsNullOrEmpty(cw_actor.fast_data.mood)) cw_actor.fast_data.mood = "normal";
@@ -384,7 +406,7 @@ namespace Cultivation_Way.Content.Harmony
             cw_actor.cw_cur_stats.normalize();
             cw_actor.cw_status.wakan = Mathf.Min(cw_actor.cw_status.wakan, cw_actor.cw_cur_stats.wakan);
             cw_actor.fast_data.health = Mathf.Min(cw_actor.fast_data.health, cw_actor.cw_cur_stats.base_stats.health);
-            cw_actor.cw_status.max_age = (int)(cw_actor.cw_stats.origin_stats.maxAge * (1f + cw_actor.cw_cur_stats.mod_age/100f));
+            cw_actor.cw_status.max_age = (int)(cw_actor.cw_stats.origin_stats.maxAge * (1f + cw_actor.cw_cur_stats.mod_age/100f)) + cw_actor.cw_cur_stats.age_bonus;
             CW_Actor.set_s_attackSpeed_seconds(actor, (300f - cw_actor.cw_cur_stats.base_stats.attackSpeed) / (100f + cw_actor.cw_cur_stats.base_stats.attackSpeed));
             // 设置攻击样式以及武器贴图
             CW_Asset_Item weapon_asset = cw_actor.get_weapon_asset();
@@ -436,6 +458,7 @@ namespace Cultivation_Way.Content.Harmony
             origin_status.age++;
             CW_ActorStats cw_actor_stats = CW_Library_Manager.instance.units.get(origin_status.statsID);
             CW_ActorStatus.actorstatus_updateAttributes(origin_status, cw_actor_stats.origin_stats, AssetManager.raceLibrary.get(cw_actor_stats.origin_stats.race), false);
+            
 
             if (cw_actor_stats.origin_stats.maxAge == 0 || !MapBox.instance.worldLaws.world_law_old_age.boolVal || origin_status.haveTrait("immortal")) return true;
 
