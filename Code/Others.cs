@@ -33,7 +33,10 @@ namespace Cultivation_Way.Others
         public const float chunk_wakan_lyse_base = 1f;
         public const uint cultisys_immortol_tag = 0x1;
         public const uint cultisys_bushido_tag = 0x10;
+        public const float bushido_force_culti_chance = 0.3f;
         public const float seconds_per_month = 3f;
+
+        internal static string[] num_to_cz = new string[10] { "〇", "一", "二", "三", "四", "五", "六", "七", "八", "九" };
     }
     public class CW_Delegates
     {

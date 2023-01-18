@@ -21,14 +21,16 @@ namespace Cultivation_Way.Actions
                     {
                         cw_actor.cw_status.wakan -= (int)cost;
                     }
+                    cost = Utils.CW_Utils_Others.get_raw_wakan(cost, cw_actor.cw_status.wakan_level);
                 }
-                else if ((cw_actor.cw_data.cultisys & 0x10) == 1)// TODO: change to bushido
+                else if ((cw_actor.cw_data.cultisys & Others.CW_Constants.cultisys_bushido_tag) == 1)// TODO: change to bushido
                 {
                     cost = (cw_actor.fast_data.health - 5) * spell_asset.cost;
                     if (cost > 1)
                     {
                         cw_actor.fast_data.health -= (int)cost;
                     }
+                    cost = Utils.CW_Utils_Others.get_raw_wakan(cost, cw_actor.cw_status.health_level);
                 }
                 return cost;
             }

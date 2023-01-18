@@ -11,7 +11,7 @@ using DG.Tweening;
 
 namespace Cultivation_Way.Content
 {
-    internal class TipButton : MonoBehaviour
+    internal class CW_TipButton : MonoBehaviour
     {
         public Button button;
         public Image image;
@@ -20,6 +20,7 @@ namespace Cultivation_Way.Content
         public string type;
         public string description;
         public bool tooltip_enabled = true;
+        private Vector3 origin_scale = new Vector3(-1,-1);
         private void Awake()
         {
             this.button = GetComponent<Button>();
@@ -38,9 +39,13 @@ namespace Cultivation_Way.Content
             string description = this.description;
             if (!LocalizedTextManager.stringExists(description)) description = null;
             Tooltip.instance.show(gameObject, type, title, description);
-            transform.localScale = new Vector3(1f, 1f, 1f);
-            transform.DOKill(false);
-            transform.DOScale(0.8f, 0.1f).SetEase(Ease.InBack);
+            if(this.origin_scale.x<0 && this.origin_scale.y < 0)
+            {
+                this.origin_scale = transform.localScale;
+            }
+            transform.localScale = new Vector3(transform.localScale.x*1.25f, transform.localScale.y*1.25f, 1f);
+            transform.DOKill(true);
+            transform.DOScale(origin_scale, 0.1f).SetEase(Ease.InBack);
         }
         public void load(string title, string description, string icon, string type = "cw_custom")
         {
@@ -58,7 +63,7 @@ namespace Cultivation_Way.Content
 		public Image moodBG;
 		public TraitButton prefabTrait;
 		public EquipmentButton prefabEquipment;
-        public TipButton prefab_tip_button;
+        public CW_TipButton prefab_tip_button;
 		public Transform traitsParent;
 		public Transform equipmentParent;
 		public StatBar health;
@@ -190,6 +195,7 @@ namespace Cultivation_Way.Content
             Image shied_bar_image = ShiedBar.transform.Find("Mask/Bar").GetComponent<Image>();
             shied_bar_image.color = new Color(1, 1, 1, 0.79f);
             ShiedBar.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconShied");
+            ShiedBar.GetComponent<TipButton>().textOnClick = "shied";
 
             GameObject WakanBar = Instantiate<GameObject>(content_transform.Find("HealthBar").gameObject);
             WakanBar.transform.SetParent(content_transform);
@@ -201,11 +207,12 @@ namespace Cultivation_Way.Content
             wakan_bar_image.color = new Color(0.38f, 0.71f, 1, 0.75f);
             WakanBar.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconWakan");
             WakanBar.transform.Find("Icon").GetComponent<Image>().transform.localScale = new Vector3(0.35f, 0.35f);
+            WakanBar.GetComponent<TipButton>().textOnClick = "wakan";
 
             // 更多信息
             GameObject TipButtonPrefab = Instantiate<GameObject>(cw_wci.prefabTrait.gameObject, cw_wci.prefabTrait.transform.parent);
             Destroy(TipButtonPrefab.transform.GetComponent<TraitButton>());
-            cw_wci.prefab_tip_button = TipButtonPrefab.AddComponent<TipButton>();
+            cw_wci.prefab_tip_button = TipButtonPrefab.AddComponent<CW_TipButton>();
             cw_wci.prefab_tip_button.transform.localScale = new Vector3(0.80f, 0.80f);
 
             return origin_inspect_unit_gameobject;
@@ -450,7 +457,7 @@ namespace Cultivation_Way.Content
             int base_num = 3; int num = 0;
             int total_count = base_num + ((cw_actor.fast_data.traits == null) ? 0 : cw_actor.fast_data.traits.Count);
 
-            TipButton button_element = Instantiate(prefab_tip_button, traitsParent);
+            CW_TipButton button_element = Instantiate(prefab_tip_button, traitsParent);
             string tmp_description = cw_actor.cw_data.element.__to_string();
             for(int i = 0; i < Others.CW_Constants.base_element_types; i++)
             {
@@ -467,7 +474,7 @@ namespace Cultivation_Way.Content
                 CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id);
                 if (cultibook != null)
                 {
-                    TipButton button_cultibook = Instantiate(prefab_tip_button, traitsParent);
+                    CW_TipButton button_cultibook = Instantiate(prefab_tip_button, traitsParent);
                     NCMS.Utils.Localization.Set("CW_cultibook_name", cultibook.name);
                     NCMS.Utils.Localization.Set("CW_cultibook_info", cultibook.get_info_without_name());
                     button_cultibook.load("CW_cultibook_name", "CW_cultibook_info", "iconCultiBook_immortal", "normal");
@@ -477,10 +484,11 @@ namespace Cultivation_Way.Content
 
             if (cw_actor.cw_data.cultisys != 0)
             {
-                TipButton button_cultisys = Instantiate(prefab_tip_button, traitsParent);
+                CW_TipButton button_cultisys = Instantiate(prefab_tip_button, traitsParent);
                 NCMS.Utils.Localization.Set("CW_cultisys_info", CW_Library_Manager.instance.cultisys.parse_cultisys(cw_actor.cw_data));
                 button_cultisys.load("cultisys", "CW_cultisys_info", "iconCultiSys", "normal");
                 button_cultisys.transform.localScale = new Vector3(0.65f, 0.80f);
+                
                 set_position_on_traits(button_cultisys.GetComponent<RectTransform>(), num++, total_count);
             }
             if (cw_actor.fast_data.traits != null)

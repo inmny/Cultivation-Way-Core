@@ -12,7 +12,7 @@ namespace Cultivation_Way.Library
         public int tag { get; internal set; }
         internal uint _tag;
         public string sprite_name;
-        public float[] grade_val;
+        public float[] power_level;
         public CW_BaseStats[] bonus_stats;
         // 修炼体系的黑白名单设定
         // 先按照种族黑白名单进行总体的设定，再根据单位的黑白名单进行细节的设定
@@ -38,11 +38,11 @@ namespace Cultivation_Way.Library
             units_list = new List<string>();
             races_black_or_white = true;
             races_list = new List<string>();
-            grade_val = new float[Others.CW_Constants.max_cultisys_level];
+            power_level = new float[Others.CW_Constants.max_cultisys_level];
             bonus_stats = new CW_BaseStats[Others.CW_Constants.max_cultisys_level];
             for(int i = 0; i < Others.CW_Constants.max_cultisys_level; i++)
             {
-                grade_val[i] = 100 * i;
+                power_level[i] = 1;
                 bonus_stats[i] = new CW_BaseStats();
             }
         }
@@ -88,7 +88,10 @@ namespace Cultivation_Way.Library
             int cultisys_tag = 0;
             while (actor_allow_cultisys > 0)
             {
-                if ((actor_allow_cultisys & 0x1) == 1 && list[cultisys_tag].judge(actor, list[cultisys_tag])) actor.cw_data.cultisys |= (uint)(1 << cultisys_tag);
+                if ((actor_allow_cultisys & 0x1) == 1 && list[cultisys_tag].judge(actor, list[cultisys_tag])) 
+                { 
+                    actor.cw_data.cultisys |= (uint)(1 << cultisys_tag);
+                }
                 cultisys_tag++;
                 actor_allow_cultisys >>= 1;
             }
@@ -104,7 +107,10 @@ namespace Cultivation_Way.Library
                 if ((cultisys & 0x1) == 1)
                 {
                     cultisys_asset = list[cultisys_tag];
-                    string_builder.AppendLine(LocalizedTextManager.getText("CW_cultisys_" + cultisys_asset.id) + "\t" + cw_actor_data.cultisys_level[cultisys_tag]);
+                    string_builder.Append(LocalizedTextManager.getText("CW_cultisys_" + cultisys_asset.id));
+                    string_builder.Append("\t");
+                    string_builder.Append(LocalizedTextManager.getText("cultisys_" + cultisys_asset.id + "_" + cw_actor_data.cultisys_level[cultisys_tag]));
+                    string_builder.Append("[" + cw_actor_data.cultisys_level[cultisys_tag] + "]\n");
                 }
                 cultisys >>= 1;
                 cultisys_tag++;

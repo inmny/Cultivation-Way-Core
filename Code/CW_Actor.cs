@@ -88,7 +88,7 @@ namespace Cultivation_Way
             foreach(CW_StatusEffectData status_effect in this.status_effects.Values)
             {
                 status_effect.update(elapsed);
-                status_effect.status_asset.action_on_update(status_effect, this);
+                if(status_effect.status_asset.action_on_update!=null) status_effect.status_asset.action_on_update(status_effect, this);
                 if (status_effect.finished) _status_effects_to_remove.Add(status_effect.status_asset.id);
             }
             if (_status_effects_to_remove.Count > 0)
@@ -177,6 +177,7 @@ namespace Cultivation_Way
             cw_actor_status.shied = 0;
             cw_actor_status.wakan = 0;
             cw_actor_status.wakan_level = 1;
+            cw_actor_status.health_level = 1;
 
             //CW_Library_Manager.instance.cultisys.set_cultisys(cw_actor_data, main_parent.stats.id);
             cw_actor_data.pre_learn_cultibook(CW_Library_Manager.instance.cultibooks.get(CW_Library_Manager.instance.cultibooks.select_better(main_parent.cw_data.cultibook_id, second_parent.cw_data.cultibook_id)));
@@ -228,10 +229,6 @@ namespace Cultivation_Way
                 {
                     this.cw_data.cultisys_level[cultisys_tag]++;
                     this.setStatsDirty();
-                    if (this.cw_data.cultisys_level[cultisys_tag] == Others.CW_Constants.max_cultisys_level - 1)
-                    {
-                        //this.fast_data.favorite = true;
-                    }
                     level_up_tag |= (uint)(1 << cultisys_tag);
                 }
                 if(this.cw_data.cultisys_level[cultisys_tag] > max_level)
@@ -393,6 +390,7 @@ namespace Cultivation_Way
             this.cw_status.shied = 0;
             this.cw_status.wakan = 0;
             this.cw_status.wakan_level = 1;
+            this.cw_status.health_level = 1;
             this.cw_status.max_age = this.cw_stats.origin_stats.maxAge;
 
             //CW_Library_Manager.instance.cultisys.set_cultisys(cw_data, this.stats.id);

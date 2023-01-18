@@ -317,8 +317,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions>
-    <VisualStudio AllowExistingFolder="true">
-      <UserProperties gameresources_4cw_3locales_4cz_1json__JsonSchema="https://citation-file-format.github.io/1.2.0/schema.json" />
+    <VisualStudio>
+      <UserProperties gameresources_4cw_3locales_4cz_1json__JsonSchema="https://beaujs.com/schema.json" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

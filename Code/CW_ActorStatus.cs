@@ -12,6 +12,7 @@ namespace Cultivation_Way
 		public int shied;
 		public float culti_velo;
 		public bool can_culti;
+		public float health_level;
 		public float wakan_level;
 		public int max_age;
 		public static Func<ActorStatus, HashSet<string>> get_s_traits_ids = CW_ReflectionHelper.create_getter<ActorStatus, HashSet<string>>("s_traits_ids");
@@ -56,6 +57,7 @@ namespace Cultivation_Way
 			cw_actor_status.shied = shied;
 			cw_actor_status.culti_velo = culti_velo;
 			cw_actor_status.can_culti = can_culti;
+			cw_actor_status.health_level = health_level;
 			cw_actor_status.wakan_level = wakan_level;
 			cw_actor_status.max_age = max_age;
         }

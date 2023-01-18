@@ -49,6 +49,7 @@ namespace Cultivation_Way.Library
         /// 属性加成
         /// </summary>
         public CW_BaseStats bonus_stats;
+
         public CW_Asset_CultiBook(CW_Actor author)
         {
             this.order = 0;
@@ -114,11 +115,11 @@ namespace Cultivation_Way.Library
         {
             StringBuilder string_builder = new StringBuilder();
             string_builder.AppendLine("\t创始人\t\t\t" + author_name+"\t");
-            string_builder.AppendLine("\t品阶\t\t\t\t" + order + "品" + level + "级\t");
+            string_builder.AppendLine("\t品阶\t\t\t" + LocalizedTextManager.getText("cultibook_order_" + this.order) + Others.CW_Constants.num_to_cz[9-level]+"品");
             for(int i = 0; i < this.spells.Length; i++)
             {
                 if (this.spells[i] == null) break;
-                string_builder.AppendLine("\t法术["+i+"]\t\t\t"+this.spells[i]+"\t");
+                string_builder.AppendLine("\t法术["+i+"]\t\t\t"+LocalizedTextManager.getText("spell_"+this.spells[i])+"\t");
             }
             return string_builder.ToString();
         }
