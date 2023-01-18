@@ -89,6 +89,7 @@ namespace Cultivation_Way.Animation
             //WorldBoxConsole.Console.print("Is renderer null?>" + (renderer == null)+"\nIs setting null?>"+(setting==null));
             this.renderer.sortingLayerName = setting.layer_name;
             gameObject.transform.localPosition = this.src_vec;
+            gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, Toolbox.getAngle(gameObject.transform.position.x, gameObject.transform.position.y, this.dst_vec.x, this.dst_vec.y) * 57.29578f));
         }
         internal void update(float elapsed)
         {

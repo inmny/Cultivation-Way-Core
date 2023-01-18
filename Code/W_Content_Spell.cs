@@ -26,7 +26,6 @@ namespace Cultivation_Way.Content
             CW_AnimationSetting anim_setting = new CW_AnimationSetting();
             anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
             anim_setting.loop_time_limit = 120f;
-            //anim_setting.anim_froze_frame_idx = 2;
             anim_setting.frame_interval = 0.1f;
             anim_setting.set_trace(AnimationTraceType.ATTACH);
 
@@ -113,7 +112,6 @@ namespace Cultivation_Way.Content
             anim_setting.loop_limit_type = AnimationLoopLimitType.TRACE_LIMIT;
             anim_setting.loop_trace_limit = 33;
             anim_setting.loop_nr_limit = -1;
-            anim_setting.point_to_dst = true;
             anim_setting.anim_froze_frame_idx = 3;
             anim_setting.frame_interval = 0.05f;
             anim_setting.trace_grad = 15f;
