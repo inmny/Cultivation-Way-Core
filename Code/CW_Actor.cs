@@ -125,7 +125,7 @@ namespace Cultivation_Way
 
             if(damage < 0) damage = 0;
 
-            this.fast_data.health -= (int)damage;
+            
             // 释放防御类法术
             if (this.cw_data.spells.Count > 0)
             {
@@ -145,11 +145,23 @@ namespace Cultivation_Way
                     }
                 }
             }
-            if (this.fast_data.health < 1)
+            if (this.cw_status.shied > 0)
             {
-                this.fast_data.health = 1;
+                if (this.cw_status.shied > damage)
+                {
+                    this.cw_status.shied -= (int)damage; damage = 0;
+                }
+                else
+                {
+                    this.cw_status.shied = 0; damage -= this.cw_status.shied;
+                }
             }
-
+            this.fast_data.health -= (int)damage;
+            if (this.fast_data.health < 0)
+            {
+                this.fast_data.health = 0;
+            }
+            this.fast_data.health++; // 反原版getHit强制扣血
             return true;
         }
         public static CW_ActorData procrete(CW_Actor main_parent, CW_Actor second_parent)
