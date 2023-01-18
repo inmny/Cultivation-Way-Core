@@ -17,5 +17,9 @@ namespace Cultivation_Way.Utils
         {
             return raw_wakan / Mathf.Pow(Others.CW_Constants.wakan_level_co, target_level - 1);
         }
+        public static float get_seconds_by_month(int month)
+        {
+            return month * Others.CW_Constants.seconds_per_month;
+        }
     }
 }

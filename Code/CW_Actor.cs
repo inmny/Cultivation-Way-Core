@@ -77,6 +77,8 @@ namespace Cultivation_Way
             CW_StatusEffectData ret = new CW_StatusEffectData(this, status_effect_id);
             if (!ret.is_available()) return null;
             status_effects.Add(status_effect_id, ret);
+            ret.status_asset.action_on_get(ret, this);
+            this.setStatsDirty();
             return ret;
         }
         internal void update_status_effects(float elapsed)
@@ -86,6 +88,7 @@ namespace Cultivation_Way
             foreach(CW_StatusEffectData status_effect in this.status_effects.Values)
             {
                 status_effect.update(elapsed);
+                status_effect.status_asset.action_on_update(status_effect, this);
                 if (status_effect.finished) _status_effects_to_remove.Add(status_effect.status_asset.id);
             }
             if (_status_effects_to_remove.Count > 0)
@@ -132,7 +135,16 @@ namespace Cultivation_Way
                     CW_Spell.cast(spell, this, attacker, attacker==null?null:attacker.currentTile);
                 }
             }
-
+            if(this.status_effects!=null && this.status_effects.Count > 0)
+            {
+                foreach(CW_StatusEffectData status_effect in this.status_effects.Values)
+                {
+                    if (status_effect.status_asset.action_on_hit != null)
+                    {
+                        status_effect.status_asset.action_on_hit(status_effect, this, attacker);
+                    }
+                }
+            }
             if (this.fast_data.health < 1)
             {
                 this.fast_data.health = 1;

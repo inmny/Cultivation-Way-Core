@@ -204,6 +204,14 @@
     <Content Include="GameResources\effects\gold_escape\golden_teleport-7.png" />
     <Content Include="GameResources\effects\gold_escape\golden_teleport-8.png" />
     <Content Include="GameResources\effects\gold_escape\golden_teleport-9.png" />
+    <Content Include="GameResources\effects\gold_shied_on_hit\金刚护体-0.png" />
+    <Content Include="GameResources\effects\gold_shied_on_hit\金刚护体-1.png" />
+    <Content Include="GameResources\effects\gold_shied_on_hit\金刚护体-2.png" />
+    <Content Include="GameResources\effects\gold_shied\金刚护体2-0.png" />
+    <Content Include="GameResources\effects\gold_shied\金刚护体2-1.png" />
+    <Content Include="GameResources\effects\gold_shied\金刚护体2-2.png" />
+    <Content Include="GameResources\effects\gold_shied\金刚护体2-3.png" />
+    <Content Include="GameResources\effects\gold_shied\金刚护体2-4.png" />
     <Content Include="GameResources\effects\single_gold_sword\gold_sword.png" />
     <Content Include="GameResources\ui\Icons\iconShied.png" />
     <Content Include="GameResources\ui\Icons\iconWakan.png" />
@@ -219,6 +227,8 @@
     <None Include="GameResources\cw_locales\tc.json" />
     <None Include="GameResources\effects\gold_blade\sprites.json" />
     <None Include="GameResources\effects\gold_escape\sprites.json" />
+    <None Include="GameResources\effects\gold_shied\sprites.json" />
+    <None Include="GameResources\effects\gold_shied_on_hit\sprites.json" />
     <None Include="GameResources\effects\single_gold_sword\sprites.json" />
     <None Include="GameResources\effects\sprites.json" />
     <None Include="mod.json" />
@@ -246,6 +256,7 @@
     <Compile Include="Code\CW_Utils_SpellHelper.cs" />
     <Compile Include="Code\W_Content_Cultisys.cs" />
     <Compile Include="Code\W_Content_Spell.cs" />
+    <Compile Include="Code\W_Content_StatusEffect.cs" />
     <Compile Include="Code\W_Content_WindowCreatureInfo.cs" />
     <Compile Include="Code\W_Content_WorldEvent.cs" />
     <Compile Include="Code\W_Harmony_Others.cs" />

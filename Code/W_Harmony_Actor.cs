@@ -328,7 +328,7 @@ namespace Cultivation_Way.Content.Harmony
             {
                 foreach(CW_StatusEffectData status_effect in cw_status_dict.Values)
                 {
-                    cw_actor.cw_cur_stats.addStats(status_effect.status_asset.bonus_stats);
+                    cw_actor.cw_cur_stats.addStats(status_effect.bonus_stats);
                 }
             }
             // 添加特质的属性影响

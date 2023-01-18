@@ -43,6 +43,7 @@ namespace Cultivation_Way.Library
         public CW_Library_Race races;
         public CW_Library_SpecialBody special_bodies;
         public CW_Library_Spell spells;
+        public CW_Library_StatusEffect status_effects;
         public CW_Library_Trait traits;
         public CW_Library_WorldEvent events;
         
@@ -70,6 +71,7 @@ namespace Cultivation_Way.Library
             races = new CW_Library_Race();
             special_bodies = new CW_Library_SpecialBody();
             spells = new CW_Library_Spell();
+            status_effects = new CW_Library_StatusEffect();
             traits = new CW_Library_Trait();
             events = new CW_Library_WorldEvent();
             units.init();
@@ -87,6 +89,7 @@ namespace Cultivation_Way.Library
             races.init();
             special_bodies.init();
             spells.init();
+            status_effects.init();
             traits.init();
             events.init();
         }
@@ -121,6 +124,7 @@ namespace Cultivation_Way.Library
             special_bodies.register();*/
             spells.register();
             /**
+            status_effects.register();
             traits.register();
             events.register();*/
         }

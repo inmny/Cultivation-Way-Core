@@ -17,7 +17,44 @@ namespace Cultivation_Way.Content
             add_example_spell();
             add_gold_blade_spell();
             add_gold_escape_spell();
+            add_gold_shied_spell();
             add_single_gold_sword_spell();
+        }
+
+        private static void add_gold_shied_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
+            anim_setting.loop_time_limit = 120f;
+            //anim_setting.anim_froze_frame_idx = 2;
+            anim_setting.frame_interval = 0.1f;
+            anim_setting.set_trace(AnimationTraceType.ATTACH);
+
+            CW_EffectManager.instance.load_as_controller("gold_shied_anim", "effects/gold_shied/", controller_setting: anim_setting, base_scale: 1f);
+
+            anim_setting = anim_setting.__deepcopy();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.NUMBER_LIMIT;
+            anim_setting.loop_nr_limit = 1;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.set_trace(AnimationTraceType.NONE);
+            CW_EffectManager.instance.load_as_controller("gold_shied_on_hit_anim", "effects/gold_shied_on_hit/", controller_setting: anim_setting, base_scale: 1f);
+
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "gold_shied", anim_id: "gold_shied_anim",
+                new CW_Element(new int[] { 0, 0, 0, 100, 0 }),
+                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ALIAS,
+                triger_type: CW_Spell_Triger_Type.DEFEND,
+                anim_type: CW_Spell_Animation_Type.CUSTOM,
+                damage_action: null,
+                anim_action: null,
+                spell_action: gold_shied_spell_action,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.DEFEND);
+            spell.add_tag(CW_Spell_Tag.POSITIVE_STATUS);
+            CW_Library_Manager.instance.spells.add(spell);
         }
 
         private static void add_single_gold_sword_spell()
@@ -64,7 +101,7 @@ namespace Cultivation_Way.Content
                 triger_type: CW_Spell_Triger_Type.DEFEND,
                 anim_type: CW_Spell_Animation_Type.ON_USER,
                 damage_action: CW_SpellAction_Damage.no_damage,
-                anim_action: gold_escape_anim_action,
+                anim_action: on_user_auto_scale,
                 check_and_cost_action: CW_SpellAction_Cost.low_health_check_and_cost
                 );
             spell.add_tag(CW_Spell_Tag.DEFEND);
@@ -106,12 +143,30 @@ namespace Cultivation_Way.Content
             CW_EffectManager.instance.load_as_controller("example_spell_anim", "effects/example/", controller_setting: anim_setting, base_scale: 0.015f);
 
             CW_Asset_Spell spell = new CW_Asset_Spell(
-                    "example", "example_spell_anim", new CW_Element(), null, 1, 1, 0.05f, 1, 1, true, null, null, CW_Spell_Target_Type.ACTOR, CW_Spell_Target_Camp.ENEMY, CW_Spell_Triger_Type.ATTACK, CW_Spell_Animation_Type.ON_TARGET, CW_SpellAction_Damage.defualt_damage, CW_SpellAction_Anim.default_anim, null, CW_SpellAction_Cost.default_check_and_cost
+                    "example", "example_spell_anim", 
+                    new CW_Element(), null, 
+                    1, 1, 0.05f, 1, 1, 
+                    true, null, null, 
+                    CW_Spell_Target_Type.ACTOR, 
+                    CW_Spell_Target_Camp.ENEMY, 
+                    CW_Spell_Triger_Type.ATTACK, 
+                    CW_Spell_Animation_Type.ON_TARGET, 
+                    CW_SpellAction_Damage.defualt_damage, 
+                    CW_SpellAction_Anim.default_anim, 
+                    null, 
+                    CW_SpellAction_Cost.default_check_and_cost
                     );
             spell.add_tag(CW_Spell_Tag.ATTACK);
             CW_Library_Manager.instance.spells.add(spell);
         }
-        private static void gold_escape_anim_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
+        private static void gold_shied_spell_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
+        {
+            if (pUser == null || !pUser.base_data.alive) return;
+            CW_StatusEffectData status = ((CW_Actor)pUser).add_status_effect("status_" + spell_asset.id);
+            //CW_EffectManager.instance.spawn_anim(spell_asset.anim_id, pUser.currentPosition, pUser.currentPosition, pUser, pUser, pUser.objectType == MapObjectType.Actor ? ((CW_Actor)pUser).cw_cur_stats.base_stats.scale : 1f);
+            status.bonus_stats.base_stats.armor += (int)cost;
+        }
+        private static void on_user_auto_scale(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
             if (pUser == null) return;
             CW_SpriteAnimation anim = CW_EffectManager.instance.spawn_anim(spell_asset.anim_id, pUser.currentPosition, pUser.currentPosition, pUser, pUser, ((CW_Actor)pUser).cw_cur_stats.base_stats.scale);

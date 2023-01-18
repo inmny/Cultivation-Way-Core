@@ -22,9 +22,15 @@ namespace Cultivation_Way.Content
             add_races();
             add_special_bodies();
             add_spells();
+            add_status_effects();
             add_traits();
             add_world_events();
             add_harmony();
+        }
+
+        private static void add_status_effects()
+        {
+            W_Content_StatusEffect.add_status_effects();
         }
 
         private static void add_localized_text()
@@ -89,6 +95,7 @@ namespace Cultivation_Way.Content
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Item), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Window), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Spell), Others.CW_Constants.mod_id);
+            HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_StatusEffect), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Others), Others.CW_Constants.mod_id);
             WorldBoxConsole.Console.print("Finish Harmony");
         }

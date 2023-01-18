@@ -12,6 +12,7 @@ namespace Cultivation_Way.Animation
         TRACK,
         LINE,
         PARABOLIC,
+        ATTACH,
         CUSTOM
     }
     public enum AnimationLoopLimitType
