@@ -229,7 +229,9 @@
     <Compile Include="Code\CW_ActorStatus.cs" />
     <Compile Include="Code\CW_Addon.cs" />
     <Compile Include="Code\CW_Extensions_WorldTile.cs" />
+    <Compile Include="Code\CW_Library_StatusEffect.cs" />
     <Compile Include="Code\CW_MapChunk_Manager.cs" />
+    <Compile Include="Code\CW_StatusEffectData.cs" />
     <Compile Include="Code\CW_Tester_Animation.cs" />
     <Compile Include="Code\CW_Building.cs" />
     <Compile Include="Code\CW_BuildingData.cs" />
@@ -248,6 +250,7 @@
     <Compile Include="Code\W_Content_WorldEvent.cs" />
     <Compile Include="Code\W_Harmony_Others.cs" />
     <Compile Include="Code\W_Harmony_Spell.cs" />
+    <Compile Include="Code\W_Harmony_StatusEffect.cs" />
     <Compile Include="Code\W_Harmony_Window.cs" />
     <Compile Include="Code\W_Harmony_ActorStatus.cs" />
     <Compile Include="Code\CW_ItemData.cs" />

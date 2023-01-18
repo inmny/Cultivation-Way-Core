@@ -18,7 +18,9 @@ namespace Cultivation_Way
         public CW_ActorStatus cw_status = null;
         public List<CW_Actor> compose_actors = null;
         public List<CW_Building> compose_buildings = null;
+        public Dictionary<string, CW_StatusEffectData> status_effects = null;
         internal WorldTimer fast_shake_timer = null;
+        private static List<string> _status_effects_to_remove = new List<string>();
         /// <summary>
         /// 仅提供高效访问，待权限开放后删除
         /// </summary>
@@ -67,6 +69,34 @@ namespace Cultivation_Way
         public bool has_cultisys(string cultisys_id)
         {
             return (this.cw_data.cultisys & CW_Library_Manager.instance.cultisys.get(cultisys_id)._tag) > 0;
+        }
+        public CW_StatusEffectData add_status_effect(string status_effect_id)
+        {
+            if (status_effects == null) status_effects = new Dictionary<string, CW_StatusEffectData>();
+            if (status_effects.ContainsKey(status_effect_id)) return status_effects[status_effect_id];
+            CW_StatusEffectData ret = new CW_StatusEffectData(this, status_effect_id);
+            if (!ret.is_available()) return null;
+            status_effects.Add(status_effect_id, ret);
+            return ret;
+        }
+        internal void update_status_effects(float elapsed)
+        {
+            if (this.status_effects == null || this.status_effects.Count==0) return;
+            _status_effects_to_remove.Clear();
+            foreach(CW_StatusEffectData status_effect in this.status_effects.Values)
+            {
+                status_effect.update(elapsed);
+                if (status_effect.finished) _status_effects_to_remove.Add(status_effect.status_asset.id);
+            }
+            if (_status_effects_to_remove.Count > 0)
+            {
+                foreach (string status_effect_to_remove in _status_effects_to_remove)
+                {
+                    status_effects.Remove(status_effect_to_remove);
+                }
+                setStatsDirty();
+            }
+            
         }
         internal bool has_cultisys(uint cultisys_tag)
         {

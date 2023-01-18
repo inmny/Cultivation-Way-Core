@@ -33,6 +33,7 @@ namespace Cultivation_Way.Others
         public const float chunk_wakan_lyse_base = 1f;
         public const uint cultisys_immortol_tag = 0x1;
         public const uint cultisys_bushido_tag = 0x10;
+        public const float seconds_per_month = 3f;
     }
     public class CW_Delegates
     {
@@ -40,7 +41,8 @@ namespace Cultivation_Way.Others
         public delegate void CW_Animation_Trace_Update(ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim, ref float delta_x, ref float delta_y);
         public delegate void CW_Animation_Frame_Action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim);
         public delegate void CW_Animation_End_Action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim);
-
+        public delegate void CW_Status_Action(CW_Asset_StatusEffect status_asset, BaseSimObject _object);
+        public delegate void CW_Status_GetHit_Action(CW_Asset_StatusEffect status_asset, BaseSimObject _obejct, BaseSimObject attacker);
         public delegate void CW_Spell_Action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost);
         public delegate float CW_Spell_Cost_Action(CW_Asset_Spell spell_asset, BaseSimObject pUser);
         public delegate void CW_WorldEvent_Action(CW_Asset_WorldEvent event_asset);

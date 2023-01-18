@@ -323,6 +323,14 @@ namespace Cultivation_Way.Content.Harmony
                     cw_actor.cw_cur_stats.addStats(status_effect.asset.baseStats);
                 }
             }
+            Dictionary<string, CW_StatusEffectData> cw_status_dict = cw_actor.status_effects;
+            if(cw_status_dict != null)
+            {
+                foreach(CW_StatusEffectData status_effect in cw_status_dict.Values)
+                {
+                    cw_actor.cw_cur_stats.addStats(status_effect.status_asset.bonus_stats);
+                }
+            }
             // 添加特质的属性影响
             len = cw_actor.fast_data.traits.Count;
             for (i = 0; i < len; i++)
