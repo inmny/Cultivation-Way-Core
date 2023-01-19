@@ -96,7 +96,7 @@ namespace Cultivation_Way.Animation
         /// </summary>
         public CW_Delegates.CW_Animation_End_Action end_action = null;
         /// <summary>
-        /// 图层
+        /// 图层，从底至顶顺序依次为Default, Tiles, MapLayer, EffectsBack, Objects,         EffectsTop, MapOverlay, Debug
         /// </summary>
         public string layer_name = Others.CW_Constants.default_anim_layer_name;
         /// <summary>
@@ -111,6 +111,10 @@ namespace Cultivation_Way.Animation
         /// 指向终点
         /// </summary>
         public bool point_to_dst = false;
+        /// <summary>
+        /// 始终指向终点
+        /// </summary>
+        public bool always_point_to_dst = false;
         internal CW_AnimationSetting __deepcopy()
         {
             CW_AnimationSetting copy = new CW_AnimationSetting();

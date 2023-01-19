@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Extensions;
+using UnityEngine;
+
 namespace Cultivation_Way.Utils
 {
     public class CW_SpellHelper
@@ -11,7 +13,13 @@ namespace Cultivation_Way.Utils
 		internal static List<List<BaseSimObject>> temp_list_objects_enemies = new List<List<BaseSimObject>>();
 		private static Kingdom temp_list_objects_enemies_kingdom;
 		private static MapChunk temp_list_objects_enemies_chunk;
-		public static bool is_enemy(BaseSimObject o_1, BaseSimObject o_2)
+        private static int[][] dir_for_find_tiles_in_circle = new int[4][]{
+                new int[2]{ 1, 3}, //右上
+                new int[2]{ 1, 2}, //右下
+                new int[2]{ 0, 3}, //左上
+                new int[2]{ 0, 2} //左下
+            };
+        public static bool is_enemy(BaseSimObject o_1, BaseSimObject o_2)
         {
 			if (o_1.kingdom == null || o_2.kingdom == null) return false;
 			return ((!o_1.kingdom.asset.mobs && !o_2.kingdom.asset.mobs) || !MapBox.instance.worldLaws.world_law_peaceful_monsters.boolVal) && o_2.kingdom.isEnemy(o_1.kingdom);
@@ -65,7 +73,121 @@ namespace Cultivation_Way.Utils
             }
 			return list;
         }
-		internal static void cause_damage_to_target(BaseSimObject user, BaseSimObject target, float damage)
+        public static List<BaseSimObject> find_enemies_in_circle(WorldTile center_tile, Kingdom kingdom, int radius)
+        {
+            return find_enemies_in_tiles(get_circle_tiles(center_tile, radius), kingdom);
+        }
+
+        public static List<BaseSimObject> find_enemies_in_tiles(List<WorldTile> tiles, Kingdom kingdom)
+        {
+            List<BaseSimObject> enemies = new List<BaseSimObject>();
+            foreach (WorldTile tile in tiles)
+            {
+                if (tile.building != null && is_enemy(tile.building.kingdom, kingdom)) enemies.Add(tile.building);
+                foreach (Actor unit in tile.units)
+                {
+                    if (is_enemy(unit.kingdom, kingdom)) enemies.Add(unit);
+                }
+            }
+            return enemies;
+        }
+        public static List<WorldTile> get_circle_tiles(WorldTile center, float range)
+        {
+            //改用寻找圆周1/4边界，进行翻转获取
+            List<WorldTile> tiles = new List<WorldTile>();
+            //获取边界
+            List<int> right = new List<int>();
+            int x = (int)range;
+            int y = 0;
+            float aPerTile = 1f;
+            float distance;
+            while (y < range)
+            {
+                distance = Mathf.Sqrt((x * x * aPerTile) + (y * y * aPerTile));
+                while (distance >= range)
+                {
+                    x--;
+                    distance = Mathf.Sqrt((x * x * aPerTile) + (y * y * aPerTile));
+                }
+                right.Add(x);
+                y++;
+            }
+            //添加tile
+            //WorldTile.neighbours中0-3对应left,right,down,up
+            //确定方向
+            
+            //添加至tiles，但原点未添加，四条轴各存在一次重复，采用去重，不采用加入时判断
+            for (int i = 0; i < 4; i++)
+            {
+                WorldTile readyToAdd = center;//水平移动用于添加
+                WorldTile yLine = center;     //竖直移动，以校准x=0
+                for (int yPos = 0; yPos < right.Count; yPos++)
+                {
+                    for (int xPos = 0; xPos < right[yPos]; xPos++)
+                    {
+                        tiles.Add(readyToAdd);
+                        if (readyToAdd.world_edge)
+                        {
+                            break;
+                        }
+                        readyToAdd = readyToAdd.neighbours[dir_for_find_tiles_in_circle[i][0]];
+                    }
+                    if (yLine.world_edge)
+                    {
+                        break;
+                    }
+                    yLine = yLine.neighbours[dir_for_find_tiles_in_circle[i][1]];
+                    readyToAdd = yLine;
+                }
+            }
+            //去重
+            int rightLim = 1;
+            int leftLim = 1;
+            int upLim = 1;
+            int downLim = 1;
+            int centerLim = 3;
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                if (tiles[i].x == center.x && tiles[i].y == center.y && centerLim > 0)
+                {
+                    centerLim--;
+                    tiles.RemoveAt(i);
+                    i--;
+                }
+                else if (tiles[i].x == center.x)
+                {
+                    if (tiles[i].y < center.y && downLim > 0)
+                    {
+                        downLim--;
+                        tiles.RemoveAt(i);
+                        i--;
+                    }
+                    else if (tiles[i].y > center.y && upLim > 0)
+                    {
+                        upLim--;
+                        tiles.RemoveAt(i);
+                        i--;
+                    }
+                }
+                else if (tiles[i].y == center.y)
+                {
+                    if (tiles[i].x < center.x && leftLim > 0)
+                    {
+                        leftLim--;
+                        tiles.RemoveAt(i);
+                        i--;
+                    }
+                    else if (tiles[i].x > center.x && rightLim > 0)
+                    {
+                        rightLim--;
+                        tiles.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+            return tiles;
+        }
+        internal static void cause_damage_to_target(BaseSimObject user, BaseSimObject target, float damage)
         {
 			if (target == null || !target.base_data.alive || user == null || !user.base_data.alive) return;
 			if (target.objectType == MapObjectType.Actor)

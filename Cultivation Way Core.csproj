@@ -177,6 +177,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GameResources\effects\default_lightning\default_lightning_0.png" />
+    <Content Include="GameResources\effects\default_lightning\default_lightning_1.png" />
+    <Content Include="GameResources\effects\default_lightning\default_lightning_2.png" />
+    <Content Include="GameResources\effects\default_lightning\default_lightning_3.png" />
+    <Content Include="GameResources\effects\default_lightning\default_lightning_4.png" />
+    <Content Include="GameResources\effects\default_lightning\default_lightning_5.png" />
     <Content Include="GameResources\effects\example\fx_example_t_0.png" />
     <Content Include="GameResources\effects\example\fx_example_t_1.png" />
     <Content Include="GameResources\effects\example\fx_example_t_2.png" />
@@ -212,7 +218,22 @@
     <Content Include="GameResources\effects\gold_shied\金刚护体2-2.png" />
     <Content Include="GameResources\effects\gold_shied\金刚护体2-3.png" />
     <Content Include="GameResources\effects\gold_shied\金刚护体2-4.png" />
+    <Content Include="GameResources\effects\stxh_HWMT\HWMT_0.png" />
+    <Content Include="GameResources\effects\stxh_HWMT\HWMT_1.png" />
+    <Content Include="GameResources\effects\stxh_HWMT\HWMT_2.png" />
+    <Content Include="GameResources\effects\stxh_LXST\fx_LXST_t_0.png" />
+    <Content Include="GameResources\effects\stxh_LXST\fx_LXST_t_1.png" />
+    <Content Include="GameResources\effects\stxh_LXST\fx_LXST_t_2.png" />
     <Content Include="GameResources\effects\single_gold_sword\gold_sword.png" />
+    <Content Include="GameResources\effects\stxh_XTDT\XTDT_0.png" />
+    <Content Include="GameResources\effects\stxh_XTDT\XTDT_1.png" />
+    <Content Include="GameResources\effects\stxh_XTDT\XTDT_2.png" />
+    <Content Include="GameResources\effects\stxh_XTDT\XTDT_3.png" />
+    <Content Include="GameResources\effects\stxh_XTDT\XTDT_4.png" />
+    <Content Include="GameResources\effects\stxh_XTDT\XTDT_5.png" />
+    <Content Include="GameResources\effects\stxh_XTDT\XTDT_6.png" />
+    <Content Include="GameResources\effects\stxh_XTDT\XTDT_7.png" />
+    <Content Include="GameResources\effects\wtiger_tooth\白虎之牙.png" />
     <Content Include="GameResources\ui\Icons\iconShied.png" />
     <Content Include="GameResources\ui\Icons\iconWakan.png" />
     <Content Include="GameResources\ui\Icons\iconElement.png" />

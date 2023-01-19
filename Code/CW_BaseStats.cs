@@ -104,7 +104,6 @@ namespace Cultivation_Way
         /// 修炼速度系数
         /// </summary>
         public float mod_cultivation;
-        // TODO: 补充其他函数
         /// <summary>
         /// 抗暴率
         /// </summary>

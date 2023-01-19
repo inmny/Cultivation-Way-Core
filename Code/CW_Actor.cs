@@ -75,9 +75,8 @@ namespace Cultivation_Way
             if (status_effects == null) status_effects = new Dictionary<string, CW_StatusEffectData>();
             if (status_effects.ContainsKey(status_effect_id)) return status_effects[status_effect_id];
             CW_StatusEffectData ret = new CW_StatusEffectData(this, status_effect_id);
-            if (!ret.is_available()) return null;
             status_effects.Add(status_effect_id, ret);
-            ret.status_asset.action_on_get(ret, this);
+            if (ret.status_asset.action_on_get != null) ret.status_asset.action_on_get(ret, this);
             this.setStatsDirty();
             return ret;
         }
@@ -120,11 +119,27 @@ namespace Cultivation_Way
             if ((pSkipIfShake && this.fast_shake_timer.isActive) || this.fast_data.health <= 0) return false;
 
             float damage_reduce = 0;
-            damage_reduce = this.cw_cur_stats.base_stats.armor / (100 + this.cw_cur_stats.base_stats.armor);
+            // 区分法抗和物抗作用
+            if(attack_type == Others.CW_Enums.CW_AttackType.Spell)
+            {
+                damage_reduce = this.cw_cur_stats.base_stats.armor / (100 + this.cw_cur_stats.spell_armor);
+            }
+            else if (attack_type != Others.CW_Enums.CW_AttackType.God)
+            {
+                damage_reduce = this.cw_cur_stats.base_stats.armor / (100 + this.cw_cur_stats.base_stats.armor);
+            }
+            if (damage_reduce < 0) damage_reduce = 0;
             damage *= 1 - damage_reduce;
 
             if(damage < 0) damage = 0;
-
+            // 反伤
+            if(damage > 0 && attack_type != Others.CW_Enums.CW_AttackType.Spell && attack_type != Others.CW_Enums.CW_AttackType.God)
+            {
+                if(damage * this.cw_cur_stats.anti_injury > 1f && attacker!=null && attacker!=this)
+                {
+                    Utils.CW_SpellHelper.cause_damage_to_target(this, attacker, damage * this.cw_cur_stats.anti_injury);
+                }
+            }
             
             // 释放防御类法术
             if (this.cw_data.spells.Count > 0)
@@ -201,7 +216,7 @@ namespace Cultivation_Way
             if (this.cw_status.can_culti && this.cw_status.wakan < this.cw_cur_stats.wakan)
             {
                 int wakan_get = 0; CW_MapChunk chunk = this.currentTile.get_cw_chunk();
-                float chunk_co = chunk.wakan_level * chunk.wakan_level;
+                float chunk_co = chunk.wakan_level;
                 // 计算人物应得的level 1灵气量
                 if (this.cw_status.wakan * Others.CW_Constants.wakan_regen_valid_percent < this.cw_cur_stats.wakan * 100)
                 {// 灵气恢复属性的加成

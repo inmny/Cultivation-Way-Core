@@ -89,7 +89,7 @@ namespace Cultivation_Way.Animation
             //WorldBoxConsole.Console.print("Is renderer null?>" + (renderer == null)+"\nIs setting null?>"+(setting==null));
             this.renderer.sortingLayerName = setting.layer_name;
             gameObject.transform.localPosition = this.src_vec;
-            gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, Toolbox.getAngle(gameObject.transform.position.x, gameObject.transform.position.y, this.dst_vec.x, this.dst_vec.y) * 57.29578f));
+            if(setting.point_to_dst) gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, Toolbox.getAngle(gameObject.transform.position.x, gameObject.transform.position.y, this.dst_vec.x, this.dst_vec.y) * 57.29578f));
         }
         internal void update(float elapsed)
         {
@@ -170,7 +170,7 @@ namespace Cultivation_Way.Animation
                 if(setting.loop_limit_type==AnimationLoopLimitType.TRACE_LIMIT) trace_length += Mathf.Sqrt(delta_x * delta_x + delta_y * delta_y);
 
                 // 指向终点
-                if (setting.point_to_dst)
+                if (setting.always_point_to_dst)
                 {
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, Toolbox.getAngle(gameObject.transform.position.x, gameObject.transform.position.y, dst_vec.x, dst_vec.y) * 57.29578f));
                 }

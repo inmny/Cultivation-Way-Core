@@ -22,15 +22,19 @@ namespace Cultivation_Way
         {
             this.status_asset = CW_Library_Manager.instance.status_effects.get(status_effect_id);
             if (status_asset == null) { finished = true; return; }
-            this.anim = CW_EffectManager.instance.spawn_anim(status_asset.anim_id, _object.currentPosition, _object.currentPosition, _object, _object, _object.objectType == MapObjectType.Actor ? ((CW_Actor)_object).cw_cur_stats.base_stats.scale : 1f);
-            if(this.anim == null || !this.anim.isOn) { finished = true; return; }
+            if (!string.IsNullOrEmpty(status_asset.anim_id))
+            {
+                this.anim = CW_EffectManager.instance.spawn_anim(status_asset.anim_id, _object.currentPosition, _object.currentPosition, _object, _object, status_asset.anim_scale_co * (_object.objectType == MapObjectType.Actor ? ((CW_Actor)_object).cw_cur_stats.base_stats.scale : 1f));
+                if (this.anim == null || !this.anim.isOn) { finished = true; return; }
+            }
+            
             this.bonus_stats = status_asset.bonus_stats;
             this.left_time = status_asset.effect_time;
             this.effect_val = status_asset.effect_val;
         }
         internal bool is_available()
         {
-            return this.anim != null;
+            return !finished;
         }
         public void update(float elapsed)
         {

@@ -60,6 +60,9 @@ namespace Cultivation_Way.Library
     }
     public class CW_Asset_Spell : Asset
     {
+        /// <summary>
+        /// 动画id，在纯粹的状态法术上为状态id，当然，采用自定义spell_action可无视此项
+        /// </summary>
         public string anim_id;
         public int rarity;
         public float free_val;
