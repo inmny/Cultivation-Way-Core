@@ -253,6 +253,7 @@
     <None Include="GameResources\effects\single_gold_sword\sprites.json" />
     <None Include="GameResources\effects\sprites.json" />
     <None Include="mod.json" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\CW_Actor.cs" />

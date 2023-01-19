@@ -30,7 +30,7 @@ namespace Cultivation_Way
         internal void pre_learn_cultibook(CW_Asset_CultiBook cultibook)
         {
             if (cultibook == null) return;
-            if (!Others.CW_Constants.cultibook_force_learn && cultisys == 0) return;
+            //if (!Others.CW_Constants.cultibook_force_learn && cultisys == 0) return;
 
             cultibook.cur_culti_nr++;
             cultibook.histroy_culti_nr++;

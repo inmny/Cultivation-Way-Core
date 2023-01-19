@@ -231,7 +231,16 @@ namespace Cultivation_Way.Content.Harmony
                 __actor_updateStats(actor);
 
                 CW_Library_Manager.instance.cultisys.set_cultisys(actor);
-
+                if (!Others.CW_Constants.cultibook_force_learn && actor.cw_data.cultisys == 0)
+                {
+                    CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(actor.cw_data.cultibook_id);
+                    if (cultibook != null)
+                    {
+                        cultibook.cur_culti_nr--;
+                        if (cultibook.cur_culti_nr <= 0) cultibook.try_deprecate();
+                    }
+                    actor.cw_data.cultibook_id = null;
+                }
                 if (ModState.instance.load_unit_reason == Load_Unit_Reason.CITY_SPAWN)
                 {
                     // 已经进行了预学习，只需再学习法术即可。
