@@ -485,7 +485,13 @@ namespace Cultivation_Way.Content
             if (cw_actor.cw_data.cultisys != 0)
             {
                 CW_TipButton button_cultisys = Instantiate(prefab_tip_button, traitsParent);
-                NCMS.Utils.Localization.Set("CW_cultisys_info", CW_Library_Manager.instance.cultisys.parse_cultisys(cw_actor.cw_data));
+                string cultisys_info = CW_Library_Manager.instance.cultisys.parse_cultisys(cw_actor.cw_data);
+                StringBuilder string_builder = new StringBuilder();
+                for(int i = 0; i < cw_actor.cw_data.spells.Count; i++)
+                {
+                    string_builder.AppendLine(String.Format("法术[{0}]\t\t{1}", i, LocalizedTextManager.getText("spell_" + cw_actor.cw_data.spells[i])));
+                }
+                NCMS.Utils.Localization.Set("CW_cultisys_info", cultisys_info+"\n"+string_builder.ToString());
                 button_cultisys.load("cultisys", "CW_cultisys_info", "iconCultiSys", "normal");
                 button_cultisys.transform.localScale = new Vector3(0.65f, 0.80f);
                 
