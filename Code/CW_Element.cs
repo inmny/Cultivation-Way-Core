@@ -167,6 +167,36 @@ namespace Cultivation_Way
 
             return combine_bonus;
         }
+        /**
+        private void __comp_type()
+        {
+            int i, j;
+            List<Library.CW_Asset_Element> asset_list = Library.CW_Library_Manager.instance.elements.list;
+            float m_1 = 0;
+            for (i = 0; i < Others.CW_Constants.base_element_types; i++)
+            {
+                m_1 += this.base_elements[i];
+            }
+            m_1 /= Others.CW_Constants.base_element_types;
+            float m_2;
+            float min_val = 1000000f;
+            float cur_val;
+            for (i = 0; i < asset_list.Count; i++)
+            {
+                m_2 = 0; cur_val = 0;
+                for(j = 0; j < Others.CW_Constants.base_element_types; j++)
+                {
+                    m_2 += asset_list[i].base_elements[j];
+                }
+                m_2 /= Others.CW_Constants.base_element_types;
+                for(j=0;j<Others.CW_Constants.base_element_types; j++)
+                {
+                    cur_val += (this.base_elements[j] - m_1) * (asset_list[i].base_elements[j] - m_2);
+                }
+                if(cur_val >)
+            }
+        }
+        */
         private void __comp_type()
         {
             int i, j;
@@ -189,7 +219,7 @@ namespace Cultivation_Way
                 // 如果完全不同，那么tmp为1，完全一致则为0
                 // 加上稀有度影响
                 tmp_no_similarity = (1-(mul_result / Mathf.Sqrt(modulus_1 * modulus_2))) * asset_list[i].rarity;
-                if(tmp_no_similarity < min_no_similarity)
+                if(tmp_no_similarity < min_no_similarity || (tmp_no_similarity==min_no_similarity && asset_list[i].rarity > Library.CW_Library_Manager.instance.elements.get(this.type_id).rarity))
                 {
                     min_no_similarity = tmp_no_similarity;
                     this.type_id = asset_list[i].id;

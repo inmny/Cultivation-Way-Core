@@ -75,7 +75,7 @@ namespace Cultivation_Way.Library
             add(new CW_Asset_Element("CW_wood_iron", 0, 0, 50, 50, 0, 1f, 3f));
             add(new CW_Asset_Element("CW_wood_ground", 0, 0, 50, 0, 50, 1f, 3f));
             add(new CW_Asset_Element("CW_iron_ground", 0, 0, 0, 50, 50, 1f, 3f));
-            add(new CW_Asset_Element("CW_common", 20, 20, 20, 20, 20, 1f, 1f));
+            add(new CW_Asset_Element("CW_common", 20, 20, 20, 20, 20, 1f, 3f));
             add(new CW_Asset_Element("CW_uniform", 20, 20, 20, 20, 20, 10f, 100f));
             
         }

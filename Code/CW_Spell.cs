@@ -24,7 +24,7 @@ namespace Cultivation_Way
                         asset.damage_action(asset, pUser, pTarget, pTargetTile, cost);
                         asset.anim_action(asset, pUser, pTarget, pTargetTile, cost);
                         //WorldBoxConsole.Console.print("Spell should cast");
-                        ((CW_Actor)pUser).fast_data.favorite = true;
+                        //((CW_Actor)pUser).fast_data.favorite = true;
                     }
                     else
                     {
