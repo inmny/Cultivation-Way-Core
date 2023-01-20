@@ -51,7 +51,7 @@ namespace Cultivation_Way
         /// <summary>
         /// 寿命系数
         /// </summary>
-        public int mod_age;
+        public float mod_age;
         /// <summary>
         /// 施法距离
         /// </summary>

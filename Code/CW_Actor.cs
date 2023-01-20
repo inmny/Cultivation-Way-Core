@@ -160,17 +160,34 @@ namespace Cultivation_Way
                     }
                 }
             }
+
             if (this.cw_status.shied > 0)
             {
-                if (this.cw_status.shied > damage)
+                if(this.cw_status.wakan_level > 1)
                 {
-                    this.cw_status.shied -= (int)damage; damage = 0;
+                    float damage_on_shied = Utils.CW_Utils_Others.compress_raw_wakan(damage, this.cw_status.wakan_level);
+                    if (this.cw_status.shied > damage_on_shied)
+                    {
+                        this.cw_status.shied -= (int)damage_on_shied; damage = 0;
+                    }
+                    else
+                    {
+                        this.cw_status.shied = 0; damage -= Utils.CW_Utils_Others.get_raw_wakan(this.cw_status.shied, this.cw_status.wakan_level);
+                    }
                 }
                 else
                 {
-                    this.cw_status.shied = 0; damage -= this.cw_status.shied;
+                    if (this.cw_status.shied > damage)
+                    {
+                        this.cw_status.shied -= (int)damage; damage = 0;
+                    }
+                    else
+                    {
+                        this.cw_status.shied = 0; damage -= this.cw_status.shied;
+                    }
                 }
             }
+            if (this.cw_status.health_level > 1) damage = Utils.CW_Utils_Others.compress_raw_wakan(damage, this.cw_status.health_level);
             this.fast_data.health -= (int)damage;
             if (this.fast_data.health < 0)
             {
@@ -212,7 +229,11 @@ namespace Cultivation_Way
         }
         public void updateStatus_month()
         {
-            this.cw_status.shied += Mathf.Min(this.cw_cur_stats.shied_regen, this.cw_cur_stats.shied - this.cw_status.shied);
+            if(this.cw_status.shied < this.cw_cur_stats.shied)
+            {
+                this.cw_status.shied += Mathf.Min((int)Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.shied_regen, this.cw_status.wakan_level), this.cw_cur_stats.shied - this.cw_status.shied);
+            }
+            
             if (this.cw_status.can_culti && this.cw_status.wakan < this.cw_cur_stats.wakan)
             {
                 int wakan_get = 0; CW_MapChunk chunk = this.currentTile.get_cw_chunk();
@@ -222,7 +243,7 @@ namespace Cultivation_Way
                 {// 灵气恢复属性的加成
                     wakan_get += (int)(this.cw_cur_stats.wakan_regen * chunk_co);
                 }// 修炼获取
-                wakan_get += (int)((1 + this.cw_cur_stats.mod_cultivation) * (1+this.cw_data.status.culti_velo) * chunk_co)*10;
+                wakan_get += (int)((1 + this.cw_cur_stats.mod_cultivation) * (1+this.cw_data.status.culti_velo) * chunk_co);
                 // 计算区块能够提供的level 1灵气量
                 float wakan_chunk_provide = Utils.CW_Utils_Others.get_raw_wakan(chunk.wakan, chunk.wakan_level);
                 // 取较小者
@@ -233,6 +254,7 @@ namespace Cultivation_Way
                 if (wakan_actor_get > this.cw_cur_stats.wakan - this.cw_status.wakan) wakan_actor_get = this.cw_cur_stats.wakan - this.cw_status.wakan;
                 // 人物实际获取灵气
                 this.cw_status.wakan += (int)wakan_actor_get;
+                // MonoBehaviour.print("Get wakan:" + wakan_actor_get);
                 // 取人物实际获取的灵气量转为level 1的灵气量
                 wakan_actor_get = Utils.CW_Utils_Others.get_raw_wakan(wakan_actor_get, this.cw_status.wakan_level);
                 // 取人物获取量与应得量较小者
@@ -240,8 +262,21 @@ namespace Cultivation_Way
                 // 从区块移除对应量原始灵气
                 chunk.wakan -= Utils.CW_Utils_Others.compress_raw_wakan(wakan_get, chunk.wakan_level);
             }
+            if((this.cw_data.cultisys & Others.CW_Constants.cultisys_bushido_tag)==0 || this.fast_data.health * Others.CW_Constants.health_regen_valid_percent < this.cw_cur_stats.base_stats.health * 100)
+            {
+                if (this.cw_status.health_level>1)
+                {
+                    float pure_regen_health = Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.health_regen, this.cw_status.health_level);
+                    if (pure_regen_health > this.cw_cur_stats.base_stats.health - this.fast_data.health) pure_regen_health = this.cw_cur_stats.base_stats.health - this.fast_data.health;
+                    this.fast_data.health += (int)pure_regen_health;
+                }
+                else
+                {
+                    this.fast_data.health += Mathf.Min(this.cw_cur_stats.health_regen, this.cw_cur_stats.base_stats.health - this.fast_data.health);
+                }
+            }
             
-            this.fast_data.health += Mathf.Min(this.cw_cur_stats.health_regen, this.cw_cur_stats.base_stats.health - this.fast_data.health);
+            
         }
         public void checkLevelUp()
         {

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Library;
+using UnityEngine;
+
 namespace Cultivation_Way.Content
 {
     internal class W_Content_Cultisys
@@ -25,19 +27,41 @@ namespace Cultivation_Way.Content
             {
                 immortal.power_level[i] = 1 + (i - 9) / 10f;
             }
+            #region 修仙属性
+            //物抗
+            immortal.bonus_stats[0].base_stats.armor = 0;
+            immortal.bonus_stats[1].base_stats.armor = 10;
+            immortal.bonus_stats[2].base_stats.armor = 30;
+            immortal.bonus_stats[3].base_stats.armor = 60;
+            immortal.bonus_stats[4].base_stats.armor = 90;
+            immortal.bonus_stats[5].base_stats.armor = 150;
+            immortal.bonus_stats[6].base_stats.armor = 300;
+            immortal.bonus_stats[7].base_stats.armor = 400;
+            immortal.bonus_stats[8].base_stats.armor = 500;
+            for (i = 9; i < Others.CW_Constants.max_cultisys_level; i++)
+            {
+                immortal.bonus_stats[i].base_stats.armor = immortal.bonus_stats[i - 1].base_stats.armor + 10;
+            }
             for (i = 0; i < Others.CW_Constants.max_cultisys_level; i++)
             {
-                immortal.bonus_stats[i].age_bonus = 10 * i;
-                immortal.bonus_stats[i].base_stats.health = 5 * i;
-                immortal.bonus_stats[i].health_regen = i / 2;
-                immortal.bonus_stats[i].base_stats.armor = i;
-                immortal.bonus_stats[i].base_stats.damage = 20 * (i+1);
-                immortal.bonus_stats[i].wakan = 20 * (i+1);
-                immortal.bonus_stats[i].mod_wakan = 5 * (i+1);
-                immortal.bonus_stats[i].wakan_regen = (i + 1);
-                immortal.bonus_stats[i].mod_wakan_regen = (i + 1);
+                // 寿命
+                immortal.bonus_stats[i].age_bonus = i * i * 2 + (i % 10) * 15 + (i > 0 ? immortal.bonus_stats[i-1].age_bonus:0);
+                // 生命以及生命回复
+                immortal.bonus_stats[i].base_stats.health = 3 * i * i * i/2 + i * 142;
+                immortal.bonus_stats[i].health_regen = (int)Mathf.Sqrt(Mathf.Sqrt(immortal.bonus_stats[i].base_stats.health));
+                // 攻击
+                immortal.bonus_stats[i].base_stats.damage = (int)Mathf.Sqrt(immortal.bonus_stats[i].base_stats.health);
+                // 灵气以及灵气恢复
+                immortal.bonus_stats[i].wakan = (i+1) * (i+1) * (i+1)*2 + (i+1) * 18+24;
+                immortal.bonus_stats[i].wakan_regen = (int)(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / Mathf.Sqrt(immortal.bonus_stats[i].wakan))/2;
+                // 法抗
+                immortal.bonus_stats[i].spell_armor = (int)(Mathf.Sqrt(i) * immortal.bonus_stats[i].base_stats.armor * (Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / immortal.bonus_stats[i].wakan, Others.CW_Constants.wakan_level_co)));
+                // 护盾恢复
+                immortal.bonus_stats[i].shied_regen = (int)(Mathf.Sqrt(i) * Mathf.Sqrt(Mathf.Sqrt(immortal.bonus_stats[i].wakan)) * (Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / immortal.bonus_stats[i].wakan, Others.CW_Constants.wakan_level_co) + 1) * 2);
+                // 护盾
+                immortal.bonus_stats[i].shied = 12 * immortal.bonus_stats[i].shied_regen;
             }
-
+            #endregion
 
             CW_Asset_CultiSys bushido = CW_Library_Manager.instance.cultisys.add(
                 new CW_Asset_CultiSys()
@@ -53,15 +77,41 @@ namespace Cultivation_Way.Content
                 bushido.power_level[i] = 1 + (i - 9) / 10f;
             }
             //WorldBoxConsole.Console.print(bushido == null);
+            #region 武道属性
+            // 物抗
             for (i = 0; i < Others.CW_Constants.max_cultisys_level; i++)
             {
-                bushido.bonus_stats[i].age_bonus = 10 * i;
-                bushido.bonus_stats[i].base_stats.health = 50 * (i+1);
-                bushido.bonus_stats[i].health_regen = 5 * (i+1);
-                bushido.bonus_stats[i].base_stats.armor = 5*i;
-                bushido.bonus_stats[i].base_stats.damage = 4 * (i + 1);
+                bushido.bonus_stats[i].base_stats.armor = 2 * immortal.bonus_stats[i].base_stats.armor;
             }
-
+            bushido.bonus_stats[i - 1].base_stats.armor = 1500;
+            
+            for (i = 0; i < Others.CW_Constants.max_cultisys_level; i++)
+            {
+                bushido.bonus_stats[i].age_bonus = i * i * 6 + i * 15 + (i > 0 ? bushido.bonus_stats[i-1].age_bonus:0);
+                // 生命及生命回复
+                bushido.bonus_stats[i].base_stats.health = 3*i*i*i+42*i;
+                bushido.bonus_stats[i].health_regen = (int)Mathf.Sqrt(bushido.bonus_stats[i].base_stats.health * Utils.CW_Utils_Others.get_raw_wakan(bushido.bonus_stats[i].base_stats.health, bushido.power_level[i]))/50;
+                // 攻击
+                bushido.bonus_stats[i].base_stats.damage = 5 * i * i * i + 20 * i * i;
+                // 法抗
+                bushido.bonus_stats[i].spell_armor = (int)(bushido.bonus_stats[i].base_stats.armor * Mathf.Sqrt(i));
+            }
+            // 攻速
+            for (i = 0; i < 10; i++)
+            {
+                bushido.bonus_stats[i].base_stats.attackSpeed = 5 * i;
+            }
+            for (; i < Others.CW_Constants.max_cultisys_level; i++)
+            {
+                bushido.bonus_stats[i].base_stats.attackSpeed = (int)((150 - bushido.bonus_stats[i - 1].base_stats.attackSpeed) * Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(bushido.bonus_stats[i].base_stats.health, bushido.power_level[i]), Others.CW_Constants.wakan_level_co) + bushido.bonus_stats[i - 1].base_stats.attackSpeed);
+            }
+            // 护盾以及护盾恢复
+            for(i= 0; i < Others.CW_Constants.max_cultisys_level; i++)
+            {
+                bushido.bonus_stats[i].shied_regen = (int)bushido.bonus_stats[i].base_stats.attackSpeed / 2;
+                bushido.bonus_stats[i].shied = bushido.bonus_stats[i].shied_regen * 12;
+            }
+            #endregion
         }
         private static bool immortal_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
         {
@@ -79,9 +129,11 @@ namespace Cultivation_Way.Content
 
                 if (cw_actor.cw_status.health_level < cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1])
                 {
-                    cw_actor.cw_status.health_level = cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1];
                     cw_actor.fast_data.health = (int)Utils.CW_Utils_Others.get_raw_wakan(cw_actor.fast_data.health, cw_actor.cw_status.health_level);
-                    cw_actor.fast_data.health = (int)Utils.CW_Utils_Others.compress_raw_wakan(cw_actor.fast_data.health, cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1]);
+
+                    cw_actor.cw_status.health_level = cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1];
+
+                    cw_actor.fast_data.health = (int)Utils.CW_Utils_Others.compress_raw_wakan(cw_actor.fast_data.health, cw_actor.cw_status.health_level);
                 }
                 return true;
             }

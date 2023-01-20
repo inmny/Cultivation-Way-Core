@@ -442,7 +442,7 @@ namespace Cultivation_Way.Content
         }
         private static void example_spell_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
-            ((CW_Actor)anim.src_object).fast_data.health += (int)anim.cost_for_spell;
+            ((CW_Actor)anim.src_object).fast_data.health += 1;
         }
     }
 }

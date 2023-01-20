@@ -29,6 +29,7 @@ namespace Cultivation_Way
         {
             if (x != width || y != height)
             {
+                width = x; height = y;
                 chunks = new CW_MapChunk[x, y];
                 for (int i = 0; i < x; i++)
                 {

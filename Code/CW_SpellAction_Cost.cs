@@ -16,21 +16,27 @@ namespace Cultivation_Way.Actions
                 CW_Actor cw_actor = (CW_Actor)user;
                 if (cw_actor.cw_data.status.can_culti)
                 {
-                    cost = cw_actor.cw_status.wakan * spell_asset.cost;
-                    if(cost > 1)
+                    cost += cw_actor.cw_status.wakan * spell_asset.cost;
+                    if(cost > 5)
                     {
                         cw_actor.cw_status.wakan -= (int)cost;
+                        cost = Utils.CW_Utils_Others.get_raw_wakan(cost, cw_actor.cw_status.wakan_level);
                     }
-                    cost = Utils.CW_Utils_Others.get_raw_wakan(cost, cw_actor.cw_status.wakan_level);
-                }
-                else if ((cw_actor.cw_data.cultisys & Others.CW_Constants.cultisys_bushido_tag) == 1)// TODO: change to bushido
-                {
-                    cost = (cw_actor.fast_data.health - 5) * spell_asset.cost;
-                    if (cost > 1)
+                    else
                     {
-                        cw_actor.fast_data.health -= (int)cost;
+                        cost = 0;
                     }
-                    cost = Utils.CW_Utils_Others.get_raw_wakan(cost, cw_actor.cw_status.health_level);
+                }
+
+                if ((cw_actor.cw_data.cultisys & Others.CW_Constants.cultisys_bushido_tag) != 0)
+                {
+                    float health_cost = (cw_actor.fast_data.health - 10) * spell_asset.cost;
+                    if (health_cost > 5)
+                    {
+                        cw_actor.fast_data.health -= (int)health_cost;
+                        cost += Utils.CW_Utils_Others.get_raw_wakan(health_cost, cw_actor.cw_status.health_level);
+                    }
+                    
                 }
                 return cost;
             }

@@ -33,7 +33,7 @@ namespace Cultivation_Way.Content.Harmony
             {
                 cw_actor.fast_data.age++;
                 // 允许血量超限
-                cw_actor.fast_data.health += (int)(0.03f * cw_actor.cw_cur_stats.base_stats.health);
+                cw_actor.fast_data.health += (int)(Others.CW_Constants.bushido_force_culti_co * cw_actor.cw_cur_stats.base_stats.health);
                 cw_actor.checkLevelUp();
             }
             if(!__new_updateAge(cw_actor.fast_data, cw_actor.cw_data.status))
@@ -423,7 +423,7 @@ namespace Cultivation_Way.Content.Harmony
             cw_actor.cw_cur_stats.normalize();
             cw_actor.cw_status.wakan = Mathf.Min(cw_actor.cw_status.wakan, cw_actor.cw_cur_stats.wakan);
             cw_actor.fast_data.health = Mathf.Min(cw_actor.fast_data.health, cw_actor.cw_cur_stats.base_stats.health);
-            cw_actor.cw_status.max_age = (int)(cw_actor.cw_stats.origin_stats.maxAge * (1f + cw_actor.cw_cur_stats.mod_age/100f)) + cw_actor.cw_cur_stats.age_bonus;
+            cw_actor.cw_status.max_age = (int)((cw_actor.cw_stats.origin_stats.maxAge+ cw_actor.cw_cur_stats.age_bonus) * (1f + cw_actor.cw_cur_stats.mod_age/100f));
             CW_Actor.set_s_attackSpeed_seconds(actor, (300f - cw_actor.cw_cur_stats.base_stats.attackSpeed) / (100f + cw_actor.cw_cur_stats.base_stats.attackSpeed));
             // 设置攻击样式以及武器贴图
             CW_Asset_Item weapon_asset = cw_actor.get_weapon_asset();

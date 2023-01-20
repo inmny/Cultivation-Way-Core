@@ -15,6 +15,7 @@ namespace Cultivation_Way
             {
                 try
                 {
+                    
                     float cost = asset.check_and_cost(pUser);
                     if (cost < 5) return false;
                     // TODO: 细化

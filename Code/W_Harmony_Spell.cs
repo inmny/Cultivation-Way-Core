@@ -21,6 +21,7 @@ namespace Cultivation_Way.Content.Harmony
             if (cw_actor.cw_data.spells.Count == 0) return true;
 
             CW_Asset_Spell spell = CW_Library_Manager.instance.spells.get(cw_actor.cw_data.spells.GetRandom());
+            
 
             if (!__can_cast(spell, cw_actor, spell.select_target(cw_actor, pTarget))) return true;
 
