@@ -14,6 +14,7 @@ namespace Cultivation_Way.Library
         public string sprite_name;
         public float[] power_level;
         public CW_BaseStats[] bonus_stats;
+        public CW_Spell_Tag[] addition_spell_require;
         // 修炼体系的黑白名单设定
         // 先按照种族黑白名单进行总体的设定，再根据单位的黑白名单进行细节的设定
         // 若要两者同时使用，请理清关系。
@@ -95,6 +96,7 @@ namespace Cultivation_Way.Library
                 cultisys_tag++;
                 actor_allow_cultisys >>= 1;
             }
+            if (actor.cw_data.cultisys > 0) actor.cw_status.can_culti = true;
         }
         internal string parse_cultisys(CW_ActorData cw_actor_data)
         {

@@ -17,7 +17,7 @@ namespace Cultivation_Way
                 {
                     
                     float cost = asset.check_and_cost(pUser);
-                    if (cost < 5) return false;
+                    if (cost < 0) return false;
                     // TODO: 细化
                     if (asset.anim_type != Library.CW_Spell_Animation_Type.CUSTOM)
                     {

@@ -151,17 +151,17 @@ namespace Cultivation_Way.Animation
                     }
                 case AnimationTraceType.TRACK:
                     {
-                        this.trace_updater = CW_TraceFunctions.trace_track;
+                        this.trace_updater = CW_Anim_Functions.trace_track;
                         break;
                     }
                 case AnimationTraceType.LINE:
                     {
-                        this.trace_updater = CW_TraceFunctions.trace_line;
+                        this.trace_updater = CW_Anim_Functions.trace_line;
                         break;
                     }
                 case AnimationTraceType.PARABOLIC:
                     {
-                        this.trace_updater = CW_TraceFunctions.trace_parabolic;
+                        this.trace_updater = CW_Anim_Functions.trace_parabolic;
                         break;
                     }
                 default:

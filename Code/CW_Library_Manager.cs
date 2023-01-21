@@ -102,18 +102,20 @@ namespace Cultivation_Way.Library
         public void add_library(string id, BaseAssetLibrary library)
         {
             if (extended_libraries_dict.ContainsKey(id)) throw new Exception(String.Format("Repeated Library, id:{0}", id));
+            library.id = id;
             extended_libraries.Add(library);
             extended_libraries_dict.Add(id, library);
             library.init();
         }
         internal void register()
         {
+            cultisys.register();
+            elements.register();
+            spells.register();
             /**
             units.register();
             buildings.register();
-            cultibooks.register();*/
-            cultisys.register();/**
-            elements.register();
+            cultibooks.register();
             families.register();
             items.register();
             item_accessory_materials.register();
@@ -121,9 +123,7 @@ namespace Cultivation_Way.Library
             item_weapon_materials.register();
             kingdoms.register();
             races.register();
-            special_bodies.register();*/
-            spells.register();
-            /**
+            special_bodies.register();
             status_effects.register();
             traits.register();
             events.register();*/

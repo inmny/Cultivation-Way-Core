@@ -95,6 +95,12 @@ namespace Cultivation_Way.Content.Harmony
                     cultibook.cur_culti_nr--;
                     if (cultibook.cur_culti_nr <= 0) cultibook.try_deprecate();
                 }
+                Library.CW_Asset_SpecialBody body = Library.CW_Library_Manager.instance.special_bodies.get(cw_city_data.cw_pop_points[tmp].special_body_id);
+                if(body != null)
+                {
+                    body.cur_own_nr--;
+                    if (body.cur_own_nr <= 0) body.try_deprecate();
+                }
 
                 cw_city_data.popPoints.Swap(tmp, cw_city_data.popPoints.Count - 1);
                 cw_city_data.cw_pop_points.Swap(tmp, cw_city_data.popPoints.Count - 1);
@@ -122,7 +128,12 @@ namespace Cultivation_Way.Content.Harmony
                         cultibook.cur_culti_nr--;
                         if (cultibook.cur_culti_nr <= 0) cultibook.try_deprecate();
                     }
-
+                    Library.CW_Asset_SpecialBody body = Library.CW_Library_Manager.instance.special_bodies.get(cw_city_data.cw_pop_points[idx].special_body_id);
+                    if (body != null)
+                    {
+                        body.cur_own_nr--;
+                        if (body.cur_own_nr <= 0) body.try_deprecate();
+                    }
                     cw_city_data.popPoints.RemoveAt(idx);
                     cw_city_data.cw_pop_points.RemoveAt(idx);
                 }

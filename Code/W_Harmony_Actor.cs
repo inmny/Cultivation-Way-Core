@@ -20,7 +20,11 @@ namespace Cultivation_Way.Content.Harmony
         [HarmonyPatch(typeof(Actor), "getHit")]
         public static bool actor_getHit(Actor __instance, ref float pDamage, bool pFlash = true, AttackType pType = AttackType.Other, BaseSimObject pAttacker = null, bool pSkipIfShake = true)
         {
-            if (((CW_Actor)__instance).__get_hit(pDamage, (Others.CW_Enums.CW_AttackType)pType, pAttacker, pSkipIfShake)) pDamage = 0f;
+            if(((CW_Actor)__instance).__get_hit(pDamage, (Others.CW_Enums.CW_AttackType)pType, pAttacker, pSkipIfShake))
+            {
+                __instance.base_data.health++;
+            }
+            pDamage = 0f;
             return true;
         }
         [HarmonyPrefix]
@@ -102,6 +106,13 @@ namespace Cultivation_Way.Content.Harmony
             {
                 cultibook.cur_culti_nr--;
                 if (cultibook.cur_culti_nr <= 0) cultibook.try_deprecate();
+            }
+            // 回收体质
+            CW_Asset_SpecialBody body = CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id);
+            if (body != null)
+            {
+                body.cur_own_nr--;
+                if (body.cur_own_nr <= 0) body.try_deprecate();
             }
             // 灵气归还
             if (cw_actor.cw_status.wakan > 0)
@@ -225,6 +236,7 @@ namespace Cultivation_Way.Content.Harmony
                 actor.cw_cur_stats = new CW_BaseStats(CW_Actor.get_curstats(actor));
                 actor.cw_data = W_Content_Helper.get_load_cw_data(pData); // 由于原版的城市生成生物和存档加载生物采用同样的加载方式，此处通过一个bus函数进行区分。
                 actor.cw_status = actor.cw_data.status;
+                actor.cur_spells = new List<string>();
                 CW_Actor.set_data(actor, actor.fast_data);
                 CW_Actor.set_professionAsset(actor, AssetManager.professions.get(pData.status.profession));
 
@@ -284,7 +296,10 @@ namespace Cultivation_Way.Content.Harmony
             if (Others.CW_Constants.is_debugging && (cw_actor.cw_cur_stats.base_stats != CW_Actor.get_curstats(actor))) throw new Exception("Actor curStats reference error in cw_cur_stats");
 
             int i, len; uint tmp1;
+            cw_actor.cur_spells.Clear();
             cw_actor.cw_cur_stats.clear();
+
+            cw_actor.cur_spells.AddRange(cw_actor.cw_data.spells);
             // 基础属性样板
             cw_actor.cw_cur_stats.addStats(cw_actor.cw_stats.cw_stats);
             cw_actor.cw_cur_stats.base_stats.diplomacy += cw_actor.fast_data.diplomacy;
@@ -303,19 +318,19 @@ namespace Cultivation_Way.Content.Harmony
             if (!String.IsNullOrEmpty(cw_actor.cw_data.special_body_id) && CW_Library_Manager.instance.special_bodies.dict.ContainsKey(cw_actor.cw_data.special_body_id))
             {
                 cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id).bonus_stats);
+                // cw_actor.cur_spells.Add("stxh");
             }
             // 添加修炼产生的属性增幅
-            
-            // 添加体系的属性影响
-            tmp1 = cw_actor.cw_data.cultisys;
-            len = CW_Library_Manager.instance.cultisys.list.Count;
-            for (i = 0; i < len && tmp1 > 0; i++)
-            {
-                if ((tmp1 & 0x1) != 0) { cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultisys.get_bonus_stats(i, cw_actor.cw_data.cultisys_level[i]));}
-                tmp1 >>= 1;
-            }
             if (cw_actor.cw_status.can_culti)
             {
+                // 添加体系的属性影响
+                tmp1 = cw_actor.cw_data.cultisys;
+                len = CW_Library_Manager.instance.cultisys.list.Count;
+                for (i = 0; i < len && tmp1 > 0; i++)
+                {
+                    if ((tmp1 & 0x1) != 0) { cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultisys.get_bonus_stats(i, cw_actor.cw_data.cultisys_level[i])); }
+                    tmp1 >>= 1;
+                }
                 // 添加功法的属性影响
                 if (!string.IsNullOrEmpty(cw_actor.cw_data.cultibook_id) && CW_Library_Manager.instance.cultibooks.dict.ContainsKey(cw_actor.cw_data.cultibook_id)) cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id).bonus_stats);
             }

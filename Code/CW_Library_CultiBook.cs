@@ -125,7 +125,28 @@ namespace Cultivation_Way.Library
         }
         internal void gen_bonus_stats(CW_Actor author)
         {
+            this.bonus_stats.clear();
+            this.bonus_stats.mod_age = __get_co() * author.cw_cur_stats.mod_age;
+            this.bonus_stats.mod_anti_armor = __get_co() * author.cw_cur_stats.mod_anti_armor;
+            this.bonus_stats.mod_anti_crit = __get_co() * author.cw_cur_stats.mod_anti_crit;
+            this.bonus_stats.mod_anti_crit_damage = __get_co() * author.cw_cur_stats.mod_anti_crit_damage;
+            this.bonus_stats.mod_anti_spell_armor = __get_co() * author.cw_cur_stats.mod_anti_spell_armor;
+            this.bonus_stats.mod_cultivation = __get_co() * author.cw_cur_stats.mod_cultivation;
+            this.bonus_stats.mod_health_regen = __get_co() * author.cw_cur_stats.mod_health_regen;
+            this.bonus_stats.mod_shied = __get_co() * author.cw_cur_stats.mod_shied;
+            this.bonus_stats.mod_shied_regen = __get_co() * author.cw_cur_stats.mod_shied_regen;
+            this.bonus_stats.mod_soul = __get_co() * author.cw_cur_stats.mod_soul;
+            this.bonus_stats.mod_soul_regen = __get_co() * author.cw_cur_stats.mod_soul_regen;
+            this.bonus_stats.mod_spell_armor = __get_co() * author.cw_cur_stats.mod_spell_armor;
+            this.bonus_stats.mod_spell_range = __get_co() * author.cw_cur_stats.mod_spell_range;
+            this.bonus_stats.mod_wakan = __get_co() * author.cw_cur_stats.mod_wakan;
+            this.bonus_stats.mod_wakan_regen = __get_co() * author.cw_cur_stats.mod_wakan_regen;
+            this.bonus_stats.vampire = __get_co() * author.cw_cur_stats.vampire;
             //throw new NotImplementedException();
+        }
+        private float __get_co()
+        {
+            return Toolbox.randomFloat(0, (this.order * 10 + this.level) / 100f);
         }
     }
     public class CW_Library_CultiBook : CW_Dynamic_Library<CW_Asset_CultiBook>
@@ -143,7 +164,7 @@ namespace Cultivation_Way.Library
         {
             throw new NotImplementedException();
         }
-        public void delete(string cultibook_id, bool force_delete = false)
+        internal void delete(string cultibook_id, bool force_delete = false)
         {
             CW_Asset_CultiBook book;
             if(this.dict.TryGetValue(cultibook_id, out book))

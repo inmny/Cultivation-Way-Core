@@ -19,6 +19,7 @@ namespace Cultivation_Way
         public List<CW_Actor> compose_actors = null;
         public List<CW_Building> compose_buildings = null;
         public Dictionary<string, CW_StatusEffectData> status_effects = null;
+        public List<string> cur_spells = null;
         internal WorldTimer fast_shake_timer = null;
         private static List<string> _status_effects_to_remove = new List<string>();
         /// <summary>
@@ -144,9 +145,9 @@ namespace Cultivation_Way
             }
             
             // 释放防御类法术
-            if (this.cw_data.spells.Count > 0)
+            if (this.cur_spells.Count > 0)
             {
-                CW_Asset_Spell spell = CW_Library_Manager.instance.spells.get(this.cw_data.spells.GetRandom());
+                CW_Asset_Spell spell = CW_Library_Manager.instance.spells.get(this.cur_spells.GetRandom());
                 if(spell.triger_type == CW_Spell_Triger_Type.DEFEND)
                 {// TODO: 可能需要增加对自身位置的参数选择
                     CW_Spell.cast(spell, this, attacker, attacker==null?null:attacker.currentTile);
@@ -190,45 +191,20 @@ namespace Cultivation_Way
                 }
             }
             if (this.cw_status.health_level > 1) damage = Utils.CW_Utils_Others.compress_raw_wakan(damage, this.cw_status.health_level);
+
+            if(attacker != null && attacker.objectType == MapObjectType.Actor)
+            {
+                ((CW_Actor)attacker).regen_health(damage * ((CW_Actor)attacker).cw_cur_stats.vampire, this.cw_status.health_level);
+            }
+
             this.fast_data.health -= (int)damage;
             if (this.fast_data.health < 0)
             {
                 this.fast_data.health = 0;
             }
-            this.fast_data.health++; // 反原版getHit强制扣血
             return true;
         }
-        public static CW_ActorData procrete(CW_Actor main_parent, CW_Actor second_parent)
-        {
-            CW_ActorData cw_actor_data = new CW_ActorData();
-            CW_ActorStatus cw_actor_status = new CW_ActorStatus();
-
-            cw_actor_data.cultisys_level = new int[CW_Library_Manager.instance.cultisys.list.Count];
-
-            cw_actor_data.element = CW_Element.get_middle(main_parent.cw_data.element, second_parent.cw_data.element);
-            if (Main.instance.world_config.random_element_when_procrete && Toolbox.randomChance(Main.instance.world_config.chance_random_element_when_procrete)) cw_actor_data.element.re_random();
-            
-            // TODO: New family
-            cw_actor_data.family_id = main_parent.cw_data.family_id;
-            cw_actor_data.family_name = main_parent.cw_data.family_name;
-            // TODO: Select Pope or wait for being selected
-            cw_actor_data.pope_id = null;
-            cw_actor_data.special_body_id = CW_Library_Manager.instance.special_bodies.select_better(main_parent.cw_data.special_body_id, second_parent.cw_data.special_body_id);
-            cw_actor_data.spells = new List<string>();
-
-            cw_actor_data.status = cw_actor_status;
-            cw_actor_status.can_culti = cw_actor_data.element.comp_type() != "CW_common";
-            cw_actor_status.culti_velo = 1f;
-            cw_actor_status.max_age = main_parent.stats.maxAge;
-            cw_actor_status.shied = 0;
-            cw_actor_status.wakan = 0;
-            cw_actor_status.wakan_level = 1;
-            cw_actor_status.health_level = 1;
-
-            //CW_Library_Manager.instance.cultisys.set_cultisys(cw_actor_data, main_parent.stats.id);
-            cw_actor_data.pre_learn_cultibook(CW_Library_Manager.instance.cultibooks.get(CW_Library_Manager.instance.cultibooks.select_better(main_parent.cw_data.cultibook_id, second_parent.cw_data.cultibook_id)));
-            return cw_actor_data;
-        }
+        
         public void updateStatus_month()
         {
             if(this.cw_status.shied < this.cw_cur_stats.shied)
@@ -264,20 +240,16 @@ namespace Cultivation_Way
                 // 从区块移除对应量原始灵气
                 chunk.wakan -= Utils.CW_Utils_Others.compress_raw_wakan(wakan_get, chunk.wakan_level);
             }
-            if((this.cw_data.cultisys & Others.CW_Constants.cultisys_bushido_tag)==0 || this.fast_data.health * Others.CW_Constants.health_regen_valid_percent < this.cw_cur_stats.base_stats.health * 100)
+            float health_to_regen = 0;
+            if((this.cw_data.cultisys & Others.CW_Constants.cultisys_bushido_tag) != 0)
             {
-                if (this.cw_status.health_level>1)
-                {
-                    float pure_regen_health = Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.health_regen, this.cw_status.health_level);
-                    if (pure_regen_health > this.cw_cur_stats.base_stats.health - this.fast_data.health) pure_regen_health = this.cw_cur_stats.base_stats.health - this.fast_data.health;
-                    this.fast_data.health += (int)pure_regen_health;
-                }
-                else
-                {
-                    this.fast_data.health += Mathf.Min(this.cw_cur_stats.health_regen, this.cw_cur_stats.base_stats.health - this.fast_data.health);
-                }
+                health_to_regen = Mathf.Min(this.cw_cur_stats.base_stats.health * Others.CW_Constants.health_regen_valid_percent / 100 - this.fast_data.health, this.cw_status.health_level>1?Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.health_regen, this.cw_status.health_level):this.cw_cur_stats.health_regen);
             }
-            
+            else
+            {
+                health_to_regen = this.cw_cur_stats.base_stats.health - this.fast_data.health;
+            }
+            this.fast_data.health += (int)health_to_regen;
             
         }
         public void checkLevelUp()
@@ -305,8 +277,11 @@ namespace Cultivation_Way
             }
             if (level_up_tag != 0)
             {
-                List<CW_Asset_Spell> spells = CW_Library_Manager.instance.spells.search(CW_Library_Spell.make_tags(this.cw_data.element.comp_type(), CW_Spell_Tag.ATTACK, CW_Spell_Tag.SUMMON, CW_Spell_Tag.DEFEND), Spell_Search_Type.CONTAIN_ANY_TAGS);
-                if (spells.Count > 0) this.learn_spell(spells.GetRandom().id);
+                List<CW_Asset_Spell> spells = CW_Library_Manager.instance.spells.search(CW_Library_Spell.make_tags(this.cw_data.element.comp_type(), CW_Library_Spell.make_tags(this.cw_data.cultisys)), Spell_Search_Type.CONTAIN_ANY_TAGS);
+
+                CW_Library_Spell.filter_in_list(spells, CW_Library_Spell.make_tags(CW_Spell_Tag.ATTACK, CW_Spell_Tag.POSITIVE_STATUS, CW_Spell_Tag.DEFEND, CW_Spell_Tag.SUMMON, CW_Spell_Tag.MOVE), Spell_Search_Type.CONTAIN_ANY_TAGS);
+
+                if (spells.Count > 0) this.learn_spell(spells.GetRandom());
             }
             if((level_up_tag & (1<<max_cultisys_tag))!=0 && max_level % Others.CW_Constants.cultibook_levelup_require == Others.CW_Constants.cultibook_levelup_require - 1)
             {
@@ -319,25 +294,63 @@ namespace Cultivation_Way
                     this.modify_cultibook();
                 }
             }
+            if(level_up_tag!=0 && max_level == Others.CW_Constants.special_body_create_level && (string.IsNullOrEmpty(this.cw_data.special_body_id) || this.fast_data.level > CW_Library_Manager.instance.special_bodies.get(this.cw_data.special_body_id).level))
+            {
+                CW_Asset_SpecialBody new_body = new CW_Asset_SpecialBody(this);
+                new_body.store();
+                this.change_special_body(new_body);
+            }
         }
-        public void learn_spell(string spell_id)
+        public void change_special_body(CW_Asset_SpecialBody target_special_body)
         {
-            // 此处不抛异常，数组中元素为null是正常情况
-            if (string.IsNullOrEmpty(spell_id)) throw new Exception("Try to learn 'null' spell");
-            if (this.cw_data.spells.Contains(spell_id)) return;
-
-            CW_Asset_Spell spell_asset = CW_Library_Manager.instance.spells.get(spell_id);
-            if (spell_asset == null) throw new Exception("No Found Spell '" + spell_id + "'");
-            if (spell_asset.allow_actor(this)) this.cw_data.spells.Add(spell_id);
-            //print(string.Format("{0} successfully learn '{1}'", this.fast_data.actorID, spell_id));
+            CW_Asset_SpecialBody sb_asset = CW_Library_Manager.instance.special_bodies.get(this.cw_data.special_body_id);
+            if (sb_asset != null)
+            {
+                sb_asset.cur_own_nr--;
+                if (sb_asset.cur_own_nr == 0) sb_asset.try_deprecate();
+            }
+            this.cw_data.special_body_id = target_special_body.id;
+            if (target_special_body != null)
+            {
+                target_special_body.cur_own_nr++;
+                target_special_body.histroy_own_nr++;
+            }
+        }
+        public void change_special_body(string target_special_body)
+        {
+            CW_Asset_SpecialBody sb_asset = CW_Library_Manager.instance.special_bodies.get(this.cw_data.special_body_id);
+            if(sb_asset != null)
+            {
+                sb_asset.cur_own_nr--;
+                if (sb_asset.cur_own_nr == 0) sb_asset.try_deprecate();
+            }
+            this.cw_data.special_body_id = target_special_body;
+            sb_asset = CW_Library_Manager.instance.special_bodies.get(this.cw_data.special_body_id);
+            if (sb_asset != null)
+            {
+                sb_asset.cur_own_nr++;
+                sb_asset.histroy_own_nr++;
+            }
+        }
+        internal void learn_spell(CW_Asset_Spell spell)
+        {
+            if (this.cw_data.spells.Contains(spell.id)) return;
+            if (spell.allow_actor(this)) this.cw_data.spells.Add(spell.id);
         }
         public void learn_spells(string[] spell_ids)
         {
             if (spell_ids == null) throw new Exception("Null spells array");
+            List<CW_Asset_Spell> spells = new List<CW_Asset_Spell>(4);
             foreach(string spell_id in spell_ids)
             {
-                if(!string.IsNullOrEmpty(spell_id)) this.learn_spell(spell_id);
+                if (!string.IsNullOrEmpty(spell_id)) spells.Add(CW_Library_Manager.instance.spells.get(spell_id));
             }
+            this.learn_spells(spells);
+        }
+        public void learn_spells(List<CW_Asset_Spell> spells)
+        {
+            CW_Library_Spell.filter_in_list(spells, CW_Library_Spell.make_tags(this.cw_data.cultisys), Spell_Search_Type.CONTAIN_ANY_TAGS);
+            foreach(CW_Asset_Spell spell in spells) this.learn_spell(spell);
         }
         public void learn_cultibook(string cultibook_id) 
         {
@@ -426,7 +439,12 @@ namespace Cultivation_Way
             __modify_cultibook_last_step(culti_book);
             this.learn_cultibook(culti_book);
         }
-
+        public void regen_health(float health, float health_level)
+        {
+            float health_to_regen = Utils.CW_Utils_Others.transform_wakan(health, health_level, this.cw_status.health_level);
+            this.fast_data.health += (int)health_to_regen;
+            if (this.fast_data.health > this.cw_cur_stats.base_stats.health) this.fast_data.health = this.cw_cur_stats.base_stats.health;
+        }
         public CW_Asset_Item get_weapon_asset()
         {
             if(this.stats.use_items && !this.equipment.weapon.isEmpty())
@@ -438,6 +456,7 @@ namespace Cultivation_Way
         internal void CW_newCreature()
         {
             this.fast_data = null;
+            this.cur_spells = new List<string>();
             this.cw_cur_stats = new CW_BaseStats(CW_Actor.get_curstats(this));
             this.cw_data = new CW_ActorData();
             this.cw_status = new CW_ActorStatus();
@@ -449,7 +468,7 @@ namespace Cultivation_Way
             this.cw_data.element = new CW_Element(prefer_elements: this.cw_stats.prefer_element, prefer_scale: this.cw_stats.prefer_element_scale);
             this.cw_data.spells = new List<string>();
 
-            this.cw_status.can_culti = this.cw_data.element.comp_type()!="CW_common";
+            this.cw_status.can_culti = false;
             this.cw_status.culti_velo = this.cw_stats.culti_velo;
             this.cw_status.shied = 0;
             this.cw_status.wakan = 0;
@@ -458,6 +477,45 @@ namespace Cultivation_Way
             this.cw_status.max_age = this.cw_stats.origin_stats.maxAge;
 
             //CW_Library_Manager.instance.cultisys.set_cultisys(cw_data, this.stats.id);
+        }
+        internal static CW_ActorData procrete(CW_Actor main_parent, CW_Actor second_parent)
+        {
+            CW_ActorData cw_actor_data = new CW_ActorData();
+            CW_ActorStatus cw_actor_status = new CW_ActorStatus();
+
+            cw_actor_data.cultisys_level = new int[CW_Library_Manager.instance.cultisys.list.Count];
+
+            cw_actor_data.element = CW_Element.get_middle(main_parent.cw_data.element, second_parent.cw_data.element);
+            if (Main.instance.world_config.random_element_when_procrete && Toolbox.randomChance(Main.instance.world_config.chance_random_element_when_procrete)) cw_actor_data.element.re_random();
+
+            // TODO: New family
+            cw_actor_data.family_id = main_parent.cw_data.family_id;
+            cw_actor_data.family_name = main_parent.cw_data.family_name;
+            // TODO: Select Pope or wait for being selected
+            cw_actor_data.pope_id = null;
+
+            cw_actor_data.special_body_id = CW_Library_Manager.instance.special_bodies.select_better(main_parent.cw_data.special_body_id, second_parent.cw_data.special_body_id);
+            CW_Asset_SpecialBody body = CW_Library_Manager.instance.special_bodies.get(cw_actor_data.special_body_id);
+            if (body != null)
+            {
+                body.cur_own_nr++;
+                body.histroy_own_nr++;
+            }
+
+            cw_actor_data.spells = new List<string>();
+
+            cw_actor_data.status = cw_actor_status;
+            cw_actor_status.can_culti = false;
+            cw_actor_status.culti_velo = 1f;
+            cw_actor_status.max_age = main_parent.stats.maxAge;
+            cw_actor_status.shied = 0;
+            cw_actor_status.wakan = 0;
+            cw_actor_status.wakan_level = 1;
+            cw_actor_status.health_level = 1;
+
+            //CW_Library_Manager.instance.cultisys.set_cultisys(cw_actor_data, main_parent.stats.id);
+            cw_actor_data.pre_learn_cultibook(CW_Library_Manager.instance.cultibooks.get(CW_Library_Manager.instance.cultibooks.select_better(main_parent.cw_data.cultibook_id, second_parent.cw_data.cultibook_id)));
+            return cw_actor_data;
         }
     }
 }

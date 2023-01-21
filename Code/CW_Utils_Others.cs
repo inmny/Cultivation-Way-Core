@@ -9,6 +9,10 @@ namespace Cultivation_Way.Utils
 {
     public class CW_Utils_Others
     {
+        public static float transform_wakan(float wakan, float from_level, float to_level)
+        {
+            return wakan * Mathf.Pow(Others.CW_Constants.wakan_level_co, from_level - to_level);
+        }
         public static float get_raw_wakan(float wakan, float wakan_level)
         {
             return wakan * Mathf.Pow(Others.CW_Constants.wakan_level_co, wakan_level-1);

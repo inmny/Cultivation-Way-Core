@@ -26,6 +26,14 @@ namespace Cultivation_Way.Content
             add_traits();
             add_world_events();
             add_harmony();
+            create_tab();
+        }
+
+        private static void create_tab()
+        {
+            W_Content_Tab.create_tab();
+            W_Content_Tab.add_buttons();
+            W_Content_Tab.apply_buttons();
         }
 
         private static void add_status_effects()

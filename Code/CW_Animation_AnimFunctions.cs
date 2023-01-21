@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Cultivation_Way.Animation
 {
-    internal static class CW_TraceFunctions
+    internal static class CW_Anim_Functions
     {
         public static void trace_line(ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim, ref float delta_x, ref float delta_y)
         {
@@ -26,6 +26,10 @@ namespace Cultivation_Way.Animation
         public static void trace_parabolic(ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim, ref float delta_x, ref float delta_y)
         {
             throw new NotImplementedException();
+        }
+        public static void bigger_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            anim.gameObject.transform.localScale = anim.gameObject.transform.localScale * 1.5f;
         }
     }
 }

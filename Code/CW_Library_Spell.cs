@@ -203,22 +203,94 @@ namespace Cultivation_Way.Library
                 this.list[i].register();
             }
         }
-        internal static ulong make_tags(string element_id, params CW_Spell_Tag[] tags)
+        internal static ulong make_tags(uint cultisys)
         {
-            //throw new NotImplementedException();
+            ulong tags = 0;
+            int cultisys_tag = 0;
+            CW_Asset_CultiSys cultisys_asset;
+            while(cultisys > 0)
+            {
+                if((cultisys & 0x1) == 1)
+                {
+                    cultisys_asset = CW_Library_Manager.instance.cultisys.list[cultisys_tag];
+                    foreach(CW_Spell_Tag tag in cultisys_asset.addition_spell_require)
+                    {
+                        tags |= 1ul << (int)tag;
+                    }
+                }
+                cultisys >>= 1;
+                cultisys_tag++;
+            }
+            return tags;
+        }
+        internal static ulong make_tags(params CW_Spell_Tag[] tags)
+        {
             ulong tag = 0;
             foreach(CW_Spell_Tag tag_tag in tags)
             {
                 tag |= 1ul << (int)tag_tag;
             }
-            // TODO: 添加元素标签
             return tag;
         }
-        static bool first_search = true;
+        internal static ulong make_tags(string element_id, ulong prefix_tags, params CW_Spell_Tag[] addition_tags)
+        {
+            return prefix_tags|make_tags(element_id, addition_tags);
+        }
+        internal static ulong make_tags(string element_id, params CW_Spell_Tag[] addition_tags)
+        {
+            //throw new NotImplementedException();
+            ulong tag = make_tags(addition_tags);
+            tag |= CW_Library_Manager.instance.elements.get(element_id)._tag;
+            return tag;
+        }
+        internal static void filter_in_list(List<CW_Asset_Spell> spell, ulong tags, Spell_Search_Type search_type)
+        {
+            int i;
+            switch (search_type)
+            {
+                case Spell_Search_Type.EXACT:
+                    {
+                        for (i = 0; i < spell.Count; i++)
+                        {
+                            if (spell[i].tags != tags)
+                            {
+                                spell.Swap(i, spell.Count - 1);
+                                spell.RemoveAt(spell.Count - 1);
+                                i--;
+                            }
+                        }
+                        break;
+                    }
+                case Spell_Search_Type.CONTAIN_ANY_TAGS:
+                    {
+                        for (i = 0; i < spell.Count; i++)
+                        {
+                            if ((spell[i].tags & tags)==0)
+                            {
+                                spell.Swap(i, spell.Count - 1);
+                                spell.RemoveAt(spell.Count - 1);
+                                i--;
+                            }
+                        }
+                        break;
+                    }
+                case Spell_Search_Type.CONTAIN_ALL_TAGS:
+                    {
+                        for (i = 0; i < spell.Count; i++)
+                        {
+                            if ((spell[i].tags | tags) != spell[i].tags)
+                            {
+                                spell.Swap(i, spell.Count - 1);
+                                spell.RemoveAt(spell.Count - 1);
+                                i--;
+                            }
+                        }
+                        break;
+                    }
+            }
+        }
         internal List<CW_Asset_Spell> search(ulong tags, Spell_Search_Type search_type)
         {
-            if(first_search) WorldBoxConsole.Console.print("Try to search by tags:" + Convert.ToString((long)tags, 16));
-            first_search = false;
             List<CW_Asset_Spell> list = new List<CW_Asset_Spell>();
             switch (search_type)
             {
@@ -242,7 +314,7 @@ namespace Cultivation_Way.Library
                     {
                         foreach (CW_Asset_Spell asset in this.list)
                         {
-                            if (asset.tags >= tags) list.Add(asset);
+                            if ((asset.tags | tags)==asset.tags) list.Add(asset);
                         }
                         break;
                     }

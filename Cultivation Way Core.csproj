@@ -177,6 +177,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GameResources\effects\bushido_base\circle132.png" />
     <Content Include="GameResources\effects\default_lightning\default_lightning_0.png" />
     <Content Include="GameResources\effects\default_lightning\default_lightning_1.png" />
     <Content Include="GameResources\effects\default_lightning\default_lightning_2.png" />
@@ -234,18 +235,26 @@
     <Content Include="GameResources\effects\stxh_XTDT\XTDT_6.png" />
     <Content Include="GameResources\effects\stxh_XTDT\XTDT_7.png" />
     <Content Include="GameResources\effects\wtiger_tooth\白虎之牙.png" />
+    <Content Include="GameResources\ui\Icons\iconCheckWakan.png" />
+    <Content Include="GameResources\ui\Icons\iconSpecialBody.png" />
+    <Content Include="GameResources\ui\Icons\iconEasternHuman.png" />
     <Content Include="GameResources\ui\Icons\iconShied.png" />
+    <Content Include="GameResources\ui\Icons\iconTab.png" />
+    <Content Include="GameResources\ui\Icons\iconTop.png" />
     <Content Include="GameResources\ui\Icons\iconWakan.png" />
     <Content Include="GameResources\ui\Icons\iconElement.png" />
     <Content Include="GameResources\ui\Icons\iconCultiSys.png" />
-    <Content Include="GameResources\ui\Icons\iconCultiBook_Bushido.png" />
+    <Content Include="GameResources\ui\Icons\iconCultiBook_bushido.png" />
     <Content Include="GameResources\ui\Icons\iconCultiBook_immortal.png" />
+    <Content Include="GameResources\ui\Icons\iconYao.png" />
+    <Content Include="GameResources\ui\Icons\iconWiki.png" />
     <Content Include="icon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GameResources\cw_locales\cz.json" />
     <None Include="GameResources\cw_locales\en.json" />
     <None Include="GameResources\cw_locales\tc.json" />
+    <None Include="GameResources\effects\bushido_base\sprites.json" />
     <None Include="GameResources\effects\gold_blade\sprites.json" />
     <None Include="GameResources\effects\gold_escape\sprites.json" />
     <None Include="GameResources\effects\gold_shied\sprites.json" />
@@ -279,6 +288,7 @@
     <Compile Include="Code\W_Content_Cultisys.cs" />
     <Compile Include="Code\W_Content_Spell.cs" />
     <Compile Include="Code\W_Content_StatusEffect.cs" />
+    <Compile Include="Code\W_Content_Tab.cs" />
     <Compile Include="Code\W_Content_WindowCreatureInfo.cs" />
     <Compile Include="Code\W_Content_WorldEvent.cs" />
     <Compile Include="Code\W_Harmony_Others.cs" />
@@ -308,7 +318,7 @@
     <Compile Include="Code\CW_SpellAction_Anim.cs" />
     <Compile Include="Code\CW_SpellAction_Damage.cs" />
     <Compile Include="Code\CW_SpellAction_Spell.cs" />
-    <Compile Include="Code\CW_Animation_TraceFunctions.cs" />
+    <Compile Include="Code\CW_Animation_AnimFunctions.cs" />
     <Compile Include="Code\CW_Library_Spell.cs" />
     <Compile Include="Code\CW_Spell.cs" />
     <Compile Include="Code\CW_Utils_ItemTools.cs" />
@@ -338,9 +348,5 @@
     <Folder Include="Assemblies\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
-  <ProjectExtensions>
-    <VisualStudio>
-      <UserProperties gameresources_4cw_3locales_4cz_1json__JsonSchema="https://beaujs.com/schema.json" />
-    </VisualStudio>
-  </ProjectExtensions>
+  <ProjectExtensions />
 </Project>

@@ -14,6 +14,7 @@ namespace Cultivation_Way.Content
     {
         public static void add_spells()
         {
+            add_bushido_base_spell();
             add_example_spell();
             add_gold_blade_spell();
             add_gold_escape_spell();
@@ -25,6 +26,35 @@ namespace Cultivation_Way.Content
             add_wtiger_tooth_spell();
             add_stxh_spell();
         }
+
+        private static void add_bushido_base_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
+            anim_setting.loop_time_limit = 0.2f;
+            anim_setting.frame_action = CW_Anim_Functions.bigger_frame_action;
+            CW_EffectManager.instance.load_as_controller("bushido_base_anim", "effects/bushido_base/", controller_setting: anim_setting, base_scale: 0.001f);
+
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "bushido_base", anim_id: "bushido_base_anim",
+                new CW_Element(new int[5] { 20, 20, 20, 20, 20 }), element_type_limit: null,
+                rarity: 1, free_val: 10, cost: 0.1f, learn_level: 1, cast_level: 1,
+                cultisys_black_or_white_list: true, cultisys_list: null,
+                banned_races: null,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.DEFEND,
+                anim_type: CW_Spell_Animation_Type.ON_USER,
+                damage_action: bushido_base_damage_action,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                spell_action: null,
+                check_and_cost_action: CW_SpellAction_Cost.enemy_nr_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.DEFEND);
+            spell.add_tag(CW_Spell_Tag.BUSHIDO);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+
         // 白虎之牙
         private static void add_wtiger_tooth_spell()
         {
@@ -52,6 +82,7 @@ namespace Cultivation_Way.Content
                 );
             spell.add_tag(CW_Spell_Tag.DEFEND);
             spell.add_tag(CW_Spell_Tag.POSITIVE_STATUS);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
 
         }
@@ -80,6 +111,8 @@ namespace Cultivation_Way.Content
                 );
             spell.add_tag(CW_Spell_Tag.ATTACK);
             spell.add_tag(CW_Spell_Tag.POSITIVE_STATUS);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            spell.add_tag(CW_Spell_Tag.BUSHIDO);
             //CW_Library_Manager.instance.spells.add(spell);
         }
         // 太阴五雷
@@ -109,6 +142,7 @@ namespace Cultivation_Way.Content
                 );
             spell.add_tag(CW_Spell_Tag.ATTACK);
             spell.add_tag(CW_Spell_Tag.NEGATIVE_STATUS);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
         // 太阳五雷
@@ -138,6 +172,7 @@ namespace Cultivation_Way.Content
                 );
             spell.add_tag(CW_Spell_Tag.ATTACK);
             spell.add_tag(CW_Spell_Tag.NEGATIVE_STATUS);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
         // 雷法
@@ -163,6 +198,7 @@ namespace Cultivation_Way.Content
                 check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
                 );
             spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
         // 金刚护体
@@ -198,6 +234,7 @@ namespace Cultivation_Way.Content
                 );
             spell.add_tag(CW_Spell_Tag.DEFEND);
             spell.add_tag(CW_Spell_Tag.POSITIVE_STATUS);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
         // 金剑
@@ -227,6 +264,7 @@ namespace Cultivation_Way.Content
                 check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
                 );
             spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
         // 金遁
@@ -250,6 +288,7 @@ namespace Cultivation_Way.Content
                 check_and_cost_action: CW_SpellAction_Cost.low_health_check_and_cost
                 );
             spell.add_tag(CW_Spell_Tag.DEFEND);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
         // 金刃
@@ -280,6 +319,7 @@ namespace Cultivation_Way.Content
                 check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
                 );
             spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
         // 示例法术
@@ -304,6 +344,7 @@ namespace Cultivation_Way.Content
                     CW_SpellAction_Cost.default_check_and_cost
                     );
             spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
         private static void stxh_spell_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
@@ -445,6 +486,16 @@ namespace Cultivation_Way.Content
         private static void example_spell_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             ((CW_Actor)anim.src_object).fast_data.health += 1;
+        }
+        private static void bushido_base_damage_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
+        {
+            List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(pUser.currentTile, pUser.kingdom, 5);
+            float force = spell_asset.free_val / enemies.Count;
+            foreach(BaseSimObject actor in enemies)
+            {
+                if (actor.objectType != MapObjectType.Actor) continue;
+                ((CW_Actor)actor).addForce((actor.currentPosition.x - pUser.currentPosition.x) * force, (actor.currentPosition.y - pUser.currentPosition.y) * force, force);
+            }
         }
     }
 }

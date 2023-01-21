@@ -454,7 +454,7 @@ namespace Cultivation_Way.Content
 
         private void loadTraits()
         {
-            int base_num = 3; int num = 0;
+            int base_num = 4; int num = 0;
             int total_count = base_num + ((cw_actor.fast_data.traits == null) ? 0 : cw_actor.fast_data.traits.Count);
 
             CW_TipButton button_element = Instantiate(prefab_tip_button, traitsParent);
@@ -469,7 +469,7 @@ namespace Cultivation_Way.Content
             set_position_on_traits(button_element.GetComponent<RectTransform>(), num++, total_count);
 
 
-            if (!string.IsNullOrEmpty(cw_actor.cw_data.cultibook_id))
+            if (cw_actor.cw_status.can_culti && !string.IsNullOrEmpty(cw_actor.cw_data.cultibook_id))
             {
                 CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id);
                 if (cultibook != null)
@@ -477,7 +477,7 @@ namespace Cultivation_Way.Content
                     CW_TipButton button_cultibook = Instantiate(prefab_tip_button, traitsParent);
                     NCMS.Utils.Localization.Set("CW_cultibook_name", cultibook.name);
                     NCMS.Utils.Localization.Set("CW_cultibook_info", cultibook.get_info_without_name());
-                    button_cultibook.load("CW_cultibook_name", "CW_cultibook_info", "iconCultiBook_immortal", "normal");
+                    button_cultibook.load("CW_cultibook_name", "CW_cultibook_info", (cw_actor.cw_data.cultisys & Others.CW_Constants.cultisys_immortol_tag) != 0 ? "iconCultiBook_immortal":"iconCultiBook_bushido", "normal");
                     set_position_on_traits(button_cultibook.GetComponent<RectTransform>(), num++, total_count);
                 }
             }
@@ -496,6 +496,18 @@ namespace Cultivation_Way.Content
                 button_cultisys.transform.localScale = new Vector3(0.65f, 0.80f);
                 
                 set_position_on_traits(button_cultisys.GetComponent<RectTransform>(), num++, total_count);
+            }
+            if (!string.IsNullOrEmpty(cw_actor.cw_data.special_body_id))
+            {
+                CW_Asset_SpecialBody body = CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id);
+                if (body != null)
+                {
+                    CW_TipButton button_special_body = Instantiate(prefab_tip_button, traitsParent);
+                    NCMS.Utils.Localization.Set("CW_special_body_name", body.name);
+                    NCMS.Utils.Localization.Set("CW_special_body_info", body.get_info_without_name());
+                    button_special_body.load("CW_special_body_name", "CW_special_body_info", "iconSpecialBody", "normal");
+                    set_position_on_traits(button_special_body.GetComponent<RectTransform>(), num++, total_count);
+                }
             }
             if (cw_actor.fast_data.traits != null)
             {

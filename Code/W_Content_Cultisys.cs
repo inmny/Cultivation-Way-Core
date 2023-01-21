@@ -19,7 +19,8 @@ namespace Cultivation_Way.Content
                     id = "immortal",
                     sprite_name = "icon_immortal",
                     judge = immortal_judge,
-                    level_judge = immortal_level_judge
+                    level_judge = immortal_level_judge,
+                    addition_spell_require = new CW_Spell_Tag[] { CW_Spell_Tag.IMMORTAL}
                 }
             );
             //WorldBoxConsole.Console.print(immortal == null);
@@ -44,6 +45,7 @@ namespace Cultivation_Way.Content
             }
             for (i = 0; i < Others.CW_Constants.max_cultisys_level; i++)
             {
+                immortal.bonus_stats[i].spell_range = Mathf.Sqrt(i) * 4;
                 // 寿命
                 immortal.bonus_stats[i].age_bonus = i * i * 2 + (i % 10) * 15 + (i > 0 ? immortal.bonus_stats[i-1].age_bonus:0);
                 // 生命以及生命回复
@@ -60,6 +62,8 @@ namespace Cultivation_Way.Content
                 immortal.bonus_stats[i].shied_regen = (int)(Mathf.Sqrt(i) * Mathf.Sqrt(Mathf.Sqrt(immortal.bonus_stats[i].wakan)) * (Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / immortal.bonus_stats[i].wakan, Others.CW_Constants.wakan_level_co) + 1) * 2);
                 // 护盾
                 immortal.bonus_stats[i].shied = 12 * immortal.bonus_stats[i].shied_regen;
+                // 抗击退
+                immortal.bonus_stats[i].base_stats.knockbackReduction = (i + 1) * 4.5f;
             }
             #endregion
 
@@ -69,7 +73,8 @@ namespace Cultivation_Way.Content
                     id = "bushido",
                     sprite_name = "icon_bushido",
                     judge = bushido_judge,
-                    level_judge = bushido_level_judge
+                    level_judge = bushido_level_judge,
+                    addition_spell_require = new CW_Spell_Tag[] { CW_Spell_Tag.BUSHIDO, CW_Spell_Tag.ACQUIRED_POWER }
                 }
             );
             for (i = 10; i < Others.CW_Constants.max_cultisys_level; i++)
@@ -95,6 +100,8 @@ namespace Cultivation_Way.Content
                 bushido.bonus_stats[i].base_stats.damage = i * i * i /2+ 2 * i * i;
                 // 法抗
                 bushido.bonus_stats[i].spell_armor = (int)(bushido.bonus_stats[i].base_stats.armor * Mathf.Sqrt(i));
+                // 抗击退
+                bushido.bonus_stats[i].base_stats.knockbackReduction = (i + 1) * 5f;
             }
             // 攻速
             for (i = 0; i < 10; i++)
@@ -115,7 +122,7 @@ namespace Cultivation_Way.Content
         }
         private static bool immortal_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
         {
-            return cw_actor.cw_status.can_culti;
+            return cw_actor.cw_data.element.comp_type()!="CW_common";
         }
         private static bool bushido_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
         {

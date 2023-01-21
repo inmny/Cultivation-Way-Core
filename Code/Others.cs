@@ -37,6 +37,7 @@ namespace Cultivation_Way.Others
         public const float bushido_force_culti_chance = 0.8f;
         public const float bushido_force_culti_co = 0.03f;
         public const float seconds_per_month = 3f;
+        public const int special_body_create_level = 19;
 
         internal static string[] num_to_cz = new string[10] { "〇", "一", "二", "三", "四", "五", "六", "七", "八", "九" };
     }

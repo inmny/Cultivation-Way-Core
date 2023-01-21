@@ -23,7 +23,8 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 标签，同时为Library中的idx
         /// </summary>
-        public int tag { get; }
+        public int tag { get; internal set; }
+        internal uint _tag;
         /// <summary>
         /// 元素组合提供的属性加成
         /// </summary>
@@ -109,7 +110,12 @@ namespace Cultivation_Way.Library
         }
         internal override void register()
         {
-            throw new NotImplementedException();
+            int i;
+            for (i = 0; i < this.list.Count; i++)
+            {
+                list[i].tag = i;
+                list[i]._tag = 1u << i;
+            }
         }
     }
 }
