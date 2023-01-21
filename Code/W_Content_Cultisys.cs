@@ -92,7 +92,7 @@ namespace Cultivation_Way.Content
                 bushido.bonus_stats[i].base_stats.health = 3*i*i*i+42*i;
                 bushido.bonus_stats[i].health_regen = (int)Mathf.Sqrt(bushido.bonus_stats[i].base_stats.health * Utils.CW_Utils_Others.get_raw_wakan(bushido.bonus_stats[i].base_stats.health, bushido.power_level[i]))/50;
                 // 攻击
-                bushido.bonus_stats[i].base_stats.damage = 5 * i * i * i + 20 * i * i;
+                bushido.bonus_stats[i].base_stats.damage = i * i * i /2+ 2 * i * i;
                 // 法抗
                 bushido.bonus_stats[i].spell_armor = (int)(bushido.bonus_stats[i].base_stats.armor * Mathf.Sqrt(i));
             }

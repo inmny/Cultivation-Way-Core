@@ -372,8 +372,8 @@ namespace Cultivation_Way.Content
         }
         private static void gold_shied_spell_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
-            if (pTarget == null || !pTarget.base_data.alive) return;
-            CW_StatusEffectData status = ((CW_Actor)pTarget).add_status_effect("status_" + spell_asset.id);
+            if (pUser == null || !pUser.base_data.alive) return;
+            CW_StatusEffectData status = ((CW_Actor)pUser).add_status_effect("status_" + spell_asset.id);
             //CW_EffectManager.instance.spawn_anim(spell_asset.anim_id, pUser.currentPosition, pUser.currentPosition, pUser, pUser, pUser.objectType == MapObjectType.Actor ? ((CW_Actor)pUser).cw_cur_stats.base_stats.scale : 1f);
             status.bonus_stats.base_stats.armor += (int)cost;
         }
@@ -411,6 +411,8 @@ namespace Cultivation_Way.Content
                 if (target != null) 
                 { 
                     ((CW_Actor)anim.src_object).cancelAllBeh(null);
+                    CW_Actor.set_attackedBy((Actor)anim.src_object, null);
+                    CW_Actor.set_attackTarget((Actor)anim.src_object, null);
                     CW_Actor.func_spawnOn((CW_Actor)anim.src_object, target, 0f);
                     ((CW_Actor)anim.src_object).updatePos();
                     anim.set_position(anim.src_object.currentPosition); 

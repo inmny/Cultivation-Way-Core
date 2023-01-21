@@ -53,6 +53,8 @@ namespace Cultivation_Way
         public static Action<Actor, ProfessionAsset> set_professionAsset = CW_ReflectionHelper.create_setter<Actor, ProfessionAsset>("professionAsset");
         public static Action<Actor, ActorStatus> set_data = CW_ReflectionHelper.create_setter<Actor, ActorStatus>("data");
         public static Action<Actor, List<ActorTrait>> set_s_special_effect_traits = CW_ReflectionHelper.create_setter<Actor, List<ActorTrait>>("s_special_effect_traits");
+        public static Action<Actor, BaseSimObject> set_attackedBy = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("attackedBy");
+        public static Action<Actor, BaseSimObject> set_attackTarget = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("attackTarget");
         #endregion
         #region Func
         public static Action<Actor> func_updateTargetScale = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("updateTargetScale");
