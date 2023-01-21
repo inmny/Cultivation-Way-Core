@@ -73,12 +73,14 @@ namespace Cultivation_Way
         {
             return (this.cw_data.cultisys & CW_Library_Manager.instance.cultisys.get(cultisys_id)._tag) > 0;
         }
-        public CW_StatusEffectData add_status_effect(string status_effect_id)
+        public CW_StatusEffectData add_status_effect(string status_effect_id, string as_id = null)
         {
             if (status_effects == null) status_effects = new Dictionary<string, CW_StatusEffectData>();
-            if (status_effects.ContainsKey(status_effect_id)) return status_effects[status_effect_id];
+            as_id = string.IsNullOrEmpty(as_id) ? status_effect_id : as_id;
+            if (status_effects.ContainsKey(as_id)) return status_effects[as_id];
             CW_StatusEffectData ret = new CW_StatusEffectData(this, status_effect_id);
-            status_effects.Add(status_effect_id, ret);
+            ret.id = as_id;
+            status_effects.Add(as_id, ret);
             if (ret.status_asset.action_on_get != null) ret.status_asset.action_on_get(ret, this);
             this.setStatsDirty();
             return ret;
@@ -281,7 +283,12 @@ namespace Cultivation_Way
 
                 CW_Library_Spell.filter_in_list(spells, CW_Library_Spell.make_tags(CW_Spell_Tag.ATTACK, CW_Spell_Tag.POSITIVE_STATUS, CW_Spell_Tag.DEFEND, CW_Spell_Tag.SUMMON, CW_Spell_Tag.MOVE), Spell_Search_Type.CONTAIN_ANY_TAGS);
 
-                if (spells.Count > 0) this.learn_spell(spells.GetRandom());
+                if (spells.Count > 0)
+                {
+                    CW_Asset_Spell spell = spells.GetRandom();
+                    if(spell.can_get_by_random) this.learn_spell(spell);
+                }
+                
             }
             if((level_up_tag & (1<<max_cultisys_tag))!=0 && max_level % Others.CW_Constants.cultibook_levelup_require == Others.CW_Constants.cultibook_levelup_require - 1)
             {

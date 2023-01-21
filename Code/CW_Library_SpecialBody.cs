@@ -11,56 +11,61 @@ namespace Cultivation_Way.Library
         public string name;
         public string description;
         public string author_name;
+        public int anim_id;
         public int level;
         public string[] spells;
         public int cur_own_nr { get; internal set; }
         public int histroy_own_nr { get; internal set; }
+        public CW_BaseStats stxh_bonus_stats;
         public CW_BaseStats bonus_stats;
         public CW_Asset_SpecialBody(string id, string name, string description, string author_name, int level, string[] spells, CW_BaseStats bonus_stats)
         {
-            this.id = id;
-            this.name = name;
-            this.description = description;
-            this.author_name = author_name;
-            this.level = level;
-            this.spells = spells;
-            this.bonus_stats = bonus_stats;
+            id = id;
+            name = name;
+            description = description;
+            author_name = author_name;
+            level = level;
+            spells = spells;
+            bonus_stats = bonus_stats;
         }
         public CW_Asset_SpecialBody(CW_Actor author)
         {
-            this.id = author.fast_data.actorID + "_" + author.fast_data.level;
-            this.name = author.getName() + "的体质";
-            this.author_name = author.getName();
-            this.description = "可随机生成的描述";
-            this.level = author.fast_data.level;
-            this.spells = null;
-            this.bonus_stats = new CW_BaseStats();
-            gen_bonus_stats(author);
+            id = author.fast_data.actorID + "_" + author.fast_data.level;
+            name = author.getName() + "的体质";
+            author_name = author.getName();
+            description = "可随机生成的描述";
+            level = author.fast_data.level;
+            spells = null;
+            bonus_stats = new CW_BaseStats();
+            stxh_bonus_stats = new CW_BaseStats();
+            anim_id = Toolbox.randomInt(0, 3);
+            gen_bonus_stats(author, bonus_stats);
+            gen_bonus_stats(author, stxh_bonus_stats);
         }
-        private void gen_bonus_stats(CW_Actor author)
+        private void gen_bonus_stats(CW_Actor author, CW_BaseStats bonus_stats)
         {
-            this.bonus_stats.clear();
-            this.bonus_stats.mod_age = __get_co() * author.cw_cur_stats.mod_age;
-            this.bonus_stats.mod_anti_armor = __get_co() * author.cw_cur_stats.mod_anti_armor;
-            this.bonus_stats.mod_anti_crit = __get_co() * author.cw_cur_stats.mod_anti_crit;
-            this.bonus_stats.mod_anti_crit_damage = __get_co() * author.cw_cur_stats.mod_anti_crit_damage;
-            this.bonus_stats.mod_anti_spell_armor = __get_co() * author.cw_cur_stats.mod_anti_spell_armor;
-            this.bonus_stats.mod_cultivation = __get_co() * author.cw_cur_stats.mod_cultivation;
-            this.bonus_stats.mod_health_regen = __get_co() * author.cw_cur_stats.mod_health_regen;
-            this.bonus_stats.mod_shied = __get_co() * author.cw_cur_stats.mod_shied;
-            this.bonus_stats.mod_shied_regen = __get_co() * author.cw_cur_stats.mod_shied_regen;
-            this.bonus_stats.mod_soul = __get_co() * author.cw_cur_stats.mod_soul;
-            this.bonus_stats.mod_soul_regen = __get_co() * author.cw_cur_stats.mod_soul_regen;
-            this.bonus_stats.mod_spell_armor = __get_co() * author.cw_cur_stats.mod_spell_armor;
-            this.bonus_stats.mod_spell_range = __get_co() * author.cw_cur_stats.mod_spell_range;
-            this.bonus_stats.mod_wakan = __get_co() * author.cw_cur_stats.mod_wakan;
-            this.bonus_stats.mod_wakan_regen = __get_co() * author.cw_cur_stats.mod_wakan_regen;
-            this.bonus_stats.vampire = __get_co() * author.cw_cur_stats.vampire;
+            bonus_stats.clear();
+            bonus_stats.mod_age = __get_co() * author.cw_cur_stats.mod_age;
+            bonus_stats.mod_anti_armor = __get_co() * author.cw_cur_stats.mod_anti_armor;
+            bonus_stats.mod_anti_crit = __get_co() * author.cw_cur_stats.mod_anti_crit;
+            bonus_stats.mod_anti_crit_damage = __get_co() * author.cw_cur_stats.mod_anti_crit_damage;
+            bonus_stats.mod_anti_spell_armor = __get_co() * author.cw_cur_stats.mod_anti_spell_armor;
+            bonus_stats.mod_cultivation = __get_co() * author.cw_cur_stats.mod_cultivation;
+            bonus_stats.mod_health_regen = __get_co() * author.cw_cur_stats.mod_health_regen;
+            bonus_stats.mod_shied = __get_co() * author.cw_cur_stats.mod_shied;
+            bonus_stats.mod_shied_regen = __get_co() * author.cw_cur_stats.mod_shied_regen;
+            bonus_stats.mod_soul = __get_co() * author.cw_cur_stats.mod_soul;
+            bonus_stats.mod_soul_regen = __get_co() * author.cw_cur_stats.mod_soul_regen;
+            bonus_stats.mod_spell_armor = __get_co() * author.cw_cur_stats.mod_spell_armor;
+            bonus_stats.mod_spell_range = __get_co() * author.cw_cur_stats.mod_spell_range;
+            bonus_stats.mod_wakan = __get_co() * author.cw_cur_stats.mod_wakan;
+            bonus_stats.mod_wakan_regen = __get_co() * author.cw_cur_stats.mod_wakan_regen;
+            bonus_stats.vampire = __get_co() * author.cw_cur_stats.vampire;
             //throw new NotImplementedException();
         }
         private float __get_co()
         {
-            return Toolbox.randomFloat(0, this.level / 12f);
+            return Toolbox.randomFloat(0, level / 12f);
         }
         public void store()
         {
@@ -68,8 +73,8 @@ namespace Cultivation_Way.Library
         }
         public void try_deprecate(bool force = false)
         {
-            if (this.cur_own_nr > 0) return;
-            CW_Library_Manager.instance.special_bodies.delete(this.id, force);
+            if (cur_own_nr > 0) return;
+            CW_Library_Manager.instance.special_bodies.delete(id, force);
         }
         public string get_info_without_name()
         {
@@ -85,10 +90,10 @@ namespace Cultivation_Way.Library
         internal void delete(string id, bool force)
         {
             CW_Asset_SpecialBody body;
-            if (this.dict.TryGetValue(id, out body))
+            if (dict.TryGetValue(id, out body))
             {
-                this.dict.Remove(id);
-                this.list.Remove(body);
+                dict.Remove(id);
+                list.Remove(body);
             }
             return;
         }

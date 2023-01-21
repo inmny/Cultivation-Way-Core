@@ -177,11 +177,17 @@ namespace Cultivation_Way.Content.Harmony
             // 由于是值拷贝，cw_status不需要修改
             cw_actor.cw_data.deepcopy_to(new_cw_actor.cw_data);
             // 采用此方式防止功法误删
-            if (new_cw_actor.cw_data.cultibook_id != null)
+            if (!string.IsNullOrEmpty(new_cw_actor.cw_data.cultibook_id))
             {
                 new_cw_actor.cw_data.cultibook_id = null;
                 new_cw_actor.cw_data.spells.Clear();
                 new_cw_actor.learn_cultibook(cw_actor.cw_data.cultibook_id);
+            }
+            // 同样防止体质误删
+            if (!string.IsNullOrEmpty(new_cw_actor.cw_data.special_body_id))
+            {
+                new_cw_actor.cw_data.special_body_id = null;
+                new_cw_actor.change_special_body(cw_actor.cw_data.special_body_id);
             }
             // 未使用的对象组合
             if (cw_actor.compose_actors != null && cw_actor.compose_actors.Count>0) throw new NotImplementedException();

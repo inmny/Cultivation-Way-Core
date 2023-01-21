@@ -9,6 +9,7 @@ namespace Cultivation_Way
 {
     public class CW_StatusEffectData
     {
+        public string id;
         public float left_time;
         public bool finished;
         public float effect_val;
@@ -20,6 +21,7 @@ namespace Cultivation_Way
         public CW_Asset_StatusEffect status_asset;
         public CW_StatusEffectData(BaseSimObject _object, string status_effect_id)
         {
+            this.id = status_effect_id;
             this.status_asset = CW_Library_Manager.instance.status_effects.get(status_effect_id);
             if (status_asset == null) { finished = true; return; }
             if (!string.IsNullOrEmpty(status_asset.anim_id))

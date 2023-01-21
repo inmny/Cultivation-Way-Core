@@ -75,7 +75,7 @@ namespace Cultivation_Way.Library
         /// 暂不使用，释放等级
         /// </summary>
         public int cast_level;
-
+        public bool can_get_by_random;
         internal uint allowed_cultisys;
         internal ulong tags;
         internal bool[] base_elements_contained;
@@ -96,7 +96,7 @@ namespace Cultivation_Way.Library
         public CW_Asset_Spell(
             string id, string anim_id, 
             CW_Element element, string element_type_limit = null, 
-            int rarity = 1, float free_val = 1, float cost = 0.01f, int learn_level = 1, int cast_level = 1,
+            int rarity = 1, float free_val = 1, float cost = 0.01f, int learn_level = 1, int cast_level = 1, bool can_get_by_random = true,
             bool cultisys_black_or_white_list = true, List<string> cultisys_list = null, List<string> banned_races = null, 
             CW_Spell_Target_Type target_type = CW_Spell_Target_Type.ACTOR, 
             CW_Spell_Target_Camp target_camp = CW_Spell_Target_Camp.ENEMY, 
@@ -117,6 +117,7 @@ namespace Cultivation_Way.Library
             this.cost = cost;
             this.learn_level = learn_level;
             this.cast_level = cast_level;
+            this.can_get_by_random = can_get_by_random;
             this.cultisys_black_or_white_list = cultisys_black_or_white_list;
             this.cultisys_list = cultisys_list == null ? new List<string>() : cultisys_list;
             this.banned_races = banned_races == null ? new List<string>() : banned_races;
@@ -185,7 +186,7 @@ namespace Cultivation_Way.Library
         }
         public float check_and_cost(BaseSimObject pUser)
         {
-            return check_and_cost_action(this, pUser);
+            return check_and_cost_action==null?0:check_and_cost_action(this, pUser);
         }
     }
     public enum Spell_Search_Type
@@ -298,7 +299,7 @@ namespace Cultivation_Way.Library
                     {
                         foreach (CW_Asset_Spell asset in this.list)
                         {
-                            if (asset.tags == tags) list.Add(asset);
+                            if (asset.tags == tags && asset.can_get_by_random) list.Add(asset);
                         }
                         break;
                     }
@@ -306,7 +307,7 @@ namespace Cultivation_Way.Library
                     {
                         foreach (CW_Asset_Spell asset in this.list)
                         {
-                            if ((asset.tags & tags) != 0ul) list.Add(asset);
+                            if ((asset.tags & tags) != 0ul && asset.can_get_by_random) list.Add(asset);
                         }
                         break;
                     }
@@ -314,7 +315,7 @@ namespace Cultivation_Way.Library
                     {
                         foreach (CW_Asset_Spell asset in this.list)
                         {
-                            if ((asset.tags | tags)==asset.tags) list.Add(asset);
+                            if ((asset.tags | tags)==asset.tags && asset.can_get_by_random) list.Add(asset);
                         }
                         break;
                     }

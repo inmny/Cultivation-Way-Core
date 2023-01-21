@@ -19,12 +19,23 @@ namespace Cultivation_Way.Content
             add_wtiger_tooth_status_effect();
             //load_status_effects_anims();
         }
-
+        
         private static void load_status_effects_anims()
         {
             throw new NotImplementedException();
         }
-
+        private static void add_status_effect_for_custom()
+        {
+            CW_BaseStats base_bonus_stats = new CW_BaseStats();
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_custom",
+                anim_id: null,
+                anim_scale_co: 0.5f,
+                bonus_stats: base_bonus_stats,
+                effect_time: 60f
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
         private static void add_wtiger_tooth_status_effect()
         {
             CW_BaseStats base_bonus_stats = new CW_BaseStats(); base_bonus_stats.anti_injury = 0.5f;
@@ -94,12 +105,12 @@ namespace Cultivation_Way.Content
                 anim_id: "gold_shied_anim",
                 bonus_stats: base_bonus_stats,
                 effect_time: 60f,
-                action_on_get: gold_shied_on_get,
+                action_on_get: copy_bonus_stats_on_get,
                 action_on_hit: gold_shied_on_hit
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
-        private static void gold_shied_on_get(CW_StatusEffectData status_effect, BaseSimObject _obejct)
+        private static void copy_bonus_stats_on_get(CW_StatusEffectData status_effect, BaseSimObject _obejct)
         {
             status_effect.bonus_stats = status_effect.bonus_stats.deepcopy();
         }

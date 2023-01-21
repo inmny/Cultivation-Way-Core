@@ -93,10 +93,11 @@ namespace Cultivation_Way.Content
             CW_AnimationSetting anim_setting = new CW_AnimationSetting();
             anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
             anim_setting.loop_time_limit = 120f;
+            anim_setting.layer_name = "EffectsBack";
             anim_setting.trace_type = AnimationTraceType.ATTACH;
-            CW_EffectManager.instance.load_as_controller("stxh_0", "effects/stxh_HWMT", controller_setting: anim_setting, base_scale: 0.10f);
-            CW_EffectManager.instance.load_as_controller("stxh_1", "effects/stxh_LXST", controller_setting: anim_setting, base_scale: 0.10f);
-            CW_EffectManager.instance.load_as_controller("stxh_2", "effects/stxh_XTDT", controller_setting: anim_setting, base_scale: 0.10f);
+            CW_EffectManager.instance.load_as_controller("stxh_0", "effects/stxh_HWMT", controller_setting: anim_setting, base_scale: 0.08f);
+            CW_EffectManager.instance.load_as_controller("stxh_1", "effects/stxh_LXST", controller_setting: anim_setting, base_scale: 0.08f);
+            CW_EffectManager.instance.load_as_controller("stxh_2", "effects/stxh_XTDT", controller_setting: anim_setting, base_scale: 0.08f);
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "stxh", anim_id: "stxh_{0}",
                 new CW_Element(), element_type_limit: null,
@@ -106,14 +107,15 @@ namespace Cultivation_Way.Content
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
-                anim_type: CW_Spell_Animation_Type.ON_USER,
-                spell_action: stxh_spell_action
+                anim_type: CW_Spell_Animation_Type.CUSTOM,
+                spell_action: stxh_spell_action,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
                 );
             spell.add_tag(CW_Spell_Tag.ATTACK);
             spell.add_tag(CW_Spell_Tag.POSITIVE_STATUS);
             spell.add_tag(CW_Spell_Tag.IMMORTAL);
             spell.add_tag(CW_Spell_Tag.BUSHIDO);
-            //CW_Library_Manager.instance.spells.add(spell);
+            CW_Library_Manager.instance.spells.add(spell);
         }
         // 太阴五雷
         private static void add_negative_quintuple_lightning_spell()
@@ -349,7 +351,14 @@ namespace Cultivation_Way.Content
         }
         private static void stxh_spell_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
-            throw new NotImplementedException();
+            if (pUser.objectType != MapObjectType.Actor) return;
+            CW_Actor cw_actor = (CW_Actor)pUser;
+            CW_Asset_SpecialBody body = CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id);
+
+            CW_StatusEffectData status_effect = cw_actor.add_status_effect("status_custom", "stxh");
+            status_effect.bonus_stats = body.stxh_bonus_stats;
+            CW_SpriteAnimation anim = CW_EffectManager.instance.spawn_anim("stxh_" + body.anim_id, pUser.currentPosition, pUser.currentPosition, pUser, pUser, cw_actor.cw_cur_stats.base_stats.scale);
+            status_effect.anim = anim;
         }
         // TODO: 补充对建筑的效果
         private static void positive_lightning_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)

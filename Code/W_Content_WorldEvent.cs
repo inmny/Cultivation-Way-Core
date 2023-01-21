@@ -21,7 +21,7 @@ namespace Cultivation_Way.Content
             CW_Asset_WorldEvent _event = new CW_Asset_WorldEvent(
                 id: "wakan_tide",
                 trigger_type: CW_Event_Trigger_Type.CUSTOM,
-                trigger_val: 1f,
+                trigger_val: 2f,
                 action: wakan_tide,
                 action_val: 3f
                 );
