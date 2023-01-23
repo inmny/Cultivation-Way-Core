@@ -32,7 +32,7 @@ namespace Cultivation_Way.Library
         }
         public override CW_Asset_Kingdom add(CW_Asset_Kingdom pAsset)
         {
-            if (!AssetManager.kingdoms.list.Contains(pAsset.origin_asset)) AssetManager.kingdoms.add(pAsset.origin_asset);
+            AssetManager.kingdoms.add(pAsset.origin_asset);
             return base.add(pAsset);
         }
         internal CW_Asset_Kingdom __add(CW_Asset_Kingdom pAsset)

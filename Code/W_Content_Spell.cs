@@ -334,7 +334,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                     "example", "example_spell_anim", 
                     new CW_Element(), null, 
-                    1, 1, 0.05f, 1, 1, 
+                    1, 1, 0.05f, 1, 1, true,
                     true, null, null, 
                     CW_Spell_Target_Type.ACTOR, 
                     CW_Spell_Target_Camp.ENEMY, 

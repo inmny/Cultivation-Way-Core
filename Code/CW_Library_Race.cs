@@ -32,7 +32,7 @@ namespace Cultivation_Way.Library
         }
         public override CW_Asset_Race add(CW_Asset_Race pAsset)
         {
-            if(!AssetManager.raceLibrary.list.Contains(pAsset.origin_asset)) AssetManager.raceLibrary.add(pAsset.origin_asset);
+            AssetManager.raceLibrary.add(pAsset.origin_asset);
             return base.add(pAsset);
         }
         internal CW_Asset_Race __add(CW_Asset_Race asset)

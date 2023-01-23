@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Cultivation_Way.Library
 {
@@ -43,7 +44,7 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 拓展属性加成
         /// </summary>
-        public CW_BaseStats cw_stats;
+        public CW_BaseStats cw_base_stats;
     }
     public class CW_Library_ActorStats : CW_Asset_Library<CW_ActorStats>
     {
@@ -52,12 +53,28 @@ namespace Cultivation_Way.Library
             base.init();
             foreach(ActorStats actor_stats in AssetManager.unitStats.list)
             {
-                this.__add(actor_stats, 1f, new int[] { 20, 20, 20, 20, 20 }, 0f, new List<string>(), false, null, new CW_BaseStats());
+                this.__add(actor_stats, 0.8f, new int[] { 20, 20, 20, 20, 20 }, 0f, new List<string>(), false, null, new CW_BaseStats());
             }
         }
         internal override void register()
         {
             throw new NotImplementedException();
+        }
+        public override CW_ActorStats clone(string pNew, string pFrom)
+        {
+            CW_ActorStats new_stats = JsonUtility.FromJson<CW_ActorStats>(JsonUtility.ToJson(this.dict[pFrom]));
+            new_stats.id = pNew;
+            new_stats.cw_base_stats = dict[pFrom].cw_base_stats.deepcopy();
+            new_stats.origin_stats = JsonUtility.FromJson<ActorStats>(JsonUtility.ToJson(AssetManager.unitStats.dict[pFrom]));
+            new_stats.origin_stats.id = pNew;
+            new_stats.origin_stats.baseStats = new_stats.cw_base_stats.base_stats;
+            this.add(new_stats);
+            return new_stats;
+        }
+        public override CW_ActorStats add(CW_ActorStats pAsset)
+        {
+            AssetManager.unitStats.add(pAsset.origin_stats);
+            return base.add(pAsset);
         }
         public CW_ActorStats add(ActorStats stats, float culti_velo = 1f, int[] prefer_element = null, float prefer_element_scale = 0f, List<string> born_spells = null, bool anti_time_stop = false, string fixed_name = null, CW_BaseStats addition_stats = null)
         {
@@ -75,7 +92,7 @@ namespace Cultivation_Way.Library
             cw_actor_stats.anti_time_stop = anti_time_stop;
             cw_actor_stats.fixed_name = fixed_name;
             addition_stats.addStats(stats.baseStats);
-            cw_actor_stats.cw_stats = addition_stats;
+            cw_actor_stats.cw_base_stats = addition_stats;
             this.list.Add(cw_actor_stats);
             this.dict.Add(stats.id, cw_actor_stats);
             return cw_actor_stats;

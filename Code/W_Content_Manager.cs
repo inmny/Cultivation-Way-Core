@@ -18,15 +18,20 @@ namespace Cultivation_Way.Content
             add_item_armor_materials();
             add_item_weapon_materials();
             add_localized_text();
-            add_kingdoms();
-            add_races();
+            add_kingdoms_and_races();
             add_special_bodies();
             add_spells();
             add_status_effects();
             add_traits();
+            add_god_powers();
             add_world_events();
             add_harmony();
             create_tab();
+        }
+
+        private static void add_god_powers()
+        {
+            W_Content_GodPower.add_god_powers();
         }
 
         private static void create_tab()
@@ -53,19 +58,15 @@ namespace Cultivation_Way.Content
 
         private static void add_actors()
         {
-
+            W_Content_Actor.add_actors();
         }
-        private static void add_races()
+        private static void add_kingdoms_and_races()
         {
-
-        }
-        private static void add_kingdoms()
-        {
-
+            W_Content_KingdomAndRace.add_kingdoms_and_races();
         }
         private static void add_buildings()
         {
-
+            W_Content_Building.add_buildings();
         }
         private static void add_item_accesory_materials()
         {

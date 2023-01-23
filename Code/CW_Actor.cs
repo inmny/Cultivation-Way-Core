@@ -36,6 +36,7 @@ namespace Cultivation_Way
         public static Func<Actor, bool> get_event_full_heal = CW_ReflectionHelper.create_getter<Actor, bool>("event_full_heal");
         public static Func<Actor, List<ActorTrait>> get_s_special_effect_traits = CW_ReflectionHelper.create_getter<Actor, List<ActorTrait>>("s_special_effect_traits");
         internal static Func<Actor, WorldTimer> get_shake_timer = CW_ReflectionHelper.create_getter<Actor, WorldTimer>("shakeTimer");
+        internal static Func<Actor, BaseSimObject> get_beh_actor_target = CW_ReflectionHelper.create_getter<Actor, BaseSimObject>("beh_actor_target");
         #endregion
         #region Setter
         public static Action<Actor, bool> set_statsDirty = CW_ReflectionHelper.create_setter<Actor, bool>("statsDirty");
@@ -206,9 +207,16 @@ namespace Cultivation_Way
             }
             return true;
         }
-        
+        static int max_wakan_get_once = 128;
+        static int[] wakan_get_count = new int[max_wakan_get_once];
+        static bool count_init = false;
         public void updateStatus_month()
         {
+            if (!count_init)
+            {
+                count_init = true;
+                for (int i = 0; i < max_wakan_get_once; i++) wakan_get_count[i] = 0;
+            }
             if(this.cw_status.shied < this.cw_cur_stats.shied)
             {
                 this.cw_status.shied += Mathf.Min((int)Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.shied_regen, this.cw_status.wakan_level), this.cw_cur_stats.shied - this.cw_status.shied);
@@ -219,11 +227,20 @@ namespace Cultivation_Way
                 int wakan_get = 0; CW_MapChunk chunk = this.currentTile.get_cw_chunk();
                 float chunk_co = chunk.wakan_level;
                 // 计算人物应得的level 1灵气量
-                if (this.cw_status.wakan * Others.CW_Constants.wakan_regen_valid_percent < this.cw_cur_stats.wakan * 100)
+                // 修炼获取
+                wakan_get += (int)((1 + this.cw_cur_stats.mod_cultivation / 100) * this.cw_data.status.culti_velo * chunk_co);
+                wakan_get_count[wakan_get]++;
+
+                if (this.cw_status.wakan * 100  < this.cw_cur_stats.wakan * Others.CW_Constants.wakan_regen_valid_percent)
                 {// 灵气恢复属性的加成
                     wakan_get += (int)(this.cw_cur_stats.wakan_regen * chunk_co);
-                }// 修炼获取
-                wakan_get += (int)((1 + this.cw_cur_stats.mod_cultivation) * (1+this.cw_data.status.culti_velo) * chunk_co);
+                    if (wakan_get >= max_wakan_get_once)
+                    {
+                        WorldBoxConsole.Console.print(wakan_get);
+                    }
+                }
+                if (wakan_get <= 0) goto OUT_WAKAN;
+                
                 // 计算区块能够提供的level 1灵气量
                 float wakan_chunk_provide = Utils.CW_Utils_Others.get_raw_wakan(chunk.wakan, chunk.wakan_level);
                 // 取较小者
@@ -242,6 +259,7 @@ namespace Cultivation_Way
                 // 从区块移除对应量原始灵气
                 chunk.wakan -= Utils.CW_Utils_Others.compress_raw_wakan(wakan_get, chunk.wakan_level);
             }
+            OUT_WAKAN:
             float health_to_regen = 0;
             if((this.cw_data.cultisys & Others.CW_Constants.cultisys_bushido_tag) != 0)
             {

@@ -8,6 +8,7 @@ namespace Cultivation_Way.Animation
 {
     public class CW_EffectManager : MonoBehaviour
     {
+        // TODO: MapBox.QualityChanger在低画质情况下隐藏法术动画
         public static CW_EffectManager instance;
         private bool initialized = false;
         private GameObject default_prefab = new GameObject();

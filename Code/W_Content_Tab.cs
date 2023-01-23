@@ -131,14 +131,14 @@ namespace Cultivation_Way.Content
                 );
             add_button(
                 create_button(
-                    "spawnEasternHuman", "ui/Icons/iconEasternHuman",
+                    "spawnEastern_Human", "ui/Icons/iconEastern_Humans",
                     null, ButtonType.GodPower
                 ),
                 CW_Tab_Button_Type.ACTOR
                 );
             add_button(
                 create_button(
-                    "spawnYao", "ui/Icons/iconYao",
+                    "spawnYao", "ui/Icons/iconYaos",
                     null, ButtonType.GodPower
                 ),
                 CW_Tab_Button_Type.ACTOR
