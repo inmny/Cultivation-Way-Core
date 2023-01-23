@@ -95,6 +95,7 @@ namespace Cultivation_Way.Utils
         {
             //改用寻找圆周1/4边界，进行翻转获取
             List<WorldTile> tiles = new List<WorldTile>();
+            if (center == null) return tiles;
             //获取边界
             List<int> right = new List<int>();
             int x = (int)range;
