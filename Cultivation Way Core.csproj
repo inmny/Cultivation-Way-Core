@@ -617,12 +617,15 @@
     <None Include="GameResources\cw_locales\en.json" />
     <None Include="GameResources\cw_locales\tc.json" />
     <None Include="GameResources\effects\bushido_base\sprites.json" />
+    <None Include="GameResources\effects\fire_blade\sprites.json" />
     <None Include="GameResources\effects\gold_blade\sprites.json" />
     <None Include="GameResources\effects\gold_escape\sprites.json" />
     <None Include="GameResources\effects\gold_shied\sprites.json" />
     <None Include="GameResources\effects\gold_shied_on_hit\sprites.json" />
     <None Include="GameResources\effects\single_gold_sword\sprites.json" />
     <None Include="GameResources\effects\sprites.json" />
+    <None Include="GameResources\effects\water_blade\sprites.json" />
+    <None Include="GameResources\effects\wind_blade\sprites.json" />
     <None Include="mod.json" />
     <None Include="README.md" />
   </ItemGroup>

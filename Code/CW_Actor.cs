@@ -102,6 +102,7 @@ namespace Cultivation_Way
                 {
                     status_effects.Remove(status_effect_to_remove);
                 }
+                if (status_effects.Count == 0) status_effects = null;
                 setStatsDirty();
             }
             
@@ -146,7 +147,15 @@ namespace Cultivation_Way
                     Utils.CW_SpellHelper.cause_damage_to_target(this, attacker, damage * this.cw_cur_stats.anti_injury);
                 }
             }
-            
+            // 来自攻击者的状态影响
+            if (attacker != null && attacker != this && attacker.objectType == MapObjectType.Actor && ((CW_Actor)attacker).status_effects != null)
+            {
+                foreach (CW_StatusEffectData status_effect in ((CW_Actor)attacker).status_effects.Values)
+                {
+                    if (!status_effect.finished && status_effect.status_asset.action_on_attack != null) status_effect.status_asset.action_on_attack(status_effect, attacker, this);
+                }
+            }
+
             // 释放防御类法术
             if (this.cur_spells.Count > 0)
             {
@@ -234,10 +243,6 @@ namespace Cultivation_Way
                 if (this.cw_status.wakan * 100  < this.cw_cur_stats.wakan * Others.CW_Constants.wakan_regen_valid_percent)
                 {// 灵气恢复属性的加成
                     wakan_get += (int)(this.cw_cur_stats.wakan_regen * chunk_co);
-                    if (wakan_get >= max_wakan_get_once)
-                    {
-                        WorldBoxConsole.Console.print(wakan_get);
-                    }
                 }
                 if (wakan_get <= 0) goto OUT_WAKAN;
                 

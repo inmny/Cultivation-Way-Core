@@ -17,13 +17,20 @@ namespace Cultivation_Way.Content
             add_corrode_status_effect();
             add_armor_expose_status_effect();
             add_wtiger_tooth_status_effect();
+            add_unicorn_horn_status_effect();
+            add_rosefinch_feather_status_effect();
+            add_gdragon_scale_status_effect();
+            add_basalt_armor_status_effect();
             //load_status_effects_anims();
         }
+
         
+
         private static void load_status_effects_anims()
         {
             throw new NotImplementedException();
         }
+        // 自定义效果
         private static void add_status_effect_for_custom()
         {
             CW_BaseStats base_bonus_stats = new CW_BaseStats();
@@ -36,6 +43,60 @@ namespace Cultivation_Way.Content
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
+        // 玄武之甲
+        private static void add_basalt_armor_status_effect()
+        {
+            CW_BaseStats base_bonus_stats = new CW_BaseStats(); base_bonus_stats.base_stats.mod_armor = 80f;
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_basalt_armor",
+                anim_id: "basalt_armor_anim",
+                anim_scale_co: 0.5f,
+                bonus_stats: base_bonus_stats,
+                effect_time: 60f
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
+        // 青龙之鳞
+        private static void add_gdragon_scale_status_effect()
+        {
+            CW_BaseStats base_bonus_stats = new CW_BaseStats(); base_bonus_stats.mod_health_regen = 80f; base_bonus_stats.health_regen = 10;
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_gdragon_scale",
+                anim_id: "gdragon_scale_anim",
+                anim_scale_co: 0.5f,
+                bonus_stats: base_bonus_stats,
+                effect_time: 60f
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
+        // 朱雀之羽
+        private static void add_rosefinch_feather_status_effect()
+        {
+            CW_BaseStats base_bonus_stats = new CW_BaseStats();
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_rosefinch_feather",
+                anim_id: "rosefinch_feather_anim",
+                anim_scale_co: 0.5f,
+                bonus_stats: base_bonus_stats,
+                effect_time: 60f,
+                action_on_attack: rosefinch_feather_on_attack
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
+        // 麒麟之角
+        private static void add_unicorn_horn_status_effect()
+        {
+            CW_BaseStats base_bonus_stats = new CW_BaseStats(); base_bonus_stats.mod_spell_armor = 80f;
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_unicorn_horn",
+                anim_id: "unicorn_horn_anim",
+                anim_scale_co: 0.5f,
+                bonus_stats: base_bonus_stats,
+                effect_time: 60f
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
+        // 白虎之牙
         private static void add_wtiger_tooth_status_effect()
         {
             CW_BaseStats base_bonus_stats = new CW_BaseStats(); base_bonus_stats.anti_injury = 0.5f;
@@ -48,7 +109,7 @@ namespace Cultivation_Way.Content
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
-
+        // 破甲
         private static void add_armor_expose_status_effect()
         {
             CW_BaseStats base_bonus_stats = new CW_BaseStats(); base_bonus_stats.base_stats.armor -= 30;
@@ -60,7 +121,7 @@ namespace Cultivation_Way.Content
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
-
+        // 腐蚀
         private static void add_corrode_status_effect()
         {
             CW_BaseStats base_bonus_stats = new CW_BaseStats(); //base_bonus_stats.base_stats.armor = 30;
@@ -72,7 +133,7 @@ namespace Cultivation_Way.Content
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
-
+        // 诅咒
         private static void add_curse_status_effect()
         {
             CW_BaseStats base_bonus_stats = new CW_BaseStats(); base_bonus_stats.base_stats.mod_health -= 30;
@@ -84,7 +145,7 @@ namespace Cultivation_Way.Content
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
-
+        // 灼伤
         private static void add_burning_status_effect()
         {
             CW_BaseStats base_bonus_stats = new CW_BaseStats(); //base_bonus_stats.base_stats.armor = 30;
@@ -96,7 +157,7 @@ namespace Cultivation_Way.Content
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
-
+        // 金刚护体
         private static void add_gold_shied_status_effect()
         {
             CW_BaseStats base_bonus_stats = new CW_BaseStats(); base_bonus_stats.base_stats.armor = 30;
@@ -117,6 +178,12 @@ namespace Cultivation_Way.Content
         private static void gold_shied_on_hit(CW_StatusEffectData status_effect, BaseSimObject _obejct, BaseSimObject attacker)
         {
             CW_EffectManager.instance.spawn_anim("gold_shied_on_hit_anim", _obejct.currentPosition, _obejct.currentPosition, _obejct, _obejct, _obejct.objectType == MapObjectType.Actor ? ((CW_Actor)_obejct).cw_cur_stats.base_stats.scale : 1f);   
+        }
+        // TODO: 对建筑的支持
+        private static void rosefinch_feather_on_attack(CW_StatusEffectData status_effect, BaseSimObject _obejct, BaseSimObject target)
+        {
+            if (target.objectType != MapObjectType.Actor) return;
+            ((CW_Actor)target).add_status_effect("status_burning");
         }
     }
 }
