@@ -12,16 +12,16 @@ namespace Cultivation_Way.Tester
     internal static class CW_Anim_Tester
     {
         private static Func<StackEffects, Vector3, Vector3, string, float, Projectile> s_p = (Func<StackEffects, Vector3, Vector3, string, float, Projectile>)CW_ReflectionHelper.get_method<StackEffects>("startProjectile");
-        private static bool force_spell(string spell_id, string src_id, string dst_id, int dst_x, int dst_y, float scale)
+        private static bool force_spell(string spell_id, string src_id, string dst_id, int dst_x, int dst_y)
         {
             CW_Asset_Spell spell_asset = CW_Library_Manager.instance.spells.get(spell_id);
             Actor src_actor = MapBox.instance.getActorByID(src_id);
             Actor dst_actor = MapBox.instance.getActorByID(dst_id);
-            WorldTile tile = MapBox.instance.GetTile(dst_x, dst_y);
+            WorldTile tile = (dst_x==0 && dst_y==0)?dst_actor.currentTile:MapBox.instance.GetTile(dst_x, dst_y);
             if (spell_asset.anim_type != Library.CW_Spell_Animation_Type.CUSTOM)
             {
-                spell_asset.damage_action(spell_asset, src_actor, dst_actor, tile, 10);
-                spell_asset.anim_action(spell_asset, src_actor, dst_actor, tile, 10);
+                if(spell_asset.damage_action!=null)spell_asset.damage_action(spell_asset, src_actor, dst_actor, tile, 10);
+                if (spell_asset.anim_action != null) spell_asset.anim_action(spell_asset, src_actor, dst_actor, tile, 10);
                 //WorldBoxConsole.Console.print("Spell should cast");
                 ((CW_Actor)src_actor).fast_data.favorite = true;
             }

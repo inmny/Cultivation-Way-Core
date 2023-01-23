@@ -35,6 +35,11 @@ namespace Cultivation_Way.Content
             add_single_water_sword_spell();
             add_single_wood_sword_spell();
 
+            add_fire_polo_spell();
+            add_water_polo_spell();
+            add_wind_polo_spell();
+            add_lightning_polo_spell();
+
             add_default_lightning_spell();
             add_positive_quintuple_lightning_spell();
             add_negative_quintuple_lightning_spell();
@@ -46,93 +51,123 @@ namespace Cultivation_Way.Content
             add_rosefinch_feather_spell();
 
             add_stxh_spell();
+            load_other_anims();
         }
-        // 水刃
-        private static void add_water_blade_spell()
+
+        private static void load_other_anims()
         {
             CW_AnimationSetting anim_setting = new CW_AnimationSetting();
-            anim_setting.loop_limit_type = AnimationLoopLimitType.TRACE_LIMIT;
-            anim_setting.loop_trace_limit = 33;
+            CW_EffectManager.instance.load_as_controller("explosion_anim", "effects/explosion/", controller_setting: anim_setting, base_scale: 1f);
+        }
+        // 风丸
+        private static void add_wind_polo_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
             anim_setting.loop_nr_limit = -1;
-            anim_setting.anim_froze_frame_idx = 3;
             anim_setting.frame_interval = 0.05f;
             anim_setting.trace_grad = 15f;
             anim_setting.point_to_dst = true;
+            anim_setting.end_action = wind_polo_end_action;
             anim_setting.set_trace(AnimationTraceType.LINE);
 
-            anim_setting.frame_action = water_blade_frame_action;
-            CW_EffectManager.instance.load_as_controller("water_blade_anim", "effects/water_blade/", controller_setting: anim_setting, base_scale: 0.08f);
+            CW_EffectManager.instance.load_as_controller("wind_polo_anim", "effects/wind_polo/", controller_setting: anim_setting, base_scale: 0.08f);
             CW_Asset_Spell spell = new CW_Asset_Spell(
-                id: "water_blade", anim_id: "water_blade_anim",
-                new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
-                target_type: CW_Spell_Target_Type.ACTOR,
-                target_camp: CW_Spell_Target_Camp.ENEMY,
-                triger_type: CW_Spell_Triger_Type.ATTACK,
-                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
-                damage_action: CW_SpellAction_Damage.defualt_damage,
-                anim_action: CW_SpellAction_Anim.default_anim,
-                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
-                );
-            spell.add_tag(CW_Spell_Tag.ATTACK);
-            spell.add_tag(CW_Spell_Tag.IMMORTAL);
-            CW_Library_Manager.instance.spells.add(spell);
-        }
-        // 火刃
-        private static void add_fire_blade_spell()
-        {
-            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
-            anim_setting.loop_limit_type = AnimationLoopLimitType.TRACE_LIMIT;
-            anim_setting.loop_trace_limit = 33;
-            anim_setting.loop_nr_limit = -1;
-            anim_setting.anim_froze_frame_idx = 3;
-            anim_setting.frame_interval = 0.05f;
-            anim_setting.trace_grad = 15f;
-            anim_setting.point_to_dst = true;
-            anim_setting.set_trace(AnimationTraceType.LINE);
-
-            anim_setting.frame_action = fire_blade_frame_action;
-            CW_EffectManager.instance.load_as_controller("fire_blade_anim", "effects/fire_blade/", controller_setting: anim_setting, base_scale: 0.08f);
-            CW_Asset_Spell spell = new CW_Asset_Spell(
-                id: "fire_blade", anim_id: "fire_blade_anim",
-                new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
-                target_type: CW_Spell_Target_Type.ACTOR,
-                target_camp: CW_Spell_Target_Camp.ENEMY,
-                triger_type: CW_Spell_Triger_Type.ATTACK,
-                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
-                damage_action: CW_SpellAction_Damage.defualt_damage,
-                anim_action: CW_SpellAction_Anim.default_anim,
-                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
-                );
-            spell.add_tag(CW_Spell_Tag.ATTACK);
-            spell.add_tag(CW_Spell_Tag.IMMORTAL);
-            CW_Library_Manager.instance.spells.add(spell);
-        }
-        // 风刃
-        private static void add_wind_blade_spell()
-        {
-            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
-            anim_setting.loop_limit_type = AnimationLoopLimitType.TRACE_LIMIT;
-            anim_setting.loop_trace_limit = 33;
-            anim_setting.loop_nr_limit = -1;
-            anim_setting.anim_froze_frame_idx = 3;
-            anim_setting.frame_interval = 0.05f;
-            anim_setting.trace_grad = 15f;
-            anim_setting.point_to_dst = true;
-            anim_setting.set_trace(AnimationTraceType.LINE);
-
-            anim_setting.frame_action = wind_blade_frame_action;
-            CW_EffectManager.instance.load_as_controller("wind_blade_anim", "effects/wind_blade/", controller_setting: anim_setting, base_scale: 0.08f);
-            CW_Asset_Spell spell = new CW_Asset_Spell(
-                id: "wind_blade", anim_id: "wind_blade_anim",
+                id: "wind_polo", anim_id: "wind_polo_anim",
                 new CW_Element(new int[] { 40, 40, 20, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
-                target_type: CW_Spell_Target_Type.ACTOR,
+                rarity: 1, free_val: 1, cost: 0.03f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.TILE,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
                 anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
-                damage_action: CW_SpellAction_Damage.defualt_damage,
+                damage_action: null,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 雷丸
+        private static void add_lightning_polo_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.trace_grad = 15f;
+            anim_setting.point_to_dst = true;
+            anim_setting.end_action = lightning_polo_end_action;
+            anim_setting.set_trace(AnimationTraceType.LINE);
+
+            CW_EffectManager.instance.load_as_controller("lightning_polo_anim", "effects/lightning_polo/", controller_setting: anim_setting, base_scale: 0.08f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "lightning_polo", anim_id: "lightning_polo_anim",
+                new CW_Element(new int[] { 40, 40, 0, 20, 0 }),
+                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.TILE,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: null,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 水球
+        private static void add_water_polo_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.trace_grad = 15f;
+            anim_setting.point_to_dst = true;
+            anim_setting.end_action = water_polo_end_action;
+            anim_setting.set_trace(AnimationTraceType.LINE);
+
+            CW_EffectManager.instance.load_as_controller("water_polo_anim", "effects/water_polo/", controller_setting: anim_setting, base_scale: 0.08f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "water_polo", anim_id: "water_polo_anim",
+                new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.03f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.TILE,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: null,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 火球
+        private static void add_fire_polo_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.trace_grad = 15f;
+            anim_setting.point_to_dst = true;
+            anim_setting.end_action = fire_polo_end_action;
+            anim_setting.set_trace(AnimationTraceType.LINE);
+
+            CW_EffectManager.instance.load_as_controller("fire_polo_anim", "effects/fire_polo/", controller_setting: anim_setting, base_scale: 0.08f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "fire_polo", anim_id: "fire_polo_anim",
+                new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.03f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.TILE,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: null,
                 anim_action: CW_SpellAction_Anim.default_anim,
                 check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
                 );
@@ -752,6 +787,99 @@ namespace Cultivation_Way.Content
             spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
+        // 水刃
+        private static void add_water_blade_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.TRACE_LIMIT;
+            anim_setting.loop_trace_limit = 33;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.anim_froze_frame_idx = 3;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.trace_grad = 15f;
+            anim_setting.point_to_dst = true;
+            anim_setting.set_trace(AnimationTraceType.LINE);
+
+            anim_setting.frame_action = water_blade_frame_action;
+            CW_EffectManager.instance.load_as_controller("water_blade_anim", "effects/water_blade/", controller_setting: anim_setting, base_scale: 0.08f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "water_blade", anim_id: "water_blade_anim",
+                new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: CW_SpellAction_Damage.defualt_damage,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 火刃
+        private static void add_fire_blade_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.TRACE_LIMIT;
+            anim_setting.loop_trace_limit = 33;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.anim_froze_frame_idx = 3;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.trace_grad = 15f;
+            anim_setting.point_to_dst = true;
+            anim_setting.set_trace(AnimationTraceType.LINE);
+
+            anim_setting.frame_action = fire_blade_frame_action;
+            CW_EffectManager.instance.load_as_controller("fire_blade_anim", "effects/fire_blade/", controller_setting: anim_setting, base_scale: 0.08f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "fire_blade", anim_id: "fire_blade_anim",
+                new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: CW_SpellAction_Damage.defualt_damage,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 风刃
+        private static void add_wind_blade_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.TRACE_LIMIT;
+            anim_setting.loop_trace_limit = 33;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.anim_froze_frame_idx = 3;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.trace_grad = 15f;
+            anim_setting.point_to_dst = true;
+            anim_setting.set_trace(AnimationTraceType.LINE);
+
+            anim_setting.frame_action = wind_blade_frame_action;
+            CW_EffectManager.instance.load_as_controller("wind_blade_anim", "effects/wind_blade/", controller_setting: anim_setting, base_scale: 0.08f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "wind_blade", anim_id: "wind_blade_anim",
+                new CW_Element(new int[] { 40, 40, 20, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: CW_SpellAction_Damage.defualt_damage,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
         // 示例法术
         private static void add_example_spell()
         {
@@ -777,6 +905,7 @@ namespace Cultivation_Way.Content
             spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
+        
         private static void stxh_spell_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
             if (pUser.objectType != MapObjectType.Actor) return;
@@ -835,7 +964,7 @@ namespace Cultivation_Way.Content
             if (cur_frame_idx != 5) return;
             float radius = 5;
             if (anim.src_object == null || !anim.src_object.base_data.alive) return;
-            WorldTile center = MapBox.instance.GetTile((int)src_vec.x, (int)src_vec.y);
+            WorldTile center = anim.src_object.currentTile;
             if (center == null) return;
             List<WorldTile> tiles = Utils.CW_SpellHelper.get_circle_tiles(center, radius);
             List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_tiles(tiles, anim.src_object.kingdom);
@@ -897,6 +1026,7 @@ namespace Cultivation_Way.Content
                 }
             }
         }
+
         private static void gold_blade_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             if (cur_frame_idx > 2)
@@ -1000,6 +1130,62 @@ namespace Cultivation_Way.Content
         private static void example_spell_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             ((CW_Actor)anim.src_object).fast_data.health += 1;
+        }
+        private static void fire_polo_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            if (anim.src_object == null) return;
+            WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
+            CW_EffectManager.instance.spawn_anim("explosion_anim", center.posV, center.posV, null, null, 0.06f);
+            List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 3);
+            float force = 3f;
+            foreach (BaseSimObject actor in enemies)
+            {
+                Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
+
+                if (actor.objectType != MapObjectType.Actor) continue;
+                ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force, (actor.currentPosition.y - dst_vec.y) / force, Toolbox.DistVec2Float(actor.currentPosition, dst_vec) / force);
+            }
+        }
+        private static void water_polo_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            if (anim.src_object == null) return;
+            WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
+            List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 3);
+            float dist = Toolbox.DistVec2Float(src_vec, dst_vec);
+            float force_x = (dst_vec.x - src_vec.x) / dist * 0.5f;
+            float force_y = (dst_vec.y - src_vec.y) / dist * 0.5f;
+            float force_z = 0.15f;
+            foreach (BaseSimObject actor in enemies)
+            {
+                Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
+
+                if (actor.objectType != MapObjectType.Actor) continue;
+                ((CW_Actor)actor).addForce(force_x, force_y, force_z);
+            }
+        }
+        private static void wind_polo_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            if (anim.src_object == null) return;
+            WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
+            List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 3);
+            float force_z = 0.8f;
+            foreach (BaseSimObject actor in enemies)
+            {
+                Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
+
+                if (actor.objectType != MapObjectType.Actor) continue;
+                ((CW_Actor)actor).addForce(0, 0, force_z);
+            }
+        }
+        private static void lightning_polo_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            if (anim.src_object == null) return;
+            WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
+            List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 3);
+            foreach (BaseSimObject actor in enemies)
+            {
+                Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
+            }
         }
         private static void bushido_base_damage_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {

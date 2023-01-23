@@ -21,8 +21,8 @@ namespace Cultivation_Way
                     // TODO: 细化
                     if (asset.anim_type != Library.CW_Spell_Animation_Type.CUSTOM)
                     {
-                        asset.damage_action(asset, pUser, pTarget, pTargetTile, cost);
-                        asset.anim_action(asset, pUser, pTarget, pTargetTile, cost);
+                        if (asset.damage_action != null) asset.damage_action(asset, pUser, pTarget, pTargetTile, cost);
+                        if (asset.anim_action != null) asset.anim_action(asset, pUser, pTarget, pTargetTile, cost);
                         //WorldBoxConsole.Console.print("Spell should cast");
                         //((CW_Actor)pUser).fast_data.favorite = true;
                     }
