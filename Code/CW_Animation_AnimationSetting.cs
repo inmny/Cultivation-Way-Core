@@ -38,6 +38,10 @@ namespace Cultivation_Way.Animation
     /// </summary>
     public class CW_AnimationSetting
     {
+        /// <summary>
+        /// 自由变量
+        /// </summary>
+        public int free_val = 0;
         internal bool possible_associated = true;
         /// <summary>
         /// 帧间隔
@@ -118,6 +122,7 @@ namespace Cultivation_Way.Animation
         internal CW_AnimationSetting __deepcopy()
         {
             CW_AnimationSetting copy = new CW_AnimationSetting();
+            copy.free_val = free_val;
             copy.possible_associated = false;
             copy.loop_limit_type = loop_limit_type;
             copy.loop_time_limit = loop_time_limit;

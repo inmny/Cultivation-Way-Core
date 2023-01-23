@@ -16,21 +16,35 @@ namespace Cultivation_Way.Content
         {
             add_bushido_base_spell();
             add_example_spell();
+
             add_gold_blade_spell();
-            add_gold_escape_spell();
-            add_gold_shied_spell();
-            add_single_gold_sword_spell();
             add_fire_blade_spell();
             add_wind_blade_spell();
             add_water_blade_spell();
+
+            add_gold_escape_spell();
+            add_fire_escape_spell();
+            add_water_escape_spell();
+            add_wood_escape_spell();
+            add_ground_escape_spell();
+
+            add_gold_shied_spell();
+            add_water_shied_spell();
+
+            add_single_gold_sword_spell();
+            add_single_water_sword_spell();
+            add_single_wood_sword_spell();
+
             add_default_lightning_spell();
             add_positive_quintuple_lightning_spell();
             add_negative_quintuple_lightning_spell();
+
             add_wtiger_tooth_spell();
             add_unicorn_horn_spell();
             add_basalt_armor_spell();
             add_gdragon_scale_spell();
             add_rosefinch_feather_spell();
+
             add_stxh_spell();
         }
         // 水刃
@@ -304,7 +318,6 @@ namespace Cultivation_Way.Content
             spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
-        // TODO: 添加效果并加入法术库，图像需要上移
         // 圣体显化
         private static void add_stxh_spell()
         {
@@ -449,7 +462,43 @@ namespace Cultivation_Way.Content
                 anim_type: CW_Spell_Animation_Type.CUSTOM,
                 damage_action: null,
                 anim_action: null,
-                spell_action: gold_shied_spell_action,
+                spell_action: __shied_spell_action,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.DEFEND);
+            spell.add_tag(CW_Spell_Tag.POSITIVE_STATUS);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 水甲
+        private static void add_water_shied_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
+            anim_setting.loop_time_limit = 120f;
+            anim_setting.frame_interval = 0.1f;
+            anim_setting.set_trace(AnimationTraceType.ATTACH);
+
+            CW_EffectManager.instance.load_as_controller("water_shied_anim", "effects/water_shied/", controller_setting: anim_setting, base_scale: 1f);
+
+            anim_setting = anim_setting.__deepcopy();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.NUMBER_LIMIT;
+            anim_setting.loop_nr_limit = 1;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.set_trace(AnimationTraceType.NONE);
+            CW_EffectManager.instance.load_as_controller("water_shied_on_hit_anim", "effects/water_shied_on_hit/", controller_setting: anim_setting, base_scale: 1f);
+
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "water_shied", anim_id: "water_shied_anim",
+                new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ALIAS,
+                triger_type: CW_Spell_Triger_Type.DEFEND,
+                anim_type: CW_Spell_Animation_Type.CUSTOM,
+                damage_action: null,
+                anim_action: null,
+                spell_action: __shied_spell_action,
                 check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
                 );
             spell.add_tag(CW_Spell_Tag.DEFEND);
@@ -487,17 +536,178 @@ namespace Cultivation_Way.Content
             spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
+        // 木剑, TODO: 添加对冥族、妖族的额外伤害
+        private static void add_single_wood_sword_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.frame_interval = 1;
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.point_to_dst = true;
+            anim_setting.always_point_to_dst = true;
+            anim_setting.anim_froze_frame_idx = -1;
+            anim_setting.trace_grad = 40;
+            anim_setting.set_trace(AnimationTraceType.TRACK);
+
+            CW_EffectManager.instance.load_as_controller("single_wood_sword_anim", "effects/single_wood_sword/", anim_limit: 10000, controller_setting: anim_setting, base_scale: 0.15f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "wood_sword", anim_id: "single_wood_sword_anim",
+                new CW_Element(new int[] { 0, 0, 100, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: CW_SpellAction_Damage.defualt_damage,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 水剑
+        private static void add_single_water_sword_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.frame_interval = 1;
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.point_to_dst = true;
+            anim_setting.always_point_to_dst = true;
+            anim_setting.anim_froze_frame_idx = -1;
+            anim_setting.trace_grad = 40;
+            anim_setting.set_trace(AnimationTraceType.TRACK);
+
+            CW_EffectManager.instance.load_as_controller("single_water_sword_anim", "effects/single_water_sword/", anim_limit: 10000, controller_setting: anim_setting, base_scale: 0.15f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "water_sword", anim_id: "single_water_sword_anim",
+                new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.02f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: CW_SpellAction_Damage.defualt_damage,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
         // 金遁
         private static void add_gold_escape_spell()
         {
             CW_AnimationSetting anim_setting = new CW_AnimationSetting();
             anim_setting.frame_interval = 0.05f;
-            anim_setting.frame_action = gold_escape_frame_action;
+            anim_setting.frame_action = __escape_frame_action;
             anim_setting.trace_type = AnimationTraceType.NONE;
+            anim_setting.free_val = 9;
             CW_EffectManager.instance.load_as_controller("gold_escape_anim", "effects/gold_escape/", controller_setting: anim_setting, base_scale: 1f);
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "gold_escape", anim_id: "gold_escape_anim",
                 new CW_Element(new int[] { 0, 0, 0, 100, 0 }),
+                rarity: 1, free_val: 0.15f, cost: 0.1f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ALIAS,
+                triger_type: CW_Spell_Triger_Type.DEFEND,
+                anim_type: CW_Spell_Animation_Type.ON_USER,
+                damage_action: CW_SpellAction_Damage.no_damage,
+                anim_action: on_user_auto_scale,
+                check_and_cost_action: CW_SpellAction_Cost.low_health_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.DEFEND);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 土遁
+        private static void add_ground_escape_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.frame_action = __escape_frame_action;
+            anim_setting.trace_type = AnimationTraceType.NONE;
+            anim_setting.free_val = 9;
+            CW_EffectManager.instance.load_as_controller("ground_escape_anim", "effects/ground_escape/", controller_setting: anim_setting, base_scale: 1f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "ground_escape", anim_id: "ground_escape_anim",
+                new CW_Element(new int[] { 0, 0, 0, 0, 100 }),
+                rarity: 1, free_val: 0.15f, cost: 0.1f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ALIAS,
+                triger_type: CW_Spell_Triger_Type.DEFEND,
+                anim_type: CW_Spell_Animation_Type.ON_USER,
+                damage_action: CW_SpellAction_Damage.no_damage,
+                anim_action: on_user_auto_scale,
+                check_and_cost_action: CW_SpellAction_Cost.low_health_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.DEFEND);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 木遁
+        private static void add_wood_escape_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.frame_action = __escape_frame_action;
+            anim_setting.trace_type = AnimationTraceType.NONE;
+            anim_setting.free_val = 7;
+            CW_EffectManager.instance.load_as_controller("wood_escape_anim", "effects/wood_escape/", controller_setting: anim_setting, base_scale: 1f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "wood_escape", anim_id: "wood_escape_anim",
+                new CW_Element(new int[] { 0, 0, 100, 0, 0 }),
+                rarity: 1, free_val: 0.15f, cost: 0.1f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ALIAS,
+                triger_type: CW_Spell_Triger_Type.DEFEND,
+                anim_type: CW_Spell_Animation_Type.ON_USER,
+                damage_action: CW_SpellAction_Damage.no_damage,
+                anim_action: on_user_auto_scale,
+                check_and_cost_action: CW_SpellAction_Cost.low_health_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.DEFEND);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 水遁
+        private static void add_water_escape_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.frame_action = __escape_frame_action;
+            anim_setting.trace_type = AnimationTraceType.NONE;
+            anim_setting.free_val = 9;
+            CW_EffectManager.instance.load_as_controller("water_escape_anim", "effects/water_escape/", controller_setting: anim_setting, base_scale: 1f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "water_escape", anim_id: "water_escape_anim",
+                new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
+                rarity: 1, free_val: 0.15f, cost: 0.1f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ALIAS,
+                triger_type: CW_Spell_Triger_Type.DEFEND,
+                anim_type: CW_Spell_Animation_Type.ON_USER,
+                damage_action: CW_SpellAction_Damage.no_damage,
+                anim_action: on_user_auto_scale,
+                check_and_cost_action: CW_SpellAction_Cost.low_health_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.DEFEND);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 火遁
+        private static void add_fire_escape_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.frame_action = __escape_frame_action;
+            anim_setting.trace_type = AnimationTraceType.NONE;
+            anim_setting.free_val = 5;
+            CW_EffectManager.instance.load_as_controller("fire_escape_anim", "effects/fire_escape/", controller_setting: anim_setting, base_scale: 1f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "fire_escape", anim_id: "fire_escape_anim",
+                new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
                 rarity: 1, free_val: 0.15f, cost: 0.1f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ALIAS,
@@ -638,7 +848,7 @@ namespace Cultivation_Way.Content
                 tile.setBurned();
             }
         }
-        private static void gold_shied_spell_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
+        private static void __shied_spell_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
             if (pUser == null || !pUser.base_data.alive) return;
             CW_StatusEffectData status = ((CW_Actor)pUser).add_status_effect("status_" + spell_asset.id);
@@ -652,10 +862,10 @@ namespace Cultivation_Way.Content
             if (anim == null) return;
             anim.cost_for_spell = cost;
         }
-        private static void gold_escape_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        private static void __escape_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             if (anim.src_object == null || !anim.src_object.base_data.alive) { anim.force_stop(false); return; }
-            if (cur_frame_idx == 9)
+            if (cur_frame_idx == anim.setting.free_val)
             {
                 WorldTile target = null;
                 if (anim.src_object.city != null)
@@ -672,7 +882,7 @@ namespace Cultivation_Way.Content
                         {
                             MapRegion random = ground_island.regions.GetRandom();
                             target = ((random != null) ? random.tiles.GetRandom<WorldTile>() : null);
-                            if (target == null || target.Type.block || target.Type.ground) target = null;
+                            if (target == null || target.Type.block || !target.Type.ground) target = null;
                         }
                     }
                 }
@@ -710,13 +920,6 @@ namespace Cultivation_Way.Content
                 }
             }
         }
-        /// <summary>
-        /// TODO: 击退效果待调整
-        /// </summary>
-        /// <param name="cur_frame_idx"></param>
-        /// <param name="src_vec"></param>
-        /// <param name="dst_vec"></param>
-        /// <param name="anim"></param>
         private static void water_blade_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             if (cur_frame_idx > 2)

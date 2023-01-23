@@ -74,11 +74,23 @@ namespace Cultivation_Way
         {
             return (this.cw_data.cultisys & CW_Library_Manager.instance.cultisys.get(cultisys_id)._tag) > 0;
         }
+        public void remove_status_effect_forcely(string status_effect_id)
+        {
+            if (status_effects == null || !status_effects.ContainsKey(status_effect_id)) return;
+            CW_StatusEffectData status_to_remove = status_effects[status_effect_id];
+            status_effects.Remove(status_effect_id);
+            status_to_remove.force_finish();
+            this.setStatsDirty();
+        }
         public CW_StatusEffectData add_status_effect(string status_effect_id, string as_id = null)
         {
             if (status_effects == null) status_effects = new Dictionary<string, CW_StatusEffectData>();
             as_id = string.IsNullOrEmpty(as_id) ? status_effect_id : as_id;
             if (status_effects.ContainsKey(as_id)) return status_effects[as_id];
+            foreach(CW_StatusEffectData status_effect in status_effects.Values)
+            {
+                if (status_effect.status_asset.opposite_status != null && status_effect.status_asset.opposite_status.Contains(as_id)) return null;
+            }
             CW_StatusEffectData ret = new CW_StatusEffectData(this, status_effect_id);
             ret.id = as_id;
             status_effects.Add(as_id, ret);

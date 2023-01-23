@@ -14,12 +14,13 @@ namespace Cultivation_Way.Library
         internal float anim_scale_co; // No used now
         internal float effect_time;
         public float effect_val;
+        public List<string> opposite_status;
         public Others.CW_Delegates.CW_Status_Action action_on_get;
         public Others.CW_Delegates.CW_Status_Action action_on_update;
         public Others.CW_Delegates.CW_Status_Attack_Action action_on_attack;
         public Others.CW_Delegates.CW_Status_GetHit_Action action_on_hit;
 
-        public CW_Asset_StatusEffect(string id, CW_BaseStats bonus_stats, string anim_id = null, float anim_scale_co = 1f, float effect_time = 60f, float effect_val = 1f, CW_Delegates.CW_Status_Action action_on_get = null, CW_Delegates.CW_Status_GetHit_Action action_on_hit = null,  CW_Delegates.CW_Status_Action action_on_update = null, CW_Delegates.CW_Status_Attack_Action action_on_attack = null)
+        public CW_Asset_StatusEffect(string id, CW_BaseStats bonus_stats, string anim_id = null, float anim_scale_co = 1f, float effect_time = 60f, float effect_val = 1f, CW_Delegates.CW_Status_Action action_on_get = null, CW_Delegates.CW_Status_GetHit_Action action_on_hit = null,  CW_Delegates.CW_Status_Action action_on_update = null, CW_Delegates.CW_Status_Attack_Action action_on_attack = null, List<string> opposite_status = null)
         {
             this.id = id;
             this.bonus_stats = bonus_stats;
@@ -31,6 +32,7 @@ namespace Cultivation_Way.Library
             this.action_on_hit = action_on_hit;
             this.action_on_update = action_on_update;
             this.action_on_attack = action_on_attack;
+            this.opposite_status = opposite_status;
         }
 
         public void set_anim_time(float second)

@@ -12,6 +12,7 @@ namespace Cultivation_Way.Content
         internal static void add_status_effects()
         {
             add_gold_shied_status_effect();
+            add_water_shied_status_effect();
             add_burning_status_effect();
             add_curse_status_effect();
             add_corrode_status_effect();
@@ -171,6 +172,33 @@ namespace Cultivation_Way.Content
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
+        // 水甲
+        private static void add_water_shied_status_effect()
+        {
+            CW_BaseStats base_bonus_stats = new CW_BaseStats(); base_bonus_stats.base_stats.armor = 30;
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_water_shied",
+                anim_id: "water_shied_anim",
+                bonus_stats: base_bonus_stats,
+                effect_time: 60f,
+                action_on_get: water_shied_on_get,
+                action_on_hit: water_shied_on_hit
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
+        // TODO: 添加对建筑的支持
+        private static void water_shied_on_get(CW_StatusEffectData status_effect, BaseSimObject _obejct)
+        {
+            copy_bonus_stats_on_get(status_effect, _obejct);
+            if(_obejct.objectType == MapObjectType.Actor)
+            {
+                ((CW_Actor)_obejct).remove_status_effect_forcely("status_burning");
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
         private static void copy_bonus_stats_on_get(CW_StatusEffectData status_effect, BaseSimObject _obejct)
         {
             status_effect.bonus_stats = status_effect.bonus_stats.deepcopy();
@@ -178,6 +206,10 @@ namespace Cultivation_Way.Content
         private static void gold_shied_on_hit(CW_StatusEffectData status_effect, BaseSimObject _obejct, BaseSimObject attacker)
         {
             CW_EffectManager.instance.spawn_anim("gold_shied_on_hit_anim", _obejct.currentPosition, _obejct.currentPosition, _obejct, _obejct, _obejct.objectType == MapObjectType.Actor ? ((CW_Actor)_obejct).cw_cur_stats.base_stats.scale : 1f);   
+        }
+        private static void water_shied_on_hit(CW_StatusEffectData status_effect, BaseSimObject _obejct, BaseSimObject attacker)
+        {
+            CW_EffectManager.instance.spawn_anim("water_shied_on_hit_anim", _obejct.currentPosition, _obejct.currentPosition, _obejct, _obejct, _obejct.objectType == MapObjectType.Actor ? ((CW_Actor)_obejct).cw_cur_stats.base_stats.scale : 1f);
         }
         // TODO: 对建筑的支持
         private static void rosefinch_feather_on_attack(CW_StatusEffectData status_effect, BaseSimObject _obejct, BaseSimObject target)
