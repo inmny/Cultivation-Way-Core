@@ -7,6 +7,22 @@
 |[文档](https://github.com/inmny/Cultivation-Way-Core/wiki/Documentation)|[Documentation](https://github.com/inmny/Cultivation-Way-Core/)|	
 
 ## TODO
+·人物界面美化，以及更多信息添加
 
+·手动灵气释放
+
+·天榜
+
+·体质
+
+·中文名
+
+·附属加载
+
+·妖族
+
+·船只贴图
+
+·法术获取机制调整
 ## Attention
 ·人物状态效果互相叠加导致无限递归bug
