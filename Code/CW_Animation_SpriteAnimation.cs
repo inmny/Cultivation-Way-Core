@@ -167,7 +167,7 @@ namespace Cultivation_Way.Animation
                 float next_x = gameObject.transform.position.x + delta_x;
                 float next_y = gameObject.transform.position.y + delta_y;
                 //WorldBoxConsole.Console.print(string.Format("delta x:{0},y:{1}", delta_x, delta_y));
-                if(setting.loop_limit_type==AnimationLoopLimitType.TRACE_LIMIT) trace_length += Mathf.Sqrt(delta_x * delta_x + delta_y * delta_y);
+                if(setting.loop_limit_type==AnimationLoopLimitType.TRACE_LIMIT || setting.loop_limit_type == AnimationLoopLimitType.DST_LIMIT) trace_length += Mathf.Sqrt(delta_x * delta_x + delta_y * delta_y);
 
                 // 指向终点
                 if (setting.always_point_to_dst)
@@ -195,7 +195,7 @@ namespace Cultivation_Way.Animation
                     }
                 case AnimationLoopLimitType.DST_LIMIT:
                     {
-                        if (Toolbox.Dist(dst_vec.x,dst_vec.y,gameObject.transform.position.x,gameObject.transform.position.y) < Others.CW_Constants.anim_dst_error) end = true;
+                        if (Toolbox.Dist(dst_vec.x,dst_vec.y,gameObject.transform.position.x,gameObject.transform.position.y) < Others.CW_Constants.anim_dst_error || trace_length >= Others.CW_Constants.max_anim_trace_length) end = true;
                         break;
                     }
                 case AnimationLoopLimitType.TRACE_LIMIT:

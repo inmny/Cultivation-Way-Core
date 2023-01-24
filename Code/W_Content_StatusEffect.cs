@@ -13,6 +13,9 @@ namespace Cultivation_Way.Content
         {
             add_gold_shied_status_effect();
             add_water_shied_status_effect();
+            add_ice_bound_status_effect();
+            add_vine_bound_status_effect();
+            add_landicate_status_effect();
             add_burning_status_effect();
             add_curse_status_effect();
             add_corrode_status_effect();
@@ -149,12 +152,61 @@ namespace Cultivation_Way.Content
         // 灼伤
         private static void add_burning_status_effect()
         {
-            CW_BaseStats base_bonus_stats = new CW_BaseStats(); //base_bonus_stats.base_stats.armor = 30;
             CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
                 id: "status_burning",
                 anim_id: null,//"burning_anim",
-                bonus_stats: base_bonus_stats,
+                bonus_stats: null,
                 effect_time: 60f
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
+        // 石化
+        private static void add_landicate_status_effect()
+        {
+            CW_BaseStats bound_stats = new CW_BaseStats();
+            bound_stats.base_stats.knockbackReduction = 100f;
+            bound_stats.base_stats.speed = -100000f;
+            bound_stats.base_stats.attackSpeed = -100000f;
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_landificate",
+                anim_id: null,
+                bonus_stats: bound_stats,
+                effect_time: 6f,
+                action_on_get: landificate_bound_on_get,
+                tags: new List<CW_StatusEffect_Tag> { CW_StatusEffect_Tag.BOUND }
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
+        // 藤缚
+        private static void add_vine_bound_status_effect()
+        {
+            CW_BaseStats bound_stats = new CW_BaseStats();
+            bound_stats.base_stats.knockbackReduction = 100f;
+            bound_stats.base_stats.speed = -100000f;
+            bound_stats.base_stats.attackSpeed = -100000f;
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_vine_bound",
+                anim_id: "vine_bound_anim",
+                bonus_stats: bound_stats,
+                effect_time: 6f,
+                tags: new List<CW_StatusEffect_Tag> { CW_StatusEffect_Tag.BOUND }
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
+        // 冰封
+        private static void add_ice_bound_status_effect()
+        {
+            CW_BaseStats bound_stats = new CW_BaseStats();
+            bound_stats.base_stats.knockbackReduction = 100f;
+            bound_stats.base_stats.speed = -100000f;
+            bound_stats.base_stats.attackSpeed = -100000f;
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_ice_bound",
+                anim_id: null,//"burning_anim",
+                bonus_stats: bound_stats,
+                effect_time: 6f,
+                action_on_get: ice_bound_on_get,
+                tags: new List<CW_StatusEffect_Tag> { CW_StatusEffect_Tag.BOUND}
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
@@ -216,6 +268,18 @@ namespace Cultivation_Way.Content
         {
             if (target.objectType != MapObjectType.Actor) return;
             ((CW_Actor)target).add_status_effect("status_burning");
+        }
+        // TODO: 对建筑的支持
+        private static void ice_bound_on_get(CW_StatusEffectData status_effect, BaseSimObject _obejct)
+        {
+            if(_obejct == null || _obejct.objectType != MapObjectType.Actor) return;
+            CW_EffectManager.instance.spawn_anim("ice_bound_anim_" + Toolbox.randomInt(0, 5), _obejct.currentPosition, _obejct.currentPosition, _obejct, _obejct, ((CW_Actor)_obejct).cw_cur_stats.base_stats.scale);
+        }
+        // TODO: 对建筑的支持
+        private static void landificate_bound_on_get(CW_StatusEffectData status_effect, BaseSimObject _obejct)
+        {
+            if (_obejct == null || _obejct.objectType != MapObjectType.Actor) return;
+            ((CW_Actor)_obejct).start_color_effect("grey", status_effect.status_asset.effect_time);
         }
     }
 }

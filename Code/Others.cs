@@ -8,9 +8,10 @@ namespace Cultivation_Way.Others
     {
         public const string mod_name = "修真之路核心";
         public const string mod_id = "inmny.cw_core";
-        public const float anim_dst_error = 0.2f;
+        public const float anim_dst_error = 0.5f;
         public const int save_version = 1;
         public const int base_element_types = 5;
+        public const float max_anim_trace_length = 1000f;
         public const float default_anim_trace_grad = 2f;
         public const string default_anim_layer_name = "EffectsTop";
         public const bool is_debugging = true;

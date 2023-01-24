@@ -40,6 +40,10 @@ namespace Cultivation_Way.Content
             add_wind_polo_spell();
             add_lightning_polo_spell();
 
+            add_ice_bound_spell();
+            add_landificate_spell();
+            add_vine_bound_spell();
+
             add_default_lightning_spell();
             add_positive_quintuple_lightning_spell();
             add_negative_quintuple_lightning_spell();
@@ -54,10 +58,92 @@ namespace Cultivation_Way.Content
             load_other_anims();
         }
 
+        
+
         private static void load_other_anims()
         {
             CW_AnimationSetting anim_setting = new CW_AnimationSetting();
             CW_EffectManager.instance.load_as_controller("explosion_anim", "effects/explosion/", controller_setting: anim_setting, base_scale: 1f);
+        }
+        private static void add_vine_bound_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
+            anim_setting.loop_time_limit = 12;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.anim_froze_frame_idx = 4;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.set_trace(AnimationTraceType.ATTACH);
+
+            CW_EffectManager.instance.load_as_controller("vine_bound_anim", "effects/vine_bound/", controller_setting: anim_setting, base_scale: 1f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "vine_bound", anim_id: "vine_bound",
+                new CW_Element(new int[] { 0, 0, 100, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.06f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.CUSTOM,
+                damage_action: null,
+                anim_action: null,
+                spell_action: CW_SpellAction_Spell.default_add_status,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.NEGATIVE_STATUS);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+
+        private static void add_landificate_spell()
+        {
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "landificate", anim_id: "landificate",
+                new CW_Element(new int[] { 0, 0, 0, 0, 100 }),
+                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.CUSTOM,
+                damage_action: null,
+                anim_action: null,
+                spell_action: CW_SpellAction_Spell.default_add_status,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.NEGATIVE_STATUS);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+
+        private static void add_ice_bound_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
+            anim_setting.loop_time_limit = 6f;
+            anim_setting.frame_interval = 0.1f;
+            anim_setting.set_trace(AnimationTraceType.ATTACH);
+            for(int i=0;i<5; i++)
+            {
+                CW_EffectManager.instance.load_as_controller("ice_bound_anim_"+i, "effects/ice_bound_"+i+"/", controller_setting: anim_setting, base_scale: 1f);
+            }
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "ice_bound", anim_id: "ice_bound",
+                new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.CUSTOM,
+                damage_action: null,
+                anim_action: null,
+                spell_action: CW_SpellAction_Spell.default_add_status,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.NEGATIVE_STATUS);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
         }
         // 风丸
         private static void add_wind_polo_spell()
@@ -1026,7 +1112,7 @@ namespace Cultivation_Way.Content
                 }
             }
         }
-
+        
         private static void gold_blade_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             if (cur_frame_idx > 2)
@@ -1186,6 +1272,16 @@ namespace Cultivation_Way.Content
             {
                 Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
             }
+        }
+        private static void __bound_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            if(anim.dst_object == null || anim.dst_object.objectType!=MapObjectType.Actor) return;
+            int count = 0;
+            foreach(CW_StatusEffectData status_effect in ((CW_Actor)anim.dst_object).status_effects.Values)
+            {
+                if (status_effect.status_asset.has_tag(CW_StatusEffect_Tag.BOUND)) count++;
+            }
+            if (count <= 1) ((CW_Actor)anim.dst_object).can_act = true;
         }
         private static void bushido_base_damage_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {

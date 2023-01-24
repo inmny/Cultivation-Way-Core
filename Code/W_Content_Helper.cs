@@ -11,6 +11,7 @@ namespace Cultivation_Way.Content
     {
         private static string[] actor_prefab_paths = new string[] { "actors/p_unit", "actors/p_dragon", "actors/p_tornado", "actors/p_ufo", "actors/p_boat", "actors/p_boulder", "actors/p_godFinger", "actors/p_zombie_dragon", "actors/p_crabzilla", "actors/p_santa" };
         private static Dictionary<string, GameObject> actor_prefabs = new Dictionary<string, GameObject>();
+        private static Dictionary<string, Material> color_materials = new Dictionary<string, Material>();
         private static GameObject building_prefab;
         internal static Transform transformUnits;
         internal static Transform transformCreatures;
@@ -23,6 +24,7 @@ namespace Cultivation_Way.Content
         {
             get_actor_prefabs();
             get_building_prefabs();
+            add_color_materials();
             transformUnits = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "transformUnits") as Transform;
             transformCreatures = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "transformCreatures") as Transform;
             transformBuildings = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "transformBuildings") as Transform;
@@ -31,6 +33,30 @@ namespace Cultivation_Way.Content
             islands_calculator = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "islandsCalculator") as IslandsCalculator;
             list_systems = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "list_systems") as List<SpriteGroupSystem<GroupSpriteObject>>;
                 
+        }
+
+        private static void add_color_materials()
+        {
+            Material mat = new Material(LibraryMaterials.instance.matDamaged.shader);
+            mat.CopyPropertiesFromMaterial(LibraryMaterials.instance.matDamaged);
+            color_materials.Add("red", mat);
+
+            mat = new Material(LibraryMaterials.instance.matHighLighted.shader);
+            mat.CopyPropertiesFromMaterial(LibraryMaterials.instance.matHighLighted);
+            color_materials.Add("white", mat);
+
+            mat = new Material(LibraryMaterials.instance.matHighLighted.shader);
+            mat.CopyPropertiesFromMaterial(LibraryMaterials.instance.matHighLighted);
+            mat.color = new Color(0.2617f, 0.2617f, 0.2617f, 1f);
+            color_materials.Add("grey", mat);
+        }
+
+        public static Material get_color_material(string id)
+        {
+            Material ret;
+            if (color_materials.TryGetValue(id, out ret)) return ret;
+            Debug.LogError(string.Format("No found Color Material '{0}'", id));
+            return null;
         }
         internal static CW_ActorData get_load_cw_data(ActorData origin_data)
         {

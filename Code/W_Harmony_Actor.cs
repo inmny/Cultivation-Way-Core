@@ -135,7 +135,6 @@ namespace Cultivation_Way.Content.Harmony
             __baby_growup(cw_actor);
             return false;
         }
-
         private static void __baby_growup(CW_Actor cw_actor)
         {
             CW_Actor new_cw_actor = (CW_Actor)MapBox.instance.createNewUnit(cw_actor.stats.growIntoID, cw_actor.currentTile, null, 0f, null);
@@ -292,7 +291,7 @@ namespace Cultivation_Way.Content.Harmony
             CW_Actor cw_actor = (CW_Actor)actor;
             
             CW_Actor.set_statsDirty(actor, false);
-
+            
             if (!cw_actor.fast_data.alive) return;
             // 设定默认皮肤集合
             if (cw_actor.stats.useSkinColors && cw_actor.fast_data.skin_set == -1 && cw_actor.stats.color_sets != null) cw_actor.setSkinSet("default");
@@ -358,7 +357,8 @@ namespace Cultivation_Way.Content.Harmony
             {
                 foreach(CW_StatusEffectData status_effect in cw_status_dict.Values)
                 {
-                    cw_actor.cw_cur_stats.addStats(status_effect.bonus_stats);
+                    if(status_effect.bonus_stats!=null) cw_actor.cw_cur_stats.addStats(status_effect.bonus_stats);
+                    if (cw_actor.can_act && status_effect.status_asset.has_tag(CW_StatusEffect_Tag.BOUND)) cw_actor.can_act = false;
                 }
             }
             // 添加特质的属性影响

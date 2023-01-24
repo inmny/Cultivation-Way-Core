@@ -542,7 +542,7 @@ namespace Cultivation_Way
             this.wakan_regen = this.wakan_regen<0?0: this.wakan_regen;
 
             this.base_stats.damage = this.base_stats.damage < 0 ? 0 : this.base_stats.damage;
-            this.base_stats.attackSpeed = this.base_stats.attackSpeed<1 ? 1 : this.base_stats.attackSpeed;
+            this.base_stats.attackSpeed = this.base_stats.attackSpeed<0 ? 0 : this.base_stats.attackSpeed;
             this.base_stats.speed = this.base_stats.speed < 0 ? 0 : this.base_stats.speed;
             this.base_stats.health = this.base_stats.health<0 ? 0 : this.base_stats.health;
             this.base_stats.armor = this.base_stats.armor < 0 ? 0 : this.base_stats.armor;

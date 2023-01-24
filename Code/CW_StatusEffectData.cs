@@ -42,7 +42,10 @@ namespace Cultivation_Way
         {
             left_time -= elapsed;
             finished = left_time <= 0;
-            if (finished && anim != null) anim.force_stop(true); 
+            if (finished)
+            {
+                if (anim != null) anim.force_stop(true);
+            }
         }
         public void force_finish()
         {

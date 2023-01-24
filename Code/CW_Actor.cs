@@ -21,6 +21,7 @@ namespace Cultivation_Way
         public Dictionary<string, CW_StatusEffectData> status_effects = null;
         public List<string> cur_spells = null;
         internal WorldTimer fast_shake_timer = null;
+        public bool can_act = true;
         private static List<string> _status_effects_to_remove = new List<string>();
         /// <summary>
         /// 仅提供高效访问，待权限开放后删除
@@ -57,6 +58,8 @@ namespace Cultivation_Way
         public static Action<Actor, List<ActorTrait>> set_s_special_effect_traits = CW_ReflectionHelper.create_setter<Actor, List<ActorTrait>>("s_special_effect_traits");
         public static Action<Actor, BaseSimObject> set_attackedBy = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("attackedBy");
         public static Action<Actor, BaseSimObject> set_attackTarget = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("attackTarget");
+        public static Action<Actor, float> set_colorEffect = CW_ReflectionHelper.create_setter<Actor, float>("colorEffect");
+        public static Action<Actor, Material> set_colorMaterial = CW_ReflectionHelper.create_setter<Actor, Material>("colorMaterial");
         #endregion
         #region Func
         public static Action<Actor> func_updateTargetScale = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("updateTargetScale");
@@ -68,8 +71,17 @@ namespace Cultivation_Way
         public static Action<Actor, WorldTile, float> func_spawnOn = (Action<Actor, WorldTile, float>)CW_ReflectionHelper.get_method<Actor>("spawnOn");
         public static Action<Actor> func_create = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("create");
         internal static Action<Actor, float, bool, AttackType, BaseSimObject, bool> func_getHit = (Action<Actor, float, bool, AttackType, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("getHit");
-
+        public static Action<Actor, float> func_updateColorEffect = (Action<Actor, float>)CW_ReflectionHelper.get_method<Actor>("updateColorEffect");
         #endregion
+        public void start_color_effect(string type, float time)
+        {
+            if (!this.stats.effectDamage) return;
+            Material material = Content.W_Content_Helper.get_color_material(type);
+            if (material == null) return;
+            set_colorEffect(this, time);
+            set_colorMaterial(this, material);
+            func_updateColorEffect(this, 0);
+        }
         public bool has_cultisys(string cultisys_id)
         {
             return (this.cw_data.cultisys & CW_Library_Manager.instance.cultisys.get(cultisys_id)._tag) > 0;
@@ -79,6 +91,7 @@ namespace Cultivation_Way
             if (status_effects == null || !status_effects.ContainsKey(status_effect_id)) return;
             CW_StatusEffectData status_to_remove = status_effects[status_effect_id];
             status_effects.Remove(status_effect_id);
+            if (status_to_remove.status_asset.action_on_end != null) status_to_remove.status_asset.action_on_end(status_to_remove, this);
             status_to_remove.force_finish();
             this.setStatsDirty();
         }
@@ -106,7 +119,11 @@ namespace Cultivation_Way
             {
                 status_effect.update(elapsed);
                 if(status_effect.status_asset.action_on_update!=null) status_effect.status_asset.action_on_update(status_effect, this);
-                if (status_effect.finished) _status_effects_to_remove.Add(status_effect.status_asset.id);
+                if (status_effect.finished)
+                {
+                    _status_effects_to_remove.Add(status_effect.status_asset.id);
+                    if (status_effect.status_asset.action_on_end != null) status_effect.status_asset.action_on_end(status_effect, this);
+                }
             }
             if (_status_effects_to_remove.Count > 0)
             {
@@ -117,7 +134,10 @@ namespace Cultivation_Way
                 if (status_effects.Count == 0) status_effects = null;
                 setStatsDirty();
             }
-            
+            if (!this.can_act)
+            {
+                this.stopMovement();
+            }
         }
         internal bool has_cultisys(uint cultisys_tag)
         {
