@@ -40,6 +40,9 @@ namespace Cultivation_Way.Content
             add_wind_polo_spell();
             add_lightning_polo_spell();
 
+            add_wood_thorn_spell();
+            add_ground_thorn_spell();
+
             add_ice_bound_spell();
             add_landificate_spell();
             add_vine_bound_spell();
@@ -58,13 +61,71 @@ namespace Cultivation_Way.Content
             load_other_anims();
         }
 
-        
 
         private static void load_other_anims()
         {
             CW_AnimationSetting anim_setting = new CW_AnimationSetting();
             CW_EffectManager.instance.load_as_controller("explosion_anim", "effects/explosion/", controller_setting: anim_setting, base_scale: 1f);
         }
+        // 地刺
+        private static void add_ground_thorn_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.NUMBER_LIMIT;
+            anim_setting.loop_nr_limit = 1;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.layer_name = "Objects";
+            anim_setting.frame_action = ground_thorn_frame_action;
+            anim_setting.set_trace(AnimationTraceType.NONE);
+
+            CW_EffectManager.instance.load_as_controller("ground_thorn_anim", "effects/ground_thorn/", controller_setting: anim_setting, base_scale: 0.3f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "ground_thorn", anim_id: "ground_thorn_anim",
+                new CW_Element(new int[] { 0, 0, 0, 0, 100 }),
+                rarity: 1, free_val: 1, cost: 0.06f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.TILE,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.ON_TARGET,
+                damage_action: CW_SpellAction_Damage.defualt_damage,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 木刺
+        private static void add_wood_thorn_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
+            anim_setting.loop_time_limit = 12;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.anim_froze_frame_idx = 6;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.layer_name = "Objects";
+            anim_setting.frame_action = wood_thorn_frame_action;
+            anim_setting.set_trace(AnimationTraceType.NONE);
+
+            CW_EffectManager.instance.load_as_controller("wood_thorn_anim", "effects/wood_thorn/", controller_setting: anim_setting, base_scale: 0.3f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "wood_thorn", anim_id: "wood_thorn_anim",
+                new CW_Element(new int[] { 0, 0, 100, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.06f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.TILE,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.ON_TARGET,
+                damage_action: CW_SpellAction_Damage.defualt_damage,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 藤缚
         private static void add_vine_bound_spell()
         {
             CW_AnimationSetting anim_setting = new CW_AnimationSetting();
@@ -94,7 +155,7 @@ namespace Cultivation_Way.Content
             spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
-
+        // 石化
         private static void add_landificate_spell()
         {
             CW_Asset_Spell spell = new CW_Asset_Spell(
@@ -115,18 +176,9 @@ namespace Cultivation_Way.Content
             spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
-
+        // 冰封
         private static void add_ice_bound_spell()
         {
-            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
-            anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
-            anim_setting.loop_time_limit = 6f;
-            anim_setting.frame_interval = 0.1f;
-            anim_setting.set_trace(AnimationTraceType.ATTACH);
-            for(int i=0;i<5; i++)
-            {
-                CW_EffectManager.instance.load_as_controller("ice_bound_anim_"+i, "effects/ice_bound_"+i+"/", controller_setting: anim_setting, base_scale: 1f);
-            }
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "ice_bound", anim_id: "ice_bound",
                 new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
@@ -1112,7 +1164,54 @@ namespace Cultivation_Way.Content
                 }
             }
         }
-        
+        private static void wood_thorn_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            if (cur_frame_idx > 2)
+            {
+                if (anim.src_object == null || !anim.src_object.base_data.alive) return;
+                int x = (int)anim.gameObject.transform.position.x;
+                int y = (int)anim.gameObject.transform.position.y;
+                WorldTile tile = MapBox.instance.GetTile(x, y);
+                if (tile != null)
+                {
+                    List<BaseSimObject> targets = Utils.CW_SpellHelper.find_enemies_in_square(tile, anim.src_object.kingdom, 3);
+                    foreach (BaseSimObject actor in targets)
+                    {
+                        Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell * 0.1f);
+                    }
+
+                }
+                else
+                {
+                    anim.force_stop(false);
+                }
+            }
+        }
+        private static void ground_thorn_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            if (cur_frame_idx == 3)
+            {
+                if (anim.src_object == null || !anim.src_object.base_data.alive) return;
+                int x = (int)anim.gameObject.transform.position.x;
+                int y = (int)anim.gameObject.transform.position.y;
+                WorldTile tile = MapBox.instance.GetTile(x, y);
+                if (tile != null)
+                {
+                    List<BaseSimObject> targets = Utils.CW_SpellHelper.find_enemies_in_square(tile, anim.src_object.kingdom, 3);
+                    float force_z = 1.0f;
+                    foreach (BaseSimObject actor in targets)
+                    {
+                        Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
+                        if (actor.objectType == MapObjectType.Actor) ((CW_Actor)actor).addForce(0, 0, force_z);
+                    }
+
+                }
+                else
+                {
+                    anim.force_stop(false);
+                }
+            }
+        }
         private static void gold_blade_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             if (cur_frame_idx > 2)

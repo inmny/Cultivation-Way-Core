@@ -25,14 +25,22 @@ namespace Cultivation_Way.Content
             add_rosefinch_feather_status_effect();
             add_gdragon_scale_status_effect();
             add_basalt_armor_status_effect();
-            //load_status_effects_anims();
+            load_status_effects_anims();
         }
 
         
 
         private static void load_status_effects_anims()
         {
-            throw new NotImplementedException();
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
+            anim_setting.loop_time_limit = 6f;
+            anim_setting.frame_interval = 0.1f;
+            anim_setting.set_trace(AnimationTraceType.ATTACH);
+            for (int i = 0; i < 5; i++)
+            {
+                CW_EffectManager.instance.load_as_controller("ice_bound_anim_" + i, "effects/ice_bound_" + i + "/", controller_setting: anim_setting, base_scale: 1f);
+            }
         }
         // 自定义效果
         private static void add_status_effect_for_custom()
