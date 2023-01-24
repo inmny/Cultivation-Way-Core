@@ -64,6 +64,11 @@ namespace Cultivation_Way.Content
 		public TraitButton prefabTrait;
 		public EquipmentButton prefabEquipment;
         public CW_TipButton prefab_tip_button;
+        public CW_TipButton button_element;
+        public CW_TipButton button_cultibook;
+        public CW_TipButton button_cultisys;
+        public CW_TipButton button_special_body;
+        public Transform cw_tip_parent;
 		public Transform traitsParent;
 		public Transform equipmentParent;
 		public StatBar health;
@@ -79,6 +84,17 @@ namespace Cultivation_Way.Content
 		public CityIcon warfare;
 		public CityIcon stewardship;
 		public CityIcon intelligence;
+
+        public CityIcon soul;
+        public CityIcon spell_armor;
+        public CityIcon crit_damage_mod;
+        public CityIcon anti_injuries;
+        public CityIcon knockback_reduction;
+        public CityIcon health_regen;
+        public CityIcon shied_regen;
+        public CityIcon wakan_regen;
+        public CityIcon culti_velo_co;
+
 		public NameInput nameInput;
 		public Image icon;
 		public UnitAvatarLoader avatarLoader;
@@ -115,7 +131,7 @@ namespace Cultivation_Way.Content
 
             
 			W_Content_WindowCreatureInfo cw_wci = origin_inspect_unit_gameobject.AddComponent<W_Content_WindowCreatureInfo>();
-            WorldBoxConsole.Console.print(origin_inspect_unit_gameobject.GetComponent<W_Content_WindowCreatureInfo>() != null);
+            //WorldBoxConsole.Console.print(origin_inspect_unit_gameobject.GetComponent<W_Content_WindowCreatureInfo>() != null);
 			// 拷贝数据
 			cw_wci.armor = origin_wci.armor;
 			cw_wci.attackSpeed = origin_wci.attackSpeed;
@@ -153,13 +169,23 @@ namespace Cultivation_Way.Content
 			cw_wci.wakan = null;
             cw_wci.warfare = origin_wci.warfare;
             Destroy(origin_wci);
-            WorldBoxConsole.Console.print(origin_inspect_unit_gameobject.GetComponent<W_Content_WindowCreatureInfo>() != null);
+            //WorldBoxConsole.Console.print(origin_inspect_unit_gameobject.GetComponent<W_Content_WindowCreatureInfo>() != null);
+            // 设置滑动后上方可隐藏
+            Transform view_port = origin_inspect_unit_gameobject.transform.Find("Background/Scroll View/Viewport").transform;
+            view_port.GetComponent<Mask>().enabled = true;
+            view_port.GetComponent<Image>().enabled = true;
             // 默认界面调整
             Transform content_transform = origin_inspect_unit_gameobject.transform.Find("Background/Scroll View/Viewport/Content");
             Transform stat_icons_transform = content_transform.Find("StatIcons");
             Transform inner_bg_transform = content_transform.Find("InnerBG");
-            stat_icons_transform.localPosition = new Vector3(129.22f, -105.85f);
-            inner_bg_transform.localPosition = new Vector3(129.22f, -175.05f);
+
+            content_transform.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 363.9f);
+
+            content_transform.Find("MoodBG").localPosition = new Vector3(40.80f, -13.75f);
+            stat_icons_transform.localPosition = new Vector3(129.22f, -120.35f);
+            stat_icons_transform.GetComponent<GridLayoutGroup>().constraintCount = 2;
+
+            
             RectTransform inner_bg_rect_transform = inner_bg_transform.GetComponent<RectTransform>();
             inner_bg_rect_transform.anchorMin = new Vector2(1, 0.95f);
             inner_bg_rect_transform.offsetMin = new Vector2(-224.84f, -220.64f);
@@ -186,8 +212,7 @@ namespace Cultivation_Way.Content
             tmp_button =button_edit_traits.GetComponent<Button>();
             tmp_button.onClick.AddListener(cw_wci.clickTraitEditor);
             // 设置新stat bar
-            GameObject ShiedBar = Instantiate<GameObject>(content_transform.Find("HealthBar").gameObject);
-            ShiedBar.transform.SetParent(content_transform);
+            GameObject ShiedBar = Instantiate<GameObject>(content_transform.Find("HealthBar").gameObject, content_transform);
             cw_wci.shied = ShiedBar.GetComponent<StatBar>();
             cw_wci.shied.transform.localPosition = new Vector3(79.55f, -85.30f);
             cw_wci.shied.transform.localScale = Vector3.one;
@@ -197,8 +222,7 @@ namespace Cultivation_Way.Content
             ShiedBar.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconShied");
             ShiedBar.GetComponent<TipButton>().textOnClick = "shied";
 
-            GameObject WakanBar = Instantiate<GameObject>(content_transform.Find("HealthBar").gameObject);
-            WakanBar.transform.SetParent(content_transform);
+            GameObject WakanBar = Instantiate<GameObject>(content_transform.Find("HealthBar").gameObject, content_transform);
             cw_wci.wakan = WakanBar.GetComponent<StatBar>();
             cw_wci.wakan.transform.localPosition = new Vector3(178.89f, -85.30f);
             cw_wci.wakan.transform.localScale = Vector3.one;
@@ -208,13 +232,106 @@ namespace Cultivation_Way.Content
             WakanBar.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconWakan");
             WakanBar.transform.Find("Icon").GetComponent<Image>().transform.localScale = new Vector3(0.35f, 0.35f);
             WakanBar.GetComponent<TipButton>().textOnClick = "wakan";
+            // 设置额外的属性显示
+            Transform stat_icons = content_transform.Find("StatIcons");
+            GameObject new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
+            new_stats.name = "soul";
+            cw_wci.soul = new_stats.GetComponent<CityIcon>();
+            cw_wci.soul.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconSoul");
+            new_stats.GetComponent<TipButton>().textOnClick = "soul";
 
+            new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
+            new_stats.name = "spell_armor";
+            cw_wci.spell_armor = new_stats.GetComponent<CityIcon>();
+            cw_wci.spell_armor.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconSpell_Armor");
+            new_stats.GetComponent<TipButton>().textOnClick = "spell_armor";
+
+            new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
+            new_stats.name = "crit_damage_mod";
+            cw_wci.crit_damage_mod = new_stats.GetComponent<CityIcon>();
+            cw_wci.crit_damage_mod.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconBloodlust");
+            new_stats.GetComponent<TipButton>().textOnClick = "crit_damage_mod";
+
+            new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
+            new_stats.name = "anti_injury";
+            cw_wci.anti_injuries = new_stats.GetComponent<CityIcon>();
+            cw_wci.anti_injuries.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconSoul");
+            new_stats.GetComponent<TipButton>().textOnClick = "anti_injury";
+
+            new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
+            new_stats.name = "knockback_reduction";
+            cw_wci.knockback_reduction = new_stats.GetComponent<CityIcon>();
+            cw_wci.knockback_reduction.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconSoul");
+            new_stats.GetComponent<TipButton>().textOnClick = "knockback_reduction";
+
+            new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
+            new_stats.name = "health_regen";
+            cw_wci.health_regen = new_stats.GetComponent<CityIcon>();
+            cw_wci.health_regen.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconRegeneration");
+            new_stats.GetComponent<TipButton>().textOnClick = "health_regen";
+
+            new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
+            new_stats.name = "shied_regen";
+            cw_wci.shied_regen = new_stats.GetComponent<CityIcon>();
+            cw_wci.shied_regen.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/tech/icon_tech_defense_strategy");
+            new_stats.GetComponent<TipButton>().textOnClick = "shied_regen";
+
+            new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
+            new_stats.name = "wakan_regen";
+            cw_wci.wakan_regen = new_stats.GetComponent<CityIcon>();
+            cw_wci.wakan_regen.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconWakan");
+            new_stats.GetComponent<TipButton>().textOnClick = "wakan_regen";
+
+            new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
+            new_stats.name = "culti_velo_co";
+            cw_wci.culti_velo_co = new_stats.GetComponent<CityIcon>();
+            cw_wci.culti_velo_co.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconCultiSys");
+            new_stats.GetComponent<TipButton>().textOnClick = "culti_velo_co";
+            new_stats.GetComponent<TipButton>().textOnClickDescription = "tip_culti_velo_co";
+            // 把周围的只因隐藏
+            origin_inspect_unit_gameobject.transform.Find("HoveringIconBgManager").gameObject.SetActive(false);
+            
             // 更多信息
             GameObject TipButtonPrefab = Instantiate<GameObject>(cw_wci.prefabTrait.gameObject, cw_wci.prefabTrait.transform.parent);
-            Destroy(TipButtonPrefab.transform.GetComponent<TraitButton>());
-            cw_wci.prefab_tip_button = TipButtonPrefab.AddComponent<CW_TipButton>();
-            cw_wci.prefab_tip_button.transform.localScale = new Vector3(0.80f, 0.80f);
 
+            Destroy(TipButtonPrefab.transform.GetComponent<TraitButton>());
+            Destroy(TipButtonPrefab.transform.GetComponent<ScrollableButton>());
+
+            cw_wci.prefab_tip_button = TipButtonPrefab.AddComponent<CW_TipButton>();
+            cw_wci.prefab_tip_button.transform.localScale = new Vector3(3.5f, 3.5f);
+
+            GameObject more_info = new GameObject("CW_More_Info");
+            GameObject more_info_bg = new GameObject("CW_More_Info_BG");
+            GameObject more_info_field = new GameObject("CW_More_Info_Field");
+
+            more_info.transform.SetParent(origin_inspect_unit_gameobject.transform);
+            more_info_bg.transform.SetParent(more_info.transform);
+            more_info_field.transform.SetParent(more_info.transform);
+            cw_wci.cw_tip_parent = more_info.transform;
+
+            Image bg_image = more_info_bg.AddComponent<Image>();
+            bg_image.sprite = Resources.Load<Sprite>("ui/cw_window/windowNamePlate");
+
+            Image field_image = more_info_field.AddComponent<Image>();
+            field_image.sprite = Resources.Load<Sprite>("ui/cw_window/windowInnerSliced");
+
+            more_info.transform.localPosition = new Vector3(-128, 40, 0);
+            more_info.transform.localScale = new Vector3(0.23f, 0.23f, 0.33f);
+
+            more_info_bg.transform.localPosition = new Vector3(0, -190, 0);
+            more_info_bg.transform.localScale = new Vector3(6, 1.5f, 1);
+            more_info_bg.transform.eulerAngles = new Vector3(0, 0, 90);
+
+            more_info_field.transform.localPosition = new Vector3(0, -190, 0);
+            more_info_field.transform.localScale = new Vector3(5.6f, 1.15f, 1);
+            more_info_field.transform.eulerAngles = new Vector3(0, 0, 90);
+
+            cw_wci.button_element = Instantiate(cw_wci.prefab_tip_button, cw_wci.cw_tip_parent);
+            cw_wci.button_cultibook = Instantiate(cw_wci.prefab_tip_button, cw_wci.cw_tip_parent);
+            cw_wci.button_cultisys = Instantiate(cw_wci.prefab_tip_button, cw_wci.cw_tip_parent);
+            cw_wci.button_special_body = Instantiate(cw_wci.prefab_tip_button, cw_wci.cw_tip_parent);
+
+            inner_bg_transform.localPosition = new Vector3(129.22f, -209.05f);
             return origin_inspect_unit_gameobject;
 		}
 		private void Awake()
@@ -275,6 +392,15 @@ namespace Cultivation_Way.Content
             diplomacy.gameObject.SetActive(cw_actor.stats.inspect_stats);
             attackSpeed.gameObject.SetActive(cw_actor.stats.inspect_stats);
             crit.gameObject.SetActive(cw_actor.stats.inspect_stats);
+            soul.gameObject.SetActive(cw_actor.stats.inspect_stats);
+            spell_armor.gameObject.SetActive(cw_actor.stats.inspect_stats);
+            crit_damage_mod.gameObject.SetActive(cw_actor.stats.inspect_stats);
+            anti_injuries.gameObject.SetActive(cw_actor.stats.inspect_stats);
+            knockback_reduction.gameObject.SetActive(cw_actor.stats.inspect_stats);
+            health_regen.gameObject.SetActive(cw_actor.stats.inspect_stats);
+            shied_regen.gameObject.SetActive(cw_actor.stats.inspect_stats);
+            wakan_regen.gameObject.SetActive(cw_actor.stats.inspect_stats);
+            culti_velo_co.gameObject.SetActive(cw_actor.stats.inspect_stats);
 
             damage.setValue(cw_actor.cw_cur_stats.base_stats.damage);
             armor.setValue(cw_actor.cw_cur_stats.base_stats.armor);
@@ -285,6 +411,15 @@ namespace Cultivation_Way.Content
             showAttribute(stewardship, cw_actor.cw_cur_stats.base_stats.stewardship);
             showAttribute(intelligence, cw_actor.cw_cur_stats.base_stats.intelligence);
             showAttribute(warfare, cw_actor.cw_cur_stats.base_stats.warfare);
+            soul.setValue(cw_actor.cw_cur_stats.soul);
+            spell_armor.setValue(cw_actor.cw_cur_stats.spell_armor);
+            crit_damage_mod.setValue(cw_actor.cw_cur_stats.base_stats.damageCritMod, "%");
+            anti_injuries.setValue(cw_actor.cw_cur_stats.anti_injury, "%");
+            knockback_reduction.setValue(cw_actor.cw_cur_stats.base_stats.knockbackReduction, "%");
+            health_regen.setValue(cw_actor.cw_cur_stats.health_regen);
+            shied_regen.setValue(cw_actor.cw_cur_stats.shied_regen);
+            wakan_regen.setValue(cw_actor.cw_cur_stats.wakan_regen);
+            culti_velo_co.setValue(100f*cw_actor.cw_status.culti_velo*(1+cw_actor.cw_cur_stats.mod_cultivation/100),"%");
 
             Sprite sprite = (Sprite)Resources.Load("ui/Icons/" + cw_actor.stats.icon, typeof(Sprite));
             icon.sprite = sprite;
@@ -303,37 +438,16 @@ namespace Cultivation_Way.Content
 
             if (cw_actor.stats.inspect_children) showStat("creature_statistics_children", cw_actor.fast_data.children);
 
-            moodBG.gameObject.SetActive(value: false);
-            favoriteFoodBg.gameObject.SetActive(value: false);
-            favoriteFoodSprite.gameObject.SetActive(value: false);
-            if (cw_actor.stats.unit && !cw_actor.stats.baby)
-            {
-                string pValue = "??";
-                if (!string.IsNullOrEmpty(cw_actor.fast_data.favoriteFood))
-                {
-                    pValue = LocalizedTextManager.getText(cw_actor.fast_data.favoriteFood);
-                    favoriteFoodBg.gameObject.SetActive(value: true);
-                    favoriteFoodSprite.gameObject.SetActive(value: true);
-                    favoriteFoodSprite.sprite = AssetManager.resources.get(cw_actor.fast_data.favoriteFood).getSprite();
-                }
 
-                showStat("creature_statistics_favorite_food", pValue);
-            }
-
-            if (cw_actor.stats.unit)
+            if (cw_actor.stats.isBoat)
             {
-                moodBG.gameObject.SetActive(value: true);
-                showStat("creature_statistics_mood", LocalizedTextManager.getText("mood_" + cw_actor.fast_data.mood));
-                MoodAsset moodAsset = AssetManager.moods.get(cw_actor.fast_data.mood);
-                moodSprite.sprite = moodAsset.getSprite();
-                if (CW_Actor.get_s_personality(cw_actor) != null)
+                Boat component = cw_actor.GetComponent<Boat>();
+                showStat("passengers", ((HashSet<Actor>)Reflection.GetField(typeof(Boat), component, "unitsInside")).Count);
+                if ((bool)component.CallMethod("isState", BoatState.TransportDoLoading))
                 {
-                    showStat("creature_statistics_personality", LocalizedTextManager.getText("personality_" + CW_Actor.get_s_personality(cw_actor).id));
+                    showStat("status", LocalizedTextManager.getText("status_waiting_for_passengers"));
                 }
             }
-
-            text_description.text += "\n";
-            text_values.text += "\n";
             if (cw_actor.stats.inspect_home)
             {
                 showStat("creature_statistics_homeVillage", (cw_actor.city != null) ? CW_City.get_data(cw_actor.city).cityName : "??", (cw_actor.kingdom!=null && Reflection.GetField(typeof(Kingdom), cw_actor.kingdom, "kingdomColor")!=null)?((KingdomColor)Reflection.GetField(typeof(Kingdom), cw_actor.kingdom, "kingdomColor")).colorBorderInside32 : Toolbox.color_clear);
@@ -357,13 +471,35 @@ namespace Cultivation_Way.Content
                 buttonCultures.SetActive(value: false);
             }
 
-            if (cw_actor.stats.isBoat)
+            moodBG.gameObject.SetActive(value: false);
+            favoriteFoodBg.gameObject.SetActive(value: false);
+            favoriteFoodSprite.gameObject.SetActive(value: false);
+
+            text_description.text += "\n";
+            text_values.text += "\n";
+            if (cw_actor.stats.unit && !cw_actor.stats.baby)
             {
-                Boat component = cw_actor.GetComponent<Boat>();
-                showStat("passengers", ((HashSet<Actor>)Reflection.GetField(typeof(Boat), component, "unitsInside")).Count);
-                if ((bool)component.CallMethod("isState",BoatState.TransportDoLoading))
+                string pValue = "??";
+                if (!string.IsNullOrEmpty(cw_actor.fast_data.favoriteFood))
                 {
-                    showStat("status", LocalizedTextManager.getText("status_waiting_for_passengers"));
+                    pValue = LocalizedTextManager.getText(cw_actor.fast_data.favoriteFood);
+                    favoriteFoodBg.gameObject.SetActive(value: true);
+                    favoriteFoodSprite.gameObject.SetActive(value: true);
+                    favoriteFoodSprite.sprite = AssetManager.resources.get(cw_actor.fast_data.favoriteFood).getSprite();
+                }
+
+                showStat("creature_statistics_favorite_food", pValue);
+            }
+
+            if (cw_actor.stats.unit)
+            {
+                moodBG.gameObject.SetActive(value: true);
+                showStat("creature_statistics_mood", LocalizedTextManager.getText("mood_" + cw_actor.fast_data.mood));
+                MoodAsset moodAsset = AssetManager.moods.get(cw_actor.fast_data.mood);
+                moodSprite.sprite = moodAsset.getSprite();
+                if (CW_Actor.get_s_personality(cw_actor) != null)
+                {
+                    showStat("creature_statistics_personality", LocalizedTextManager.getText("personality_" + CW_Actor.get_s_personality(cw_actor).id));
                 }
             }
 
@@ -392,12 +528,10 @@ namespace Cultivation_Way.Content
             clearPrevButtons();
             loadTraits();
             loadEquipment();
-            load_cultisys();
-            load_cultibook();
-            load_special_body();
-            load_element();
-            load_spells();
+            load_cw_tip_buttons();
         }
+
+        
 
         private void showAttribute(CityIcon pText, int pValue)
         {
@@ -451,22 +585,18 @@ namespace Cultivation_Way.Content
                 }
             }
         }
-
-        private void loadTraits()
+        private void load_cw_tip_buttons()
         {
-            int base_num = 4; int num = 0;
-            int total_count = base_num + ((cw_actor.fast_data.traits == null) ? 0 : cw_actor.fast_data.traits.Count);
-
-            CW_TipButton button_element = Instantiate(prefab_tip_button, traitsParent);
+            int num = 0;
             string tmp_description = cw_actor.cw_data.element.__to_string();
-            for(int i = 0; i < Others.CW_Constants.base_element_types; i++)
+            for (int i = 0; i < Others.CW_Constants.base_element_types; i++)
             {
                 string replace_text = "$base_element_" + i + "$";
                 tmp_description = tmp_description.Replace(replace_text, LocalizedTextManager.getText(replace_text));
             }
             NCMS.Utils.Localization.Set("element_info", tmp_description);
             button_element.load(cw_actor.cw_data.element.comp_type(), "element_info", "iconElement", "normal");
-            set_position_on_traits(button_element.GetComponent<RectTransform>(), num++, total_count);
+            set_position_on_more_info_field(button_element.GetComponent<RectTransform>(), num++);
 
 
             if (cw_actor.cw_status.can_culti && !string.IsNullOrEmpty(cw_actor.cw_data.cultibook_id))
@@ -474,47 +604,63 @@ namespace Cultivation_Way.Content
                 CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id);
                 if (cultibook != null)
                 {
-                    CW_TipButton button_cultibook = Instantiate(prefab_tip_button, traitsParent);
+                    button_cultibook.gameObject.SetActive(true);
                     NCMS.Utils.Localization.Set("CW_cultibook_name", cultibook.name);
                     NCMS.Utils.Localization.Set("CW_cultibook_info", cultibook.get_info_without_name());
-                    button_cultibook.load("CW_cultibook_name", "CW_cultibook_info", (cw_actor.cw_data.cultisys & Others.CW_Constants.cultisys_immortol_tag) != 0 ? "iconCultiBook_immortal":"iconCultiBook_bushido", "normal");
-                    set_position_on_traits(button_cultibook.GetComponent<RectTransform>(), num++, total_count);
+                    button_cultibook.load("CW_cultibook_name", "CW_cultibook_info", (cw_actor.cw_data.cultisys & Others.CW_Constants.cultisys_immortol_tag) != 0 ? "iconCultiBook_immortal" : "iconCultiBook_bushido", "normal");
+                    set_position_on_more_info_field(button_cultibook.GetComponent<RectTransform>(), num++);
                 }
+            }
+            else
+            {
+                button_cultibook.gameObject.SetActive(false);
             }
 
             if (cw_actor.cw_data.cultisys != 0)
             {
-                CW_TipButton button_cultisys = Instantiate(prefab_tip_button, traitsParent);
+                button_cultisys.gameObject.SetActive(true);
                 string cultisys_info = CW_Library_Manager.instance.cultisys.parse_cultisys(cw_actor.cw_data);
                 StringBuilder string_builder = new StringBuilder();
-                for(int i = 0; i < cw_actor.cw_data.spells.Count; i++)
+                for (int i = 0; i < cw_actor.cw_data.spells.Count; i++)
                 {
                     string_builder.AppendLine(String.Format("法术[{0}]\t\t{1}", i, LocalizedTextManager.getText("spell_" + cw_actor.cw_data.spells[i])));
                 }
-                NCMS.Utils.Localization.Set("CW_cultisys_info", cultisys_info+"\n"+string_builder.ToString());
+                NCMS.Utils.Localization.Set("CW_cultisys_info", cultisys_info + "\n" + string_builder.ToString());
                 button_cultisys.load("cultisys", "CW_cultisys_info", "iconCultiSys", "normal");
-                button_cultisys.transform.localScale = new Vector3(0.65f, 0.80f);
-                
-                set_position_on_traits(button_cultisys.GetComponent<RectTransform>(), num++, total_count);
+                button_cultisys.transform.localScale = new Vector3(2.84f, 3.5f);
+
+                set_position_on_more_info_field(button_cultisys.GetComponent<RectTransform>(), num++);
+            }
+            else
+            {
+                button_cultisys.gameObject.SetActive(false);
             }
             if (!string.IsNullOrEmpty(cw_actor.cw_data.special_body_id))
             {
+                button_special_body.gameObject.SetActive(true);
                 CW_Asset_SpecialBody body = CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id);
                 if (body != null)
                 {
-                    CW_TipButton button_special_body = Instantiate(prefab_tip_button, traitsParent);
                     NCMS.Utils.Localization.Set("CW_special_body_name", body.name);
                     NCMS.Utils.Localization.Set("CW_special_body_info", body.get_info_without_name());
                     button_special_body.load("CW_special_body_name", "CW_special_body_info", "iconSpecialBody", "normal");
-                    set_position_on_traits(button_special_body.GetComponent<RectTransform>(), num++, total_count);
+                    set_position_on_more_info_field(button_special_body.GetComponent<RectTransform>(), num++);
                 }
             }
+            else
+            {
+                button_special_body.gameObject.SetActive(false);
+            }
+        }
+        private void loadTraits()
+        {
+            int num = 0;
             if (cw_actor.fast_data.traits != null)
             {
                 int count = cw_actor.fast_data.traits.Count;
                 for (int i = 0; i < count; i++)
                 {
-                    loadTraitButton(cw_actor.fast_data.traits[i], num, total_count);
+                    loadTraitButton(cw_actor.fast_data.traits[i], num, count);
                     num++;
                 }
             }
@@ -590,19 +736,9 @@ namespace Cultivation_Way.Content
             float y = -11f;
             component.anchoredPosition = new Vector2(x, y);
         }
-        private void set_position_on_traits(RectTransform component, int pIndex, int pTotal)
+        private void set_position_on_more_info_field(RectTransform component, int pIndex)
         {
-            float num = 10f;
-            float num2 = 136f - num * 1.5f;
-            float num3 = 22.4f * 0.7f;
-            if ((float)pTotal * num3 >= num2)
-            {
-                num3 = num2 / (float)pTotal;
-            }
-
-            float x = num + num3 * (float)pIndex;
-            float y = -11f;
-            component.anchoredPosition = new Vector2(x, y);
+            component.anchoredPosition = new Vector2(0, 20 - pIndex * 100);
         }
         private void loadTraitButton(string pID, int pIndex, int pTotal)
         {
@@ -651,11 +787,6 @@ namespace Cultivation_Way.Content
         {
             nameInput.inputField.DeactivateInputField();
         }
-        private void load_cultisys() { }
-        private void load_cultibook() { }
-        private void load_special_body() { }
-        private void load_element() { }
-        private void load_spells() { }
 
         public void clickChildren()
         {
