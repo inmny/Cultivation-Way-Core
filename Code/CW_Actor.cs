@@ -122,12 +122,12 @@ namespace Cultivation_Way
                 foreach (CW_StatusEffectData status_effect in this.status_effects.Values)
                 {
                     last_effect_id = status_effect.id;
-                    status_effect.update(elapsed);
-                    if (status_effect.status_asset.action_on_update != null) status_effect.status_asset.action_on_update(status_effect, this);
+                    status_effect.update(elapsed, this);
+                    
                     if (status_effect.finished)
                     {
                         _status_effects_to_remove.Add(status_effect.status_asset.id);
-                        if (status_effect.status_asset.action_on_end != null) status_effect.status_asset.action_on_end(status_effect, this);
+                        
                     }
                 }
             }catch(InvalidOperationException e)

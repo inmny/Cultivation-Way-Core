@@ -1562,6 +1562,7 @@ namespace Cultivation_Way.Content
         {
             if (anim.src_object == null) return;
             WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
+            if (center == null) return;
             CW_EffectManager.instance.spawn_anim("explosion_anim", center.posV, center.posV, null, null, 0.06f);
             List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 3);
             float force = 3f;
@@ -1577,6 +1578,7 @@ namespace Cultivation_Way.Content
         {
             if (anim.src_object == null) return;
             WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
+            if (center == null) return;
             List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 3);
             float dist = Toolbox.DistVec2Float(src_vec, dst_vec);
             float force_x = (dst_vec.x - src_vec.x) / dist * 0.5f;
@@ -1594,6 +1596,7 @@ namespace Cultivation_Way.Content
         {
             if (anim.src_object == null) return;
             WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
+            if (center == null) return;
             List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 3);
             float force_z = 0.8f;
             foreach (BaseSimObject actor in enemies)
@@ -1608,6 +1611,7 @@ namespace Cultivation_Way.Content
         {
             if (anim.src_object == null) return;
             WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
+            if (center == null) return;
             List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 3);
             foreach (BaseSimObject actor in enemies)
             {

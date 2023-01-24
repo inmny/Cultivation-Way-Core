@@ -13,6 +13,7 @@ namespace Cultivation_Way
         public float left_time;
         public bool finished;
         public float effect_val;
+        public float next_update_action_time;
         public BaseSimObject user;
         /// <summary>
         /// 属性加成，修改此项时请保证深拷贝
@@ -30,7 +31,7 @@ namespace Cultivation_Way
                 this.anim = CW_EffectManager.instance.spawn_anim(status_asset.anim_id, _object.currentPosition, _object.currentPosition, _object, _object, status_asset.anim_scale_co * (_object.objectType == MapObjectType.Actor ? ((CW_Actor)_object).cw_cur_stats.base_stats.scale : 1f));
                 if (this.anim == null || !this.anim.isOn) { finished = true; return; }
             }
-
+            this.next_update_action_time = status_asset.update_action_interval;
             this.bonus_stats = status_asset.bonus_stats;
             this.left_time = status_asset.effect_time;
             this.effect_val = status_asset.effect_val;
@@ -40,12 +41,19 @@ namespace Cultivation_Way
         {
             return !finished;
         }
-        public void update(float elapsed)
+        public void update(float elapsed, BaseSimObject _object)
         {
             left_time -= elapsed;
             finished = left_time <= 0;
+            next_update_action_time -= elapsed;
+            if (status_asset.action_on_update != null && next_update_action_time <=0 )
+            {
+                next_update_action_time = status_asset.update_action_interval;
+                status_asset.action_on_update(this, _object);
+            }
             if (finished)
             {
+                if (status_asset.action_on_end != null) status_asset.action_on_end(this, _object);
                 if (anim != null) anim.force_stop(true);
             }
         }

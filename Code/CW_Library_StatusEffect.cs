@@ -23,6 +23,7 @@ namespace Cultivation_Way.Library
         internal float anim_scale_co; // No used now
         internal float effect_time;
         public float effect_val;
+        public float update_action_interval;
         public List<string> opposite_status;
         public List<CW_StatusEffect_Tag> tags;
         public Others.CW_Delegates.CW_Status_Action action_on_get;
@@ -31,7 +32,7 @@ namespace Cultivation_Way.Library
         public Others.CW_Delegates.CW_Status_GetHit_Action action_on_hit;
         public Others.CW_Delegates.CW_Status_Action action_on_end;
 
-        public CW_Asset_StatusEffect(string id, CW_BaseStats bonus_stats, string anim_id = null, float anim_scale_co = 1f, float effect_time = 60f, float effect_val = 1f, CW_Delegates.CW_Status_Action action_on_get = null, CW_Delegates.CW_Status_GetHit_Action action_on_hit = null,  CW_Delegates.CW_Status_Action action_on_update = null, CW_Delegates.CW_Status_Attack_Action action_on_attack = null, List<string> opposite_status = null, List<CW_StatusEffect_Tag> tags = null, CW_Delegates.CW_Status_Action action_on_end = null)
+        public CW_Asset_StatusEffect(string id, CW_BaseStats bonus_stats, string anim_id = null, float anim_scale_co = 1f, float effect_time = 60f, float effect_val = 1f, CW_Delegates.CW_Status_Action action_on_get = null, CW_Delegates.CW_Status_GetHit_Action action_on_hit = null,  CW_Delegates.CW_Status_Action action_on_update = null, CW_Delegates.CW_Status_Attack_Action action_on_attack = null, List<string> opposite_status = null, List<CW_StatusEffect_Tag> tags = null, CW_Delegates.CW_Status_Action action_on_end = null, float update_action_interval = 1f)
         {
             this.id = id;
             this.bonus_stats = bonus_stats;
@@ -46,6 +47,7 @@ namespace Cultivation_Way.Library
             this.opposite_status = opposite_status;
             this.tags = tags;
             this.action_on_end = action_on_end;
+            this.update_action_interval = update_action_interval;
         }
         public bool has_tag(CW_StatusEffect_Tag tag)
         {
