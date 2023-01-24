@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Others;
+using UnityEngine;
+
 namespace Cultivation_Way.Animation
 {
     public enum AnimationTraceType
@@ -38,6 +40,10 @@ namespace Cultivation_Way.Animation
     /// </summary>
     public class CW_AnimationSetting
     {
+        /// <summary>
+        /// 终点停滞
+        /// </summary>
+        public float froze_time_after_end = 0f;
         /// <summary>
         /// 自由变量
         /// </summary>
@@ -108,6 +114,10 @@ namespace Cultivation_Way.Animation
         /// </summary>
         public bool always_roll = false;
         /// <summary>
+        /// 始终旋转的旋转轴
+        /// </summary>
+        public Vector3 always_roll_axis = Vector3.right;
+        /// <summary>
         /// 每帧旋转角度
         /// </summary>
         public float roll_angle_per_frame = 10;
@@ -122,6 +132,7 @@ namespace Cultivation_Way.Animation
         internal CW_AnimationSetting __deepcopy()
         {
             CW_AnimationSetting copy = new CW_AnimationSetting();
+            copy.froze_time_after_end = froze_time_after_end;
             copy.free_val = free_val;
             copy.possible_associated = false;
             copy.loop_limit_type = loop_limit_type;

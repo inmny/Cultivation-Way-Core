@@ -5,3 +5,8 @@
 |:----:|:----:|
 |[百科](https://github.com/inmny/Cultivation-Way-Core/wiki/Home)|[Wiki](https://github.com/inmny/Cultivation-Way-Core/)|   
 |[文档](https://github.com/inmny/Cultivation-Way-Core/wiki/Documentation)|[Documentation](https://github.com/inmny/Cultivation-Way-Core/)|	
+
+## TODO
+
+## Attention
+·人物状态效果互相叠加导致无限递归bug

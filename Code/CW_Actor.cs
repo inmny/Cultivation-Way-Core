@@ -22,6 +22,7 @@ namespace Cultivation_Way
         public List<string> cur_spells = null;
         internal WorldTimer fast_shake_timer = null;
         public bool can_act = true;
+        
         private static List<string> _status_effects_to_remove = new List<string>();
         /// <summary>
         /// 仅提供高效访问，待权限开放后删除
@@ -95,7 +96,7 @@ namespace Cultivation_Way
             status_to_remove.force_finish();
             this.setStatsDirty();
         }
-        public CW_StatusEffectData add_status_effect(string status_effect_id, string as_id = null)
+        public CW_StatusEffectData add_status_effect(string status_effect_id, string as_id = null, BaseSimObject user = null)
         {
             if (status_effects == null) status_effects = new Dictionary<string, CW_StatusEffectData>();
             as_id = string.IsNullOrEmpty(as_id) ? status_effect_id : as_id;
@@ -104,7 +105,7 @@ namespace Cultivation_Way
             {
                 if (status_effect.status_asset.opposite_status != null && status_effect.status_asset.opposite_status.Contains(as_id)) return null;
             }
-            CW_StatusEffectData ret = new CW_StatusEffectData(this, status_effect_id);
+            CW_StatusEffectData ret = new CW_StatusEffectData(this, status_effect_id, user);
             ret.id = as_id;
             status_effects.Add(as_id, ret);
             if (ret.status_asset.action_on_get != null) ret.status_asset.action_on_get(ret, this);
@@ -115,15 +116,23 @@ namespace Cultivation_Way
         {
             if (this.status_effects == null || this.status_effects.Count==0) return;
             _status_effects_to_remove.Clear();
-            foreach(CW_StatusEffectData status_effect in this.status_effects.Values)
+            string last_effect_id = "null";
+            try
             {
-                status_effect.update(elapsed);
-                if(status_effect.status_asset.action_on_update!=null) status_effect.status_asset.action_on_update(status_effect, this);
-                if (status_effect.finished)
+                foreach (CW_StatusEffectData status_effect in this.status_effects.Values)
                 {
-                    _status_effects_to_remove.Add(status_effect.status_asset.id);
-                    if (status_effect.status_asset.action_on_end != null) status_effect.status_asset.action_on_end(status_effect, this);
+                    last_effect_id = status_effect.id;
+                    status_effect.update(elapsed);
+                    if (status_effect.status_asset.action_on_update != null) status_effect.status_asset.action_on_update(status_effect, this);
+                    if (status_effect.finished)
+                    {
+                        _status_effects_to_remove.Add(status_effect.status_asset.id);
+                        if (status_effect.status_asset.action_on_end != null) status_effect.status_asset.action_on_end(status_effect, this);
+                    }
                 }
+            }catch(InvalidOperationException e)
+            {
+                MonoBehaviour.print(string.Format("Last effect '{0}' cause dict modified", last_effect_id));
             }
             if (_status_effects_to_remove.Count > 0)
             {
@@ -159,11 +168,11 @@ namespace Cultivation_Way
 
             float damage_reduce = 0;
             // 区分法抗和物抗作用
-            if(attack_type == Others.CW_Enums.CW_AttackType.Spell)
+            if(attack_type == Others.CW_Enums.CW_AttackType.Spell || attack_type == Others.CW_Enums.CW_AttackType.Status_Spell)
             {
                 damage_reduce = this.cw_cur_stats.base_stats.armor / (100 + this.cw_cur_stats.spell_armor);
             }
-            else if (attack_type != Others.CW_Enums.CW_AttackType.God)
+            else if (attack_type != Others.CW_Enums.CW_AttackType.God && attack_type!= Others.CW_Enums.CW_AttackType.Status_God)
             {
                 damage_reduce = this.cw_cur_stats.base_stats.armor / (100 + this.cw_cur_stats.base_stats.armor);
             }
@@ -172,24 +181,16 @@ namespace Cultivation_Way
 
             if(damage < 0) damage = 0;
             // 反伤
-            if(damage > 0 && attack_type != Others.CW_Enums.CW_AttackType.Spell && attack_type != Others.CW_Enums.CW_AttackType.God)
+            if(damage > 0 && attack_type != Others.CW_Enums.CW_AttackType.Spell && attack_type != Others.CW_Enums.CW_AttackType.God && attack_type != Others.CW_Enums.CW_AttackType.Status_God)
             {
                 if(damage * this.cw_cur_stats.anti_injury > 1f && attacker!=null && attacker!=this)
                 {
                     Utils.CW_SpellHelper.cause_damage_to_target(this, attacker, damage * this.cw_cur_stats.anti_injury);
                 }
             }
-            // 来自攻击者的状态影响
-            if (attacker != null && attacker != this && attacker.objectType == MapObjectType.Actor && ((CW_Actor)attacker).status_effects != null)
-            {
-                foreach (CW_StatusEffectData status_effect in ((CW_Actor)attacker).status_effects.Values)
-                {
-                    if (!status_effect.finished && status_effect.status_asset.action_on_attack != null) status_effect.status_asset.action_on_attack(status_effect, attacker, this);
-                }
-            }
 
             // 释放防御类法术
-            if (this.cur_spells.Count > 0)
+            if (this.cur_spells.Count > 0 && attack_type != Others.CW_Enums.CW_AttackType.Status_God && attack_type != Others.CW_Enums.CW_AttackType.Status_Spell)
             {
                 CW_Asset_Spell spell = CW_Library_Manager.instance.spells.get(this.cur_spells.GetRandom());
                 if(spell.triger_type == CW_Spell_Triger_Type.DEFEND)
@@ -197,7 +198,7 @@ namespace Cultivation_Way
                     CW_Spell.cast(spell, this, attacker, attacker==null?null:attacker.currentTile);
                 }
             }
-            if(this.status_effects!=null && this.status_effects.Count > 0)
+            if(this.status_effects!=null && this.status_effects.Count > 0 && attack_type != Others.CW_Enums.CW_AttackType.Status_God && attack_type !=Others.CW_Enums.CW_AttackType.Status_Spell)
             {
                 foreach(CW_StatusEffectData status_effect in this.status_effects.Values)
                 {
@@ -208,7 +209,7 @@ namespace Cultivation_Way
                 }
             }
 
-            if (this.cw_status.shied > 0)
+            if (this.cw_status.shied > 0 && attack_type!=Others.CW_Enums.CW_AttackType.God && attack_type != Others.CW_Enums.CW_AttackType.Status_God)
             {
                 if(this.cw_status.wakan_level > 1)
                 {
@@ -234,7 +235,7 @@ namespace Cultivation_Way
                     }
                 }
             }
-            if (this.cw_status.health_level > 1) damage = Utils.CW_Utils_Others.compress_raw_wakan(damage, this.cw_status.health_level);
+            if (this.cw_status.health_level > 1 && attack_type!=Others.CW_Enums.CW_AttackType.God && attack_type != Others.CW_Enums.CW_AttackType.Status_God) damage = Utils.CW_Utils_Others.compress_raw_wakan(damage, this.cw_status.health_level);
 
             if(attacker != null && attacker.objectType == MapObjectType.Actor)
             {

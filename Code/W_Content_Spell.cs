@@ -17,6 +17,9 @@ namespace Cultivation_Way.Content
             add_bushido_base_spell();
             add_example_spell();
 
+            add_fall_rock();
+            add_fall_wood();
+
             add_gold_blade_spell();
             add_fire_blade_spell();
             add_wind_blade_spell();
@@ -34,6 +37,11 @@ namespace Cultivation_Way.Content
             add_single_gold_sword_spell();
             add_single_water_sword_spell();
             add_single_wood_sword_spell();
+
+            add_fen_fire_spell();
+            add_loltus_fire_spell();
+            add_samadhi_fire_spell();
+            add_void_fire_spell();
 
             add_fire_polo_spell();
             add_water_polo_spell();
@@ -61,11 +69,75 @@ namespace Cultivation_Way.Content
             load_other_anims();
         }
 
+        
 
         private static void load_other_anims()
         {
             CW_AnimationSetting anim_setting = new CW_AnimationSetting();
             CW_EffectManager.instance.load_as_controller("explosion_anim", "effects/explosion/", controller_setting: anim_setting, base_scale: 1f);
+        }
+        // 落木
+        private static void add_fall_wood()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.trace_grad = 25f;
+            anim_setting.froze_time_after_end = 0.3f;
+            anim_setting.always_roll = true;
+            anim_setting.always_roll_axis = new Vector3(0,0,1);
+            anim_setting.roll_angle_per_frame = 1000;
+            anim_setting.layer_name = "Objects";
+            anim_setting.end_action = fall_rock_end_action;
+            anim_setting.set_trace(AnimationTraceType.LINE);
+
+            CW_EffectManager.instance.load_as_controller("fall_wood_anim", "effects/fall_wood/", controller_setting: anim_setting, base_scale: 0.3f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "fall_wood", anim_id: "fall_wood_anim",
+                new CW_Element(new int[] { 0, 0, 100, 0, 0 }),
+                rarity: 1, free_val: 15, cost: 0.06f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.TILE,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.DOWNWARD,
+                damage_action: null,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 落石
+        private static void add_fall_rock()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.trace_grad = 25f;
+            anim_setting.froze_time_after_end = 0.3f;
+            anim_setting.layer_name = "Objects";
+            anim_setting.end_action = fall_rock_end_action;
+            anim_setting.set_trace(AnimationTraceType.LINE);
+
+            CW_EffectManager.instance.load_as_controller("fall_rock_anim", "effects/fall_rock/", controller_setting: anim_setting, base_scale: 0.3f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "fall_rock", anim_id: "fall_rock_anim",
+                new CW_Element(new int[] { 0, 0, 0, 0, 100 }),
+                rarity: 1, free_val: 15, cost: 0.06f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.TILE,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.DOWNWARD,
+                damage_action: null,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
         }
         // 地刺
         private static void add_ground_thorn_spell()
@@ -769,6 +841,135 @@ namespace Cultivation_Way.Content
             spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
+        // 虚无之火
+        private static void add_void_fire_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.point_to_dst = false;
+            anim_setting.anim_froze_frame_idx = -1;
+            anim_setting.trace_grad = 20;
+            anim_setting.end_action = void_fire_end_action;
+            anim_setting.set_trace(AnimationTraceType.TRACK);
+
+            CW_EffectManager.instance.load_as_controller("void_fire_anim", "effects/void_fire/", anim_limit: 10, controller_setting: anim_setting, base_scale: 0.12f);
+
+            anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
+            anim_setting.loop_time_limit = 3f;
+            anim_setting.frame_action = anti_matter_loop_frame_action;
+            anim_setting.layer_name = "EffectsBack";
+            anim_setting.end_action = null;
+            anim_setting.set_trace(AnimationTraceType.NONE);
+            CW_EffectManager.instance.load_as_controller("anti_matter_anim", "effects/anti_matter/", anim_limit: 10, controller_setting: anim_setting, base_scale: 0.12f);
+
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "void_fire", anim_id: "void_fire_anim",
+                new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.8f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: null,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 三昧真火
+        private static void add_samadhi_fire_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.point_to_dst = false;
+            anim_setting.anim_froze_frame_idx = -1;
+            anim_setting.trace_grad = 20;
+            anim_setting.end_action = samadhi_fire_end_action;
+            anim_setting.set_trace(AnimationTraceType.TRACK);
+
+            CW_EffectManager.instance.load_as_controller("samadhi_fire_anim", "effects/samadhi_fire/", anim_limit: 10, controller_setting: anim_setting, base_scale: 0.12f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "samadhi_fire", anim_id: "samadhi_fire_anim",
+                new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.08f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: null,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 红莲业火
+        private static void add_loltus_fire_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.point_to_dst = false;
+            anim_setting.anim_froze_frame_idx = -1;
+            anim_setting.trace_grad = 20;
+            anim_setting.end_action = loltus_fire_end_action;
+            anim_setting.set_trace(AnimationTraceType.TRACK);
+
+            CW_EffectManager.instance.load_as_controller("loltus_fire_anim", "effects/loltus_fire/", anim_limit: 10, controller_setting: anim_setting, base_scale: 0.12f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "loltus_fire", anim_id: "loltus_fire_anim",
+                new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.08f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: null,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 九幽冥焰
+        private static void add_fen_fire_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.loop_limit_type = AnimationLoopLimitType.DST_LIMIT;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.point_to_dst = false;
+            anim_setting.anim_froze_frame_idx = -1;
+            anim_setting.trace_grad = 20;
+            anim_setting.end_action = fen_fire_end_action;
+            anim_setting.set_trace(AnimationTraceType.TRACK);
+
+            CW_EffectManager.instance.load_as_controller("fen_fire_anim", "effects/fen_fire/", anim_limit: 10, controller_setting: anim_setting, base_scale: 0.12f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "fen_fire", anim_id: "fen_fire_anim",
+                new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
+                rarity: 1, free_val: 1, cost: 0.08f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: null,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
         // 金遁
         private static void add_gold_escape_spell()
         {
@@ -786,7 +987,7 @@ namespace Cultivation_Way.Content
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.DEFEND,
                 anim_type: CW_Spell_Animation_Type.ON_USER,
-                damage_action: CW_SpellAction_Damage.no_damage,
+                damage_action: null,
                 anim_action: on_user_auto_scale,
                 check_and_cost_action: CW_SpellAction_Cost.low_health_check_and_cost
                 );
@@ -811,7 +1012,7 @@ namespace Cultivation_Way.Content
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.DEFEND,
                 anim_type: CW_Spell_Animation_Type.ON_USER,
-                damage_action: CW_SpellAction_Damage.no_damage,
+                damage_action: null,
                 anim_action: on_user_auto_scale,
                 check_and_cost_action: CW_SpellAction_Cost.low_health_check_and_cost
                 );
@@ -836,7 +1037,7 @@ namespace Cultivation_Way.Content
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.DEFEND,
                 anim_type: CW_Spell_Animation_Type.ON_USER,
-                damage_action: CW_SpellAction_Damage.no_damage,
+                damage_action: null,
                 anim_action: on_user_auto_scale,
                 check_and_cost_action: CW_SpellAction_Cost.low_health_check_and_cost
                 );
@@ -861,7 +1062,7 @@ namespace Cultivation_Way.Content
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.DEFEND,
                 anim_type: CW_Spell_Animation_Type.ON_USER,
-                damage_action: CW_SpellAction_Damage.no_damage,
+                damage_action: null,
                 anim_action: on_user_auto_scale,
                 check_and_cost_action: CW_SpellAction_Cost.low_health_check_and_cost
                 );
@@ -886,7 +1087,7 @@ namespace Cultivation_Way.Content
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.DEFEND,
                 anim_type: CW_Spell_Animation_Type.ON_USER,
-                damage_action: CW_SpellAction_Damage.no_damage,
+                damage_action: null,
                 anim_action: on_user_auto_scale,
                 check_and_cost_action: CW_SpellAction_Cost.low_health_check_and_cost
                 );
@@ -1312,9 +1513,50 @@ namespace Cultivation_Way.Content
                 }
             }
         }
+        private static void anti_matter_loop_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            if (cur_frame_idx == 17) anim.cur_frame_idx = 6;
+            WorldTile center = MapBox.instance.GetTile((int)src_vec.x, (int)src_vec.y);
+            if (center == null || anim.src_object==null || !anim.src_object.base_data.alive) { anim.force_stop(false); return; }
+            List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 5);
+            float dist;
+            foreach(BaseSimObject enemy in enemies)
+            {
+                dist = Toolbox.DistVec2Float(dst_vec, enemy.currentPosition);
+                Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, enemy, anim.cost_for_spell / (1+dist));
+                if (enemy.objectType != MapObjectType.Actor) continue;
+                if (!enemy.base_data.alive)
+                {
+                    // 夺取灵气
+                    ((CW_Actor)anim.src_object).cw_status.wakan += (int)Utils.CW_Utils_Others.transform_wakan(((CW_Actor)enemy).cw_status.wakan, ((CW_Actor)enemy).cw_status.wakan_level, ((CW_Actor)anim.src_object).cw_status.wakan_level);
+                    ((CW_Actor)enemy).cw_status.wakan = 0;
+                    ((CW_Actor)anim.src_object).checkLevelUp();
+                }
+                else
+                {
+                    // 拖拽
+                    ((CW_Actor)enemy).addForce((dst_vec.x-enemy.currentPosition.x)*0.1f, (dst_vec.y - enemy.currentPosition.y)*0.1f, 0.05f);
+                }
+            }
+        }
         private static void example_spell_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             ((CW_Actor)anim.src_object).fast_data.health += 1;
+        }
+        private static void fall_rock_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            if (anim.src_object == null) return;
+            WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
+            if (center == null) return;
+            List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 5);
+            float force = 5f;
+            //CW_EffectManager.instance.spawn_anim("bushido_base_anim", dst_vec, dst_vec, anim.src_object, null, 1f);
+            foreach (BaseSimObject actor in enemies)
+            {
+                Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
+                if (actor.objectType != MapObjectType.Actor) continue;
+                ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force, (actor.currentPosition.y - dst_vec.y) / force, 1/force);
+            }
         }
         private static void fire_polo_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
@@ -1372,15 +1614,30 @@ namespace Cultivation_Way.Content
                 Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
             }
         }
-        private static void __bound_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        
+        private static void void_fire_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
-            if(anim.dst_object == null || anim.dst_object.objectType!=MapObjectType.Actor) return;
-            int count = 0;
-            foreach(CW_StatusEffectData status_effect in ((CW_Actor)anim.dst_object).status_effects.Values)
-            {
-                if (status_effect.status_asset.has_tag(CW_StatusEffect_Tag.BOUND)) count++;
-            }
-            if (count <= 1) ((CW_Actor)anim.dst_object).can_act = true;
+            if (anim.dst_object == null || !anim.dst_object.base_data.alive || anim.src_object == null || !anim.src_object.base_data.alive) return;
+            CW_SpriteAnimation anti_matter = CW_EffectManager.instance.spawn_anim("anti_matter_anim", anim.dst_object.currentPosition, anim.dst_object.currentPosition, anim.src_object, anim.dst_object, 1f);
+            if (anti_matter == null) return;
+            anti_matter.cost_for_spell = anim.cost_for_spell / 3;
+        }
+        private static void samadhi_fire_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            if (anim.dst_object == null || !anim.dst_object.base_data.alive) return;
+            CW_StatusEffectData status_effect = Utils.CW_SpellHelper.add_status_to_target(anim.src_object, anim.dst_object, "status_samadhi_fire");
+        }
+        private static void loltus_fire_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            if (anim.dst_object == null || !anim.dst_object.base_data.alive || anim.src_object == null || !anim.src_object.base_data.alive) return;
+            CW_StatusEffectData status_effect = Utils.CW_SpellHelper.add_status_to_target(anim.src_object, anim.dst_object, "status_loltus_fire");
+            status_effect.left_time *= 1 + ((CW_Actor)anim.dst_object).fast_data.kills / 10f;
+            status_effect.effect_val = Utils.CW_Utils_Others.get_raw_wakan(status_effect.status_asset.effect_val, ((CW_Actor)anim.src_object).cw_status.wakan_level);
+        }
+        private static void fen_fire_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            if (anim.dst_object == null || !anim.dst_object.base_data.alive) return;
+            CW_StatusEffectData status_effect = Utils.CW_SpellHelper.add_status_to_target(anim.src_object, anim.dst_object, "status_fen_fire");
         }
         private static void bushido_base_damage_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {

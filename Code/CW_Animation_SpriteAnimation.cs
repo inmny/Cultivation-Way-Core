@@ -46,7 +46,8 @@ namespace Cultivation_Way.Animation
         /// 组件
         /// </summary>
         internal GameObject gameObject;
-
+        internal float end_froze_time;
+        internal bool has_end;
         internal Vector2 src_vec;
         internal Vector2 dst_vec;
         internal BaseSimObject src_object;
@@ -97,6 +98,13 @@ namespace Cultivation_Way.Animation
             {
                 return;
             }
+            if (has_end)
+            {
+                end_froze_time += elapsed;
+                if (end_froze_time < setting.froze_time_after_end) return;
+                isOn = false;
+                return;
+            }
             play_time += elapsed;
             if (elapsed < next_frame_time)
             {
@@ -128,7 +136,7 @@ namespace Cultivation_Way.Animation
             //始终旋转
             if (setting.always_roll)
             {
-                gameObject.transform.Rotate(0, 0, setting.roll_angle_per_frame * elapsed);
+                gameObject.transform.Rotate(setting.always_roll_axis * elapsed * setting.roll_angle_per_frame);
             }
             // 检测到目标不存在后停止
             if (setting.trace_type == AnimationTraceType.TRACK && dst_object == null)
@@ -215,8 +223,9 @@ namespace Cultivation_Way.Animation
             if (setting.stop_frame_idx == cur_frame_idx) end = true;
             if (end)
             {
-                isOn = false;
+                has_end = true;
                 if (setting.end_action != null) setting.end_action(cur_frame_idx, ref src_vec, ref dst_vec, this);
+                if (end_froze_time>=setting.froze_time_after_end+0.01f) isOn = false;
             }
         }
         internal void kill()

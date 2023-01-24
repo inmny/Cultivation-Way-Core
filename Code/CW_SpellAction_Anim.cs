@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Library;
 using Cultivation_Way.Animation;
+using UnityEngine;
+
 namespace Cultivation_Way.Actions
 {
     public class CW_SpellAction_Anim
@@ -43,7 +45,17 @@ namespace Cultivation_Way.Actions
                         }
                         break;
                     }
-                    
+                case CW_Spell_Animation_Type.DOWNWARD:
+                    {
+                        if (pTarget != null || pTargetTile != null)
+                        {
+                            Vector2 dst_vec = pTarget == null ? pTargetTile.pos : pTarget.currentPosition;
+                            CW_SpriteAnimation anim = CW_EffectManager.instance.spawn_anim(spell_asset.anim_id, new Vector2(dst_vec.x, dst_vec.y + spell_asset.free_val), new Vector2(dst_vec.x, dst_vec.y - 0.5f), pUser, pTarget, 1f);
+                            if (anim == null) return;
+                            anim.cost_for_spell = cost;
+                        }
+                        break;
+                    }
                    
             }
             

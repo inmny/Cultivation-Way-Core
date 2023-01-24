@@ -25,10 +25,52 @@ namespace Cultivation_Way.Content
             add_rosefinch_feather_status_effect();
             add_gdragon_scale_status_effect();
             add_basalt_armor_status_effect();
+
+            add_samadhi_fire_status_effect();
+            add_fen_fire_status_effect();
+            add_loltus_fire_status_effect();
+
             load_status_effects_anims();
         }
 
-        
+        private static void add_loltus_fire_status_effect()
+        {
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_loltus_fire",
+                anim_id: null,//"burning_anim",
+                bonus_stats: null,
+                effect_val: 5,
+                effect_time: 60f,
+                action_on_update: loltus_fire_on_update
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
+
+        private static void add_fen_fire_status_effect()
+        {
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_fen_fire",
+                anim_id: null,//"burning_anim",
+                bonus_stats: null,
+                effect_val: 5,
+                effect_time: 60f,
+                action_on_update: fen_fire_on_update
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
+
+        private static void add_samadhi_fire_status_effect()
+        {
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_samadhi_fire",
+                anim_id: null,//"burning_anim",
+                bonus_stats: null,
+                effect_val: 5,
+                effect_time: 60f,
+                action_on_update: samadhi_fire_on_update
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
 
         private static void load_status_effects_anims()
         {
@@ -288,6 +330,26 @@ namespace Cultivation_Way.Content
         {
             if (_obejct == null || _obejct.objectType != MapObjectType.Actor) return;
             ((CW_Actor)_obejct).start_color_effect("grey", status_effect.status_asset.effect_time);
+        }
+        private static void samadhi_fire_on_update(CW_StatusEffectData status_effect, BaseSimObject _object)
+        {
+            if (_object.objectType != MapObjectType.Actor) return;
+            Utils.CW_SpellHelper.cause_damage_to_target(status_effect.user, _object, status_effect.effect_val,  Others.CW_Enums.CW_AttackType.Status_God);
+        }
+        private static void loltus_fire_on_update(CW_StatusEffectData status_effect, BaseSimObject _object)
+        {
+            if (_object.objectType != MapObjectType.Actor || ((CW_Actor)_object).fast_data.kills==0) return;
+            Utils.CW_SpellHelper.cause_damage_to_target(status_effect.user, _object, ((CW_Actor)_object).fast_data.kills * status_effect.effect_val, Others.CW_Enums.CW_AttackType.Status_Spell);
+        }
+        private static void fen_fire_on_update(CW_StatusEffectData status_effect, BaseSimObject _object)
+        {
+            if (_object.objectType != MapObjectType.Actor) return;
+            Utils.CW_SpellHelper.cause_damage_to_target(status_effect.user, _object, status_effect.effect_val, Others.CW_Enums.CW_AttackType.Status_Spell);
+            if (!_object.base_data.alive)
+            {
+                // TODO: 转换成骷髅
+                ActionLibrary.turnIntoSkeleton(_object);
+            }
         }
     }
 }

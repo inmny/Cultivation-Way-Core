@@ -74,6 +74,8 @@ namespace Cultivation_Way.Others
             Poison,
             Block,
             Spell,
+            Status_Spell,
+            Status_God,
             God
         }
         

@@ -27,6 +27,7 @@ namespace Cultivation_Way.Content.Harmony
 
             bool ret = CW_Spell.cast(spell, cw_actor, pTarget, pTarget.currentTile);
             __result = ret;
+
             return !ret;
         }
         private static bool __can_cast(CW_Asset_Spell spell, CW_Actor cw_actor, BaseSimObject target)
@@ -51,5 +52,19 @@ namespace Cultivation_Way.Content.Harmony
         }
         // 防御类见CW_Actor.__get_hit
 
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(MapBox), "applyAttack")]
+        public static bool status_effect_on_attack(BaseSimObject pAttacker, BaseSimObject pTarget)
+        {
+            if(pAttacker!=null && pAttacker.objectType== MapObjectType.Actor && ((CW_Actor)pAttacker).status_effects!=null && ((CW_Actor)pAttacker).status_effects.Count > 0)
+            {
+                foreach (CW_StatusEffectData status_effect in ((CW_Actor)pAttacker).status_effects.Values)
+                {
+                    if (!status_effect.finished && status_effect.status_asset.action_on_attack != null) status_effect.status_asset.action_on_attack(status_effect, pAttacker, pTarget);
+                }
+            }
+            return true;
+        }
     }
 }
