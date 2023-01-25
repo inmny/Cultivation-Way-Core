@@ -637,6 +637,7 @@
     <Content Include="GameResources\ui\Icons\iconCultiSys.png" />
     <Content Include="GameResources\ui\Icons\iconCultiBook_bushido.png" />
     <Content Include="GameResources\ui\Icons\iconCultiBook_immortal.png" />
+    <Content Include="GameResources\ui\Icons\iconText.png" />
     <Content Include="GameResources\ui\Icons\iconYaos.png" />
     <Content Include="GameResources\ui\Icons\iconWiki.png" />
     <Content Include="GameResources\effects\water_escape\940.png" />
@@ -710,6 +711,7 @@
     <Compile Include="Code\W_Content_Tab.cs" />
     <Compile Include="Code\W_Content_WindowCreatureInfo.cs" />
     <Compile Include="Code\W_Content_WorldEvent.cs" />
+    <Compile Include="Code\W_Harmony_Banner.cs" />
     <Compile Include="Code\W_Harmony_Others.cs" />
     <Compile Include="Code\W_Harmony_Spell.cs" />
     <Compile Include="Code\W_Harmony_StatusEffect.cs" />
