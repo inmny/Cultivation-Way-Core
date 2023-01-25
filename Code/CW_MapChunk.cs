@@ -28,15 +28,14 @@ namespace Cultivation_Way
         {
             this.wakan = Toolbox.randomFloat(0, 10f);
             this.wakan_level = Toolbox.randomFloat(1, 2);
+            update();
         }
-        internal void lyse()
+        internal void update(bool force = false)
         {
-            if(wakan_level > Others.CW_Constants.chunk_wakan_lyse_base + Others.CW_Constants.chunk_wakan_lyse_grad)
-            {
-                float lyse_level = (wakan_level - Others.CW_Constants.chunk_wakan_lyse_base)* Others.CW_Constants.chunk_wakan_lyse_grad;
-                wakan *= Mathf.Pow(Others.CW_Constants.wakan_level_co, lyse_level);
-                wakan_level -= lyse_level;
-            }
+            if (force) tmp_wakan = wakan * Mathf.Pow(Others.CW_Constants.wakan_level_co, wakan_level - 1);
+            total_wakan = tmp_wakan;
+            wakan_level = Mathf.Max(Others.CW_Constants.chunk_wakan_compress_co * Mathf.Log(tmp_wakan, Others.CW_Constants.wakan_level_co), 1);
+            wakan = tmp_wakan / Mathf.Pow(Others.CW_Constants.wakan_level_co, wakan_level - 1);
         }
     }
 }

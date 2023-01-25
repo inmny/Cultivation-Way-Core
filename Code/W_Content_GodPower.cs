@@ -13,6 +13,41 @@ namespace Cultivation_Way.Content
         {
             add_spawn_EasternHuman();
             add_spawn_Yao();
+
+            add_wakan_increase();
+            add_wakan_decrease();
+        }
+
+        private static void add_wakan_decrease()
+        {
+            GodPower power = AssetManager.powers.clone("CW_DecreaseWakan", "_drops");
+            power.name = "Decrease Wakan";
+            power.dropID = "wakan_decrease";
+            power.click_power_action = new PowerAction((WorldTile pTile, GodPower pPower)
+                                =>
+            {
+                return (bool)AssetManager.powers.CallMethod("spawnDrops", pTile, pPower);
+            });
+            power.click_power_brush_action = new PowerAction((WorldTile pTile, GodPower pPower) =>
+            {
+                return (bool)AssetManager.powers.CallMethod("loopWithCurrentBrushPower", pTile, pPower);
+            });
+        }
+
+        private static void add_wakan_increase()
+        {
+            GodPower power = AssetManager.powers.clone("CW_IncreaseWakan", "_drops");
+            power.name = "Increase Wakan";
+            power.dropID = "wakan_increase";
+            power.click_power_action = new PowerAction((WorldTile pTile, GodPower pPower)
+                                =>
+            {
+                return (bool)AssetManager.powers.CallMethod("spawnDrops", pTile, pPower);
+            });
+            power.click_power_brush_action = new PowerAction((WorldTile pTile, GodPower pPower) =>
+            {
+                return (bool)AssetManager.powers.CallMethod("loopWithCurrentBrushPower", pTile, pPower);
+            });
         }
 
         private static void add_spawn_Yao()

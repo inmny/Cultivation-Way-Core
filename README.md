@@ -7,10 +7,6 @@
 |[文档](https://github.com/inmny/Cultivation-Way-Core/wiki/Documentation)|[Documentation](https://github.com/inmny/Cultivation-Way-Core/)|	
 
 ## TODO
-·人物界面美化，以及更多信息添加
-
-·手动灵气释放
-
 ·天榜
 
 ·体质

@@ -14,6 +14,7 @@ namespace Cultivation_Way.Content
             add_actors();
             add_buildings();
             add_cultisys();
+            add_drops();
             add_item_accesory_materials();
             add_item_armor_materials();
             add_item_weapon_materials();
@@ -27,6 +28,11 @@ namespace Cultivation_Way.Content
             add_world_events();
             add_harmony();
             create_tab();
+        }
+
+        private static void add_drops()
+        {
+            W_Content_Drop.add_drops();
         }
 
         private static void add_god_powers()

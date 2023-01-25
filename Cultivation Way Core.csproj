@@ -295,6 +295,19 @@
     <Content Include="GameResources\actors\races\eastern_human\unit_warrior_1\walk_1.png" />
     <Content Include="GameResources\actors\races\eastern_human\unit_warrior_1\walk_2.png" />
     <Content Include="GameResources\actors\races\eastern_human\unit_warrior_1\walk_3.png" />
+    <Content Include="GameResources\banners\eastern_human\background\1.png" />
+    <Content Include="GameResources\banners\eastern_human\background\2.png" />
+    <Content Include="GameResources\banners\eastern_human\background\3.png" />
+    <Content Include="GameResources\banners\eastern_human\background\4.png" />
+    <Content Include="GameResources\banners\eastern_human\background\5.png" />
+    <Content Include="GameResources\banners\eastern_human\background\6.png" />
+    <Content Include="GameResources\banners\eastern_human\background\7.png" />
+    <Content Include="GameResources\banners\eastern_human\background\8.png" />
+    <Content Include="GameResources\banners\eastern_human\icon\朱雀之羽.png" />
+    <Content Include="GameResources\banners\eastern_human\icon\玄武之甲.png" />
+    <Content Include="GameResources\banners\eastern_human\icon\白虎之牙.png" />
+    <Content Include="GameResources\banners\eastern_human\icon\青龙之鳞.png" />
+    <Content Include="GameResources\banners\eastern_human\icon\麒麟之角.png" />
     <Content Include="GameResources\buildings\1hall_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\1hall_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\1hall_eastern_human\ruin_0.png" />
@@ -704,6 +717,7 @@
     <Compile Include="Code\W_Content_Actor.cs" />
     <Compile Include="Code\W_Content_Building.cs" />
     <Compile Include="Code\W_Content_Cultisys.cs" />
+    <Compile Include="Code\W_Content_Drop.cs" />
     <Compile Include="Code\W_Content_GodPower.cs" />
     <Compile Include="Code\W_Content_KingdomAndRace.cs" />
     <Compile Include="Code\W_Content_Spell.cs" />

@@ -27,7 +27,7 @@ namespace Cultivation_Way.Content
             race.id = "eastern_human";
             race.origin_asset = new Race();
             Race origin = race.origin_asset;
-            origin.banner_id = "human";                         // TODO:旗帜
+            origin.banner_id = "eastern_human";                         // 旗帜
             origin.buildingPlacements = BuildingPlacements.Random;      // 随机放置建筑
             origin.build_order_id = "eastern_human";                    // 建筑顺序
             origin.civilization = true;                                 // 城镇化，能够随机产生特质、按性别产生名字、作为第一个居民能够设置国家的种族
@@ -77,6 +77,7 @@ namespace Cultivation_Way.Content
             origin.stats.bonus_max_unit_level.value = 6;                // 人物最大等级
             origin.id = race.id;
             CW_Library_Manager.instance.races.add(race);
+            Reflection.CallStaticMethod(typeof(BannerGenerator), "loadTexturesFromResources", origin.banner_id);
         }
 
         private static void add_kingdoms()

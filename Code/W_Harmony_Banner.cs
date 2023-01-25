@@ -34,11 +34,28 @@ namespace Cultivation_Way.Content.Harmony
             __instance.partBackround.color = kingdom_color.colorBorderOut;
 
             Text text = __instance.transform.Find("Text").GetComponent<Text>();
-            text.text = pKingdom.name[0].ToString();
+            if (!string.IsNullOrEmpty(pKingdom.name))
+            {
+				text.text = (pKingdom.name[0] <= 'z' && pKingdom.name.Length > 1) ? (pKingdom.name[0].ToString() + pKingdom.name[1].ToString()) : pKingdom.name[0].ToString();
+			}
+            else
+            {
+				text.text = "";
+            }
             text.fontStyle = UnityEngine.FontStyle.Bold;
             text.fontSize = 18;
             text.font = font_STLiti;
-            text.transform.localPosition = new Vector3(6, -8.15f);
+			text.alignment = TextAnchor.MiddleCenter;
+            if (text.text.Length > 1)
+            {
+				text.transform.localPosition = new Vector3(0, 3f);
+				text.transform.localScale = new Vector3(0.6f, 1f);
+			}
+            else
+            {
+				text.transform.localPosition = new Vector3(0, 2.5f);
+				text.transform.localScale = new Vector3(1,1);
+			}
             text.color = kingdom_color.colorBorderBannerIcon;
 
             __instance.transform.Find("Icon").gameObject.SetActive(false);
@@ -101,6 +118,12 @@ namespace Cultivation_Way.Content.Harmony
 			__instance.kingdom_color_1.color = kingdom_color.colorBorderOut;
 			__instance.kingdom_color_2.color = kingdom_color.colorBorderInside;
 			return false;
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(KingdomWindow), "applyInputName")]
+		public static void kingdomwindow_applyInputName(KingdomWindow __instance)
+        {
+			__instance.kingdomBanner.load(Config.selectedKingdom);
         }
     }
 }

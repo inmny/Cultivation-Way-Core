@@ -121,10 +121,31 @@ namespace Cultivation_Way.Content
                     ),
                 CW_Tab_Button_Type.TOOL
                 );
+            add_button(
+                create_button(
+                    "CW_Inspect", "ui/Icons/iconInspect",
+                    show_window_inspect_world
+                    ),
+                CW_Tab_Button_Type.TOOL
+                );
             button = 
             add_button(
                 create_button(
                     "CW_CheckWakan", "ui/Icons/iconCheckWakan",
+                    null, ButtonType.GodPower
+                ),
+                CW_Tab_Button_Type.TOOL
+                );
+            add_button(
+                create_button(
+                    "CW_IncreaseWakan", "ui/Icons/iconIncreaseWakan",
+                    null, ButtonType.GodPower
+                ),
+                CW_Tab_Button_Type.TOOL
+                );
+            add_button(
+                create_button(
+                    "CW_DecreaseWakan", "ui/Icons/iconDecreaseWakan",
                     null, ButtonType.GodPower
                 ),
                 CW_Tab_Button_Type.TOOL
@@ -146,7 +167,7 @@ namespace Cultivation_Way.Content
         }
         internal static PowerButton create_button(string id, string sprite_path, UnityAction action, ButtonType button_type = ButtonType.Click)
         {
-            return PowerButtons.CreateButton(id, Resources.Load<Sprite>(sprite_path), LocalizedTextManager.getText(id + "_title"), LocalizedTextManager.stringExists(id + "_description") ? LocalizedTextManager.getText(id + "_description") : "", Vector2.zero, button_type, cw_tab.transform, action);
+            return PowerButtons.CreateButton(id, Resources.Load<Sprite>(sprite_path), LocalizedTextManager.stringExists(id+"_title")?LocalizedTextManager.getText(id + "_title"):id, LocalizedTextManager.stringExists(id + "_description") ? LocalizedTextManager.getText(id + "_description") : "", Vector2.zero, button_type, cw_tab.transform, action);
         }
         public static PowerButton add_button(PowerButton button, CW_Tab_Button_Type button_type = CW_Tab_Button_Type.OTHERS)
         {
@@ -191,6 +212,10 @@ namespace Cultivation_Way.Content
         private static void show_window_top()
         {
             Windows.ShowWindow("cw_window_top");
+        }
+        private static void show_window_inspect_world()
+        {
+            Windows.ShowWindow("cw_window_inspect_world");
         }
         private static void jump_to_wiki()
         {

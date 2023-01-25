@@ -103,10 +103,7 @@ namespace Cultivation_Way
             {
                 for (j = 0; j < height; j++)
                 {
-                    chunk_1 = chunks[i, j];
-                    chunk_1.wakan_level = Mathf.Max(Others.CW_Constants.chunk_wakan_compress_co * Mathf.Log(chunk_1.tmp_wakan, Others.CW_Constants.wakan_level_co),1);
-                    chunk_1.wakan = chunk_1.tmp_wakan / Mathf.Pow(Others.CW_Constants.wakan_level_co, chunk_1.wakan_level - 1);
-                    //MonoBehaviour.print(string.Format("({0},{1}): {2} wakan, {3} level, {4} total wakan now", i, j, chunk_1.wakan, chunk_1.wakan_level, chunk_1.tmp_wakan));
+                    chunks[i, j].update(false);
                 }
             }
             Library.CW_Asset_WorldEvent wakan_tide = Library.CW_Library_Manager.instance.events.get("wakan_tide");
