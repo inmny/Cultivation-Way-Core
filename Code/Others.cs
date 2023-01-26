@@ -10,6 +10,8 @@ namespace Cultivation_Way.Others
         public const string mod_id = "inmny.cw_core";
         public const float anim_dst_error = 0.5f;
         public const int save_version = 1;
+        public const bool force_load_units = true;
+        public const bool force_load_cities = true;
         public const int base_element_types = 5;
         public const float max_anim_trace_length = 1000f;
         public const float default_anim_trace_grad = 2f;

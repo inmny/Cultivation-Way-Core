@@ -19,6 +19,22 @@ namespace Cultivation_Way.Content.Harmony
             __city_create(__instance);
             return false;
         }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(City),"loadCity")]
+        public static void city_loadCity(City __instance, CityData pData)
+        {
+            if (!Others.CW_Constants.force_load_cities) return;
+            try
+            {
+                CW_CityData tmp = (CW_CityData)CW_City.get_data(__instance);
+            }
+            catch(Exception e)
+            {
+                WorldBoxConsole.Console.print("Force load city data for city "+pData.cityName);
+                CW_CityData new_data = new CW_CityData(__instance); new_data.set_origin_data(pData);
+                CW_City.set_data(__instance, new_data);
+            }
+        }
         // kill random pop points
         [HarmonyPrefix]
         [HarmonyPatch(typeof(City), "killRandomPopPoints")]
@@ -152,7 +168,7 @@ namespace Cultivation_Way.Content.Harmony
             CW_Actor second_parent = get_random_parent(units, main_parent);
 
             if (second_parent == null || (second_parent.haveTrait("infected") && Toolbox.randomBool())) return false;
-
+            
             CW_CityData cw_city_data = (CW_CityData)CW_City.get_data(city);
 
             ResourceAsset foodItem = CW_City.func_getFoodItem(city, main_parent.fast_data.favoriteFood);

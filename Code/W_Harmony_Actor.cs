@@ -241,14 +241,23 @@ namespace Cultivation_Way.Content.Harmony
             else
             {
                 actor.new_creature = false;
-                actor.fast_data = pData.status;
+                if (pData.status == null) WorldBoxConsole.Console.print("pData.status is null");
                 actor.cw_cur_stats = new CW_BaseStats(CW_Actor.get_curstats(actor));
                 actor.cw_data = W_Content_Helper.get_load_cw_data(pData); // 由于原版的城市生成生物和存档加载生物采用同样的加载方式，此处通过一个bus函数进行区分。
+                if (Others.CW_Constants.force_load_units && (actor.cw_data==null||actor.cw_data.status==null))
+                {
+                    actor.CW_newCreature();
+                }
+                actor.fast_data = pData.status;
                 actor.cw_status = actor.cw_data.status;
                 actor.cur_spells = new List<string>();
                 CW_Actor.set_data(actor, actor.fast_data);
                 CW_Actor.set_professionAsset(actor, AssetManager.professions.get(pData.status.profession));
-
+                if (Others.CW_Constants.force_load_units && actor.fast_data == null)
+                {
+                    actor.fast_data = new ActorStatus();
+                   
+                }
                 __actor_updateStats(actor);
 
                 CW_Library_Manager.instance.cultisys.set_cultisys(actor);
@@ -346,7 +355,7 @@ namespace Cultivation_Way.Content.Harmony
             // 添加心情的属性影响
             if (string.IsNullOrEmpty(cw_actor.fast_data.mood)) cw_actor.fast_data.mood = "normal";
             MoodAsset moodAsset = AssetManager.moods.get(cw_actor.fast_data.mood);
-            cw_actor.cw_cur_stats.addStats(moodAsset.baseStats);
+            if(moodAsset!=null) cw_actor.cw_cur_stats.addStats(moodAsset.baseStats);
             // 添加状态的属性影响
             Dictionary<string, StatusEffectData> activeStatus_dict = CW_Actor.get_activeStatus_dict(actor);
             if (activeStatus_dict != null)
@@ -395,6 +404,7 @@ namespace Cultivation_Way.Content.Harmony
                         {
                             WorldBoxConsole.Console.print(cw_actor.fast_data.actorID+" have type error item in slot " + equipment_slots[i].type.ToString());
                             WorldBoxConsole.Console.print(Utils.CW_ItemTools.item_to_string(equipment_slots[i].data));
+                            equipment_slots[i].data = new CW_ItemData(equipment_slots[i].data);
                         }
                         cw_actor.cw_cur_stats.addStats(CW_ItemTools.s_cw_stats);
                     }
