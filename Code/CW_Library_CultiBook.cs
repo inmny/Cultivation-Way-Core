@@ -133,8 +133,8 @@ namespace Cultivation_Way.Library
             this.bonus_stats.mod_anti_spell_armor = __get_co() * author.cw_cur_stats.mod_anti_spell_armor;
             this.bonus_stats.mod_cultivation = __get_co() * author.cw_cur_stats.mod_cultivation;
             this.bonus_stats.mod_health_regen = __get_co() * author.cw_cur_stats.mod_health_regen;
-            this.bonus_stats.mod_shied = __get_co() * author.cw_cur_stats.mod_shied;
-            this.bonus_stats.mod_shied_regen = __get_co() * author.cw_cur_stats.mod_shied_regen;
+            this.bonus_stats.mod_shield = __get_co() * author.cw_cur_stats.mod_shield;
+            this.bonus_stats.mod_shield_regen = __get_co() * author.cw_cur_stats.mod_shield_regen;
             this.bonus_stats.mod_soul = __get_co() * author.cw_cur_stats.mod_soul;
             this.bonus_stats.mod_soul_regen = __get_co() * author.cw_cur_stats.mod_soul_regen;
             this.bonus_stats.mod_spell_armor = __get_co() * author.cw_cur_stats.mod_spell_armor;

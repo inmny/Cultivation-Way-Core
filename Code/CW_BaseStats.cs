@@ -15,19 +15,19 @@ namespace Cultivation_Way
         /// <summary>
         /// 护盾
         /// </summary>
-        public int shied;
+        public int shield;
         /// <summary>
         /// 护盾系数
         /// </summary>
-        public float mod_shied;
+        public float mod_shield;
         /// <summary>
         /// 护盾恢复/月
         /// </summary>
-        public int shied_regen;
+        public int shield_regen;
         /// <summary>
         /// 护盾恢复系数
         /// </summary>
-        public float mod_shied_regen;
+        public float mod_shield_regen;
         /// <summary>
         /// 元神
         /// </summary>
@@ -171,16 +171,16 @@ namespace Cultivation_Way
             this.mod_anti_spell_armor = 0;
             this.mod_cultivation = 0;
             this.mod_health_regen = 0;
-            this.mod_shied = 0;
-            this.mod_shied_regen = 0;
+            this.mod_shield = 0;
+            this.mod_shield_regen = 0;
             this.mod_soul = 0;
             this.mod_soul_regen = 0;
             this.mod_spell_range = 0;
             this.mod_spell_armor = 0;
             this.mod_wakan = 0;
             this.mod_wakan_regen = 0;
-            this.shied = 0;
-            this.shied_regen = 0;
+            this.shield = 0;
+            this.shield_regen = 0;
             this.soul = 0;
             this.soul_regen = 0;
             this.spell_range = 0;
@@ -209,16 +209,16 @@ namespace Cultivation_Way
             this.mod_anti_spell_armor = 0;
             this.mod_cultivation = 0;
             this.mod_health_regen = 0;
-            this.mod_shied = 0;
-            this.mod_shied_regen = 0;
+            this.mod_shield = 0;
+            this.mod_shield_regen = 0;
             this.mod_soul = 0;
             this.mod_soul_regen = 0;
             this.mod_spell_range = 0;
             this.mod_spell_armor = 0;
             this.mod_wakan = 0;
             this.mod_wakan_regen = 0;
-            this.shied = 0;
-            this.shied_regen = 0;
+            this.shield = 0;
+            this.shield_regen = 0;
             this.soul = 0;
             this.soul_regen = 0;
             this.spell_range = 0;
@@ -250,16 +250,16 @@ namespace Cultivation_Way
             this.mod_anti_spell_armor = copy.mod_anti_spell_armor;
             this.mod_cultivation = copy.mod_cultivation;
             this.mod_health_regen = copy.mod_health_regen;
-            this.mod_shied = copy.mod_shied;
-            this.mod_shied_regen = copy.mod_shied_regen;
+            this.mod_shield = copy.mod_shield;
+            this.mod_shield_regen = copy.mod_shield_regen;
             this.mod_soul = copy.mod_soul;
             this.mod_soul_regen = copy.mod_soul_regen;
             this.mod_spell_armor = copy.mod_spell_armor;
             this.mod_spell_range = copy.mod_spell_range;
             this.mod_wakan = copy.mod_wakan;
             this.mod_wakan_regen = copy.mod_wakan_regen;
-            this.shied = copy.shied;
-            this.shied_regen = copy.shied_regen;
+            this.shield = copy.shield;
+            this.shield_regen = copy.shield_regen;
             this.soul = copy.soul;
             this.soul_regen = copy.soul_regen;
             this.spell_range = copy.spell_range;
@@ -337,16 +337,16 @@ namespace Cultivation_Way
             this.mod_anti_spell_armor += CW_basestats.mod_anti_spell_armor;
             this.mod_cultivation += CW_basestats.mod_cultivation;
             this.mod_health_regen += CW_basestats.mod_health_regen;
-            this.mod_shied += CW_basestats.mod_shied;
-            this.mod_shied_regen += CW_basestats.mod_shied_regen;
+            this.mod_shield += CW_basestats.mod_shield;
+            this.mod_shield_regen += CW_basestats.mod_shield_regen;
             this.mod_soul += CW_basestats.mod_soul;
             this.mod_soul_regen += CW_basestats.mod_soul_regen;
             this.mod_spell_armor += CW_basestats.mod_spell_armor;
             this.mod_spell_range += CW_basestats.mod_spell_range;
             this.mod_wakan += CW_basestats.mod_wakan;
             this.mod_wakan_regen += CW_basestats.mod_wakan_regen;
-            this.shied += CW_basestats.shied;
-            this.shied_regen += CW_basestats.shied_regen;
+            this.shield += CW_basestats.shield;
+            this.shield_regen += CW_basestats.shield_regen;
             this.soul += CW_basestats.soul;
             this.soul_regen += CW_basestats.soul_regen;
             this.spell_range += CW_basestats.spell_range;
@@ -423,16 +423,16 @@ namespace Cultivation_Way
             this.mod_anti_spell_armor = 0;
             this.mod_cultivation = 0;
             this.mod_health_regen = 0;
-            this.mod_shied = 0;
-            this.mod_shied_regen = 0;
+            this.mod_shield = 0;
+            this.mod_shield_regen = 0;
             this.mod_soul = 0;
             this.mod_soul_regen = 0;
             this.mod_spell_range = 0;
             this.mod_spell_armor = 0;
             this.mod_wakan = 0;
             this.mod_wakan_regen = 0;
-            this.shied = 0;
-            this.shied_regen = 0;
+            this.shield = 0;
+            this.shield_regen = 0;
             this.soul = 0;
             this.soul_regen = 0;
             this.spell_range = 0;
@@ -501,8 +501,8 @@ namespace Cultivation_Way
             this.anti_crit_damage *= 1f + this.mod_anti_crit_damage / 100f;
             this.anti_spell_armor += (int)(this.anti_spell_armor * this.mod_anti_spell_armor / 100f);
             this.health_regen += (int)(this.health_regen * this.mod_health_regen / 100f);
-            this.shied += (int)(this.shied * this.mod_shied / 100f);
-            this.shied_regen += (int)(this.shied_regen * this.mod_shied_regen / 100f);
+            this.shield += (int)(this.shield * this.mod_shield / 100f);
+            this.shield_regen += (int)(this.shield_regen * this.mod_shield_regen / 100f);
             this.soul += (int)(this.soul * this.mod_soul / 100f);
             this.soul_regen += (int)(this.soul_regen * this.mod_soul_regen / 100f);
             this.spell_armor += (int)(this.spell_armor * this.mod_spell_armor / 100f);
@@ -531,8 +531,8 @@ namespace Cultivation_Way
             this.anti_injury = this.anti_injury<0?0: this.anti_injury;
             this.anti_spell_armor = this.anti_spell_armor<0? 0 : this.anti_spell_armor;
             this.health_regen = this.health_regen<0?0: this.health_regen;
-            this.shied = this.shied<0?0: this.shied;
-            this.shied_regen = this.shied_regen<0?0: this.shied_regen;
+            this.shield = this.shield<0?0: this.shield;
+            this.shield_regen = this.shield_regen<0?0: this.shield_regen;
             this.soul = this.soul<0?0: this.soul;
             this.soul_regen = this.soul_regen<0?0: this.soul_regen;
             this.spell_range = this.spell_range < 0?0: this.spell_range;

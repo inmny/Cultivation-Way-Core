@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using ReflectionUtility;
 using UnityEngine.UI;
+using System;
 
 namespace Cultivation_Way.Animation
 {
@@ -30,21 +31,27 @@ namespace Cultivation_Way.Animation
         private void Update()
         {
             if (!Others.CW_Constants.is_debugging && (Config.paused || ScrollWindow.isWindowActive())) return;
-            int i; int time;
-            for (time = 0; time < Config.timeScale; time++)
+            int i = 0; int time;
+            try
             {
-                for (i = 0; i < controllers.Count; i++)
+                for (time = 0; time < Config.timeScale; time++)
                 {
-                    controllers[i].update(Time.fixedDeltaTime);
-                }
-                for (i = 0; i < single_anims.Count; i++)
-                {
-                    single_anims[i].update(Time.fixedDeltaTime);
-                    if (!single_anims[i].isOn)
+                    for (i = 0; i < controllers.Count; i++)
                     {
-                        single_anims.RemoveAt(i); i--;
+                        controllers[i].update(Time.fixedDeltaTime);
+                    }
+                    for (i = 0; i < single_anims.Count; i++)
+                    {
+                        single_anims[i].update(Time.fixedDeltaTime);
+                        if (!single_anims[i].isOn)
+                        {
+                            single_anims.RemoveAt(i); i--;
+                        }
                     }
                 }
+            }catch(Exception e)
+            {
+                Debug.LogError(string.Format("An error happen in update '{0}'", controllers[i].id));
             }
         }
         public CW_EffectController load_as_controller(string id, string path_to_anim, Vector2 base_offset, int anim_limit = 100, float base_scale = 1.0f, CW_AnimationSetting controller_setting = null)
@@ -59,6 +66,7 @@ namespace Cultivation_Way.Animation
             CW_EffectController controller = new CW_EffectController(anim_limit, controller_setting==null?new CW_AnimationSetting():controller_setting, sprites, default_prefab, base_scale, base_offset);
             this.controllers.Add(controller);
             this.controllers_dict.Add(id, controller);
+            controller.id = id;
             return controller;
         }
         public CW_EffectController load_as_controller(string id, string path_to_anim, int anim_limit = 100, float base_scale = 1.0f, CW_AnimationSetting controller_setting = null)

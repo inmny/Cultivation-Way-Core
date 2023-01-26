@@ -636,13 +636,15 @@
     <Content Include="GameResources\effects\anti_matter\antimatterEffect_7.png" />
     <Content Include="GameResources\effects\anti_matter\antimatterEffect_8.png" />
     <Content Include="GameResources\effects\anti_matter\antimatterEffect_9.png" />
+    <Content Include="GameResources\ui\cw_window\sim_info_bg.png" />
     <Content Include="GameResources\ui\cw_window\windowInnerSliced.png" />
     <Content Include="GameResources\ui\cw_window\windowNamePlate.png" />
+    <Content Include="GameResources\ui\Icons\iconClan.png" />
     <Content Include="GameResources\ui\Icons\iconCheckWakan.png" />
     <Content Include="GameResources\ui\Icons\iconSpell_Armor.png" />
     <Content Include="GameResources\ui\Icons\iconSpecialBody.png" />
     <Content Include="GameResources\ui\Icons\iconEastern_Humans.png" />
-    <Content Include="GameResources\ui\Icons\iconShied.png" />
+    <Content Include="GameResources\ui\Icons\iconShield.png" />
     <Content Include="GameResources\ui\Icons\iconTab.png" />
     <Content Include="GameResources\ui\Icons\iconTop.png" />
     <Content Include="GameResources\ui\Icons\iconWakan.png" />
@@ -724,6 +726,8 @@
     <Compile Include="Code\W_Content_StatusEffect.cs" />
     <Compile Include="Code\W_Content_Tab.cs" />
     <Compile Include="Code\W_Content_WindowCreatureInfo.cs" />
+    <Compile Include="Code\W_Content_WindowTop.cs" />
+    <Compile Include="Code\W_Content_WindowTop_Helper.cs" />
     <Compile Include="Code\W_Content_WorldEvent.cs" />
     <Compile Include="Code\W_Harmony_Banner.cs" />
     <Compile Include="Code\W_Harmony_Others.cs" />

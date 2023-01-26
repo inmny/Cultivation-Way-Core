@@ -37,7 +37,7 @@ namespace Cultivation_Way.Content
             if (!tooltip_enabled) return;
             string title = this.title;
             string description = this.description;
-            if (!LocalizedTextManager.stringExists(description)) description = null;
+            if (string.IsNullOrEmpty(description) || !LocalizedTextManager.stringExists(description)) description = null;
             Tooltip.instance.show(gameObject, type, title, description);
             if(this.origin_scale.x<0 && this.origin_scale.y < 0)
             {
@@ -73,7 +73,7 @@ namespace Cultivation_Way.Content
 		public Transform equipmentParent;
 		public StatBar health;
 		public StatBar hunger;
-		public StatBar shied;
+		public StatBar shield;
 		public StatBar wakan;
 		public CityIcon damage;
 		public CityIcon speed;
@@ -91,7 +91,7 @@ namespace Cultivation_Way.Content
         public CityIcon anti_injuries;
         public CityIcon knockback_reduction;
         public CityIcon health_regen;
-        public CityIcon shied_regen;
+        public CityIcon shield_regen;
         public CityIcon wakan_regen;
         public CityIcon culti_velo_co;
 
@@ -159,7 +159,7 @@ namespace Cultivation_Way.Content
 			cw_wci.nameInput = origin_wci.nameInput;
 			cw_wci.prefabEquipment = origin_wci.prefabEquipment;
             cw_wci.prefabTrait = origin_wci.prefabTrait;
-            cw_wci.shied = null;
+            cw_wci.shield = null;
 			cw_wci.speed = origin_wci.speed;
 			cw_wci.stewardship = origin_wci.stewardship;
 			cw_wci.temp_equipment = new List<ItemData>();
@@ -212,15 +212,15 @@ namespace Cultivation_Way.Content
             tmp_button =button_edit_traits.GetComponent<Button>();
             tmp_button.onClick.AddListener(cw_wci.clickTraitEditor);
             // 设置新stat bar
-            GameObject ShiedBar = Instantiate<GameObject>(content_transform.Find("HealthBar").gameObject, content_transform);
-            cw_wci.shied = ShiedBar.GetComponent<StatBar>();
-            cw_wci.shied.transform.localPosition = new Vector3(79.55f, -85.30f);
-            cw_wci.shied.transform.localScale = Vector3.one;
-            ShiedBar.name = "ShiedBar";
-            Image shied_bar_image = ShiedBar.transform.Find("Mask/Bar").GetComponent<Image>();
-            shied_bar_image.color = new Color(1, 1, 1, 0.79f);
-            ShiedBar.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconShied");
-            ShiedBar.GetComponent<TipButton>().textOnClick = "shied";
+            GameObject ShieldBar = Instantiate<GameObject>(content_transform.Find("HealthBar").gameObject, content_transform);
+            cw_wci.shield = ShieldBar.GetComponent<StatBar>();
+            cw_wci.shield.transform.localPosition = new Vector3(79.55f, -85.30f);
+            cw_wci.shield.transform.localScale = Vector3.one;
+            ShieldBar.name = "ShieldBar";
+            Image shield_bar_image = ShieldBar.transform.Find("Mask/Bar").GetComponent<Image>();
+            shield_bar_image.color = new Color(1, 1, 1, 0.79f);
+            ShieldBar.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconShield");
+            ShieldBar.GetComponent<TipButton>().textOnClick = "shield";
 
             GameObject WakanBar = Instantiate<GameObject>(content_transform.Find("HealthBar").gameObject, content_transform);
             cw_wci.wakan = WakanBar.GetComponent<StatBar>();
@@ -271,10 +271,10 @@ namespace Cultivation_Way.Content
             new_stats.GetComponent<TipButton>().textOnClick = "health_regen";
 
             new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
-            new_stats.name = "shied_regen";
-            cw_wci.shied_regen = new_stats.GetComponent<CityIcon>();
-            cw_wci.shied_regen.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/tech/icon_tech_defense_strategy");
-            new_stats.GetComponent<TipButton>().textOnClick = "shied_regen";
+            new_stats.name = "shield_regen";
+            cw_wci.shield_regen = new_stats.GetComponent<CityIcon>();
+            cw_wci.shield_regen.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/tech/icon_tech_defense_strategy");
+            new_stats.GetComponent<TipButton>().textOnClick = "shield_regen";
 
             new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
             new_stats.name = "wakan_regen";
@@ -367,7 +367,7 @@ namespace Cultivation_Way.Content
 
             nameInput.setText(cw_actor.getName());
             health.setBar(cw_actor.fast_data.health, cw_actor.cw_cur_stats.base_stats.health, "/" + cw_actor.cw_cur_stats.base_stats.health);
-            shied.setBar(cw_actor.cw_status.shied, cw_actor.cw_cur_stats.shied, "/" + cw_actor.cw_cur_stats.shied);
+            shield.setBar(cw_actor.cw_status.shield, cw_actor.cw_cur_stats.shield, "/" + cw_actor.cw_cur_stats.shield);
             wakan.setBar(cw_actor.cw_status.wakan, cw_actor.cw_cur_stats.wakan, "/" + cw_actor.cw_cur_stats.wakan);
             if (cw_actor.stats.needFood || cw_actor.stats.unit)
             {
@@ -398,7 +398,7 @@ namespace Cultivation_Way.Content
             anti_injuries.gameObject.SetActive(cw_actor.stats.inspect_stats);
             knockback_reduction.gameObject.SetActive(cw_actor.stats.inspect_stats);
             health_regen.gameObject.SetActive(cw_actor.stats.inspect_stats);
-            shied_regen.gameObject.SetActive(cw_actor.stats.inspect_stats);
+            shield_regen.gameObject.SetActive(cw_actor.stats.inspect_stats);
             wakan_regen.gameObject.SetActive(cw_actor.stats.inspect_stats);
             culti_velo_co.gameObject.SetActive(cw_actor.stats.inspect_stats);
 
@@ -417,7 +417,7 @@ namespace Cultivation_Way.Content
             anti_injuries.setValue(cw_actor.cw_cur_stats.anti_injury, "%");
             knockback_reduction.setValue(cw_actor.cw_cur_stats.base_stats.knockbackReduction, "%");
             health_regen.setValue(cw_actor.cw_cur_stats.health_regen);
-            shied_regen.setValue(cw_actor.cw_cur_stats.shied_regen);
+            shield_regen.setValue(cw_actor.cw_cur_stats.shield_regen);
             wakan_regen.setValue(cw_actor.cw_cur_stats.wakan_regen);
             culti_velo_co.setValue(100f*cw_actor.cw_status.culti_velo*(1+cw_actor.cw_cur_stats.mod_cultivation/100),"%");
 

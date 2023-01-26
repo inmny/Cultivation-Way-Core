@@ -9,7 +9,7 @@ namespace Cultivation_Way
 	public class CW_ActorStatus
 	{
 		public int wakan;
-		public int shied;
+		public int shield;
 		public float culti_velo;
 		public bool can_culti;
 		public float health_level;
@@ -54,7 +54,7 @@ namespace Cultivation_Way
 		public void deepcopy_to(CW_ActorStatus cw_actor_status)
         {
 			cw_actor_status.wakan = wakan;
-			cw_actor_status.shied = shied;
+			cw_actor_status.shield = shield;
 			cw_actor_status.culti_velo = culti_velo;
 			cw_actor_status.can_culti = can_culti;
 			cw_actor_status.health_level = health_level;

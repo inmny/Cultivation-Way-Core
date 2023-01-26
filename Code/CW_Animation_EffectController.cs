@@ -8,6 +8,7 @@ namespace Cultivation_Way.Animation
     public class CW_EffectController
     {
         internal int cur_anim_nr;
+        internal string id;
 
         internal GameObject prefab;
         internal CW_SpriteAnimation[] animations;

@@ -209,29 +209,29 @@ namespace Cultivation_Way
                 }
             }
 
-            if (this.cw_status.shied > 0 && attack_type!=Others.CW_Enums.CW_AttackType.God && attack_type != Others.CW_Enums.CW_AttackType.Status_God)
+            if (this.cw_status.shield > 0 && attack_type!=Others.CW_Enums.CW_AttackType.God && attack_type != Others.CW_Enums.CW_AttackType.Status_God)
             {
                 if(this.cw_status.wakan_level > 1)
                 {
-                    float damage_on_shied = Utils.CW_Utils_Others.compress_raw_wakan(damage, this.cw_status.wakan_level);
-                    if (this.cw_status.shied > damage_on_shied)
+                    float damage_on_shield = Utils.CW_Utils_Others.compress_raw_wakan(damage, this.cw_status.wakan_level);
+                    if (this.cw_status.shield > damage_on_shield)
                     {
-                        this.cw_status.shied -= (int)damage_on_shied; damage = 0;
+                        this.cw_status.shield -= (int)damage_on_shield; damage = 0;
                     }
                     else
                     {
-                        this.cw_status.shied = 0; damage -= Utils.CW_Utils_Others.get_raw_wakan(this.cw_status.shied, this.cw_status.wakan_level);
+                        this.cw_status.shield = 0; damage -= Utils.CW_Utils_Others.get_raw_wakan(this.cw_status.shield, this.cw_status.wakan_level);
                     }
                 }
                 else
                 {
-                    if (this.cw_status.shied > damage)
+                    if (this.cw_status.shield > damage)
                     {
-                        this.cw_status.shied -= (int)damage; damage = 0;
+                        this.cw_status.shield -= (int)damage; damage = 0;
                     }
                     else
                     {
-                        this.cw_status.shied = 0; damage -= this.cw_status.shied;
+                        this.cw_status.shield = 0; damage -= this.cw_status.shield;
                     }
                 }
             }
@@ -259,9 +259,9 @@ namespace Cultivation_Way
                 count_init = true;
                 for (int i = 0; i < max_wakan_get_once; i++) wakan_get_count[i] = 0;
             }
-            if(this.cw_status.shied < this.cw_cur_stats.shied)
+            if(this.cw_status.shield < this.cw_cur_stats.shield)
             {
-                this.cw_status.shied += Mathf.Min((int)Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.shied_regen, this.cw_status.wakan_level), this.cw_cur_stats.shied - this.cw_status.shied);
+                this.cw_status.shield += Mathf.Min((int)Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.shield_regen, this.cw_status.wakan_level), this.cw_cur_stats.shield - this.cw_status.shield);
             }
             
             if (this.cw_status.can_culti && this.cw_status.wakan < this.cw_cur_stats.wakan)
@@ -533,7 +533,7 @@ namespace Cultivation_Way
 
             this.cw_status.can_culti = false;
             this.cw_status.culti_velo = this.cw_stats.culti_velo;
-            this.cw_status.shied = 0;
+            this.cw_status.shield = 0;
             this.cw_status.wakan = 0;
             this.cw_status.wakan_level = 1;
             this.cw_status.health_level = 1;
@@ -571,7 +571,7 @@ namespace Cultivation_Way
             cw_actor_status.can_culti = false;
             cw_actor_status.culti_velo = 1f;
             cw_actor_status.max_age = main_parent.stats.maxAge;
-            cw_actor_status.shied = 0;
+            cw_actor_status.shield = 0;
             cw_actor_status.wakan = 0;
             cw_actor_status.wakan_level = 1;
             cw_actor_status.health_level = 1;

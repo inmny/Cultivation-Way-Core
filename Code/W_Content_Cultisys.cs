@@ -59,9 +59,9 @@ namespace Cultivation_Way.Content
                 // 法抗
                 immortal.bonus_stats[i].spell_armor = (int)(Mathf.Sqrt(i) * immortal.bonus_stats[i].base_stats.armor * (Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / immortal.bonus_stats[i].wakan, Others.CW_Constants.wakan_level_co)));
                 // 护盾恢复
-                immortal.bonus_stats[i].shied_regen = (int)(Mathf.Sqrt(i) * Mathf.Sqrt(Mathf.Sqrt(immortal.bonus_stats[i].wakan)) * (Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / immortal.bonus_stats[i].wakan, Others.CW_Constants.wakan_level_co) + 1) * 2);
+                immortal.bonus_stats[i].shield_regen = (int)(Mathf.Sqrt(i) * Mathf.Sqrt(Mathf.Sqrt(immortal.bonus_stats[i].wakan)) * (Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / immortal.bonus_stats[i].wakan, Others.CW_Constants.wakan_level_co) + 1) * 2);
                 // 护盾
-                immortal.bonus_stats[i].shied = 12 * immortal.bonus_stats[i].shied_regen;
+                immortal.bonus_stats[i].shield = 12 * immortal.bonus_stats[i].shield_regen;
                 // 抗击退
                 immortal.bonus_stats[i].base_stats.knockbackReduction = (i + 1) * 4.5f;
             }
@@ -115,8 +115,8 @@ namespace Cultivation_Way.Content
             // 护盾以及护盾恢复
             for(i= 0; i < Others.CW_Constants.max_cultisys_level; i++)
             {
-                bushido.bonus_stats[i].shied_regen = (int)bushido.bonus_stats[i].base_stats.attackSpeed / 2;
-                bushido.bonus_stats[i].shied = bushido.bonus_stats[i].shied_regen * 12;
+                bushido.bonus_stats[i].shield_regen = (int)bushido.bonus_stats[i].base_stats.attackSpeed / 2;
+                bushido.bonus_stats[i].shield = bushido.bonus_stats[i].shield_regen * 12;
             }
             #endregion
         }

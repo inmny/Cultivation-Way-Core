@@ -211,7 +211,7 @@ namespace Cultivation_Way.Content
         }
         private static void show_window_top()
         {
-            Windows.ShowWindow("cw_window_top");
+            ScrollWindow.showWindow("cw_window_top");
         }
         private static void show_window_inspect_world()
         {

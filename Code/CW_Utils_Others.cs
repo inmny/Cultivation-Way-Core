@@ -15,7 +15,7 @@ namespace Cultivation_Way.Utils
         }
         public static float get_raw_wakan(float wakan, float wakan_level)
         {
-            return wakan * Mathf.Pow(Others.CW_Constants.wakan_level_co, wakan_level-1);
+            return wakan * Mathf.Pow(Others.CW_Constants.wakan_level_co, wakan_level - 1);
         }
         public static float compress_raw_wakan(float raw_wakan, float target_level)
         {
@@ -24,6 +24,24 @@ namespace Cultivation_Way.Utils
         public static float get_seconds_by_month(int month)
         {
             return month * Others.CW_Constants.seconds_per_month;
+        }
+        public static int sum_of(int[] ints)
+        {
+            int ret = 0;
+            foreach (int elm in ints)
+            {
+                ret += elm;
+            }
+            return ret;
+        }
+        public static int max_of(int[] ints)
+        {
+            int ret = int.MinValue;
+            foreach(int elm in ints)
+            {
+                if (elm > ret) ret = elm; 
+            }
+            return ret;
         }
     }
 }

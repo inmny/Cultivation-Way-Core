@@ -12,7 +12,6 @@ namespace Cultivation_Way.Content.Harmony
 {
     internal class W_Harmony_Banner
     {
-        private static Font font_STLiti = Font.CreateDynamicFontFromOSFont("STLiti", 18);
         [HarmonyPrefix]
         [HarmonyPatch(typeof(BannerLoader), "load")]
         public static bool bannerloader_load(BannerLoader __instance, Kingdom pKingdom)
@@ -44,7 +43,7 @@ namespace Cultivation_Way.Content.Harmony
             }
             text.fontStyle = UnityEngine.FontStyle.Bold;
             text.fontSize = 18;
-            text.font = font_STLiti;
+            text.font = W_Content_Helper.font_STLiti;
 			text.alignment = TextAnchor.MiddleCenter;
             if (text.text.Length > 1)
             {
