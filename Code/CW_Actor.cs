@@ -339,8 +339,8 @@ namespace Cultivation_Way
             }
             if (level_up_tag != 0)
             {
-                List<CW_Asset_Spell> spells = CW_Library_Manager.instance.spells.search_for_random_learn(CW_Library_Spell.make_tags(CW_Spell_Tag.ATTACK, CW_Spell_Tag.POSITIVE_STATUS, CW_Spell_Tag.DEFEND, CW_Spell_Tag.SUMMON, CW_Spell_Tag.MOVE), Spell_Search_Type.CONTAIN_ANY_TAGS);
-
+                List<CW_Asset_Spell> spells = CW_Library_Manager.instance.spells.search_for_random_learn(CW_Library_Spell.make_tags(CW_Spell_Tag.ATTACK, CW_Spell_Tag.POSITIVE_STATUS, CW_Spell_Tag.DEFEND, CW_Spell_Tag.SUMMON, CW_Spell_Tag.MOVE), Spell_Search_Type.CONTAIN_ANY_TAGS, this);
+                CW_Library_Spell.filter_list(spells, CW_Library_Spell.make_tags(level_up_tag), Spell_Search_Type.CONTAIN_ANY_TAGS);
                 this.filter_allowed_spells(spells);
 
                 if (spells.Count > 0)
@@ -426,7 +426,7 @@ namespace Cultivation_Way
             int second = spells.Count;
             CW_Library_Spell.filter_list_by_element(spells, CW_Library_Spell.make_tags(this.cw_data.element));
             int last = spells.Count;
-            if (last == 0) print(string.Format("No found spells in tags {0} and {1}, before filtering by cultisys:{2}, before filtering by elements:{3}", Convert.ToString((long)CW_Library_Spell.make_tags(this.cw_data.cultisys),16), Convert.ToString((long)CW_Library_Spell.make_tags(this.cw_data.element), 16), first,second));
+            //if (last == 0) print(string.Format("No found spells in tags {0} and {1}, before filtering by cultisys:{2}, before filtering by elements:{3}", Convert.ToString((long)CW_Library_Spell.make_tags(this.cw_data.cultisys),16), Convert.ToString((long)CW_Library_Spell.make_tags(this.cw_data.element), 16), first,second));
         }
         public void learn_cultibook(string cultibook_id) 
         {

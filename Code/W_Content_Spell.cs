@@ -14,8 +14,8 @@ namespace Cultivation_Way.Content
     {
         public static void add_spells()
         {
-            add_bushido_base_spell();
-            add_example_spell();
+            //add_bushido_base_spell();
+            //add_example_spell();
 
             add_fall_rock();
             add_fall_wood();

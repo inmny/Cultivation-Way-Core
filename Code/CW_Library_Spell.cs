@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Others;
+using UnityEngine;
+
 namespace Cultivation_Way.Library
 {
     public enum CW_Spell_Animation_Type
@@ -172,9 +174,9 @@ namespace Cultivation_Way.Library
                 }
             }
         }
-        internal bool judge_can_get()
+        internal bool judge_can_get(CW_Actor actor)
         {
-            return Toolbox.randomChance(this.random_learn_chance);
+            return Toolbox.randomChance(this.random_learn_chance * CW_Element.get_similarity(actor.cw_data.element, this.element) * Mathf.Sqrt(actor.fast_data.intelligence+1));
         }
         public void add_tag(CW_Spell_Tag tag)
         {
@@ -352,7 +354,7 @@ namespace Cultivation_Way.Library
 
             return list;
         }
-        internal List<CW_Asset_Spell> search_for_random_learn(ulong tags, Spell_Search_Type search_type)
+        internal List<CW_Asset_Spell> search_for_random_learn(ulong tags, Spell_Search_Type search_type, CW_Actor actor)
         {
             List<CW_Asset_Spell> list = new List<CW_Asset_Spell>();
             switch (search_type)
@@ -361,7 +363,7 @@ namespace Cultivation_Way.Library
                     {
                         foreach (CW_Asset_Spell asset in this.list)
                         {
-                            if (asset.tags == tags && asset.can_get_by_random && asset.judge_can_get()) list.Add(asset);
+                            if (asset.tags == tags && asset.can_get_by_random && asset.judge_can_get(actor)) list.Add(asset);
                         }
                         break;
                     }
@@ -369,7 +371,7 @@ namespace Cultivation_Way.Library
                     {
                         foreach (CW_Asset_Spell asset in this.list)
                         {
-                            if ((asset.tags & tags) != 0ul && asset.can_get_by_random && asset.judge_can_get()) list.Add(asset);
+                            if ((asset.tags & tags) != 0ul && asset.can_get_by_random && asset.judge_can_get(actor)) list.Add(asset);
                         }
                         break;
                     }
@@ -377,7 +379,7 @@ namespace Cultivation_Way.Library
                     {
                         foreach (CW_Asset_Spell asset in this.list)
                         {
-                            if ((asset.tags | tags)==asset.tags && asset.can_get_by_random && asset.judge_can_get()) list.Add(asset);
+                            if ((asset.tags | tags)==asset.tags && asset.can_get_by_random && asset.judge_can_get(actor)) list.Add(asset);
                         }
                         break;
                     }

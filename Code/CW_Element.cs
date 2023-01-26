@@ -226,7 +226,17 @@ namespace Cultivation_Way
                 }
             }
         }
-
+        public static float get_similarity(CW_Element e1, CW_Element e2)
+        {
+            int mul_result = 0; int modulus_1 = 0; int modulus_2 = 0;
+            for (int j = 0; j < Others.CW_Constants.base_element_types; j++)
+            {
+                mul_result += e1.base_elements[j] * e2.base_elements[j];
+                modulus_1 += e1.base_elements[j] * e2.base_elements[j];
+                modulus_2 += e1.base_elements[j] * e2.base_elements[j];
+            }
+            return (mul_result / Mathf.Sqrt(modulus_1 * modulus_2));
+        }
         private void __normalize(int normalize_ceil)
         {
             float co = 0f;
