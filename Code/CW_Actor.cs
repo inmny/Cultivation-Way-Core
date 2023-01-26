@@ -299,7 +299,7 @@ namespace Cultivation_Way
                 chunk.wakan -= Utils.CW_Utils_Others.compress_raw_wakan(wakan_get, chunk.wakan_level);
             }
             OUT_WAKAN:
-            float health_to_regen = 0;
+            float health_to_regen;
             if((this.cw_data.cultisys & Others.CW_Constants.cultisys_bushido_tag) != 0)
             {
                 health_to_regen = Mathf.Min(this.cw_cur_stats.base_stats.health * Others.CW_Constants.health_regen_valid_percent / 100 - this.fast_data.health, this.cw_status.health_level>1?Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.health_regen, this.cw_status.health_level):this.cw_cur_stats.health_regen);
@@ -336,14 +336,14 @@ namespace Cultivation_Way
             }
             if (level_up_tag != 0)
             {
-                List<CW_Asset_Spell> spells = CW_Library_Manager.instance.spells.search(CW_Library_Spell.make_tags(this.cw_data.element.comp_type(), CW_Library_Spell.make_tags(this.cw_data.cultisys)), Spell_Search_Type.CONTAIN_ANY_TAGS);
+                List<CW_Asset_Spell> spells = CW_Library_Manager.instance.spells.search_for_random_learn(CW_Library_Spell.make_tags(CW_Spell_Tag.ATTACK, CW_Spell_Tag.POSITIVE_STATUS, CW_Spell_Tag.DEFEND, CW_Spell_Tag.SUMMON, CW_Spell_Tag.MOVE), Spell_Search_Type.CONTAIN_ANY_TAGS);
 
-                CW_Library_Spell.filter_in_list(spells, CW_Library_Spell.make_tags(CW_Spell_Tag.ATTACK, CW_Spell_Tag.POSITIVE_STATUS, CW_Spell_Tag.DEFEND, CW_Spell_Tag.SUMMON, CW_Spell_Tag.MOVE), Spell_Search_Type.CONTAIN_ANY_TAGS);
+                this.filter_allowed_spells(spells);
 
                 if (spells.Count > 0)
                 {
                     CW_Asset_Spell spell = spells.GetRandom();
-                    if(spell.can_get_by_random) this.learn_spell(spell);
+                    this.learn_spell(spell);
                 }
                 
             }
@@ -413,8 +413,13 @@ namespace Cultivation_Way
         }
         public void learn_spells(List<CW_Asset_Spell> spells)
         {
-            CW_Library_Spell.filter_in_list(spells, CW_Library_Spell.make_tags(this.cw_data.cultisys), Spell_Search_Type.CONTAIN_ANY_TAGS);
+            this.filter_allowed_spells(spells);
             foreach(CW_Asset_Spell spell in spells) this.learn_spell(spell);
+        }
+        internal void filter_allowed_spells(List<CW_Asset_Spell> spells)
+        {
+            CW_Library_Spell.filter_list(spells, CW_Library_Spell.make_tags(this.cw_data.cultisys), Spell_Search_Type.CONTAIN_ANY_TAGS);
+            CW_Library_Spell.filter_list_by_element(spells, CW_Library_Spell.make_tags(this.cw_data.element));
         }
         public void learn_cultibook(string cultibook_id) 
         {

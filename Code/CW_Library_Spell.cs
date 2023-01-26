@@ -66,6 +66,7 @@ namespace Cultivation_Way.Library
         public string anim_id;
         public int rarity;
         public float free_val;
+        public int min_cost_val;
         public float cost;
         /// <summary>
         /// 暂不使用，学习等级
@@ -93,10 +94,11 @@ namespace Cultivation_Way.Library
         public CW_Delegates.CW_Spell_Action spell_action;
         public CW_Delegates.CW_Spell_Action anim_action;
         public CW_Delegates.CW_Spell_Action damage_action;
+        private float random_learn_chance;
         public CW_Asset_Spell(
             string id, string anim_id, 
             CW_Element element, string element_type_limit = null, 
-            int rarity = 1, float free_val = 1, float cost = 0.01f, int learn_level = 1, int cast_level = 1, bool can_get_by_random = true,
+            int rarity = 1, float free_val = 1, float cost = 0.01f, int min_cost = 20, int learn_level = 1, int cast_level = 1, bool can_get_by_random = true,
             bool cultisys_black_or_white_list = true, List<string> cultisys_list = null, List<string> banned_races = null, 
             CW_Spell_Target_Type target_type = CW_Spell_Target_Type.ACTOR, 
             CW_Spell_Target_Camp target_camp = CW_Spell_Target_Camp.ENEMY, 
@@ -113,8 +115,10 @@ namespace Cultivation_Way.Library
             this.anim_id = anim_id;
             this.element = element;
             this.rarity = rarity;
+            this.random_learn_chance = 5 / (5 + rarity);
             this.free_val = free_val;
             this.cost = cost;
+            this.min_cost_val = min_cost;
             this.learn_level = learn_level;
             this.cast_level = cast_level;
             this.can_get_by_random = can_get_by_random;
@@ -167,6 +171,10 @@ namespace Cultivation_Way.Library
                     this.allowed_cultisys &= CW_Library_Manager.instance.cultisys.get(cultisys)._tag;
                 }
             }
+        }
+        internal bool judge_can_get()
+        {
+            return Toolbox.randomChance(this.random_learn_chance);
         }
         public void add_tag(CW_Spell_Tag tag)
         {
@@ -244,7 +252,28 @@ namespace Cultivation_Way.Library
             tag |= CW_Library_Manager.instance.elements.get(element_id)._tag;
             return tag;
         }
-        internal static void filter_in_list(List<CW_Asset_Spell> spell, ulong tags, Spell_Search_Type search_type)
+        internal static ulong make_tags(CW_Element element, params CW_Spell_Tag[] addition_tags)
+        {
+            ulong tag = make_tags(addition_tags);
+            for(int i = 0; i < element.base_elements.Length; i++)
+            {
+                if (element.base_elements[i] > 0) tag |= 1ul << i;
+            }
+            tag |= element.get_type()._tag;
+            return tag;
+        }
+        internal static void filter_list_by_element(List<CW_Asset_Spell> spell, ulong tags)
+        {
+            int i;
+            for(i=0; i < spell.Count; i++)
+            {
+                if (((spell[i].tags & 0x1f) | tags) != tags) continue;
+                spell.Swap(i, spell.Count - 1);
+                spell.RemoveAt(spell.Count - 1);
+                i--;
+            }
+        }
+        internal static void filter_list(List<CW_Asset_Spell> spell, ulong tags, Spell_Search_Type search_type)
         {
             int i;
             switch (search_type)
@@ -299,7 +328,7 @@ namespace Cultivation_Way.Library
                     {
                         foreach (CW_Asset_Spell asset in this.list)
                         {
-                            if (asset.tags == tags && asset.can_get_by_random) list.Add(asset);
+                            if (asset.tags == tags) list.Add(asset);
                         }
                         break;
                     }
@@ -307,7 +336,7 @@ namespace Cultivation_Way.Library
                     {
                         foreach (CW_Asset_Spell asset in this.list)
                         {
-                            if ((asset.tags & tags) != 0ul && asset.can_get_by_random) list.Add(asset);
+                            if ((asset.tags & tags) != 0ul) list.Add(asset);
                         }
                         break;
                     }
@@ -315,7 +344,40 @@ namespace Cultivation_Way.Library
                     {
                         foreach (CW_Asset_Spell asset in this.list)
                         {
-                            if ((asset.tags | tags)==asset.tags && asset.can_get_by_random) list.Add(asset);
+                            if ((asset.tags | tags) == asset.tags) list.Add(asset);
+                        }
+                        break;
+                    }
+            }
+
+            return list;
+        }
+        internal List<CW_Asset_Spell> search_for_random_learn(ulong tags, Spell_Search_Type search_type)
+        {
+            List<CW_Asset_Spell> list = new List<CW_Asset_Spell>();
+            switch (search_type)
+            {
+                case Spell_Search_Type.EXACT:
+                    {
+                        foreach (CW_Asset_Spell asset in this.list)
+                        {
+                            if (asset.tags == tags && asset.can_get_by_random && asset.judge_can_get()) list.Add(asset);
+                        }
+                        break;
+                    }
+                case Spell_Search_Type.CONTAIN_ANY_TAGS:
+                    {
+                        foreach (CW_Asset_Spell asset in this.list)
+                        {
+                            if ((asset.tags & tags) != 0ul && asset.can_get_by_random && asset.judge_can_get()) list.Add(asset);
+                        }
+                        break;
+                    }
+                case Spell_Search_Type.CONTAIN_ALL_TAGS:
+                    {
+                        foreach (CW_Asset_Spell asset in this.list)
+                        {
+                            if ((asset.tags | tags)==asset.tags && asset.can_get_by_random && asset.judge_can_get()) list.Add(asset);
                         }
                         break;
                     }

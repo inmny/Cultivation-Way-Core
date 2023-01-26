@@ -11,6 +11,17 @@ namespace Cultivation_Way.Content
         internal static void add_buildings()
         {
             add_eastern_human_building();
+            fix_origin_bugs();
+        }
+
+        private static void fix_origin_bugs()
+        {
+            // 修复树阻止建筑升级
+            foreach(CW_Asset_Building building in CW_Library_Manager.instance.buildings.list)
+            {
+                if (building.origin_stats.type == "trees") building.origin_stats.priority = -1;
+                if (building.origin_stats.kingdom == "nature") building.origin_stats.upgradeLevel -= 1;
+            }
         }
 
         private static void add_eastern_human_building()

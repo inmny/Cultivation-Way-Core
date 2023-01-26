@@ -17,7 +17,7 @@ namespace Cultivation_Way.Actions
                 if (cw_actor.cw_data.status.can_culti)
                 {
                     cost += cw_actor.cw_status.wakan * spell_asset.cost;
-                    if(cost > 5)
+                    if(cost > spell_asset.min_cost_val)
                     {
                         cw_actor.cw_status.wakan -= (int)cost;
                         cost = Utils.CW_Utils_Others.get_raw_wakan(cost, cw_actor.cw_status.wakan_level);
@@ -31,12 +31,15 @@ namespace Cultivation_Way.Actions
                 else if ((cw_actor.cw_data.cultisys & Others.CW_Constants.cultisys_bushido_tag) != 0)
                 {
                     float health_cost = (cw_actor.fast_data.health - 10) * spell_asset.cost;
-                    if (health_cost > 5)
+                    if (health_cost > spell_asset.min_cost_val)
                     {
                         cw_actor.fast_data.health -= (int)health_cost;
                         cost += Utils.CW_Utils_Others.get_raw_wakan(health_cost, cw_actor.cw_status.health_level);
                     }
-                    
+                    else
+                    {
+                        cost = -1;
+                    }
                 }
                 return cost;
             }

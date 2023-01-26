@@ -1227,18 +1227,21 @@ namespace Cultivation_Way.Content
             CW_EffectManager.instance.load_as_controller("example_spell_anim", "effects/example/", controller_setting: anim_setting, base_scale: 0.015f);
 
             CW_Asset_Spell spell = new CW_Asset_Spell(
-                    "example", "example_spell_anim", 
-                    new CW_Element(), null, 
-                    1, 1, 0.05f, 1, 1, true,
-                    true, null, null, 
-                    CW_Spell_Target_Type.ACTOR, 
-                    CW_Spell_Target_Camp.ENEMY, 
-                    CW_Spell_Triger_Type.ATTACK, 
-                    CW_Spell_Animation_Type.ON_TARGET, 
-                    CW_SpellAction_Damage.defualt_damage, 
-                    CW_SpellAction_Anim.default_anim, 
-                    null, 
-                    CW_SpellAction_Cost.default_check_and_cost
+                    id:"example", anim_id: "example_spell_anim", 
+                    element:new CW_Element(), element_type_limit: null, 
+                    rarity: 1, free_val: 1, 
+                    cost: 0.05f, min_cost: 20,
+                    learn_level: 1, cast_level: 1, can_get_by_random: true,
+                    cultisys_black_or_white_list: true, 
+                    cultisys_list: null, banned_races: null, 
+                    target_type: CW_Spell_Target_Type.ACTOR, 
+                    target_camp: CW_Spell_Target_Camp.ENEMY, 
+                    triger_type: CW_Spell_Triger_Type.ATTACK, 
+                    anim_type: CW_Spell_Animation_Type.ON_TARGET, 
+                    damage_action: CW_SpellAction_Damage.defualt_damage, 
+                    anim_action: CW_SpellAction_Anim.default_anim, 
+                    spell_action: null, 
+                    check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
                     );
             spell.add_tag(CW_Spell_Tag.ATTACK);
             spell.add_tag(CW_Spell_Tag.IMMORTAL);
