@@ -302,7 +302,10 @@ namespace Cultivation_Way
             float health_to_regen;
             if((this.cw_data.cultisys & Others.CW_Constants.cultisys_bushido_tag) != 0)
             {
-                health_to_regen = Mathf.Min(this.cw_cur_stats.base_stats.health * Others.CW_Constants.health_regen_valid_percent / 100 - this.fast_data.health, this.cw_status.health_level>1?Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.health_regen, this.cw_status.health_level):this.cw_cur_stats.health_regen);
+                health_to_regen = 
+                    this.cw_cur_stats.base_stats.health * Others.CW_Constants.health_regen_valid_percent / 100 > this.fast_data.health ? 
+                    (this.cw_status.health_level>1?Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.health_regen, this.cw_status.health_level):this.cw_cur_stats.health_regen)
+                    :0;
             }
             else
             {

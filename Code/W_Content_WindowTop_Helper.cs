@@ -43,5 +43,23 @@ namespace Cultivation_Way.Content
             }
             return ret;
         }
+        internal static List<CW_Actor> sort_creatures_by_health_level(int amount)
+        {
+            collect_actors();
+            List<CW_Actor> ret = new List<CW_Actor>();
+            _actors.Sort((left, right) =>
+            {
+                float l_1 = left.cw_data.cultisys_level[1];
+                float l_2 = left.cw_data.cultisys_level[1];
+                if (l_1 == l_2) return 0;
+                return l_1 < l_2 ? 1 : -1;
+            });
+            amount = Math.Min(amount, _actors.Count);
+            for (int i = 0; i < amount; i++)
+            {
+                ret.Add(_actors[i]);
+            }
+            return ret;
+        }
     }
 }

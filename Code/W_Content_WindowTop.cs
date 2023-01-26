@@ -404,6 +404,7 @@ namespace Cultivation_Way.Content
         void OnDisable()
         {
             W_Content_WindowTop_Helper.clear_tmp_lists();
+            clear();
         }
         private void clear()
         {
@@ -491,7 +492,15 @@ namespace Cultivation_Way.Content
 
             update_window_type();
         }
-
+        private void __sort_by_health_level()
+        {
+            clear();
+            cur_top_type = Top_Type.CREATURE;
+            List<CW_Actor> list = W_Content_WindowTop_Helper.sort_creatures_by_health_level(sort_setting.top_k);
+            foreach (CW_Actor actor in list) add_creature_info(actor);
+            scroll_resize();
+            update_window_type();
+        }
         private void add_creature_info(CW_Actor actor)
         {
             CW_Sim_Creature_Info_Elm actor_info = Instantiate(prefab_unit, content_transform).GetComponent<CW_Sim_Creature_Info_Elm>();

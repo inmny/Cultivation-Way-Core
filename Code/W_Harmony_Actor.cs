@@ -253,11 +253,7 @@ namespace Cultivation_Way.Content.Harmony
                 actor.cur_spells = new List<string>();
                 CW_Actor.set_data(actor, actor.fast_data);
                 CW_Actor.set_professionAsset(actor, AssetManager.professions.get(pData.status.profession));
-                if (Others.CW_Constants.force_load_units && actor.fast_data == null)
-                {
-                    actor.fast_data = new ActorStatus();
-                   
-                }
+
                 __actor_updateStats(actor);
 
                 CW_Library_Manager.instance.cultisys.set_cultisys(actor);

@@ -126,7 +126,7 @@ namespace Cultivation_Way.Content
         }
         private static bool bushido_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
         {
-            return cw_actor.cw_cur_stats.base_stats.health * cw_actor.cw_cur_stats.base_stats.damage * cw_actor.cw_cur_stats.base_stats.armor / ((cw_actor.cw_stats.cw_base_stats.base_stats.health+1) * (cw_actor.cw_stats.cw_base_stats.base_stats.damage+1) * (cw_actor.cw_stats.cw_base_stats.base_stats.armor+1)) > 1.2f;
+            return cw_actor.cw_cur_stats.base_stats.health * cw_actor.cw_cur_stats.base_stats.damage * cw_actor.cw_cur_stats.base_stats.armor / ((cw_actor.cw_stats.cw_base_stats.base_stats.health+1) * (cw_actor.cw_stats.cw_base_stats.base_stats.damage+1) * (cw_actor.cw_stats.cw_base_stats.base_stats.armor+1)) >= 1.0f;
         }
         private static bool bushido_level_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
         {
