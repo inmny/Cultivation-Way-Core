@@ -32,12 +32,12 @@ namespace Cultivation_Way.Content
 
             load_status_effects_anims();
         }
-
+        // 红莲业火
         private static void add_loltus_fire_status_effect()
         {
             CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
                 id: "status_loltus_fire",
-                anim_id: null,//"burning_anim",
+                anim_id: "status_loltus_fire_anim",//"burning_anim",
                 bonus_stats: null,
                 effect_val: 5,
                 effect_time: 60f,
@@ -45,12 +45,12 @@ namespace Cultivation_Way.Content
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
-
+        // 九幽冥火
         private static void add_fen_fire_status_effect()
         {
             CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
                 id: "status_fen_fire",
-                anim_id: null,//"burning_anim",
+                anim_id: "status_fen_fire_anim",//"burning_anim",
                 bonus_stats: null,
                 effect_val: 5,
                 effect_time: 60f,
@@ -58,12 +58,12 @@ namespace Cultivation_Way.Content
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
-
+        // 三昧真火
         private static void add_samadhi_fire_status_effect()
         {
             CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
                 id: "status_samadhi_fire",
-                anim_id: null,//"burning_anim",
+                anim_id: "status_samadhi_fire_anim",
                 bonus_stats: null,
                 effect_val: 5,
                 effect_time: 60f,
@@ -83,6 +83,10 @@ namespace Cultivation_Way.Content
             {
                 CW_EffectManager.instance.load_as_controller("ice_bound_anim_" + i, "effects/ice_bound_" + i + "/", controller_setting: anim_setting, base_scale: 1f);
             }
+            anim_setting.loop_time_limit = 120f;
+            CW_EffectManager.instance.load_as_controller("status_samadhi_fire_anim", "effects/samadhi_fire", controller_setting: anim_setting, base_scale: 1f);
+            CW_EffectManager.instance.load_as_controller("status_fen_fire_anim", "effects/fen_fire", controller_setting: anim_setting, base_scale: 1f);
+            CW_EffectManager.instance.load_as_controller("status_loltus_fire_anim", "effects/loltus_fire", controller_setting: anim_setting, base_scale: 1f);
         }
         // 自定义效果
         private static void add_status_effect_for_custom()
@@ -252,7 +256,7 @@ namespace Cultivation_Way.Content
             bound_stats.base_stats.attackSpeed = -100000f;
             CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
                 id: "status_ice_bound",
-                anim_id: null,//"burning_anim",
+                anim_id: null,
                 bonus_stats: bound_stats,
                 effect_time: 6f,
                 action_on_get: ice_bound_on_get,

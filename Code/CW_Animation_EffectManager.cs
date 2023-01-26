@@ -52,6 +52,8 @@ namespace Cultivation_Way.Animation
             }catch(Exception e)
             {
                 Debug.LogError(string.Format("An error happen in update '{0}'", controllers[i].id));
+                Debug.LogError(e.Message);
+                Debug.LogError(e.StackTrace);
             }
         }
         public CW_EffectController load_as_controller(string id, string path_to_anim, Vector2 base_offset, int anim_limit = 100, float base_scale = 1.0f, CW_AnimationSetting controller_setting = null)
