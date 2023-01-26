@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Cultivation_Way
 {
@@ -507,7 +508,7 @@ namespace Cultivation_Way
             this.soul_regen += (int)(this.soul_regen * this.mod_soul_regen / 100f);
             this.spell_armor += (int)(this.spell_armor * this.mod_spell_armor / 100f);
             this.spell_range *= 1f + this.mod_spell_range / 100f;
-            this.wakan += (int)(this.wakan * this.mod_wakan / 100f);
+            this.wakan += (int)(this.wakan * Mathf.Max(this.mod_wakan,-70f) / 100f);
             this.wakan_regen += (int)(this.wakan_regen * this.mod_wakan_regen / 100f);
         }
         public void apply_others()
