@@ -23,9 +23,13 @@ namespace Cultivation_Way.Content.Harmony
             if(((CW_Actor)__instance).__get_hit(pDamage, (Others.CW_Enums.CW_AttackType)pType, pAttacker, pSkipIfShake))
             {
                 __instance.base_data.health++;
+                pDamage = 0f;
+                return true;
             }
-            pDamage = 0f;
-            return true;
+            else
+            {
+                return false;
+            }
         }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Actor), "updateAge")]
@@ -445,7 +449,8 @@ namespace Cultivation_Way.Content.Harmony
             cw_actor.cw_status.wakan = Mathf.Min(cw_actor.cw_status.wakan, cw_actor.cw_cur_stats.wakan);
             cw_actor.fast_data.health = Mathf.Min(cw_actor.fast_data.health, cw_actor.cw_cur_stats.base_stats.health);
             cw_actor.cw_status.max_age = (int)((cw_actor.cw_stats.origin_stats.maxAge+ cw_actor.cw_cur_stats.age_bonus) * (1f + cw_actor.cw_cur_stats.mod_age/100f));
-            CW_Actor.set_s_attackSpeed_seconds(actor, (300f - cw_actor.cw_cur_stats.base_stats.attackSpeed) / (100f + cw_actor.cw_cur_stats.base_stats.attackSpeed));
+            cw_actor.m_attackSpeed_seconds = (300f - cw_actor.cw_cur_stats.base_stats.attackSpeed) / (100f + cw_actor.cw_cur_stats.base_stats.attackSpeed);
+            CW_Actor.set_s_attackSpeed_seconds(actor, cw_actor.m_attackSpeed_seconds);
             // 设置攻击样式以及武器贴图
             CW_Asset_Item weapon_asset = cw_actor.get_weapon_asset();
             CW_Actor.set_s_attackType(actor, weapon_asset.origin_asset.attackType);

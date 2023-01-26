@@ -193,9 +193,9 @@ namespace Cultivation_Way.Utils
             if (target.objectType != MapObjectType.Actor) return null;
             return ((CW_Actor)target).add_status_effect(status_id, as_id, user);
         }
-        internal static void cause_damage_to_target(BaseSimObject user, BaseSimObject target, float damage, Others.CW_Enums.CW_AttackType attack_type = Others.CW_Enums.CW_AttackType.Spell)
+        internal static bool cause_damage_to_target(BaseSimObject user, BaseSimObject target, float damage, Others.CW_Enums.CW_AttackType attack_type = Others.CW_Enums.CW_AttackType.Spell, bool ignore_user_alive = true)
         {
-			if (target == null || !target.base_data.alive || user == null || !user.base_data.alive) return;
+			if (target == null || !target.base_data.alive || (!ignore_user_alive && (user == null || !user.base_data.alive))) return false;
 			if (target.objectType == MapObjectType.Actor)
 			{
 				((CW_Actor)target).get_hit(damage, true, attack_type, user, true);
@@ -204,6 +204,7 @@ namespace Cultivation_Way.Utils
 			{
 				CW_Building.func_getHit((Building)target, damage, true, (AttackType)attack_type, user, true);
 			}
+            return true;
 		}
 		public static TileIsland get_random_ground_island(bool pMinRegions = true)
         {

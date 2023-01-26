@@ -22,7 +22,7 @@ namespace Cultivation_Way
         public List<string> cur_spells = null;
         internal WorldTimer fast_shake_timer = null;
         public bool can_act = true;
-        
+        internal float m_attackSpeed_seconds = 0;
         private static List<string> _status_effects_to_remove = new List<string>();
         /// <summary>
         /// 仅提供高效访问，待权限开放后删除
@@ -33,6 +33,7 @@ namespace Cultivation_Way
         public static Func<Actor, BaseStats> get_curstats = CW_ReflectionHelper.create_getter<Actor, BaseStats>("curStats");
         public static Func<Actor, BaseSimObject> get_attackedBy = CW_ReflectionHelper.create_getter<Actor, BaseSimObject>("attackedBy");
         public static Func<Actor, BaseSimObject> get_attackTarget = CW_ReflectionHelper.create_getter<Actor, BaseSimObject>("attackTarget");
+        public static Func<Actor, float> get_attackTimer = CW_ReflectionHelper.create_getter<Actor, float>("attackTimer");
         public static Func<Actor, Dictionary<string, StatusEffectData>> get_activeStatus_dict = CW_ReflectionHelper.create_getter<Actor, Dictionary<string, StatusEffectData>>("activeStatus_dict");
         public static Func<Actor, PersonalityAsset> get_s_personality = CW_ReflectionHelper.create_getter<Actor, PersonalityAsset>("s_personality");
         public static Func<Actor, bool> get_event_full_heal = CW_ReflectionHelper.create_getter<Actor, bool>("event_full_heal");
@@ -179,7 +180,7 @@ namespace Cultivation_Way
             if (damage_reduce < 0) damage_reduce = 0;
             damage *= 1 - damage_reduce;
 
-            if(damage < 0) damage = 0;
+            if (damage < 0) return false; 
             // 反伤
             if(damage > 0 && attack_type != Others.CW_Enums.CW_AttackType.Spell && attack_type != Others.CW_Enums.CW_AttackType.God && attack_type != Others.CW_Enums.CW_AttackType.Status_God)
             {

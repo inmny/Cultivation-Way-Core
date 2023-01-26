@@ -83,7 +83,7 @@ namespace Cultivation_Way.Content
             {
                 CW_EffectManager.instance.load_as_controller("ice_bound_anim_" + i, "effects/ice_bound_" + i + "/", controller_setting: anim_setting, base_scale: 1f);
             }
-            anim_setting.loop_time_limit = 120f;
+            anim_setting.loop_time_limit = 60f;
             CW_EffectManager.instance.load_as_controller("status_samadhi_fire_anim", "effects/samadhi_fire", controller_setting: anim_setting, base_scale: 1f);
             CW_EffectManager.instance.load_as_controller("status_fen_fire_anim", "effects/fen_fire", controller_setting: anim_setting, base_scale: 1f);
             CW_EffectManager.instance.load_as_controller("status_loltus_fire_anim", "effects/loltus_fire", controller_setting: anim_setting, base_scale: 1f);
@@ -342,7 +342,8 @@ namespace Cultivation_Way.Content
         }
         private static void loltus_fire_on_update(CW_StatusEffectData status_effect, BaseSimObject _object)
         {
-            if (_object.objectType != MapObjectType.Actor || ((CW_Actor)_object).fast_data.kills==0) return;
+            if (_object.objectType != MapObjectType.Actor) return;
+            if (((CW_Actor)_object).fast_data.kills == 0) status_effect.force_finish();
             Utils.CW_SpellHelper.cause_damage_to_target(status_effect.user, _object, ((CW_Actor)_object).fast_data.kills * status_effect.effect_val, Others.CW_Enums.CW_AttackType.Status_Spell);
         }
         private static void fen_fire_on_update(CW_StatusEffectData status_effect, BaseSimObject _object)
