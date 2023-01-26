@@ -115,7 +115,7 @@ namespace Cultivation_Way.Library
             this.anim_id = anim_id;
             this.element = element;
             this.rarity = rarity;
-            this.random_learn_chance = 5 / (5 + rarity);
+            this.random_learn_chance = 5f / (5 + rarity);
             this.free_val = free_val;
             this.cost = cost;
             this.min_cost_val = min_cost;

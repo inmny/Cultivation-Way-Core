@@ -421,8 +421,12 @@ namespace Cultivation_Way
         }
         internal void filter_allowed_spells(List<CW_Asset_Spell> spells)
         {
+            int first = spells.Count;
             CW_Library_Spell.filter_list(spells, CW_Library_Spell.make_tags(this.cw_data.cultisys), Spell_Search_Type.CONTAIN_ANY_TAGS);
+            int second = spells.Count;
             CW_Library_Spell.filter_list_by_element(spells, CW_Library_Spell.make_tags(this.cw_data.element));
+            int last = spells.Count;
+            if (last == 0) print(string.Format("No found spells in tags {0} and {1}, before filtering by cultisys:{2}, before filtering by elements:{3}", Convert.ToString((long)CW_Library_Spell.make_tags(this.cw_data.cultisys),16), Convert.ToString((long)CW_Library_Spell.make_tags(this.cw_data.element), 16), first,second));
         }
         public void learn_cultibook(string cultibook_id) 
         {
