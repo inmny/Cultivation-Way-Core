@@ -19,6 +19,7 @@ namespace Cultivation_Way
         public BuildingData fast_data;
 
         internal static Action<Building, float, bool, AttackType, BaseSimObject, bool> func_getHit = (Action<Building, float, bool, AttackType, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Building>("getHit");
+        public static Action<Building, bool> func_startDestroyBuilding = (Action<Building, bool>)CW_ReflectionHelper.get_method<Building>("startDestroyBuilding");
         public void get_hit(float damage, bool flash = true, Others.CW_Enums.CW_AttackType type = Others.CW_Enums.CW_AttackType.Other, BaseSimObject attacker = null, bool skip_if_shake = true)
         {
             func_getHit(this, damage, flash, (AttackType)type, attacker, skip_if_shake);
