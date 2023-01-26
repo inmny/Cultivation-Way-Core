@@ -578,6 +578,7 @@ namespace Cultivation_Way.Content
                 id: "stxh", anim_id: "stxh_{0}",
                 new CW_Element(), element_type_limit: null,
                 rarity: 1, free_val: 1, cost: 0.3f, learn_level: 1, cast_level: 1,
+                can_get_by_random: false,
                 cultisys_black_or_white_list: true, cultisys_list: null,
                 banned_races: null,
                 target_type: CW_Spell_Target_Type.ACTOR,

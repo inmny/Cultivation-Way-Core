@@ -332,7 +332,7 @@ namespace Cultivation_Way.Content.Harmony
             if (!String.IsNullOrEmpty(cw_actor.cw_data.special_body_id) && CW_Library_Manager.instance.special_bodies.dict.ContainsKey(cw_actor.cw_data.special_body_id))
             {
                 cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id).bonus_stats);
-                // cw_actor.cur_spells.Add("stxh");
+                cw_actor.cur_spells.Add("stxh");
             }
             // 添加修炼产生的属性增幅
             if (cw_actor.cw_status.can_culti)
