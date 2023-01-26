@@ -267,7 +267,7 @@ namespace Cultivation_Way.Library
             int i;
             for(i=0; i < spell.Count; i++)
             {
-                if (((spell[i].tags & 0x1f) | tags) != tags) continue;
+                if (((spell[i].tags & 0x1f) | tags) == tags) continue;
                 spell.Swap(i, spell.Count - 1);
                 spell.RemoveAt(spell.Count - 1);
                 i--;

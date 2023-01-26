@@ -41,7 +41,7 @@ namespace Cultivation_Way.Content.Harmony
             {
                 cw_actor.fast_data.age++;
                 // 允许血量超限
-                cw_actor.fast_data.health += (int)(Others.CW_Constants.bushido_force_culti_co * cw_actor.cw_cur_stats.base_stats.health);
+                cw_actor.fast_data.health += (int)(Others.CW_Constants.bushido_force_culti_co/cw_actor.cw_status.health_level * cw_actor.cw_cur_stats.base_stats.health);
                 cw_actor.checkLevelUp();
             }
             if(!__new_updateAge(cw_actor.fast_data, cw_actor.cw_data.status))

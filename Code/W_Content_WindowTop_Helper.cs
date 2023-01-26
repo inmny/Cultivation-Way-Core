@@ -32,7 +32,7 @@ namespace Cultivation_Way.Content
             _actors.Sort((left, right) =>
             {
                 float l_1 = Utils.CW_Utils_Others.max_of(left.cw_data.cultisys_level) * left.cw_status.health_level * left.cw_status.wakan_level;
-                float l_2 = Utils.CW_Utils_Others.max_of(right.cw_data.cultisys_level) * left.cw_status.health_level * right.cw_status.wakan_level;
+                float l_2 = Utils.CW_Utils_Others.max_of(right.cw_data.cultisys_level) * right.cw_status.health_level * right.cw_status.wakan_level;
                 if (l_1 == l_2) return 0;
                 return l_1 < l_2 ? 1 : -1;
             });
@@ -49,8 +49,8 @@ namespace Cultivation_Way.Content
             List<CW_Actor> ret = new List<CW_Actor>();
             _actors.Sort((left, right) =>
             {
-                float l_1 = left.cw_data.cultisys_level[1];
-                float l_2 = left.cw_data.cultisys_level[1];
+                float l_1 = (left.cw_data.cultisys&0x2)>0?left.cw_data.cultisys_level[1]:-1;
+                float l_2 = (right.cw_data.cultisys & 0x2) > 0 ? right.cw_data.cultisys_level[1] : -1;
                 if (l_1 == l_2) return 0;
                 return l_1 < l_2 ? 1 : -1;
             });

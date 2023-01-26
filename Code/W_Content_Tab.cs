@@ -145,7 +145,7 @@ namespace Cultivation_Way.Content
                 );
             add_button(
                 create_button(
-                    "CW_DecreaseWakan", "ui/Icons/iconDecreaseWakan",
+                    "CW_DecreaseWakan", "ui/Icons/iconWakan_Decrease",
                     null, ButtonType.GodPower
                 ),
                 CW_Tab_Button_Type.TOOL
