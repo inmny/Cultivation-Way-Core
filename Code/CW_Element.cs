@@ -204,21 +204,11 @@ namespace Cultivation_Way
             int length = asset_list.Count;
             float min_no_similarity = 10000f;
             float tmp_no_similarity;
-            int mul_result;
-            int modulus_1;
-            int modulus_2;
             for (i = 0; i < length; i++)
             {
-                mul_result = 0; modulus_1 = 0; modulus_2 = 0;
-                for (j = 0; j < Others.CW_Constants.base_element_types; j++)
-                {
-                    mul_result += asset_list[i].base_elements[j] * this.base_elements[j];
-                    modulus_1 += this.base_elements[j] * this.base_elements[j];
-                    modulus_2 += asset_list[i].base_elements[j] * asset_list[i].base_elements[j];
-                }
                 // 如果完全不同，那么tmp为1，完全一致则为0
                 // 加上稀有度影响
-                tmp_no_similarity = (1-(mul_result / Mathf.Sqrt(modulus_1 * modulus_2))) * asset_list[i].rarity;
+                tmp_no_similarity = (1 - __get_similarity(asset_list[i].base_elements, this.base_elements)) * asset_list[i].rarity;
                 if(tmp_no_similarity < min_no_similarity || (tmp_no_similarity==min_no_similarity && asset_list[i].rarity > Library.CW_Library_Manager.instance.elements.get(this.type_id).rarity))
                 {
                     min_no_similarity = tmp_no_similarity;
@@ -226,16 +216,21 @@ namespace Cultivation_Way
                 }
             }
         }
-        public static float get_similarity(CW_Element e1, CW_Element e2)
+        private static float __get_similarity(int[] e1, int[] e2)
         {
             int mul_result = 0; int modulus_1 = 0; int modulus_2 = 0;
             for (int j = 0; j < Others.CW_Constants.base_element_types; j++)
             {
-                mul_result += e1.base_elements[j] * e2.base_elements[j];
-                modulus_1 += e1.base_elements[j] * e2.base_elements[j];
-                modulus_2 += e1.base_elements[j] * e2.base_elements[j];
+                mul_result += e1[j] * e2[j];
+                modulus_1 += e1[j] * e1[j];
+                modulus_2 += e2[j] * e2[j];
             }
-            return (mul_result / Mathf.Sqrt(modulus_1 * modulus_2));
+            //if (modulus_1 * modulus_2 == 0) return 1;
+            return (mul_result * mul_result / (float)(modulus_1 * modulus_2));
+        }
+        public static float get_similarity(CW_Element e1, CW_Element e2)
+        {
+            return __get_similarity(e1.base_elements, e2.base_elements);
         }
         private void __normalize(int normalize_ceil)
         {

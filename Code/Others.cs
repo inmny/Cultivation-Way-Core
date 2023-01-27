@@ -13,6 +13,7 @@ namespace Cultivation_Way.Others
         public const bool force_load_units = true;
         public const bool force_load_cities = true;
         public const int base_element_types = 5;
+        public const float max_anim_time = 600f;
         public const float max_anim_trace_length = 1000f;
         public const float default_anim_trace_grad = 2f;
         public const string default_anim_layer_name = "EffectsTop";
@@ -20,7 +21,7 @@ namespace Cultivation_Way.Others
         public const int wakan_level_co = 1000;
         public const int wakan_regen_valid_percent = 40;
         public const int health_regen_valid_percent = 40;
-        public const int fix_cultibook_line = 1000;
+        public const int fix_cultibook_line = 10000;
         public const int cultibook_spell_limit = 4;
         public const int cultibook_levelup_require = 5;
         public const int cultibook_max_level = 9;
@@ -56,6 +57,7 @@ namespace Cultivation_Way.Others
         public delegate void CW_Spell_Action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost);
         public delegate float CW_Spell_Cost_Action(CW_Asset_Spell spell_asset, BaseSimObject pUser);
         public delegate void CW_WorldEvent_Action(CW_Asset_WorldEvent event_asset);
+        public delegate CW_BaseStats CW_Cultisys_Stats(CW_Actor cw_actor, CW_Asset_CultiSys cultisys, int level);
         public delegate bool CW_Cultisys_Judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys);
         public delegate bool CW_Cultisys_Level_Judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys);
     }

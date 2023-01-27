@@ -419,7 +419,7 @@ namespace Cultivation_Way.Content
             health_regen.setValue(cw_actor.cw_cur_stats.health_regen);
             shield_regen.setValue(cw_actor.cw_cur_stats.shield_regen);
             wakan_regen.setValue(cw_actor.cw_cur_stats.wakan_regen);
-            culti_velo_co.setValue(100f*cw_actor.cw_status.culti_velo*(1+cw_actor.cw_cur_stats.mod_cultivation/100),"%");
+            culti_velo_co.setValue(100f*cw_actor.cw_status.culti_velo,"%");
 
             Sprite sprite = (Sprite)Resources.Load("ui/Icons/" + cw_actor.stats.icon, typeof(Sprite));
             icon.sprite = sprite;

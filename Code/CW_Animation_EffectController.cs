@@ -28,10 +28,12 @@ namespace Cultivation_Way.Animation
         /// 生成的动画的默认设置
         /// </summary>
         public CW_AnimationSetting default_setting;
-        internal CW_EffectController(int anim_limit, CW_AnimationSetting setting, Sprite[] anim, GameObject default_prefab, float base_scale)
+        internal CW_EffectController(string id, int anim_limit, CW_AnimationSetting setting, Sprite[] anim, GameObject default_prefab, float base_scale)
         {
             this.base_offset = Vector2.zero;
-            prefab = UnityEngine.Object.Instantiate(default_prefab);
+            prefab = UnityEngine.Object.Instantiate(default_prefab, Main.instance.transform);
+            prefab.name = "prefab_" + id;
+            this.id = id;
             prefab.transform.localScale = new Vector3(base_scale, base_scale, prefab.transform.localScale.z);
 
             SpriteRenderer renderer = prefab.GetComponent<SpriteRenderer>();
@@ -48,10 +50,12 @@ namespace Cultivation_Way.Animation
             this.anim = anim;
             cur_anim_nr = 0;
         }
-        internal CW_EffectController(int anim_limit, CW_AnimationSetting setting, Sprite[] anim, GameObject default_prefab, float base_scale, Vector2 base_offset)
+        internal CW_EffectController(string id, int anim_limit, CW_AnimationSetting setting, Sprite[] anim, GameObject default_prefab, float base_scale, Vector2 base_offset)
         {
             this.base_offset = base_offset;
-            prefab = UnityEngine.Object.Instantiate(default_prefab);
+            prefab = UnityEngine.Object.Instantiate(default_prefab, Main.instance.transform);
+            prefab.name = "prefab_" + id;
+            this.id = id;
             prefab.transform.localScale = new Vector3(base_scale, base_scale, prefab.transform.localScale.z);
             SpriteRenderer renderer = prefab.GetComponent<SpriteRenderer>();
             renderer.sortingLayerName = setting.layer_name;

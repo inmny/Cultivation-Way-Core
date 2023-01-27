@@ -18,15 +18,10 @@ namespace Cultivation_Way
         public string family_name;
         public string pope_id;
         public List<Library.CW_Family_Member_Info> children_info;
-        /**
         ~CW_ActorData()
         {
-            CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cultibook_id);
-            if (cultibook != null && (--cultibook.cur_culti_nr) == 0) { cultibook.try_deprecate();  }
-            WorldBoxConsole.Console.print("Destruct");
-            if (cultibook != null) WorldBoxConsole.Console.print(string.Format("Cultibook {0}:{1} in destruct cw_actordata", cultibook.id, cultibook.cur_culti_nr));
+            WorldBoxConsole.Console.print("Destruct CW_ActorData");
         }
-        */
         internal void pre_learn_cultibook(CW_Asset_CultiBook cultibook)
         {
             if (cultibook == null) return;

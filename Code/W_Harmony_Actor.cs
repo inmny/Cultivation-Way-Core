@@ -28,6 +28,10 @@ namespace Cultivation_Way.Content.Harmony
             }
             else
             {
+                if (pAttacker != __instance)
+                {
+                    CW_Actor.set_attackedBy(__instance, pAttacker);
+                }
                 return false;
             }
         }
@@ -340,9 +344,10 @@ namespace Cultivation_Way.Content.Harmony
                 // 添加体系的属性影响
                 tmp1 = cw_actor.cw_data.cultisys;
                 len = CW_Library_Manager.instance.cultisys.list.Count;
+                CW_BaseStats cultisys_bonus_stats = new CW_BaseStats();
                 for (i = 0; i < len && tmp1 > 0; i++)
                 {
-                    if ((tmp1 & 0x1) != 0) { cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultisys.get_bonus_stats(i, cw_actor.cw_data.cultisys_level[i])); }
+                    if ((tmp1 & 0x1) != 0) { cultisys_bonus_stats.change_to_better((CW_Library_Manager.instance.cultisys.get_bonus_stats(i, cw_actor.cw_data.cultisys_level[i], cw_actor))); }
                     tmp1 >>= 1;
                 }
                 // 添加功法的属性影响
@@ -455,6 +460,7 @@ namespace Cultivation_Way.Content.Harmony
             cw_actor.cw_status.wakan = Mathf.Min(cw_actor.cw_status.wakan, cw_actor.cw_cur_stats.wakan);
             cw_actor.fast_data.health = Mathf.Min(cw_actor.fast_data.health, cw_actor.cw_cur_stats.base_stats.health);
             cw_actor.cw_status.max_age = (int)((cw_actor.cw_stats.origin_stats.maxAge+ cw_actor.cw_cur_stats.age_bonus) * (1f + cw_actor.cw_cur_stats.mod_age/100f));
+            cw_actor.cw_status.culti_velo = cw_actor.cw_stats.culti_velo * (1 + cw_actor.cw_cur_stats.mod_cultivation / 100f);
             cw_actor.m_attackSpeed_seconds = (300f - cw_actor.cw_cur_stats.base_stats.attackSpeed) / (100f + cw_actor.cw_cur_stats.base_stats.attackSpeed);
             CW_Actor.set_s_attackSpeed_seconds(actor, cw_actor.m_attackSpeed_seconds);
             // 设置攻击样式以及武器贴图

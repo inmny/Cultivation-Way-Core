@@ -14,7 +14,7 @@ namespace Cultivation_Way.Actions
             {
                 float cost = -1;
                 CW_Actor cw_actor = (CW_Actor)user;
-                if (cw_actor.cw_data.status.can_culti)
+                if ((spell_asset.tags & (1ul<<(int)CW_Spell_Tag.IMMORTAL))>0)
                 {
                     cost += cw_actor.cw_status.wakan * spell_asset.cost;
                     if(cost > spell_asset.min_cost_val)
@@ -28,7 +28,7 @@ namespace Cultivation_Way.Actions
                     }
                 }
 
-                else if ((cw_actor.cw_data.cultisys & Others.CW_Constants.cultisys_bushido_tag) != 0)
+                else if ((spell_asset.tags & (1ul << (int)CW_Spell_Tag.BUSHIDO)) > 0)
                 {
                     float health_cost = (cw_actor.fast_data.health - 10) * spell_asset.cost;
                     if (health_cost > spell_asset.min_cost_val)

@@ -74,6 +74,7 @@ namespace Cultivation_Way
         public static Action<Actor> func_create = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("create");
         internal static Action<Actor, float, bool, AttackType, BaseSimObject, bool> func_getHit = (Action<Actor, float, bool, AttackType, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("getHit");
         public static Action<Actor, float> func_updateColorEffect = (Action<Actor, float>)CW_ReflectionHelper.get_method<Actor>("updateColorEffect");
+        public static Action<Actor, Vector3, WorldTile, bool, bool, float> func_punchTargetAnimation = (Action<Actor, Vector3, WorldTile, bool, bool, float>)CW_ReflectionHelper.get_method<Actor>("punchTargetAnimation");
         #endregion
         public void start_color_effect(string type, float time)
         {
@@ -171,7 +172,7 @@ namespace Cultivation_Way
             // 区分法抗和物抗作用
             if(attack_type == Others.CW_Enums.CW_AttackType.Spell || attack_type == Others.CW_Enums.CW_AttackType.Status_Spell)
             {
-                damage_reduce = this.cw_cur_stats.base_stats.armor / (100 + this.cw_cur_stats.spell_armor);
+                damage_reduce = this.cw_cur_stats.spell_armor / (100 + this.cw_cur_stats.spell_armor);
             }
             else if (attack_type != Others.CW_Enums.CW_AttackType.God && attack_type!= Others.CW_Enums.CW_AttackType.Status_God)
             {
@@ -262,7 +263,7 @@ namespace Cultivation_Way
             }
             if(this.cw_status.shield < this.cw_cur_stats.shield)
             {
-                this.cw_status.shield += Mathf.Min((int)Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.shield_regen, this.cw_status.wakan_level), this.cw_cur_stats.shield - this.cw_status.shield);
+                this.cw_status.shield += Mathf.Min(this.cw_cur_stats.shield_regen, this.cw_cur_stats.shield - this.cw_status.shield);
             }
             
             if (this.cw_status.can_culti && this.cw_status.wakan < this.cw_cur_stats.wakan)
@@ -271,7 +272,7 @@ namespace Cultivation_Way
                 float chunk_co = chunk.wakan_level;
                 // 计算人物应得的level 1灵气量
                 // 修炼获取
-                wakan_get += (int)((1 + this.cw_cur_stats.mod_cultivation / 100) * this.cw_data.status.culti_velo * chunk_co);
+                wakan_get += (int)(this.cw_data.status.culti_velo * chunk_co);
                 wakan_get_count[wakan_get]++;
 
                 if (this.cw_status.wakan * 100  < this.cw_cur_stats.wakan * Others.CW_Constants.wakan_regen_valid_percent)

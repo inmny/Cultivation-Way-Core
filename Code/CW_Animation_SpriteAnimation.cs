@@ -98,6 +98,12 @@ namespace Cultivation_Way.Animation
             {
                 return;
             }
+            play_time += elapsed;
+            if ( play_time > Others.CW_Constants.max_anim_time)
+            {
+                isOn = false;
+                return;
+            }
             if (has_end)
             {
                 end_froze_time += elapsed;
@@ -105,7 +111,6 @@ namespace Cultivation_Way.Animation
                 isOn = false;
                 return;
             }
-            play_time += elapsed;
             if (elapsed < next_frame_time)
             {
                 next_frame_time -= elapsed;
@@ -266,6 +271,12 @@ namespace Cultivation_Way.Animation
             if (deepcopy) { this.setting = setting.__deepcopy(); this.setting.possible_associated = false; }
             else { this.setting = setting; this.setting.possible_associated = true; }
             apply_setting(src_vec, dst_vec, src_object, dst_object);
+        }
+        public void set_alpha(float alpha)
+        {
+            Color color = this.renderer.color;
+            color.a = alpha;
+            renderer.color = color;
         }
         /// <summary>
         /// 获取动画设置原本/拷贝，请在知道你在做什么的情况下谨慎操作

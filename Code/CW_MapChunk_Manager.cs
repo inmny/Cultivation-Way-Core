@@ -112,6 +112,11 @@ namespace Cultivation_Way
                 wakan_tide.action(wakan_tide);
             }
         }
+        public CW_MapChunk get_chunk(int x, int y)
+        {
+            if (x < 0 || y < 0 || x >= width || y >= height) return null;
+            return chunks[x, y];
+        }
         private void print_rect(int x, int y, int width, int height)
         {
             MonoBehaviour.print(string.Format("***************({0},{1})*******************************({2},{3})****************", x, y, x + width, y + height));

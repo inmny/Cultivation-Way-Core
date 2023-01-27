@@ -150,6 +150,8 @@ namespace Cultivation_Way.Animation
             copy.trace_grad = trace_grad;
             copy.layer_name = layer_name;
             copy.always_roll = always_roll;
+            copy.always_roll_axis = always_roll_axis;
+            copy.always_point_to_dst = always_point_to_dst;
             copy.roll_angle_per_frame = roll_angle_per_frame;
             copy.point_to_dst = point_to_dst;
             copy.anim_froze_frame_idx = anim_froze_frame_idx;

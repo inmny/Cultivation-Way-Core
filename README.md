@@ -7,9 +7,13 @@
 |[文档](https://github.com/inmny/Cultivation-Way-Core/wiki/Documentation)|[Documentation](https://github.com/inmny/Cultivation-Way-Core/)|	
 
 ## TODO
-·天榜
+·将修炼体系的属性加成提取为函数
 
-·体质
+·限制多体系同修的属性加成
+
+·天榜（完成大体框架，该项内容较多
+
+·体质（预计调整为根骨
 
 ·中文名
 
@@ -19,6 +23,6 @@
 
 ·船只贴图
 
-·法术获取机制调整
+·法术获取机制调整（剩余等级需求
 ## Attention
 ·人物状态效果互相叠加导致无限递归bug

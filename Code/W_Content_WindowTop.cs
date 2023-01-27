@@ -395,18 +395,22 @@ namespace Cultivation_Way.Content
             WorldBoxConsole.Console.print("INIT WINDOW TOP");
             return window_top_gameobject;
         }
-        void OnEnable()
+        void Start()
         {
             clear();
             // W_Content_WindowTop_Helper.clear_tmp_lists();
             if (no_item) no_item.SetActive(true);
+        }
+        void OnEnable()
+        {
+            
         }
         void OnDisable()
         {
             W_Content_WindowTop_Helper.clear_tmp_lists();
             clear();
         }
-        private void clear()
+        private void clear()  
         {
             int i;
             while(elements.Count>0)

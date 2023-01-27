@@ -21,7 +21,7 @@ namespace Cultivation_Way.Content.Harmony
             if (!cw_actor.can_act) return false;
             if (cw_actor.cur_spells.Count == 0) return true;
             if (CW_Actor.get_attackTimer(cw_actor) > 0) return false;
-            CW_Actor.set_attackTimer(cw_actor, cw_actor.m_attackSpeed_seconds);
+            
             CW_Asset_Spell spell = CW_Library_Manager.instance.spells.get(cw_actor.cur_spells.GetRandom());
             
 
@@ -29,7 +29,11 @@ namespace Cultivation_Way.Content.Harmony
 
             bool ret = CW_Spell.cast(spell, cw_actor, pTarget, pTarget.currentTile);
             __result = ret;
-
+            if (ret)
+            {
+                CW_Actor.func_punchTargetAnimation(cw_actor, pTarget.currentPosition, pTarget.currentTile, true, (spell.tags & (1ul << (int)CW_Spell_Tag.IMMORTAL)) > 0, 40f);
+                CW_Actor.set_attackTimer(cw_actor, cw_actor.m_attackSpeed_seconds);
+            }
             return !ret;
         }
         private static bool __can_cast(CW_Asset_Spell spell, CW_Actor cw_actor, BaseSimObject target)
@@ -55,18 +59,18 @@ namespace Cultivation_Way.Content.Harmony
         // 防御类见CW_Actor.__get_hit
 
 
-        [HarmonyPrefix]
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(MapBox), "applyAttack")]
-        public static bool status_effect_on_attack(BaseSimObject pAttacker, BaseSimObject pTarget)
+        public static void status_effect_on_attack(BaseSimObject pAttacker, BaseSimObject pTarget)
         {
             if(pAttacker!=null && pAttacker.objectType== MapObjectType.Actor && ((CW_Actor)pAttacker).status_effects!=null && ((CW_Actor)pAttacker).status_effects.Count > 0)
             {
                 foreach (CW_StatusEffectData status_effect in ((CW_Actor)pAttacker).status_effects.Values)
-                {
+                {   
                     if (!status_effect.finished && status_effect.status_asset.action_on_attack != null) status_effect.status_asset.action_on_attack(status_effect, pAttacker, pTarget);
                 }
             }
-            return true;
+            return;
         }
     }
 }

@@ -64,11 +64,10 @@ namespace Cultivation_Way.Animation
                 return null;
             }
             Sprite[] sprites = Resources.LoadAll<Sprite>(path_to_anim);
-            if (sprites == null) { throw new System.Exception("No found sprites under:" + path_to_anim); return null; }
-            CW_EffectController controller = new CW_EffectController(anim_limit, controller_setting==null?new CW_AnimationSetting():controller_setting, sprites, default_prefab, base_scale, base_offset);
+            if (sprites == null || sprites.Length == 0) { throw new System.Exception("No found sprites under:" + path_to_anim); return null; }
+            CW_EffectController controller = new CW_EffectController(id, anim_limit, controller_setting==null?new CW_AnimationSetting():controller_setting, sprites, default_prefab, base_scale, base_offset);
             this.controllers.Add(controller);
             this.controllers_dict.Add(id, controller);
-            controller.id = id;
             return controller;
         }
         public CW_EffectController load_as_controller(string id, string path_to_anim, int anim_limit = 100, float base_scale = 1.0f, CW_AnimationSetting controller_setting = null)
@@ -124,18 +123,6 @@ namespace Cultivation_Way.Animation
             }
             throw new System.Exception("No found animations controller for id:" + id);
             return null;
-        }
-        private bool test_anim(string anim_id, string src_id, string dst_id, int src_x, int src_y, int dst_x, int dst_y, float scale)
-        {
-            
-            Actor src_actor = MapBox.instance.getActorByID(src_id);
-            Actor dst_actor = MapBox.instance.getActorByID(dst_id);
-            
-            Vector2 src_vec = (src_actor == null ? new Vector2(src_x, src_y) : src_actor.currentPosition);
-            Vector2 dst_vec = (dst_actor == null ? new Vector2(dst_x, dst_y) : dst_actor.currentPosition);
-            WorldBoxConsole.Console.print(string.Format("src_vec:{0}, dst_vec:{1}", src_vec, dst_vec));
-            ModState.instance.effect_manager.spawn_anim(anim_id, src_vec, dst_vec, MapBox.instance.getActorByID(src_id), MapBox.instance.getActorByID(dst_id), scale);
-            return true;
         }
     }
 }

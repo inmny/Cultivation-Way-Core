@@ -1360,8 +1360,8 @@ namespace Cultivation_Way.Content
                 }
                 if (target != null) 
                 { 
-                    ((CW_Actor)anim.src_object).cancelAllBeh(null);
-                    CW_Actor.set_attackedBy((Actor)anim.src_object, null);
+                    //((CW_Actor)anim.src_object).cancelAllBeh(null);
+                    //CW_Actor.set_attackedBy((Actor)anim.src_object, null);
                     CW_Actor.set_attackTarget((Actor)anim.src_object, null);
                     CW_Actor.func_spawnOn((CW_Actor)anim.src_object, target, 0f);
                     ((CW_Actor)anim.src_object).updatePos();
@@ -1639,7 +1639,7 @@ namespace Cultivation_Way.Content
         {
             if (anim.dst_object == null || !anim.dst_object.base_data.alive || anim.src_object == null || !anim.src_object.base_data.alive) return;
             CW_StatusEffectData status_effect = Utils.CW_SpellHelper.add_status_to_target(anim.src_object, anim.dst_object, "status_loltus_fire");
-            status_effect.left_time *= 1 + ((CW_Actor)anim.dst_object).fast_data.kills / 10f;
+            status_effect.left_time = (1 + ((CW_Actor)anim.dst_object).fast_data.kills / 10f) * status_effect.status_asset.effect_time;
             status_effect.effect_val = Utils.CW_Utils_Others.get_raw_wakan(status_effect.status_asset.effect_val, ((CW_Actor)anim.src_object).cw_status.wakan_level);
         }
         private static void fen_fire_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)

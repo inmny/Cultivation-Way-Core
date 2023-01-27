@@ -31,10 +31,12 @@ namespace Cultivation_Way.Library
         public bool races_black_or_white;
         public List<string> units_list;
         public List<string> races_list;
+        public Others.CW_Delegates.CW_Cultisys_Stats stats;
         public Others.CW_Delegates.CW_Cultisys_Judge judge;
         public Others.CW_Delegates.CW_Cultisys_Level_Judge level_judge;
         public CW_Asset_CultiSys()
         {
+            stats = default_get_stats;
             units_black_or_white = true;
             units_list = new List<string>();
             races_black_or_white = true;
@@ -46,6 +48,10 @@ namespace Cultivation_Way.Library
                 power_level[i] = 1;
                 bonus_stats[i] = new CW_BaseStats();
             }
+        }
+        internal static CW_BaseStats default_get_stats(CW_Actor cw_actor, CW_Asset_CultiSys cultisys, int level)
+        {
+            return cultisys.bonus_stats[level];
         }
         internal void register()
         {
@@ -78,10 +84,10 @@ namespace Cultivation_Way.Library
             }
         }
         // TODO: 安全保障
-        internal CW_BaseStats get_bonus_stats(int cultisys_tag, int level)
+        internal CW_BaseStats get_bonus_stats(int cultisys_tag, int level, CW_Actor cw_actor)
         {
             if (level >= Others.CW_Constants.max_cultisys_level) WorldBoxConsole.Console.print(level); 
-            return list[cultisys_tag].bonus_stats[level>=Others.CW_Constants.max_cultisys_level?Others.CW_Constants.max_cultisys_level-1:level];
+            return list[cultisys_tag].stats(cw_actor, list[cultisys_tag],level>=Others.CW_Constants.max_cultisys_level?Others.CW_Constants.max_cultisys_level-1:level);
         }
         public void set_cultisys(CW_Actor actor)
         {
