@@ -8,32 +8,32 @@ namespace Cultivation_Way.Library
 {
     public class CW_Asset_SpecialBody : Asset
     {
-        public string name;
+        internal string name;
         public string description;
-        public string author_name;
+        internal string author_name;
         public int anim_id;
+        public string author_id;
         public int level;
         public string[] spells;
         public int cur_own_nr { get; internal set; }
         public int histroy_own_nr { get; internal set; }
         public CW_BaseStats stxh_bonus_stats;
         public CW_BaseStats bonus_stats;
-        public CW_Asset_SpecialBody(string id, string name, string description, string author_name, int level, string[] spells, CW_BaseStats bonus_stats)
+        public CW_Asset_SpecialBody(string id, string name, string description, string author_name, int level, string[] spells, CW_BaseStats bonus_stats, string author_id)
         {
-            id = id;
-            name = name;
-            description = description;
-            author_name = author_name;
-            level = level;
-            spells = spells;
-            bonus_stats = bonus_stats;
+            this.id = id;
+            this.name = name;
+            this.description = description;
+            this.author_name = author_name;
+            this.level = level;
+            this.spells = spells;
+            this.bonus_stats = bonus_stats;
+            this.author_id = author_id;
         }
         public CW_Asset_SpecialBody(CW_Actor author)
         {
             id = author.fast_data.actorID + "_" + author.fast_data.level;
-            name = author.getName() + "的体质";
-            author_name = author.getName();
-            description = "可随机生成的描述";
+            author_id = author.fast_data.actorID;
             level = author.fast_data.level;
             spells = null;
             bonus_stats = new CW_BaseStats();
@@ -79,10 +79,20 @@ namespace Cultivation_Way.Library
         public string get_info_without_name()
         {
             StringBuilder string_builder = new StringBuilder();
-            string_builder.AppendLine("创造者:\t\t\t" + author_name);
+            string_builder.AppendLine("创造者:\t\t\t" + get_author_name());
             string_builder.AppendLine("等级:\t\t\t\t" + level);
             string_builder.AppendLine("描述:\t\t\t\t" + description);
             return string_builder.ToString();
+        }
+        public string get_author_name(CW_Actor author = null)
+        {
+            if (string.IsNullOrEmpty(author_name)) author_name = (author == null ? ((CW_Actor)MapBox.instance.getActorByID(author_id)) : author).getName();
+            return author_name;
+        }
+        public string get_name(CW_Actor author = null)
+        {
+            if (string.IsNullOrEmpty(name)) name = CW_NameGenerator.gen_name("special_body_name", author == null ? ((CW_Actor)MapBox.instance.getActorByID(author_id)) : author);
+            return name;
         }
     }
     public class CW_Library_SpecialBody : CW_Dynamic_Library<CW_Asset_SpecialBody>

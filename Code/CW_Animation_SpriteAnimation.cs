@@ -98,6 +98,10 @@ namespace Cultivation_Way.Animation
             {
                 return;
             }
+            if (!CW_EffectManager.instance.low_res && renderer.sprite == null)
+            {
+                renderer.sprite = sprites[cur_frame_idx];
+            }
             play_time += elapsed;
             if ( play_time > Others.CW_Constants.max_anim_time)
             {
@@ -128,7 +132,7 @@ namespace Cultivation_Way.Animation
                 {
                     int change = ((setting.loop_type == AnimationLoopType.ETOE && (loop_nr & 0x1) == 1) ^ (setting.play_direction == AnimationPlayDirection.FORWARD)) ? 1 : -1;
                     int next_frame_idx = (cur_frame_idx + change + sprites.Length) % sprites.Length;
-                    renderer.sprite = sprites[next_frame_idx];
+                    if(!CW_EffectManager.instance.low_res) renderer.sprite = sprites[next_frame_idx];
                     cur_frame_idx = next_frame_idx;
                     if (cur_frame_idx == 0) loop_nr++;
                 }

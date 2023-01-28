@@ -419,6 +419,8 @@
     <Content Include="GameResources\cw_words_libraries\kingdoms\eh_kingdom_main_name.txt" />
     <Content Include="GameResources\cw_words_libraries\kingdoms\eh_kingdom_fixed_name.txt" />
     <Content Include="GameResources\cw_words_libraries\kingdoms\eh_kingdom_postfix_name.txt" />
+    <Content Include="GameResources\cw_words_libraries\special_bodies\S_B_postfix_name.txt" />
+    <Content Include="GameResources\cw_words_libraries\special_bodies\S_B_random_main_name.txt" />
     <Content Include="GameResources\cw_words_libraries\thousand_common_words.txt" />
     <Content Include="GameResources\effects\anti_matter\antimatterEffect_00.png" />
     <Content Include="GameResources\effects\anti_matter\antimatterEffect_01.png" />
@@ -838,11 +840,12 @@
     <Compile Include="Code\W_Harmony_Item.cs" />
     <Compile Include="Code\W_NOT_Arch_Data.cs" />
     <Compile Include="Code\Z_Useless.cs" />
+    <Content Include="GameResources\cw_words_libraries\kingdoms\kingdom_mottos.txt" />
+    <Content Include="GameResources\cw_words_libraries\cultibooks\cultibook_postfix_name.txt" />
+    <Content Include="GameResources\cw_words_libraries\cultibooks\cultibook_random_main_name.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assemblies\" />
-    <Folder Include="GameResources\cw_words_libraries\cultibooks\" />
-    <Folder Include="GameResources\cw_words_libraries\special_bodies\" />
     <Folder Include="GameResources\cw_words_libraries\tiles\" />
   </ItemGroup>
   <ItemGroup>

@@ -12,15 +12,19 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 功法名
         /// </summary>
-        public string name;
+        internal string name;
         /// <summary>
         /// 这个暂时用不到，以后可能会用到
         /// </summary>
         public string content;
         /// <summary>
-        /// 作者名，作者id即功法的id
+        /// 作者名，作者id加上等级即功法的id
         /// </summary>
-        public string author_name;
+        internal string author_name;
+        /// <summary>
+        /// 作者id
+        /// </summary>
+        public string author_id;
         /// <summary>
         /// 当前修炼人数，用于回收统计
         /// </summary>
@@ -57,8 +61,8 @@ namespace Cultivation_Way.Library
             this.is_fixed = false;
             this.cur_culti_nr = 0;
             this.histroy_culti_nr = 0;
-            this.author_name = author.getName();
-            this.name = author.getName()+"创造的功法";
+            this.author_id = author.fast_data.actorID;
+            //this.name = get_author_name(author)+"创造的功法";
             this.spells = new string[Others.CW_Constants.cultibook_spell_limit];
             this.bonus_stats = new CW_BaseStats();
         }
@@ -66,15 +70,23 @@ namespace Cultivation_Way.Library
         public CW_Asset_CultiBook()
         {
         }
-
+        public string get_author_name(CW_Actor author = null)
+        {
+            if (string.IsNullOrEmpty(author_name)) author_name = (author==null?((CW_Actor)MapBox.instance.getActorByID(author_id)):author).getName();
+            return author_name;
+        }
+        public string get_name(CW_Actor author = null)
+        {
+            if (string.IsNullOrEmpty(name)) name = CW_NameGenerator.gen_name("cultibook_name", author==null?((CW_Actor)MapBox.instance.getActorByID(author_id)):author);
+            return name;
+        }
         internal void re_author(CW_Actor author)
         {
             this.id =author.fast_data.actorID + "_" + order;
             this.is_fixed = false;
             this.cur_culti_nr = 0;
             this.histroy_culti_nr = 0;
-            this.author_name = author.getName();
-            this.name = author.getName() + "修改的功法";
+            this.author_id = author.fast_data.actorID;
         }
         public CW_Asset_CultiBook deepcopy()
         {
@@ -114,7 +126,7 @@ namespace Cultivation_Way.Library
         internal string get_info_without_name()
         {
             StringBuilder string_builder = new StringBuilder();
-            string_builder.AppendLine("\t创始人\t\t\t" + author_name+"\t");
+            string_builder.AppendLine("\t创始人\t\t\t" + get_author_name()+"\t");
             string_builder.AppendLine("\t品阶\t\t\t" + LocalizedTextManager.getText("cultibook_order_" + this.order) + Others.CW_Constants.num_to_cz[9-level]+"品");
             for(int i = 0; i < this.spells.Length; i++)
             {
@@ -142,6 +154,8 @@ namespace Cultivation_Way.Library
             this.bonus_stats.mod_wakan = __get_co() * author.cw_cur_stats.mod_wakan;
             this.bonus_stats.mod_wakan_regen = __get_co() * author.cw_cur_stats.mod_wakan_regen;
             this.bonus_stats.vampire = __get_co() * author.cw_cur_stats.vampire;
+            this.culti_promt = __get_co()*5;
+            this.culti_promt *= this.culti_promt;
             //throw new NotImplementedException();
         }
         private float __get_co()
@@ -183,7 +197,7 @@ namespace Cultivation_Way.Library
             CW_Asset_CultiBook B = get(b);
             if (A == null) return B==null?null:b;
             if (B == null) return a;
-            return (A.order << 4 + A.level) >= (B.order << 4 + B.level) ? a : b;
+            return (A.culti_promt + 1) * (A.order << 4 + A.level + A.cur_culti_nr) >= (B.culti_promt + 1) * (B.order << 4 + B.level + B.cur_culti_nr) ? a : b;
         }
     }
 }

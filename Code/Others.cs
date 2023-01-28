@@ -19,7 +19,7 @@ namespace Cultivation_Way.Others
         public const string default_anim_layer_name = "EffectsTop";
         public const bool is_debugging = true;
         public const int wakan_level_co = 1000;
-        public const int wakan_regen_valid_percent = 40;
+        public const int wakan_regen_valid_percent = 60;
         public const int health_regen_valid_percent = 40;
         public const int fix_cultibook_line = 10000;
         public const int cultibook_spell_limit = 4;
@@ -30,7 +30,7 @@ namespace Cultivation_Way.Others
         public const float exceed_max_age_chance = 0.85f;
         public const int max_unique_legendary_names_count = 128;
         public const int max_cultisys_level = 20;
-        public const float default_spell_damage_co = 1;
+        public const float default_spell_damage_co = 8;
         public const float chunk_wakan_compress_co = 0.9f;
         public const float chunk_wakan_spread_grad = 0.01f;
         public const float chunk_wakan_level_spread_grad = 0.1f;
@@ -38,7 +38,7 @@ namespace Cultivation_Way.Others
         public const float chunk_wakan_lyse_base = 1f;
         public const uint cultisys_immortol_tag = 0x1;
         public const uint cultisys_bushido_tag = 0x2;
-        public const float bushido_force_culti_chance = 1.2f;
+        public const float bushido_force_culti_chance = 0.8f;
         public const float bushido_force_culti_co = 0.05f;
         public const float seconds_per_month = 3f;
         public const int special_body_create_level = 19;
@@ -61,8 +61,8 @@ namespace Cultivation_Way.Others
         public delegate CW_BaseStats CW_Cultisys_Stats(CW_Actor cw_actor, CW_Asset_CultiSys cultisys, int level);
         public delegate bool CW_Cultisys_Judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys);
         public delegate bool CW_Cultisys_Level_Judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys);
-        public delegate string CW_Name_Template_Decode(CW_Template_Elm name_template_elm, CW_Actor cw_actor = null, City city = null, Kingdom kingdom = null, Culture culture = null, WorldTile tile = null);
-        public delegate bool CW_Name_Template_Select(CW_Template_Elm name_template_elm, CW_Actor cw_actor = null, City city = null, Kingdom kingdom = null, Culture culture = null, WorldTile tile = null);
+        public delegate string CW_Name_Template_Decode(CW_Template_Elm name_template_elm, CW_Actor cw_actor = null, City city = null, Kingdom kingdom = null, Culture culture = null, WorldTile tile = null, CW_Asset_CultiBook cultibook = null, CW_Asset_SpecialBody special_body = null);
+        public delegate bool CW_Name_Template_Select(CW_Template_Elm name_template_elm, CW_Actor cw_actor = null, City city = null, Kingdom kingdom = null, Culture culture = null, WorldTile tile = null, CW_Asset_CultiBook cultibook = null, CW_Asset_SpecialBody special_body = null);
     }
     public class CW_Enums
     {

@@ -19,6 +19,11 @@ namespace Cultivation_Way.Content
             load_words("eh_kingdom_postfix_name", "kingdoms/");
             load_words("eh_culture_postfix_name", "cultures/");
             load_words("eh_culture_fixed_name", "cultures/");
+            load_words("cultibook_postfix_name", "cultibooks/");
+            load_words("cultibook_random_main_name", "cultibooks/");
+            load_words("S_B_postfix_name", "special_bodies/");
+            load_words("S_B_random_main_name", "special_bodies/");
+            load_words("kingdom_mottos", "kingdoms/");
         }
         private static void load_words(string id, string dir)
         {

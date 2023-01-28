@@ -41,6 +41,10 @@ namespace Cultivation_Way.Animation
     public class CW_AnimationSetting
     {
         /// <summary>
+        /// 略缩地图隐藏动画
+        /// </summary>
+        public bool visible_in_low_res = false;
+        /// <summary>
         /// 终点停滞
         /// </summary>
         public float froze_time_after_end = 0f;
@@ -132,6 +136,7 @@ namespace Cultivation_Way.Animation
         internal CW_AnimationSetting __deepcopy()
         {
             CW_AnimationSetting copy = new CW_AnimationSetting();
+            copy.visible_in_low_res = visible_in_low_res;
             copy.froze_time_after_end = froze_time_after_end;
             copy.free_val = free_val;
             copy.possible_associated = false;

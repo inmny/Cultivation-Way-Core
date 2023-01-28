@@ -115,6 +115,11 @@ namespace Cultivation_Way.Content.Harmony
             {
                 cultibook.cur_culti_nr--;
                 if (cultibook.cur_culti_nr <= 0) cultibook.try_deprecate();
+                else if(cw_actor.fast_data.actorID == cultibook.author_id)
+                {
+                    if (string.IsNullOrEmpty(cultibook.author_name)) cultibook.get_author_name(cw_actor);
+                    if (string.IsNullOrEmpty(cultibook.name)) cultibook.get_name(cw_actor);
+                }
             }
             // 回收体质
             CW_Asset_SpecialBody body = CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id);
@@ -122,6 +127,11 @@ namespace Cultivation_Way.Content.Harmony
             {
                 body.cur_own_nr--;
                 if (body.cur_own_nr <= 0) body.try_deprecate();
+                else if (cw_actor.fast_data.actorID == body.author_id)
+                {
+                    if(string.IsNullOrEmpty(body.author_name))body.get_author_name(cw_actor);
+                    if (string.IsNullOrEmpty(body.name)) body.get_name(cw_actor);
+                }
             }
             // 灵气归还
             if (cw_actor.cw_status.wakan > 0)
@@ -317,7 +327,7 @@ namespace Cultivation_Way.Content.Harmony
             int i, len; uint tmp1;
             cw_actor.cur_spells.Clear();
             cw_actor.cw_cur_stats.clear();
-
+            cw_actor.cw_status.culti_velo = 0;
             cw_actor.cur_spells.AddRange(cw_actor.cw_data.spells);
             // 基础属性样板
             cw_actor.cw_cur_stats.addStats(cw_actor.cw_stats.cw_base_stats);
@@ -339,9 +349,11 @@ namespace Cultivation_Way.Content.Harmony
                 cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id).bonus_stats);
                 cw_actor.cur_spells.Add("stxh");
             }
+
             // 添加修炼产生的属性增幅
             if (cw_actor.cw_status.can_culti)
             {
+                cw_actor.cw_status.culti_velo = cw_actor.cw_stats.culti_velo;
                 // 添加体系的属性影响
                 tmp1 = cw_actor.cw_data.cultisys;
                 len = CW_Library_Manager.instance.cultisys.list.Count;
@@ -353,7 +365,12 @@ namespace Cultivation_Way.Content.Harmony
                 }
                 cw_actor.cw_cur_stats.addStats(tmp_base_stats);
                 // 添加功法的属性影响
-                if (!string.IsNullOrEmpty(cw_actor.cw_data.cultibook_id) && CW_Library_Manager.instance.cultibooks.dict.ContainsKey(cw_actor.cw_data.cultibook_id)) cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id).bonus_stats);
+                if (!string.IsNullOrEmpty(cw_actor.cw_data.cultibook_id) && CW_Library_Manager.instance.cultibooks.dict.ContainsKey(cw_actor.cw_data.cultibook_id))
+                {
+                    CW_Asset_CultiBook culti_book = CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id);
+                    cw_actor.cw_cur_stats.addStats(culti_book.bonus_stats);
+                    cw_actor.cw_status.culti_velo *= (1 + culti_book.culti_promt);
+                }
             }
             // 添加心情的属性影响
             if (string.IsNullOrEmpty(cw_actor.fast_data.mood)) cw_actor.fast_data.mood = "normal";
@@ -462,7 +479,8 @@ namespace Cultivation_Way.Content.Harmony
             cw_actor.cw_status.wakan = Mathf.Min(cw_actor.cw_status.wakan, cw_actor.cw_cur_stats.wakan);
             cw_actor.fast_data.health = Mathf.Min(cw_actor.fast_data.health, cw_actor.cw_cur_stats.base_stats.health);
             cw_actor.cw_status.max_age = (int)((cw_actor.cw_stats.origin_stats.maxAge+ cw_actor.cw_cur_stats.age_bonus) * (1f + cw_actor.cw_cur_stats.mod_age/100f));
-            cw_actor.cw_status.culti_velo = cw_actor.cw_stats.culti_velo * (1 + cw_actor.cw_cur_stats.mod_cultivation / 100f);
+            // 修炼速度
+            cw_actor.cw_status.culti_velo *= 1 + cw_actor.cw_cur_stats.mod_cultivation / 100f;
             cw_actor.m_attackSpeed_seconds = (300f - cw_actor.cw_cur_stats.base_stats.attackSpeed) / (100f + cw_actor.cw_cur_stats.base_stats.attackSpeed);
             CW_Actor.set_s_attackSpeed_seconds(actor, cw_actor.m_attackSpeed_seconds);
             // 设置攻击样式以及武器贴图

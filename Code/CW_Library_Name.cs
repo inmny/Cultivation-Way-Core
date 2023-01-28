@@ -185,7 +185,7 @@ namespace Cultivation_Way.Library
                 }
             }
         }
-        public List<CW_Template_Elm> get_format_to_fill(CW_Actor cw_actor = null, City city = null, Kingdom kingdom = null, Culture culture = null, WorldTile tile = null)
+        public List<CW_Template_Elm> get_format_to_fill(CW_Actor cw_actor = null, City city = null, Kingdom kingdom = null, Culture culture = null, WorldTile tile = null, CW_Asset_CultiBook cultibook = null, CW_Asset_SpecialBody special_body = null)
         {
             int i;
             while (__tmp_active_list.Count < children.Count)
@@ -198,7 +198,7 @@ namespace Cultivation_Way.Library
             }
             for (i = 0; i < children.Count; i++)
             {
-                __tmp_active_list[i] = children[i].select_from_objects(children[i], cw_actor, city, kingdom, culture, tile);
+                __tmp_active_list[i] = children[i].select_from_objects(children[i], cw_actor, city, kingdom, culture, tile, cultibook, special_body);
             }
             // 排除冲突部分
             foreach(List<KeyValuePair<int,int>> colide_group in __colide_lists.Values)
@@ -271,14 +271,14 @@ namespace Cultivation_Way.Library
             --i;
             return template_list[i];
         }
-        public string gen_name(CW_Template template = null, CW_Actor cw_actor = null, City city = null, Kingdom kingdom = null, Culture culture = null, WorldTile tile = null)
+        public string gen_name(CW_Template template = null, CW_Actor cw_actor = null, City city = null, Kingdom kingdom = null, Culture culture = null, WorldTile tile = null, CW_Asset_CultiBook cultibook = null, CW_Asset_SpecialBody special_body = null)
         {
             if (template == null) template = choose_template_randomly();
-            List<CW_Template_Elm> name_format = template.get_format_to_fill(cw_actor, city, kingdom, culture, tile);
+            List<CW_Template_Elm> name_format = template.get_format_to_fill(cw_actor, city, kingdom, culture, tile, cultibook, special_body);
             StringBuilder string_builder = new StringBuilder();
             foreach(CW_Template_Elm elm in name_format)
             {
-                string_builder.Append(elm.get_part_from_objects(elm, cw_actor, city, kingdom, culture, tile));
+                string_builder.Append(elm.get_part_from_objects(elm, cw_actor, city, kingdom, culture, tile, cultibook, special_body));
             }
             return string_builder.ToString();
         }

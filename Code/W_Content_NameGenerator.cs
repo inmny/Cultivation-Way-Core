@@ -14,6 +14,84 @@ namespace Cultivation_Way.Content
             add_city_names();
             add_kingdom_names();
             add_culture_names();
+            add_cultibook_names();
+            add_S_B_names();
+            add_kingdom_mottos();
+        }
+
+        private static void add_kingdom_mottos()
+        {
+            CW_Template_Elm main_name = new CW_Template_Elm()
+            {
+                id = "kingdom_mottos",
+                words_id = "kingdom_mottos",
+                select_from_objects = Actions.CW_NameTemplateActions.must_select
+            };
+            CW_Template name_template = new CW_Template();
+            name_template.weight = 1;
+            name_template.id = "default_kingdom_motto_template";
+            name_template.format = "{0}";
+            name_template.children.Add(main_name);
+            CW_Asset_NameGenerator name_generator = new CW_Asset_NameGenerator("kingdom_mottos");
+            name_generator.add_template(name_template);
+            CW_Library_Manager.instance.name_generators.add(name_generator);
+        }
+
+        private static void add_S_B_names()
+        {
+            CW_Template_Elm prefix_name = new CW_Template_Elm()
+            {
+                id = "S_B_prefix",
+                words_id = "thousand_common_words",
+                select_from_objects = Actions.CW_NameTemplateActions.must_select
+            };
+            CW_Template_Elm main_name = new CW_Template_Elm()
+            {
+                id = "S_B_main",
+                words_id = "S_B_random_main_name",
+                select_from_objects = Actions.CW_NameTemplateActions.must_select
+            };
+            CW_Template_Elm postfix_name = new CW_Template_Elm()
+            {
+                id = "S_B_postfix",
+                words_id = "S_B_postfix_name",
+                select_from_objects = Actions.CW_NameTemplateActions.must_select
+            };
+            CW_Template name_template = new CW_Template();
+            name_template.weight = 1;
+            name_template.id = "default_S_B_name_template";
+            name_template.format = "{0}{1}{2}";
+            name_template.children.Add(prefix_name);
+            name_template.children.Add(main_name);
+            name_template.children.Add(postfix_name);
+            CW_Asset_NameGenerator name_generator = new CW_Asset_NameGenerator("special_body_name");
+            name_generator.add_template(name_template);
+            CW_Library_Manager.instance.name_generators.add(name_generator);
+        }
+
+        private static void add_cultibook_names()
+        {
+            CW_Template_Elm main_name = new CW_Template_Elm()
+            {
+                id = "cultibook_main",
+                words_id = "cultibook_random_main_name",
+                select_from_objects = Actions.CW_NameTemplateActions.must_select
+            };
+            CW_Template_Elm postfix_name = new CW_Template_Elm()
+            {
+                id = "cultibook_postfix",
+                words_id = "cultibook_postfix_name",
+                select_from_objects = Actions.CW_NameTemplateActions.must_select
+            };
+            CW_Template name_template = new CW_Template();
+            name_template.weight = 1;
+            name_template.id = "default_cultibook_name_template";
+            name_template.format = "{0}{1}";
+            name_template.children.Add(main_name);
+            name_template.children.Add(postfix_name);
+            CW_Asset_NameGenerator name_generator = new CW_Asset_NameGenerator("cultibook_name");
+            name_generator.add_template(name_template);
+            CW_Library_Manager.instance.name_generators.add(name_generator);
         }
 
         private static void add_culture_names()
@@ -45,9 +123,10 @@ namespace Cultivation_Way.Content
             CW_Template name_template = new CW_Template();
             name_template.weight = 1;
             name_template.id = "default_culture_name_template";
-            name_template.format = "{[1+]0[0,1]}{1[2,0]}{[1+]2[0,0][1,1]}{[1+]2[1,0]}{3[2,1]}";
+            name_template.format = "{[1+]0[0,1]}{1[2,0]}{[1+]2[0,0][1,1]}{[1+]3[1,0]}{4[2,1]}";
             name_template.children.Add(prefix_name);
             name_template.children.Add(main_name);
+            name_template.children.Add(postfix_name);
             name_template.children.Add(postfix_name);
             name_template.children.Add(fixed_name);
             CW_Asset_NameGenerator name_generator = new CW_Asset_NameGenerator("eastern_human_culture");
@@ -116,9 +195,10 @@ namespace Cultivation_Way.Content
             CW_Template name_template = new CW_Template();
             name_template.weight = 1;
             name_template.id = "default_city_name_template";
-            name_template.format = "{[1+]0[0,1]}{1[2,0]}{[1+]2[0,0][1,1]}{[1+]2[1,0]}{3[2,1]}";
+            name_template.format = "{[1+]0[0,1]}{1[2,0]}{[1+]2[0,0][1,1]}{[1+]3[1,0]}{4[2,1]}";
             name_template.children.Add(prefix_name);
             name_template.children.Add(main_name);
+            name_template.children.Add(postfix_name);
             name_template.children.Add(postfix_name);
             name_template.children.Add(fixed_name);
             CW_Asset_NameGenerator name_generator = new CW_Asset_NameGenerator("eastern_human_city");

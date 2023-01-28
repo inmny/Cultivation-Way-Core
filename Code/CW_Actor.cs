@@ -172,11 +172,11 @@ namespace Cultivation_Way
             // 区分法抗和物抗作用
             if(attack_type == Others.CW_Enums.CW_AttackType.Spell || attack_type == Others.CW_Enums.CW_AttackType.Status_Spell)
             {
-                damage_reduce = this.cw_cur_stats.spell_armor / (100 + this.cw_cur_stats.spell_armor);
+                damage_reduce = this.cw_cur_stats.spell_armor / (100f + this.cw_cur_stats.spell_armor);
             }
             else if (attack_type != Others.CW_Enums.CW_AttackType.God && attack_type!= Others.CW_Enums.CW_AttackType.Status_God)
             {
-                damage_reduce = this.cw_cur_stats.base_stats.armor / (100 + this.cw_cur_stats.base_stats.armor);
+                damage_reduce = this.cw_cur_stats.base_stats.armor / (100f + this.cw_cur_stats.base_stats.armor);
             }
             if (damage_reduce < 0) damage_reduce = 0;
             damage *= 1 - damage_reduce;
@@ -371,11 +371,16 @@ namespace Cultivation_Way
         }
         public void change_special_body(CW_Asset_SpecialBody target_special_body)
         {
+            if (target_special_body == null) return;
             CW_Asset_SpecialBody sb_asset = CW_Library_Manager.instance.special_bodies.get(this.cw_data.special_body_id);
             if (sb_asset != null)
             {
                 sb_asset.cur_own_nr--;
                 if (sb_asset.cur_own_nr == 0) sb_asset.try_deprecate();
+                else if(string.IsNullOrEmpty(sb_asset.author_name) && sb_asset.author_id == this.fast_data.actorID)
+                {
+                    sb_asset.get_author_name(this);
+                }
             }
             this.cw_data.special_body_id = target_special_body.id;
             if (target_special_body != null)
@@ -386,19 +391,7 @@ namespace Cultivation_Way
         }
         public void change_special_body(string target_special_body)
         {
-            CW_Asset_SpecialBody sb_asset = CW_Library_Manager.instance.special_bodies.get(this.cw_data.special_body_id);
-            if(sb_asset != null)
-            {
-                sb_asset.cur_own_nr--;
-                if (sb_asset.cur_own_nr == 0) sb_asset.try_deprecate();
-            }
-            this.cw_data.special_body_id = target_special_body;
-            sb_asset = CW_Library_Manager.instance.special_bodies.get(this.cw_data.special_body_id);
-            if (sb_asset != null)
-            {
-                sb_asset.cur_own_nr++;
-                sb_asset.histroy_own_nr++;
-            }
+            change_special_body(CW_Library_Manager.instance.special_bodies.get(this.cw_data.special_body_id));
         }
         internal void learn_spell(CW_Asset_Spell spell)
         {
@@ -502,11 +495,13 @@ namespace Cultivation_Way
         }
         private void modify_cultibook()
         {
-            CW_Asset_CultiBook culti_book = CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id).deepcopy();
+            CW_Asset_CultiBook prev_cultibook = CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id);
+            CW_Asset_CultiBook culti_book = prev_cultibook.deepcopy();
             if (culti_book == null) throw new Exception("No found cultibook '" + this.cw_data.cultibook_id + "'");
             culti_book.order++;
             culti_book.re_author(this);
             __modify_cultibook_last_step(culti_book);
+            if (prev_cultibook.author_id == this.fast_data.actorID && prev_cultibook.cur_culti_nr > 1 && string.IsNullOrEmpty(prev_cultibook.author_name)) prev_cultibook.get_author_name(this); 
             this.learn_cultibook(culti_book);
         }
 

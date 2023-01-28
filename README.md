@@ -7,15 +7,13 @@
 |[文档](https://github.com/inmny/Cultivation-Way-Core/wiki/Documentation)|[Documentation](https://github.com/inmny/Cultivation-Way-Core/)|	
 
 ## TODO
-·将修炼体系的属性加成提取为函数
-
-·限制多体系同修的属性加成
+·国家界面修炼信息
 
 ·天榜（完成大体框架，该项内容较多
 
 ·体质（预计调整为根骨
 
-·中文名
+·中文名(框架已完成，剩余motto、物品的生成
 
 ·附属加载
 
