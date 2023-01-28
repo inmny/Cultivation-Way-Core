@@ -16,6 +16,7 @@ namespace Cultivation_Way.Content.Harmony
     internal class W_Harmony_Actor
     {
         private static CW_Actor new_created_actor;
+        private static CW_BaseStats tmp_base_stats = new CW_BaseStats();
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Actor), "getHit")]
         public static bool actor_getHit(Actor __instance, ref float pDamage, bool pFlash = true, AttackType pType = AttackType.Other, BaseSimObject pAttacker = null, bool pSkipIfShake = true)
@@ -344,12 +345,13 @@ namespace Cultivation_Way.Content.Harmony
                 // 添加体系的属性影响
                 tmp1 = cw_actor.cw_data.cultisys;
                 len = CW_Library_Manager.instance.cultisys.list.Count;
-                CW_BaseStats cultisys_bonus_stats = new CW_BaseStats();
+                tmp_base_stats.clear();
                 for (i = 0; i < len && tmp1 > 0; i++)
                 {
-                    if ((tmp1 & 0x1) != 0) { cultisys_bonus_stats.change_to_better((CW_Library_Manager.instance.cultisys.get_bonus_stats(i, cw_actor.cw_data.cultisys_level[i], cw_actor))); }
+                    if ((tmp1 & 0x1) != 0) { tmp_base_stats.change_to_better((CW_Library_Manager.instance.cultisys.get_bonus_stats(i, cw_actor.cw_data.cultisys_level[i], cw_actor))); }
                     tmp1 >>= 1;
                 }
+                cw_actor.cw_cur_stats.addStats(tmp_base_stats);
                 // 添加功法的属性影响
                 if (!string.IsNullOrEmpty(cw_actor.cw_data.cultibook_id) && CW_Library_Manager.instance.cultibooks.dict.ContainsKey(cw_actor.cw_data.cultibook_id)) cw_actor.cw_cur_stats.addStats(CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id).bonus_stats);
             }

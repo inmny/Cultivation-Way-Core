@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,9 +51,9 @@ namespace Cultivation_Way.Content
             origin.culture_rate_tech_limit = 7;                         // 文化稀有科技数量限制, "rare"
             origin.hateRaces = "Yao";                                   // 敌对种族
             origin.nameLocale = "Eastern Humans";                       // 统计数据中使用的id
-            origin.name_template_city = "human_city";           // TODO:城市命名模板
-            origin.name_template_culture = "human_culture";     // TODO:文化命名模板
-            origin.name_template_kingdom = "human_kingdom";     // TODO:城市命名模板
+            origin.name_template_city = "eastern_human_city";           // 城市命名模板
+            origin.name_template_culture = "eastern_human_culture";     // 文化命名模板
+            origin.name_template_kingdom = "eastern_human_kingdom";     // 城市命名模板
             origin.nature = false;                                      // TODO: 待研究
             origin.nomad_kingdom_id = "nomads_eastern_human";           // 种族的默认隐藏国家
             origin.path_icon = "ui/Icons/iconEastern_Humans";           // 种族图标

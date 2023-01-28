@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -139,7 +139,7 @@ namespace Cultivation_Way.Content
             origin.moveFromBlock = true;                        // 自动从山地走开
             origin.mushID = "mush_unit";                        // 菌类感染诞生的生物id
             origin.nameLocale = "Eastern Humans";               // 统计数据中的id
-            origin.nameTemplate = "human_name";         // TODO: 命名模板id
+            origin.nameTemplate = "eastern_human_name";         // 命名模板id
             origin.needFood = true;                             // 需要食物
             origin.newBeh = false;                              // TODO: 0.14.3游戏未使用
             origin.oceanCreature = false;                       // 海洋生物，影响寻路与目标攻击

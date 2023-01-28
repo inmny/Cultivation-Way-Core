@@ -18,6 +18,7 @@ namespace Cultivation_Way{
         public bool initialized = false;
         public bool addons_loaded_all = false;
         public bool registered = false;
+        public string cur_language = "cz";
         public NCMod mod_info;
         public CW_EffectManager effect_manager;
         public CW_Library_Manager library_manager;
