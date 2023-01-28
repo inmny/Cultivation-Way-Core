@@ -505,6 +505,15 @@ namespace Cultivation_Way.Content
             scroll_resize();
             update_window_type();
         }
+        private void __sort_by_kills()
+        {
+            clear();
+            cur_top_type = Top_Type.CREATURE;
+            List<CW_Actor> list = W_Content_WindowTop_Helper.sort_creatures_by_kills(sort_setting.top_k);
+            foreach (CW_Actor actor in list) add_creature_info(actor);
+            scroll_resize();
+            update_window_type();
+        }
         private void add_creature_info(CW_Actor actor)
         {
             CW_Sim_Creature_Info_Elm actor_info = Instantiate(prefab_unit, content_transform).GetComponent<CW_Sim_Creature_Info_Elm>();

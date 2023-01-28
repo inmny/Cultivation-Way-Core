@@ -66,11 +66,49 @@ namespace Cultivation_Way.Content
             add_rosefinch_feather_spell();
 
             add_stxh_spell();
+
+            add_bushido_spells();
             load_other_anims();
         }
 
-        
-
+        private static CW_Asset_Spell clone(string pNew, string pFrom)
+        {
+            return CW_Library_Manager.instance.spells.clone(pNew, pFrom);
+        }
+        private static void add_bushido_spells()
+        {
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "五步拳", anim_id: null,
+                element: new CW_Element(new int[] { 20,20,20,20,20}),
+                rarity: 1, free_val: 0.1f, cost: 0.05f, min_cost: 5,
+                target_type: CW_Spell_Target_Type.TILE,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                damage_action: CW_SpellAction_Damage.defualt_damage,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.BUSHIDO);
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            CW_Library_Manager.instance.spells.add(spell);
+            clone("一十八路登堂拳", "五步拳").free_val = 0.08f;
+            clone("明月剑法", "五步拳").free_val = 0.18f;
+            clone("五虎断门刀", "五步拳").free_val = 0.15f;
+            clone("抱山枪", "五步拳").free_val = 0.17f;
+            clone("破阵枪", "五步拳").free_val = 0.28f;
+            clone("齐眉棍法", "五步拳").free_val = 0.19f;
+            clone("太祖长棍", "五步拳").free_val = 0.28f;
+            spell = clone("一十二路入室拳", "五步拳");
+            spell.rarity = 4;
+            spell.free_val = 0.78f;
+            clone("太祖长拳", "一十二路入室拳");
+            clone("弈天剑", "一十二路入室拳").free_val = 0.65f;
+            clone("随波天殇剑", "一十二路入室拳").free_val = 0.68f;
+            clone("神风刀法", "一十二路入室拳").free_val = 0.68f;
+            clone("铁枪诀", "一十二路入室拳").free_val = 0.8f;
+            clone("震山棍法", "一十二路入室拳").free_val = 0.7f;
+            clone("里合腿", "一十二路入室拳").free_val = 0.68f;
+            clone("飞星腿", "一十二路入室拳").free_val = 0.78f;
+        }
         private static void load_other_anims()
         {
             CW_AnimationSetting anim_setting = new CW_AnimationSetting();

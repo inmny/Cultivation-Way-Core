@@ -16,7 +16,7 @@ namespace Cultivation_Way.Content.Harmony
         [HarmonyPatch(typeof(Actor), "tryToAttack")]
         public static bool actor_tryToAttack(Actor __instance, BaseSimObject pTarget, ref bool __result)
         {
-            if (__instance == pTarget) { __result = false; return false; }
+            if (__instance == pTarget) { __result = false; CW_Actor.set_attackTarget(__instance, null); return false; }
             CW_Actor cw_actor = (CW_Actor)__instance;
             if (!cw_actor.can_act) return false;
             if (cw_actor.cur_spells.Count == 0) return true;

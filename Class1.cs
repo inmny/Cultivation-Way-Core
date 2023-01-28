@@ -103,7 +103,6 @@ namespace Cultivation_Way
                 i++;
             }
         }
-        static List<string> words = new List<string> { "AAA","嗨嗨嗨"};
         static void save_list_str(string path, List<string> content)
         {
             File.WriteAllText(string.Format("{0}.json", path), JsonUtility.ToJson(content));
@@ -117,7 +116,6 @@ namespace Cultivation_Way
             //split_string("{[1,0][2,1]1[2,4][3,7]}{[2,0]8[2,7]}");
             //output_parts();
             //split_parts_into_lists();
-            save_list_str("test", words);
             Console.ReadKey();
         }
 

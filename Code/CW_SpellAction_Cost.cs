@@ -50,7 +50,7 @@ namespace Cultivation_Way.Actions
         }
         public static float enemy_nr_check_and_cost(CW_Asset_Spell spell_asset, BaseSimObject user)
         {
-            if (Utils.CW_SpellHelper.find_enemies_in_circle(user.currentTile, user.kingdom, 5).Count < spell_asset.free_val) return 0;
+            if (Utils.CW_SpellHelper.find_enemies_in_circle(user.currentTile, user.kingdom, 5).Count < spell_asset.free_val) return -1;
             return default_check_and_cost(spell_asset, user);
         }
         public static float low_health_check_and_cost(CW_Asset_Spell spell_asset, BaseSimObject user)
@@ -58,7 +58,7 @@ namespace Cultivation_Way.Actions
             if (user.objectType == MapObjectType.Actor)
             {
                 CW_Actor cw_actor = (CW_Actor)user;
-                if (cw_actor.fast_data.health > spell_asset.free_val * cw_actor.cw_cur_stats.base_stats.health) return 0;
+                if (cw_actor.fast_data.health > spell_asset.free_val * cw_actor.cw_cur_stats.base_stats.health) return -1;
                 return default_check_and_cost(spell_asset, user);
             }
             else

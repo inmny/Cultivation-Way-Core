@@ -61,5 +61,23 @@ namespace Cultivation_Way.Content
             }
             return ret;
         }
+        internal static List<CW_Actor> sort_creatures_by_kills(int amount)
+        {
+            collect_actors();
+            List<CW_Actor> ret = new List<CW_Actor>();
+            _actors.Sort((left, right) =>
+            {
+                float l_1 = left.fast_data.kills;
+                float l_2 = right.fast_data.kills;
+                if (l_1 == l_2) return 0;
+                return l_1 < l_2 ? 1 : -1;
+            });
+            amount = Math.Min(amount, _actors.Count);
+            for (int i = 0; i < amount; i++)
+            {
+                ret.Add(_actors[i]);
+            }
+            return ret;
+        }
     }
 }

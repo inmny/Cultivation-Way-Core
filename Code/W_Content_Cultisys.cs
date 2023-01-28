@@ -86,9 +86,9 @@ namespace Cultivation_Way.Content
             // 物抗
             for (i = 0; i < Others.CW_Constants.max_cultisys_level; i++)
             {
-                bushido.bonus_stats[i].base_stats.armor = 2 * immortal.bonus_stats[i].base_stats.armor;
+                bushido.bonus_stats[i].base_stats.armor = (int)(1.2f * immortal.bonus_stats[i].base_stats.armor);
             }
-            bushido.bonus_stats[i - 1].base_stats.armor = 1500;
+            bushido.bonus_stats[i - 1].base_stats.armor = 1200;
             
             for (i = 0; i < Others.CW_Constants.max_cultisys_level; i++)
             {
@@ -99,7 +99,7 @@ namespace Cultivation_Way.Content
                 // 攻击
                 bushido.bonus_stats[i].base_stats.damage = i * i * i /2+ 2 * i * i;
                 // 法抗
-                bushido.bonus_stats[i].spell_armor = (int)(bushido.bonus_stats[i].base_stats.armor * Mathf.Sqrt(i));
+                bushido.bonus_stats[i].spell_armor = (int)(bushido.bonus_stats[i].base_stats.armor * Mathf.Sqrt(Mathf.Sqrt(i)));
                 // 抗击退
                 bushido.bonus_stats[i].base_stats.knockbackReduction = (i + 1) * 5f;
                 // 反伤

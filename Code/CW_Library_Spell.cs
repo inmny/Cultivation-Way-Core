@@ -96,11 +96,11 @@ namespace Cultivation_Way.Library
         public CW_Delegates.CW_Spell_Action spell_action;
         public CW_Delegates.CW_Spell_Action anim_action;
         public CW_Delegates.CW_Spell_Action damage_action;
-        private float random_learn_chance;
+        internal float random_learn_chance;
         public CW_Asset_Spell(
             string id, string anim_id, 
             CW_Element element, string element_type_limit = null, 
-            int rarity = 1, float free_val = 1, float cost = 0.01f, int min_cost = 20, int learn_level = 1, int cast_level = 1, bool can_get_by_random = true,
+            int rarity = 1, float free_val = 1, float cost = 0.01f, int min_cost = 10, int learn_level = 1, int cast_level = 1, bool can_get_by_random = true,
             bool cultisys_black_or_white_list = true, List<string> cultisys_list = null, List<string> banned_races = null, 
             CW_Spell_Target_Type target_type = CW_Spell_Target_Type.ACTOR, 
             CW_Spell_Target_Camp target_camp = CW_Spell_Target_Camp.ENEMY, 
@@ -320,6 +320,40 @@ namespace Cultivation_Way.Library
                         break;
                     }
             }
+        }
+        public override CW_Asset_Spell clone(string pNew, string pFrom)
+        {
+            CW_Asset_Spell new_asset = base.clone(pNew, pFrom);
+            CW_Asset_Spell from = get(pFrom);
+            new_asset.element = from.element.deepcopy();
+            new_asset.cultisys_list = new List<string>();
+            foreach(string cultisys in from.cultisys_list)
+            {
+                new_asset.cultisys_list.Add(cultisys);
+            }
+            new_asset.banned_races = new List<string>();
+            foreach(string race in from.banned_races)
+            {
+                new_asset.banned_races.Add(race);
+            }
+            new_asset.base_elements_contained = new bool[from.base_elements_contained.Length];
+            for(int i = 0; i < from.base_elements_contained.Length; i++)
+            {
+                new_asset.base_elements_contained[i] = from.base_elements_contained[i];
+            }
+            new_asset.addition_element_tags = new List<string>();
+            foreach(string element_tag in from.addition_element_tags)
+            {
+                new_asset.addition_element_tags.Add(element_tag);
+            }
+            new_asset.damage_action = from.damage_action;
+            new_asset.anim_action = from.anim_action;
+            new_asset.spell_action = from.spell_action;
+            new_asset.check_and_cost_action = from.check_and_cost_action;
+            new_asset.tags = from.tags;
+            new_asset.allowed_cultisys = from.allowed_cultisys;
+            new_asset.random_learn_chance = from.random_learn_chance;
+            return new_asset;
         }
         internal List<CW_Asset_Spell> search(ulong tags, Spell_Search_Type search_type)
         {

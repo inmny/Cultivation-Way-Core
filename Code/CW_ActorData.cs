@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using Cultivation_Way.Library;
 namespace Cultivation_Way
 {
+    [Serializable]
     public class CW_ActorData
     {
         public CW_ActorStatus status;
         public int[] cultisys_level;
+        public string[] jobs;
+        public int[] job_levels;
         internal uint cultisys;
         public CW_Element element;
         public List<string> spells;
