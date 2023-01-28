@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +15,10 @@ namespace Cultivation_Way.Library
             T asset;
             if (this.dict.TryGetValue(pID, out asset)) return asset;
             throw new KeyNotFoundException("No found '"+pID+"' in this library");
+        }
+        public void shallow_copy(string new_id, string from_id)
+        {
+            this.dict.Add(new_id, this.get(from_id));
         }
     }
     public abstract class CW_Dynamic_Library<T> : CW_Asset_Library<T> where T : Asset
@@ -40,12 +44,14 @@ namespace Cultivation_Way.Library
         public CW_Library_ItemWeaponMaterial item_weapon_materials;
         public CW_Library_ItemModifier item_modifiers;
         public CW_Library_Kingdom kingdoms;
+        public CW_Library_NameGenerator name_generators;
         public CW_Library_Race races;
         public CW_Library_SpecialBody special_bodies;
         public CW_Library_Spell spells;
         public CW_Library_StatusEffect status_effects;
         public CW_Library_Trait traits;
         public CW_Library_WorldEvent events;
+        public CW_Library_Words words_libraries;
         
         internal static CW_Library_Manager create()
         {
@@ -68,12 +74,14 @@ namespace Cultivation_Way.Library
             item_weapon_materials = new CW_Library_ItemWeaponMaterial();
             item_modifiers = new CW_Library_ItemModifier();
             kingdoms = new CW_Library_Kingdom();
+            name_generators = new CW_Library_NameGenerator();
             races = new CW_Library_Race();
             special_bodies = new CW_Library_SpecialBody();
             spells = new CW_Library_Spell();
             status_effects = new CW_Library_StatusEffect();
             traits = new CW_Library_Trait();
             events = new CW_Library_WorldEvent();
+            words_libraries = new CW_Library_Words();
             units.init();
             buildings.init();
             cultibooks.init();
@@ -86,12 +94,14 @@ namespace Cultivation_Way.Library
             item_weapon_materials.init();
             item_modifiers.init();
             kingdoms.init();
+            name_generators.init();
             races.init();
             special_bodies.init();
             spells.init();
             status_effects.init();
             traits.init();
             events.init();
+            words_libraries.init();
         }
         /// <summary>
         /// 添加AssetLibrary并进行初始化
@@ -111,6 +121,7 @@ namespace Cultivation_Way.Library
         {
             cultisys.register();
             elements.register();
+            name_generators.register();
             spells.register();
             /**
             units.register();
@@ -126,7 +137,9 @@ namespace Cultivation_Way.Library
             special_bodies.register();
             status_effects.register();
             traits.register();
-            events.register();*/
+            events.register();
+            words_libraries.register();
+             */
         }
     }
 }

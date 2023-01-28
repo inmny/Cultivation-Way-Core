@@ -3,12 +3,27 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E4AA8CB0-D5E7-4940-9C51-B7346D2D6DCB}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
     <AssemblyName>ClassLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,13 +50,15 @@
   <PropertyGroup>
     <RootNamespace>Cultivation_Way</RootNamespace>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>Includes\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Assemblies\Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>Includes\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="DOTween">
       <HintPath>Includes\DOTween.dll</HintPath>
@@ -391,6 +409,17 @@
     <Content Include="GameResources\buildings\windmill_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\windmill_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\windmill_eastern_human\ruin_0.png" />
+    <Content Include="GameResources\cw_words_libraries\cultures\eh_culture_fixed_name.txt" />
+    <Content Include="GameResources\cw_words_libraries\cultures\eh_culture_postfix_name.txt" />
+    <Content Include="GameResources\cw_words_libraries\hundreds_of_family_names.txt" />
+    <Content Include="GameResources\cw_words_libraries\cities\eh_city_postfix_name.txt" />
+    <Content Include="GameResources\cw_words_libraries\cities\eh_city_fixed_name.txt" />
+    <Content Include="GameResources\cw_words_libraries\creatures\human_double_words_last_name.txt" />
+    <Content Include="GameResources\cw_words_libraries\creatures\human_fixed_name.txt" />
+    <Content Include="GameResources\cw_words_libraries\kingdoms\eh_kingdom_main_name.txt" />
+    <Content Include="GameResources\cw_words_libraries\kingdoms\eh_kingdom_fixed_name.txt" />
+    <Content Include="GameResources\cw_words_libraries\kingdoms\eh_kingdom_postfix_name.txt" />
+    <Content Include="GameResources\cw_words_libraries\thousand_common_words.txt" />
     <Content Include="GameResources\effects\anti_matter\antimatterEffect_00.png" />
     <Content Include="GameResources\effects\anti_matter\antimatterEffect_01.png" />
     <Content Include="GameResources\effects\anti_matter\antimatterEffect_02.png" />
@@ -716,6 +745,7 @@
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Code\CW_Actor.cs" />
     <Compile Include="Code\CW_ActorData.cs" />
     <Compile Include="Code\CW_ActorStatus.cs" />
@@ -725,6 +755,7 @@
     <Compile Include="Code\CW_Library_StatusEffect.cs" />
     <Compile Include="Code\CW_MapChunk_Manager.cs" />
     <Compile Include="Code\CW_NameGenerator.cs" />
+    <Compile Include="Code\CW_NameTemplateActions.cs" />
     <Compile Include="Code\CW_StatusEffectData.cs" />
     <Compile Include="Code\CW_Tester_Animation.cs" />
     <Compile Include="Code\CW_Building.cs" />
@@ -744,14 +775,17 @@
     <Compile Include="Code\W_Content_Drop.cs" />
     <Compile Include="Code\W_Content_GodPower.cs" />
     <Compile Include="Code\W_Content_KingdomAndRace.cs" />
+    <Compile Include="Code\W_Content_NameGenerator.cs" />
     <Compile Include="Code\W_Content_Spell.cs" />
     <Compile Include="Code\W_Content_StatusEffect.cs" />
     <Compile Include="Code\W_Content_Tab.cs" />
     <Compile Include="Code\W_Content_WindowCreatureInfo.cs" />
     <Compile Include="Code\W_Content_WindowTop.cs" />
     <Compile Include="Code\W_Content_WindowTop_Helper.cs" />
+    <Compile Include="Code\W_Content_Words_Library.cs" />
     <Compile Include="Code\W_Content_WorldEvent.cs" />
     <Compile Include="Code\W_Harmony_Banner.cs" />
+    <Compile Include="Code\W_Harmony_Culture.cs" />
     <Compile Include="Code\W_Harmony_Others.cs" />
     <Compile Include="Code\W_Harmony_Spell.cs" />
     <Compile Include="Code\W_Harmony_StatusEffect.cs" />
@@ -807,6 +841,21 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assemblies\" />
+    <Folder Include="GameResources\cw_words_libraries\cultibooks\" />
+    <Folder Include="GameResources\cw_words_libraries\special_bodies\" />
+    <Folder Include="GameResources\cw_words_libraries\tiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 和 x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
   <ProjectExtensions />

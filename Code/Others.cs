@@ -1,4 +1,4 @@
-﻿using Cultivation_Way.Animation;
+using Cultivation_Way.Animation;
 using Cultivation_Way.Library;
 using UnityEngine;
 
@@ -42,6 +42,7 @@ namespace Cultivation_Way.Others
         public const float bushido_force_culti_co = 0.05f;
         public const float seconds_per_month = 3f;
         public const int special_body_create_level = 19;
+        public const float new_family_name_chance = 0.1f;
 
         internal static string[] num_to_cz = new string[10] { "〇", "一", "二", "三", "四", "五", "六", "七", "八", "九" };
     }
@@ -60,6 +61,8 @@ namespace Cultivation_Way.Others
         public delegate CW_BaseStats CW_Cultisys_Stats(CW_Actor cw_actor, CW_Asset_CultiSys cultisys, int level);
         public delegate bool CW_Cultisys_Judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys);
         public delegate bool CW_Cultisys_Level_Judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys);
+        public delegate string CW_Name_Template_Decode(CW_Template_Elm name_template_elm, CW_Actor cw_actor = null, City city = null, Kingdom kingdom = null, Culture culture = null, WorldTile tile = null);
+        public delegate bool CW_Name_Template_Select(CW_Template_Elm name_template_elm, CW_Actor cw_actor = null, City city = null, Kingdom kingdom = null, Culture culture = null, WorldTile tile = null);
     }
     public class CW_Enums
     {
