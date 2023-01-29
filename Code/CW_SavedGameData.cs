@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Cultivation_Way.Library;
 namespace Cultivation_Way
 {
     [Serializable]
@@ -25,6 +25,13 @@ namespace Cultivation_Way
         public List<CW_CityData> cities = new List<CW_CityData>();
         public List<ActorData> actor_datas = new List<ActorData>();
         public List<CW_ActorData> cw_actor_datas = new List<CW_ActorData>();
-        public List
+        public List<BuildingData> building_datas = new List<BuildingData>();
+        public List<CW_BuildingData> cw_building_datas = new List<CW_BuildingData>();
+        public List<Kingdom> kingdoms = new List<Kingdom>();
+        public List<DiplomacyRelation> relations = new List<DiplomacyRelation>();
+        public List<Culture> cultures = new List<Culture>();
+        public List<CW_MapChunk_Data> chunks = new List<CW_MapChunk_Data>();
+        public List<CW_Asset_CultiBook> cultibooks = new List<CW_Asset_CultiBook>();
+        public List<CW_Asset_SpecialBody> special_bodies = new List<CW_Asset_SpecialBody>();
     }
 }

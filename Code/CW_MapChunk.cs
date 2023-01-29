@@ -7,6 +7,12 @@ using UnityEngine;
 
 namespace Cultivation_Way
 {
+    public class CW_MapChunk_Data
+    {
+        public float wakan;
+        public float wakan_level;
+        public int[] element;
+    }
     public class CW_MapChunk
     {
         public int x;

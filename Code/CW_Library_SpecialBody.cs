@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cultivation_Way.Library
 {
+    [Serializable]
     public class CW_Asset_SpecialBody : Asset
     {
         internal string name;

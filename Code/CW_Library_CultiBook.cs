@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 namespace Cultivation_Way.Library
 {
+    [Serializable]
     public class CW_Asset_CultiBook : Asset
     {
         public bool is_fixed;
