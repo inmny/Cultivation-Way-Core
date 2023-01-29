@@ -67,7 +67,7 @@ namespace Cultivation_Way.Library
                 colide_group.Sort((left, right) => { return right.Value.CompareTo(left.Value); });
                 foreach(KeyValuePair<int, int> part in colide_group)
                 {
-                    MonoBehaviour.print(string.Format("<{0},{1}>", part.Key, part.Value));
+                    //MonoBehaviour.print(string.Format("<{0},{1}>", part.Key, part.Value));
                 }
             }
             // TODO: 采用正经的拓扑排序算法，将依赖关系进行拓扑排序
@@ -97,7 +97,7 @@ namespace Cultivation_Way.Library
             }
             foreach(KeyValuePair<int,int> edge in __relation_list)
             {
-                MonoBehaviour.print(string.Format("map[{0}][{1}] = true", edge.Key, edge.Value));
+                //MonoBehaviour.print(string.Format("map[{0}][{1}] = true", edge.Key, edge.Value));
                 map[edge.Key][edge.Value] = true;
                 nodes[edge.Key].out_node_idxs.Add(edge.Value);
                 nodes[edge.Value].in_degree += 1;

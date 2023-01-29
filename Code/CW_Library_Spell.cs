@@ -156,7 +156,7 @@ namespace Cultivation_Way.Library
                 if (CW_Library_Manager.instance.elements.get(addition_element_tags[i]) == null) throw new Exception(String.Format("No such element '{0}' in register spell '{1}'", addition_element_tags[i], id));
                 this.tags |= 1ul << (CW_Library_Manager.instance.elements.get(addition_element_tags[i]).tag + base_elements_contained.Length);
             }
-            WorldBoxConsole.Console.print("Spell tag:" + Convert.ToString((long)tags, 16));
+            //WorldBoxConsole.Console.print("Spell tag:" + Convert.ToString((long)tags, 16));
             if (cultisys_black_or_white_list)
             {// 黑名单
                 this.allowed_cultisys = 0xffffffff;

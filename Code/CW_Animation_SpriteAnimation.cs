@@ -17,46 +17,46 @@ namespace Cultivation_Way.Animation
         /// <summary>
         /// 图像集
         /// </summary>
-        internal Sprite[] sprites;
+        public Sprite[] sprites;
         /// <summary>
         /// 运行时间
         /// </summary>
-        internal float play_time;
+        public float play_time;
         /// <summary>
         /// 循环次数
         /// </summary>
-        internal int loop_nr;
+        public int loop_nr;
         /// <summary>
         /// 路径长度
         /// </summary>
-        internal float trace_length;
+        public float trace_length;
         /// <summary>
         /// 距离下一帧剩余时间
         /// </summary>
-        internal float next_frame_time;
+        public float next_frame_time;
         /// <summary>
         /// 当前帧
         /// </summary>
-        internal int cur_frame_idx;
+        public int cur_frame_idx;
         /// <summary>
         /// 渲染器
         /// </summary>
-        internal SpriteRenderer renderer;
+        public SpriteRenderer renderer;
         /// <summary>
         /// 组件
         /// </summary>
-        internal GameObject gameObject;
-        internal float end_froze_time;
-        internal bool has_end;
-        internal Vector2 src_vec;
-        internal Vector2 dst_vec;
-        internal BaseSimObject src_object;
-        internal BaseSimObject dst_object;
+        public GameObject gameObject;
+        public float end_froze_time;
+        public bool has_end;
+        public Vector2 src_vec;
+        public Vector2 dst_vec;
+        public BaseSimObject src_object;
+        public BaseSimObject dst_object;
         /// <summary>
         /// 动画设置
         /// </summary>
         internal CW_AnimationSetting setting;
-        internal float cost_for_spell;
+        public float cost_for_spell;
 
         internal CW_SpriteAnimation(CW_AnimationSetting setting, Sprite[] sprites, GameObject prefab, Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_object, BaseSimObject dst_object)
         {
