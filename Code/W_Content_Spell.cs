@@ -1362,6 +1362,7 @@ namespace Cultivation_Way.Content
         {
             if (pUser == null || !pUser.base_data.alive) return;
             CW_StatusEffectData status = ((CW_Actor)pUser).add_status_effect("status_" + spell_asset.id);
+            if(status == null) return;
             //CW_EffectManager.instance.spawn_anim(spell_asset.anim_id, pUser.currentPosition, pUser.currentPosition, pUser, pUser, pUser.objectType == MapObjectType.Actor ? ((CW_Actor)pUser).cw_cur_stats.base_stats.scale : 1f);
             status.bonus_stats.base_stats.armor += (int)cost;
         }
