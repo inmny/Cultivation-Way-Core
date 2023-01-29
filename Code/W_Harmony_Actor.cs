@@ -485,6 +485,10 @@ namespace Cultivation_Way.Content.Harmony
             CW_Actor.set_s_attackSpeed_seconds(actor, cw_actor.m_attackSpeed_seconds);
             // 设置攻击样式以及武器贴图
             CW_Asset_Item weapon_asset = cw_actor.get_weapon_asset();
+            if(weapon_asset.origin_asset.attackType == WeaponType.Range && string.IsNullOrEmpty(weapon_asset.origin_asset.projectile))
+            {
+                Debug.LogWarning(string.Format("weapon '{0}''s attack type error", weapon_asset.id));
+            }
             CW_Actor.set_s_attackType(actor, weapon_asset.origin_asset.attackType);
             CW_Actor.set_s_slashType(actor, weapon_asset.origin_asset.slash);
             CW_Actor.set_item_sprite_dirty(actor, true);

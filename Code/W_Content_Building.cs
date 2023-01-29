@@ -47,6 +47,7 @@ namespace Cultivation_Way.Content
 
                 AssetManager.buildings.loadSprites(new_building.origin_stats);
             }
+            AssetManager.buildings.get("tent_eastern_human").fundament = new BuildingFundament(1, 1, 1, 0);
             AssetManager.buildings.get("house_eastern_human").fundament = new BuildingFundament(3, 3, 4, 0);
             AssetManager.buildings.get("1house_eastern_human").fundament = new BuildingFundament(3, 3, 4, 0);
             AssetManager.buildings.get("2house_eastern_human").fundament = new BuildingFundament(3, 3, 4, 0);

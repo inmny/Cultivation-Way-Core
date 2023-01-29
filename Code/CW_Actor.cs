@@ -182,7 +182,7 @@ namespace Cultivation_Way
             if (damage_reduce < 0) damage_reduce = 0;
             damage *= 1 - damage_reduce;
 
-            if (damage < 0) return false; 
+            if ((int)damage <= 0) return false; 
             // 反伤
             if(damage > 0 && attack_type != Others.CW_Enums.CW_AttackType.Spell && attack_type != Others.CW_Enums.CW_AttackType.God && attack_type != Others.CW_Enums.CW_AttackType.Status_God)
             {
@@ -217,9 +217,10 @@ namespace Cultivation_Way
                 if(this.cw_status.wakan_level > 1)
                 {
                     float damage_on_shield = Utils.CW_Utils_Others.compress_raw_wakan(damage, this.cw_status.wakan_level);
+                    if ((int)damage_on_shield == 0) return false;
                     if (this.cw_status.shield > damage_on_shield)
                     {
-                        this.cw_status.shield -= (int)damage_on_shield; damage = 0;
+                        this.cw_status.shield -= damage_on_shield; return false;
                     }
                     else
                     {
@@ -230,7 +231,7 @@ namespace Cultivation_Way
                 {
                     if (this.cw_status.shield > damage)
                     {
-                        this.cw_status.shield -= (int)damage; damage = 0;
+                        this.cw_status.shield -= damage; return false;
                     }
                     else
                     {
@@ -239,7 +240,7 @@ namespace Cultivation_Way
                 }
             }
             if (this.cw_status.health_level > 1 && attack_type!=Others.CW_Enums.CW_AttackType.God && attack_type != Others.CW_Enums.CW_AttackType.Status_God) damage = Utils.CW_Utils_Others.compress_raw_wakan(damage, this.cw_status.health_level);
-
+            if ((int)damage == 0) return false;
             if(attacker != null && attacker.objectType == MapObjectType.Actor)
             {
                 ((CW_Actor)attacker).regen_health(damage * ((CW_Actor)attacker).cw_cur_stats.vampire, this.cw_status.health_level);

@@ -74,7 +74,7 @@ namespace Cultivation_Way.Content.Harmony
         public static bool generateName_Prefix(string pAssetID, ref string __result)
         {
             __result = CW_NameGenerator.__gen_name(pAssetID);
-            MonoBehaviour.print(string.Format("Try to gen name for '{0}', the result is '{1}'", pAssetID, __result));
+            //MonoBehaviour.print(string.Format("Try to gen name for '{0}', the result is '{1}'", pAssetID, __result));
             return string.IsNullOrEmpty(__result);
         }
         [HarmonyPrefix]
@@ -82,7 +82,7 @@ namespace Cultivation_Way.Content.Harmony
         public static bool generateNameFromTemplate_Prefix(NameGeneratorAsset pAsset, ActorBase pActor, ref string __result)
         {
             __result = CW_NameGenerator.__gen_name(pAsset.id, pActor==null?null:(CW_Actor)pActor);
-            MonoBehaviour.print(string.Format("Try to gen name for '{0}', the result is '{1}'", pAsset.id, __result));
+            //MonoBehaviour.print(string.Format("Try to gen name for '{0}', the result is '{1}'", pAsset.id, __result));
             return string.IsNullOrEmpty(__result);
         }
     }

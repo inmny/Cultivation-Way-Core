@@ -15,6 +15,7 @@ namespace Cultivation_Way.Actions
         public static void defualt_damage(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
             float damage = cost * Others.CW_Constants.default_spell_damage_co * spell_asset.free_val;
+            if ((spell_asset.tags & (1ul << (int)CW_Spell_Tag.IMMORTAL)) > 0) damage *= cost;
             switch (spell_asset.target_type)
             {
                 case CW_Spell_Target_Type.TILE:

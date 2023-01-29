@@ -1400,7 +1400,7 @@ namespace Cultivation_Way.Content
                 { 
                     //((CW_Actor)anim.src_object).cancelAllBeh(null);
                     //CW_Actor.set_attackedBy((Actor)anim.src_object, null);
-                    CW_Actor.set_attackTarget((Actor)anim.src_object, null);
+                    //CW_Actor.set_attackTarget((Actor)anim.src_object, null);
                     CW_Actor.func_spawnOn((CW_Actor)anim.src_object, target, 0f);
                     ((CW_Actor)anim.src_object).updatePos();
                     anim.set_position(anim.src_object.currentPosition); 

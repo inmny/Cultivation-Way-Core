@@ -31,7 +31,7 @@ namespace Cultivation_Way.Others
         public const float exceed_max_age_chance = 0.85f;
         public const int max_unique_legendary_names_count = 128;
         public const int max_cultisys_level = 20;
-        public const float default_spell_damage_co = 8;
+        public const float default_spell_damage_co = 32;
         public const float chunk_wakan_compress_co = 0.9f;
         public const float chunk_wakan_spread_grad = 0.01f;
         public const float chunk_wakan_level_spread_grad = 0.1f;
@@ -40,7 +40,7 @@ namespace Cultivation_Way.Others
         public const uint cultisys_immortol_tag = 0x1;
         public const uint cultisys_bushido_tag = 0x2;
         public const float bushido_force_culti_chance = 0.8f;
-        public const float bushido_force_culti_co = 0.03f;
+        public const float bushido_force_culti_co = 0.01f;
         public const float seconds_per_month = 3f;
         public const int special_body_create_level = 19;
         public const float new_family_name_chance = 0.1f;

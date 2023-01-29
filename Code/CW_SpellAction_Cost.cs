@@ -16,7 +16,7 @@ namespace Cultivation_Way.Actions
                 CW_Actor cw_actor = (CW_Actor)user;
                 if ((spell_asset.tags & (1ul<<(int)CW_Spell_Tag.IMMORTAL))>0)
                 {
-                    cost += cw_actor.cw_status.wakan * spell_asset.cost;
+                    cost = cw_actor.cw_status.wakan * spell_asset.cost;
                     if(cost > spell_asset.min_cost_val)
                     {
                         cw_actor.cw_status.wakan -= (int)cost;
@@ -34,7 +34,7 @@ namespace Cultivation_Way.Actions
                     if (health_cost > spell_asset.min_cost_val)
                     {
                         cw_actor.fast_data.health -= (int)health_cost;
-                        cost += Utils.CW_Utils_Others.get_raw_wakan(health_cost, cw_actor.cw_status.health_level);
+                        cost = Utils.CW_Utils_Others.get_raw_wakan(health_cost, cw_actor.cw_status.health_level);
                     }
                     else
                     {

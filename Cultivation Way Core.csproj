@@ -846,6 +846,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assemblies\" />
+    <Folder Include="GameResources\actors\boats\boat_trading_eastern_human\" />
+    <Folder Include="GameResources\actors\boats\boat_transport_eastern_human\" />
     <Folder Include="GameResources\cw_words_libraries\tiles\" />
   </ItemGroup>
   <ItemGroup>
