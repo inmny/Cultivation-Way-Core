@@ -463,7 +463,7 @@ namespace Cultivation_Way.Content.Harmony
             if (CW_Actor.get_event_full_heal(actor))
             {
                 CW_Actor.set_event_full_heal(actor, false);
-                cw_actor.fast_data.health = cw_actor.cw_cur_stats.base_stats.health;
+                cw_actor.cw_status.shield = cw_actor.cw_cur_stats.shield;
             }
             // 添加文化的属性影响
             Culture culture = cw_actor.getCulture();

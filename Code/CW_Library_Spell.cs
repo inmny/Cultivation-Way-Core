@@ -100,7 +100,7 @@ namespace Cultivation_Way.Library
         public CW_Asset_Spell(
             string id, string anim_id, 
             CW_Element element, string element_type_limit = null, 
-            int rarity = 1, float free_val = 1, float cost = 0.01f, int min_cost = 10, int learn_level = 1, int cast_level = 1, bool can_get_by_random = true,
+            int rarity = 1, float free_val = 1, float cost = 0.01f, int min_cost = 5, int learn_level = 1, int cast_level = 1, bool can_get_by_random = true,
             bool cultisys_black_or_white_list = true, List<string> cultisys_list = null, List<string> banned_races = null, 
             CW_Spell_Target_Type target_type = CW_Spell_Target_Type.ACTOR, 
             CW_Spell_Target_Camp target_camp = CW_Spell_Target_Camp.ENEMY, 

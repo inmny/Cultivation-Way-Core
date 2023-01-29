@@ -108,6 +108,7 @@ namespace Cultivation_Way
                 if (status_effect.status_asset.opposite_status != null && status_effect.status_asset.opposite_status.Contains(as_id)) return null;
             }
             CW_StatusEffectData ret = new CW_StatusEffectData(this, status_effect_id, user);
+            if (ret.finished) return null;
             ret.id = as_id;
             status_effects.Add(as_id, ret);
             if (ret.status_asset.action_on_get != null) ret.status_asset.action_on_get(ret, this);
@@ -268,29 +269,28 @@ namespace Cultivation_Way
             
             if (this.cw_status.can_culti && this.cw_status.wakan < this.cw_cur_stats.wakan)
             {
-                int wakan_get = 0; CW_MapChunk chunk = this.currentTile.get_cw_chunk();
+                float wakan_get = 0; CW_MapChunk chunk = this.currentTile.get_cw_chunk();
                 float chunk_co = chunk.wakan_level;
                 // 计算人物应得的level 1灵气量
                 // 修炼获取
-                wakan_get += (int)(this.cw_data.status.culti_velo * chunk_co);
-                wakan_get_count[wakan_get]++;
+                wakan_get += this.cw_data.status.culti_velo * chunk_co * Others.CW_Constants.global_immortal_culti_velo;
 
                 if (this.cw_status.wakan * 100  < this.cw_cur_stats.wakan * Others.CW_Constants.wakan_regen_valid_percent)
                 {// 灵气恢复属性的加成
-                    wakan_get += (int)(this.cw_cur_stats.wakan_regen * chunk_co);
+                    wakan_get += this.cw_cur_stats.wakan_regen * chunk_co * chunk_co;
                 }
                 if (wakan_get <= 0) goto OUT_WAKAN;
                 
                 // 计算区块能够提供的level 1灵气量
                 float wakan_chunk_provide = Utils.CW_Utils_Others.get_raw_wakan(chunk.wakan, chunk.wakan_level);
                 // 取较小者
-                if (wakan_get > wakan_chunk_provide) wakan_get = (int)wakan_chunk_provide;
+                if (wakan_get > wakan_chunk_provide) wakan_get = wakan_chunk_provide;
                 // 计算实际应用于人物灵气等级的灵气量
                 float wakan_actor_get = Utils.CW_Utils_Others.compress_raw_wakan(wakan_get, this.cw_status.wakan_level);
                 // 防止溢出
                 if (wakan_actor_get > this.cw_cur_stats.wakan - this.cw_status.wakan) wakan_actor_get = this.cw_cur_stats.wakan - this.cw_status.wakan;
                 // 人物实际获取灵气
-                this.cw_status.wakan += (int)wakan_actor_get;
+                this.cw_status.wakan += wakan_actor_get;
                 // MonoBehaviour.print("Get wakan:" + wakan_actor_get);
                 // 取人物实际获取的灵气量转为level 1的灵气量
                 wakan_actor_get = Utils.CW_Utils_Others.get_raw_wakan(wakan_actor_get, this.cw_status.wakan_level);
@@ -305,7 +305,7 @@ namespace Cultivation_Way
             {
                 health_to_regen = 
                     this.cw_cur_stats.base_stats.health * Others.CW_Constants.health_regen_valid_percent / 100 > this.fast_data.health ? 
-                    (this.cw_status.health_level>1?Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.health_regen, this.cw_status.health_level):this.cw_cur_stats.health_regen)
+                    (this.cw_status.health_level>1?Mathf.Max(Utils.CW_Utils_Others.compress_raw_wakan(this.cw_cur_stats.health_regen, this.cw_status.health_level),1):this.cw_cur_stats.health_regen)
                     :0;
             }
             else

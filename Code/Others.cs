@@ -9,6 +9,7 @@ namespace Cultivation_Way.Others
         public const string mod_name = "修真之路核心";
         public const string mod_id = "inmny.cw_core";
         public const float anim_dst_error = 0.5f;
+        public const float global_immortal_culti_velo = 0.2f;
         public const int save_version = 1;
         public const bool force_load_units = true;
         public const bool force_load_cities = true;
@@ -20,7 +21,7 @@ namespace Cultivation_Way.Others
         public const bool is_debugging = true;
         public const int wakan_level_co = 1000;
         public const int wakan_regen_valid_percent = 60;
-        public const int health_regen_valid_percent = 40;
+        public const int health_regen_valid_percent = 60;
         public const int fix_cultibook_line = 10000;
         public const int cultibook_spell_limit = 4;
         public const int cultibook_levelup_require = 5;
@@ -39,7 +40,7 @@ namespace Cultivation_Way.Others
         public const uint cultisys_immortol_tag = 0x1;
         public const uint cultisys_bushido_tag = 0x2;
         public const float bushido_force_culti_chance = 0.8f;
-        public const float bushido_force_culti_co = 0.05f;
+        public const float bushido_force_culti_co = 0.03f;
         public const float seconds_per_month = 3f;
         public const int special_body_create_level = 19;
         public const float new_family_name_chance = 0.1f;

@@ -8,8 +8,8 @@ namespace Cultivation_Way
 {
 	public class CW_ActorStatus
 	{
-		public int wakan;
-		public int shield;
+		public float wakan;
+		public float shield;
 		public float culti_velo;
 		public bool can_culti;
 		public float health_level;

@@ -32,9 +32,9 @@ namespace Cultivation_Way.Content.Harmony
             if (ret)
             {
                 CW_Actor.func_punchTargetAnimation(cw_actor, pTarget.currentPosition, pTarget.currentTile, true, (spell.tags & (1ul << (int)CW_Spell_Tag.IMMORTAL)) > 0, 40f);
-                CW_Actor.set_attackTimer(cw_actor, cw_actor.m_attackSpeed_seconds);
+                //CW_Actor.set_attackTimer(cw_actor, cw_actor.m_attackSpeed_seconds);
             }
-            return !ret;
+            return true;
         }
         private static bool __can_cast(CW_Asset_Spell spell, CW_Actor cw_actor, BaseSimObject target)
         {
