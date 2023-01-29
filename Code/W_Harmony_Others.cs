@@ -57,8 +57,8 @@ namespace Cultivation_Way.Content.Harmony
         {
             if (CW_Actor.get_beh_actor_target(pActor) == null)
             {
-                __result = ai.behaviours.BehResult.Stop;
-                return false;
+                //__result = ai.behaviours.BehResult.Stop;
+                //return false;
             }
             return true;
         }
