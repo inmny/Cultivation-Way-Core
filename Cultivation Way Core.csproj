@@ -335,6 +335,10 @@
     <Content Include="GameResources\buildings\1house_eastern_human\mini_1.png" />
     <Content Include="GameResources\buildings\1house_eastern_human\ruin_0.png" />
     <Content Include="GameResources\buildings\1house_eastern_human\ruin_1.png" />
+    <Content Include="GameResources\buildings\1windmill_eastern_human\main_0 _0.png" />
+    <Content Include="GameResources\buildings\1windmill_eastern_human\main_0 _1.png" />
+    <Content Include="GameResources\buildings\1windmill_eastern_human\main_0 _2.png" />
+    <Content Include="GameResources\buildings\1windmill_eastern_human\main_0 _3.png" />
     <Content Include="GameResources\buildings\1windmill_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\1windmill_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\1windmill_eastern_human\ruin_0.png" />
@@ -406,6 +410,10 @@
     <Content Include="GameResources\buildings\watch_tower_eastern_human\ruin_2.png" />
     <Content Include="GameResources\buildings\watch_tower_eastern_human\ruin_3.png" />
     <Content Include="GameResources\buildings\watch_tower_eastern_human\ruin_4.png" />
+    <Content Include="GameResources\buildings\windmill_eastern_human\main_0 _0.png" />
+    <Content Include="GameResources\buildings\windmill_eastern_human\main_0 _1.png" />
+    <Content Include="GameResources\buildings\windmill_eastern_human\main_0 _2.png" />
+    <Content Include="GameResources\buildings\windmill_eastern_human\main_0 _3.png" />
     <Content Include="GameResources\buildings\windmill_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\windmill_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\windmill_eastern_human\ruin_0.png" />

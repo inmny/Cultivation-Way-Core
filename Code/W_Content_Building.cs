@@ -54,14 +54,14 @@ namespace Cultivation_Way.Content
             AssetManager.buildings.get("3house_eastern_human").fundament = new BuildingFundament(4, 4, 6, 0);
             AssetManager.buildings.get("4house_eastern_human").fundament = new BuildingFundament(5, 5, 9, 0);
             AssetManager.buildings.get("5house_eastern_human").fundament = new BuildingFundament(5, 5, 9, 0);
-            AssetManager.buildings.get("hall_eastern_human").fundament = new BuildingFundament(5, 5, 9, 0);
+            AssetManager.buildings.get("hall_eastern_human").fundament = new BuildingFundament(4, 4, 7, 0);
             AssetManager.buildings.get("1hall_eastern_human").fundament = new BuildingFundament(5, 5, 9, 0);
             AssetManager.buildings.get("2hall_eastern_human").fundament = new BuildingFundament(8, 8, 14, 0);
 
             AssetManager.buildings.get("temple_eastern_human").fundament = new BuildingFundament(3, 3, 5, 0);
             AssetManager.buildings.get("barracks_eastern_human").fundament = new BuildingFundament(3, 3, 7, 0);
-            AssetManager.buildings.get("windmill_eastern_human").fundament = new BuildingFundament(5, 5, 7, 0);
-            AssetManager.buildings.get("1windmill_eastern_human").fundament = new BuildingFundament(5, 5, 6, 0);
+            AssetManager.buildings.get("windmill_eastern_human").fundament = new BuildingFundament(2, 1, 2, 0);
+            AssetManager.buildings.get("1windmill_eastern_human").fundament = new BuildingFundament(2, 2, 2, 0);
             AssetManager.buildings.get("watch_tower_eastern_human").fundament = new BuildingFundament(2, 2, 3, 0);
         }
     }
