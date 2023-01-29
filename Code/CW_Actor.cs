@@ -77,7 +77,13 @@ namespace Cultivation_Way
         internal static Action<Actor, float, bool, AttackType, BaseSimObject, bool> func_getHit = (Action<Actor, float, bool, AttackType, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("getHit");
         public static Action<Actor, float> func_updateColorEffect = (Action<Actor, float>)CW_ReflectionHelper.get_method<Actor>("updateColorEffect");
         public static Action<Actor, Vector3, WorldTile, bool, bool, float> func_punchTargetAnimation = (Action<Actor, Vector3, WorldTile, bool, bool, float>)CW_ReflectionHelper.get_method<Actor>("punchTargetAnimation");
+        public static Func<Actor, BaseSimObject, bool> func_tryToAttack = (Func<Actor, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("tryToAttack");
         #endregion
+        // TODO: 等建筑拓展后适配建筑
+        public bool is_in_default_attack_range(BaseSimObject target)
+        {
+            return Toolbox.DistVec3(this.currentPosition, target.currentPosition) < this.cw_cur_stats.base_stats.range + (target.objectType == MapObjectType.Actor?((CW_Actor)target).cw_cur_stats.base_stats.size : 5);
+        }
         public void start_color_effect(string type, float time)
         {
             if (!this.stats.effectDamage) return;

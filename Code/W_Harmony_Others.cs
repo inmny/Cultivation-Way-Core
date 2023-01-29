@@ -51,16 +51,24 @@ namespace Cultivation_Way.Content.Harmony
             
             return true;
         }
-        //[HarmonyPrefix]
-        //[HarmonyPatch(typeof(ai.behaviours.BehAttackActorTarget), "execute")]
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(ai.behaviours.BehAttackActorTarget), "execute")]
         public static bool beh_attack_actor_target_Prefix(Actor pActor, ref ai.behaviours.BehResult __result)
         {
-            if (CW_Actor.get_beh_actor_target(pActor) == null)
+            BaseSimObject target = CW_Actor.get_beh_actor_target(pActor);
+            if (target == null || target.objectType != MapObjectType.Actor || !target.base_data.alive) return false;
+            CW_Actor actor = (CW_Actor)pActor;
+            if (actor.is_in_default_attack_range(target))
             {
-                //__result = ai.behaviours.BehResult.Stop;
-                //return false;
+                if(actor.get_weapon_asset().origin_asset.attackType == WeaponType.Melee) CW_Actor.set_s_attackType(actor, WeaponType.Melee);
+                CW_Actor.func_tryToAttack(actor, target);
             }
-            return true;
+            if (target.base_data.alive) __result = ai.behaviours.BehResult.RestartTask;
+            else
+            {
+                __result = ai.behaviours.BehResult.Continue;
+            }
+            return false;
         }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ActorAnimationLoader), "loadAnimationBoat")]
