@@ -14,7 +14,9 @@ namespace Cultivation_Way.Content.Harmony
         {
             if(__instance.objectType == MapObjectType.Actor)
             {
-                ((CW_Actor)__instance).update_status_effects(pElapsed);
+                CW_Actor cw_actor = (CW_Actor)__instance;
+                cw_actor.update_status_effects(pElapsed);
+                if(cw_actor.default_spell_timer>0)cw_actor.default_spell_timer = pElapsed;
             }
             else
             {

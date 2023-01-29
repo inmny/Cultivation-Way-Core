@@ -12,29 +12,31 @@ namespace Cultivation_Way.Content.Harmony
     internal class W_Harmony_Spell
     {
         // 攻击类
-        [HarmonyPrefix]
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(Actor), "tryToAttack")]
-        public static bool actor_tryToAttack(Actor __instance, BaseSimObject pTarget, ref bool __result)
+        public static void actor_tryToAttack(Actor __instance, BaseSimObject pTarget, ref bool __result)
         {
-            if (__instance == pTarget) { __result = false; CW_Actor.set_attackTarget(__instance, null); return true; }
+            if (pTarget == null || !pTarget.base_data.alive || pTarget == __instance ) return;
             CW_Actor cw_actor = (CW_Actor)__instance;
-            if (!cw_actor.can_act) return false;
-            if (cw_actor.cur_spells.Count == 0) return true;
-            if (CW_Actor.get_attackTimer(cw_actor) > 0) return true;
-            
+            if (!cw_actor.can_act|| cw_actor.cur_spells.Count == 0) return;
+
+            if (cw_actor.default_spell_timer > 0) return;
+
+            cw_actor.default_spell_timer = cw_actor.s_spell_seconds;
             CW_Asset_Spell spell = CW_Library_Manager.instance.spells.get(cw_actor.cur_spells.GetRandom());
             
 
-            if (!__can_cast(spell, cw_actor, spell.select_target(cw_actor, pTarget))) return true;
+            if (!__can_cast(spell, cw_actor, spell.select_target(cw_actor, pTarget))) return;
 
             bool ret = CW_Spell.cast(spell, cw_actor, pTarget, pTarget.currentTile);
-            __result = ret;
+            
             if (ret)
             {
                 CW_Actor.func_punchTargetAnimation(cw_actor, pTarget.currentPosition, pTarget.currentTile, true, (spell.tags & (1ul << (int)CW_Spell_Tag.IMMORTAL)) > 0, 40f);
                 //CW_Actor.set_attackTimer(cw_actor, cw_actor.m_attackSpeed_seconds);
             }
-            return true;
+            __result |= ret;
+            return;
         }
         private static bool __can_cast(CW_Asset_Spell spell, CW_Actor cw_actor, BaseSimObject target)
         {

@@ -23,6 +23,8 @@ namespace Cultivation_Way
         internal WorldTimer fast_shake_timer = null;
         public bool can_act = true;
         internal float m_attackSpeed_seconds = 0;
+        internal float default_spell_timer = 1f;
+        internal float s_spell_seconds = 1f;
         private static List<string> _status_effects_to_remove = new List<string>();
         /// <summary>
         /// 仅提供高效访问，待权限开放后删除

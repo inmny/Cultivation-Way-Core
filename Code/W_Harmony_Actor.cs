@@ -481,7 +481,9 @@ namespace Cultivation_Way.Content.Harmony
             cw_actor.cw_status.max_age = (int)((cw_actor.cw_stats.origin_stats.maxAge+ cw_actor.cw_cur_stats.age_bonus) * (1f + cw_actor.cw_cur_stats.mod_age/100f));
             // 修炼速度
             cw_actor.cw_status.culti_velo *= 1 + cw_actor.cw_cur_stats.mod_cultivation / 100f;
+            // 攻速以及法术释放速度
             cw_actor.m_attackSpeed_seconds = (300f - cw_actor.cw_cur_stats.base_stats.attackSpeed) / (100f + cw_actor.cw_cur_stats.base_stats.attackSpeed);
+            cw_actor.s_spell_seconds = cw_actor.m_attackSpeed_seconds;
             CW_Actor.set_s_attackSpeed_seconds(actor, cw_actor.m_attackSpeed_seconds);
             // 设置攻击样式以及武器贴图
             CW_Asset_Item weapon_asset = cw_actor.get_weapon_asset();
@@ -523,6 +525,7 @@ namespace Cultivation_Way.Content.Harmony
             CW_Actor.set_status_frozen(actor, CW_Actor.func_haveStatus(actor, "frozen"));
             // 收尾
             CW_Actor.set_attackTimer(actor, 0f);
+            cw_actor.default_spell_timer = 0;
             CW_Actor.func_updateTargetScale(actor);
             cw_actor.currentScale.x = cw_actor.cw_cur_stats.base_stats.scale;
             cw_actor.currentScale.y = cw_actor.cw_cur_stats.base_stats.scale;
