@@ -29,7 +29,10 @@ namespace Cultivation_Way.Content.Harmony
             foreach (string key in textDic.Keys)
             {
                 localizedText[key] = textDic[key] as string;
-
+            }
+            foreach(CW_Addon addon in ModState.instance.addons)
+            {
+                addon.load_localized_text(pLanguage);
             }
         }
         [HarmonyPrefix]

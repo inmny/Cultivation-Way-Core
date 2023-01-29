@@ -10,6 +10,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using NCMS.Extensions;
 using ReflectionUtility;
+using UnityEngine.Purchasing.MiniJSON;
 
 namespace Cultivation_Way
 {
@@ -36,10 +37,23 @@ namespace Cultivation_Way
         {
             if (!initialized)
             {
+                load_localized_text(ModState.instance.cur_language);
                 initialize();
                 __finish_init();
             }
 
+        }
+        internal void load_localized_text(string language)
+        {
+            if (language != "cz") language = "en";
+            string file_str = File.ReadAllText(string.Format("{0}/Locales/{1}{2}", this_mod.Info.Path, language, ".json"));
+            Dictionary<string, object> textDic = Json.Deserialize(file_str) as Dictionary<string, object>;
+
+            Dictionary<string, string> localizedText = Reflection.GetField(typeof(LocalizedTextManager), LocalizedTextManager.instance, "localizedText") as Dictionary<string, string>;
+            foreach (string key in textDic.Keys)
+            {
+                localizedText[key] = textDic[key] as string;
+            }
         }
         protected void load_mod_info(Type this_mod_type)
         {

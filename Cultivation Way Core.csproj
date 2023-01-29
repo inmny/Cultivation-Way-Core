@@ -802,6 +802,8 @@
     <Compile Include="Code\CW_MapChunk_Manager.cs" />
     <Compile Include="Code\CW_NameGenerator.cs" />
     <Compile Include="Code\CW_NameTemplateActions.cs" />
+    <Compile Include="Code\CW_SavedData.cs" />
+    <Compile Include="Code\CW_SaveManager.cs" />
     <Compile Include="Code\CW_StatusEffectData.cs" />
     <Compile Include="Code\CW_Tester_Animation.cs" />
     <Compile Include="Code\CW_Building.cs" />
