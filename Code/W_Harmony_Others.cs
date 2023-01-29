@@ -51,8 +51,8 @@ namespace Cultivation_Way.Content.Harmony
             
             return true;
         }
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(ai.behaviours.BehAttackActorTarget), "execute")]
+        //[HarmonyPrefix]
+        //[HarmonyPatch(typeof(ai.behaviours.BehAttackActorTarget), "execute")]
         public static bool beh_attack_actor_target_Prefix(Actor pActor, ref ai.behaviours.BehResult __result)
         {
             if (CW_Actor.get_beh_actor_target(pActor) == null)

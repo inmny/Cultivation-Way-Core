@@ -53,7 +53,7 @@ namespace Cultivation_Way.Library
             base.init();
             foreach(ActorStats actor_stats in AssetManager.unitStats.list)
             {
-                this.__add(actor_stats, actor_stats.unit? 0.8f:0.5f/(1+(int)actor_stats.actorSize), new int[] { 20, 20, 20, 20, 20 }, 0f, new List<string>(), false, null, new CW_BaseStats());
+                this.__add(actor_stats, actor_stats.unit? 0.8f:Mathf.Max(0.03f*(int)actor_stats.actorSize,0.3f), new int[] { 20, 20, 20, 20, 20 }, 0f, new List<string>(), false, null, new CW_BaseStats());
             }
         }
         internal override void register()
