@@ -42,7 +42,7 @@ namespace Cultivation_Way.Content.Harmony
         {
             CW_Actor cw_actor = (CW_Actor)__instance;
             // 单独为武道添加的经验获取方式
-            if (cw_actor.fast_data.health < cw_actor.cw_cur_stats.base_stats.health && cw_actor.has_cultisys(Others.CW_Constants.cultisys_bushido_tag) && Toolbox.randomChance(Others.CW_Constants.bushido_force_culti_chance*(cw_actor.cw_cur_stats.base_stats.health - cw_actor.fast_data.health)/cw_actor.cw_cur_stats.base_stats.health))
+            if (cw_actor.fast_data.health < cw_actor.cw_cur_stats.base_stats.health && cw_actor.has_cultisys(Others.CW_Constants.cultisys_bushido_tag) && Toolbox.randomChance(Others.CW_Constants.bushido_force_culti_chance*(cw_actor.cw_cur_stats.base_stats.health - cw_actor.fast_data.health) / (cw_actor.cw_cur_stats.base_stats.health * (1+cw_actor.cw_data.cultisys_level[1]))))
             {
                 cw_actor.fast_data.age++;
                 // 允许血量超限
