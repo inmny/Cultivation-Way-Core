@@ -52,7 +52,7 @@ namespace Cultivation_Way
             ModState.instance.addons.Add(this);
             int name_begin_idx = this_mod.Info.Name.LastIndexOf('.');
             name = this_mod.Info.Name.Substring(name_begin_idx + 1);
-            print(string.Format("[CW Addon]:'{0}' Awake", this_mod.Info.Name));
+            print(string.Format("[CW Addon]:'{0}' Awake", name));
         }
         public abstract void awake();
         public abstract void initialize();
