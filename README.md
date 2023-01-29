@@ -6,6 +6,12 @@
 |[百科](https://github.com/inmny/Cultivation-Way-Core/wiki/Home)|[Wiki](https://github.com/inmny/Cultivation-Way-Core/)|   
 |[文档](https://github.com/inmny/Cultivation-Way-Core/wiki/Documentation)|[Documentation](https://github.com/inmny/Cultivation-Way-Core/)|	
 
+## 附属
+|附属|仓库/下载地址|
+|:----:|:----:|
+|无|无|
+
+[制作新的附属](https://github.com/inmny/CW_Addon_Template)
 ## TODO
 ·国家界面修炼信息
 
@@ -15,11 +21,7 @@
 
 ·中文名(框架已完成，剩余物品的生成
 
-·附属加载
-
 ·妖族
-
-·船只贴图
 
 ·法术获取机制调整（剩余等级需求
 ## 附属/fork Attention
