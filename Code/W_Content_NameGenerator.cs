@@ -146,7 +146,7 @@ namespace Cultivation_Way.Content
             {
                 id = "eh_kingdom_postfix",
                 words_id = "eh_kingdom_postfix_name",
-                free_val = 0.8f
+                select_from_objects = Actions.CW_NameTemplateActions.must_select
             };
             CW_Template_Elm fixed_name = new CW_Template_Elm()
             {
