@@ -31,7 +31,7 @@ namespace Cultivation_Way.Content.Harmony
             {
                 if (pAttacker != __instance)
                 {
-                    CW_Actor.set_attackedBy(__instance, pAttacker);
+                    CW_Actor.set_attackTarget(__instance, pAttacker);
                 }
                 return false;
             }
@@ -316,7 +316,7 @@ namespace Cultivation_Way.Content.Harmony
             
             CW_Actor.set_statsDirty(actor, false);
             
-            if (!cw_actor.fast_data.alive) return;
+            //if (!cw_actor.fast_data.alive) return;
             // 设定默认皮肤集合
             if (cw_actor.stats.useSkinColors && cw_actor.fast_data.skin_set == -1 && cw_actor.stats.color_sets != null) cw_actor.setSkinSet("default");
             // 若皮肤不存在，则随机选择
