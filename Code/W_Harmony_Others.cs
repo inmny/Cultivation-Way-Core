@@ -70,8 +70,8 @@ namespace Cultivation_Way.Content.Harmony
             }
             return false;
         }
-        [HarmonyPrefix]
-        [HarmonyPatch(typeof(ActorAnimationLoader), "loadAnimationBoat")]
+        //[HarmonyPrefix]
+        //[HarmonyPatch(typeof(ActorAnimationLoader), "loadAnimationBoat")]
         public static bool loadAnimationBoat_Prefix(ref string pTexturePath)
         {
             pTexturePath = pTexturePath.Replace("eastern_human", "human");

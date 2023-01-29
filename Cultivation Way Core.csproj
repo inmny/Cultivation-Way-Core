@@ -201,6 +201,42 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-90%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-45%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-45%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\0%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\45%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\90%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\135%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\180%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-135%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\broken.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\0%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\45%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\90%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\135%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\180%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-135%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\normal.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-90%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\-90%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\-45%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\-45%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\0%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\45%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\90%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\135%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\180%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\-135%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\broken.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\0%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\45%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\90%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\135%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\180%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\-135%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\normal.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_human\-90%401.png" />
     <Content Include="GameResources\actors\races\eastern_human\unit_child\swim_0.png" />
     <Content Include="GameResources\actors\races\eastern_human\unit_child\swim_1.png" />
     <Content Include="GameResources\actors\races\eastern_human\unit_child\swim_2.png" />
@@ -854,8 +890,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assemblies\" />
-    <Folder Include="GameResources\actors\boats\boat_trading_eastern_human\" />
-    <Folder Include="GameResources\actors\boats\boat_transport_eastern_human\" />
     <Folder Include="GameResources\cw_words_libraries\tiles\" />
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cultivation Way Core", "Cultivation Way Core.csproj", "{E4AA8CB0-D5E7-4940-9C51-B7346D2D6DCB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test CW Addon", "..\Test CW Addon\Test CW Addon.csproj", "{48990122-1129-4741-8689-E5C72ECDB54B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CW Addon Template", "..\Test CW Addon\CW Addon Template.csproj", "{48990122-1129-4741-8689-E5C72ECDB54B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "解决方案项", "解决方案项", "{88FC2AB4-DBB1-4A39-BB3E-76B0B76F2311}"
 EndProject

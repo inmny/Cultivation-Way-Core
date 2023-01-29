@@ -15,8 +15,7 @@ namespace Cultivation_Way{
     public class ModState
     {
         public static ModState instance;
-        public bool initialized = false;
-        public bool addons_loaded_all = false;
+        public List<CW_Addon> addons;
         public bool registered = false;
         public string cur_language = "cz";
         public NCMod mod_info;
@@ -36,10 +35,19 @@ namespace Cultivation_Way{
         public World_Data world_data;
         public CW_WorldConfig world_config;
         private bool initialized = false;
+        private bool mod_state_prepared = false;
         private int last_month;
         void Awake(){
             instance = this;
+            if (!mod_state_prepared)
+            {
+                mod_state_prepared = true;
+                mod_state = new ModState();
+                ModState.instance = mod_state;
+                mod_state.addons = new List<CW_Addon>();
+            }
             print("[CW Core]: Awake");
+
         }
         void Update()
         {
@@ -47,10 +55,9 @@ namespace Cultivation_Way{
             {
                 initialized = true;
                 CW_Library_Manager.create();
-                mod_state = new ModState();
                 world_data = new World_Data();
                 world_config = new CW_WorldConfig();
-                ModState.instance = mod_state;
+                
                 World_Data.instance = world_data;
                 foreach (NCMod ncmod in NCMS.ModLoader.Mods)
                 {
@@ -66,10 +73,22 @@ namespace Cultivation_Way{
                 Utils.CW_ItemTools.init();
                 W_Content_Manager.add_content();
 
-                mod_state.library_manager.register();
+                //mod_state.library_manager.register();
                 print("[CW Core]: Finish Initialization");
             }
-            
+            if (!mod_state.registered)
+            {
+                bool all_addons_loaded = true;
+                foreach(CW_Addon addon in mod_state.addons)
+                {
+                    if (!addon.initialized) all_addons_loaded = false;
+                }
+                if (all_addons_loaded)
+                {
+                    mod_state.registered = true;
+                    mod_state.library_manager.register();
+                }
+            }
             if (last_month!=MapBox.instance.mapStats.month)
             {
                 world_data.map_chunk_manager.update();
