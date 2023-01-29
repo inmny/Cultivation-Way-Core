@@ -8,6 +8,7 @@ namespace Cultivation_Way
 {
     public class CW_BuildingData
     {
+        public CW_BuildingStatus status;
         public Compose.CW_ComposeSetting compose_setting;
         public List<string> compose_objects_id;
     }

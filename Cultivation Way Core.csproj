@@ -796,13 +796,14 @@
     <Compile Include="Code\CW_ActorData.cs" />
     <Compile Include="Code\CW_ActorStatus.cs" />
     <Compile Include="Code\CW_Addon.cs" />
+    <Compile Include="Code\CW_BuildingStatus.cs" />
     <Compile Include="Code\CW_Extensions_WorldTile.cs" />
     <Compile Include="Code\CW_Library_Name.cs" />
     <Compile Include="Code\CW_Library_StatusEffect.cs" />
     <Compile Include="Code\CW_MapChunk_Manager.cs" />
     <Compile Include="Code\CW_NameGenerator.cs" />
     <Compile Include="Code\CW_NameTemplateActions.cs" />
-    <Compile Include="Code\CW_SavedData.cs" />
+    <Compile Include="Code\CW_SavedGameData.cs" />
     <Compile Include="Code\CW_SaveManager.cs" />
     <Compile Include="Code\CW_StatusEffectData.cs" />
     <Compile Include="Code\CW_Tester_Animation.cs" />

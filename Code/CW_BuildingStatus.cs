@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cultivation_Way
 {
-    internal class CW_SavedData
+    public class CW_BuildingStatus
     {
     }
 }
