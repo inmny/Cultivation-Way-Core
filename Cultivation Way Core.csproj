@@ -60,12 +60,21 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>Includes\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>Includes\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
     <Reference Include="DOTween">
       <HintPath>Includes\DOTween.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zlib.CF">
+      <HintPath>Includes\Ionic.Zlib.CF.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NCMS">
       <HintPath>Includes\NCMS.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Purchasing.Common">
       <HintPath>Includes\Purchasing.Common.dll</HintPath>
@@ -362,15 +371,18 @@
     <Content Include="GameResources\banners\eastern_human\icon\白虎之牙.png" />
     <Content Include="GameResources\banners\eastern_human\icon\青龙之鳞.png" />
     <Content Include="GameResources\banners\eastern_human\icon\麒麟之角.png" />
+    <Content Include="GameResources\buildings\1hall_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\1hall_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\1hall_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\1hall_eastern_human\ruin_0.png" />
+    <Content Include="GameResources\buildings\1house_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\1house_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\1house_eastern_human\main_1.png" />
     <Content Include="GameResources\buildings\1house_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\1house_eastern_human\mini_1.png" />
     <Content Include="GameResources\buildings\1house_eastern_human\ruin_0.png" />
     <Content Include="GameResources\buildings\1house_eastern_human\ruin_1.png" />
+    <Content Include="GameResources\buildings\1windmill_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\1windmill_eastern_human\main_0 _0.png" />
     <Content Include="GameResources\buildings\1windmill_eastern_human\main_0 _1.png" />
     <Content Include="GameResources\buildings\1windmill_eastern_human\main_0 _2.png" />
@@ -378,59 +390,72 @@
     <Content Include="GameResources\buildings\1windmill_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\1windmill_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\1windmill_eastern_human\ruin_0.png" />
+    <Content Include="GameResources\buildings\2hall_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\2hall_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\2hall_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\2hall_eastern_human\ruin_0.png" />
+    <Content Include="GameResources\buildings\2house_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\2house_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\2house_eastern_human\main_1.png" />
     <Content Include="GameResources\buildings\2house_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\2house_eastern_human\mini_1.png" />
     <Content Include="GameResources\buildings\2house_eastern_human\ruin_0.png" />
     <Content Include="GameResources\buildings\2house_eastern_human\ruin_1.png" />
+    <Content Include="GameResources\buildings\3house_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\3house_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\3house_eastern_human\main_1.png" />
     <Content Include="GameResources\buildings\3house_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\3house_eastern_human\mini_1.png" />
     <Content Include="GameResources\buildings\3house_eastern_human\ruin_0.png" />
     <Content Include="GameResources\buildings\3house_eastern_human\ruin_1.png" />
+    <Content Include="GameResources\buildings\4house_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\4house_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\4house_eastern_human\main_1.png" />
     <Content Include="GameResources\buildings\4house_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\4house_eastern_human\mini_1.png" />
     <Content Include="GameResources\buildings\4house_eastern_human\ruin_0.png" />
     <Content Include="GameResources\buildings\4house_eastern_human\ruin_1.png" />
+    <Content Include="GameResources\buildings\5house_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\5house_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\5house_eastern_human\main_1.png" />
     <Content Include="GameResources\buildings\5house_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\5house_eastern_human\mini_1.png" />
     <Content Include="GameResources\buildings\5house_eastern_human\ruin_0.png" />
     <Content Include="GameResources\buildings\5house_eastern_human\ruin_1.png" />
+    <Content Include="GameResources\buildings\barracks_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\barracks_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\barracks_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\barracks_eastern_human\ruin_0.png" />
+    <Content Include="GameResources\buildings\docks_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\docks_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\docks_eastern_human\main_0_0.png" />
     <Content Include="GameResources\buildings\docks_eastern_human\main_0_1.png" />
     <Content Include="GameResources\buildings\docks_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\docks_eastern_human\ruin_0.png" />
+    <Content Include="GameResources\buildings\fishing_docks_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\fishing_docks_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\fishing_docks_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\fishing_docks_eastern_human\ruin_0.png" />
+    <Content Include="GameResources\buildings\hall_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\hall_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\hall_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\hall_eastern_human\ruin_0.png" />
+    <Content Include="GameResources\buildings\house_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\house_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\house_eastern_human\main_1.png" />
     <Content Include="GameResources\buildings\house_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\house_eastern_human\mini_1.png" />
     <Content Include="GameResources\buildings\house_eastern_human\ruin_0.png" />
     <Content Include="GameResources\buildings\house_eastern_human\ruin_1.png" />
+    <Content Include="GameResources\buildings\temple_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\temple_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\temple_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\temple_eastern_human\ruin_0.png" />
+    <Content Include="GameResources\buildings\tent_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\tent_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\tent_eastern_human\mini_0.png" />
     <Content Include="GameResources\buildings\tent_eastern_human\ruin_0.png" />
+    <Content Include="GameResources\buildings\watch_tower_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\watch_tower_eastern_human\main_0.png" />
     <Content Include="GameResources\buildings\watch_tower_eastern_human\main_1.png" />
     <Content Include="GameResources\buildings\watch_tower_eastern_human\main_2.png" />
@@ -446,6 +471,7 @@
     <Content Include="GameResources\buildings\watch_tower_eastern_human\ruin_2.png" />
     <Content Include="GameResources\buildings\watch_tower_eastern_human\ruin_3.png" />
     <Content Include="GameResources\buildings\watch_tower_eastern_human\ruin_4.png" />
+    <Content Include="GameResources\buildings\windmill_eastern_human\construction_0.png" />
     <Content Include="GameResources\buildings\windmill_eastern_human\main_0 _0.png" />
     <Content Include="GameResources\buildings\windmill_eastern_human\main_0 _1.png" />
     <Content Include="GameResources\buildings\windmill_eastern_human\main_0 _2.png" />
@@ -754,6 +780,7 @@
     <Content Include="icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="GameResources\actors\races\eastern_human\unit_female_1\sprites.json" />
     <None Include="GameResources\actors\races\eastern_human\unit_king\sprites.json" />
     <None Include="GameResources\actors\races\eastern_human\unit_leader\sprites.json" />
@@ -788,6 +815,7 @@
     <None Include="GameResources\effects\wind_polo\sprites.json" />
     <None Include="GameResources\effects\wood_escape\sprites.json" />
     <None Include="mod.json" />
+    <None Include="packages.config" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
@@ -836,6 +864,7 @@
     <Compile Include="Code\W_Harmony_Banner.cs" />
     <Compile Include="Code\W_Harmony_Culture.cs" />
     <Compile Include="Code\W_Harmony_Others.cs" />
+    <Compile Include="Code\W_Harmony_Save.cs" />
     <Compile Include="Code\W_Harmony_Spell.cs" />
     <Compile Include="Code\W_Harmony_StatusEffect.cs" />
     <Compile Include="Code\W_Harmony_Window.cs" />

@@ -306,11 +306,22 @@ namespace Cultivation_Way.Library
     }
     public class CW_Library_Words : CW_Dynamic_Library<CW_Asset_Words>
     {
+        public override CW_Asset_Words add_to_static(CW_Asset_Words asset)
+        {
+            throw new NotImplementedException();
+        }
+
         public void load_words(string id, string path_to_file)
         {
             this.add(new CW_Asset_Words() { id = id });
             this.t.load(path_to_file);
         }
+
+        internal override void load_as(List<CW_Asset_Words> list)
+        {
+            throw new NotImplementedException();
+        }
+
         internal override void register()
         {
             throw new NotImplementedException();

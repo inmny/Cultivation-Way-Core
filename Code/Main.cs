@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using Cultivation_Way.Animation;
 namespace Cultivation_Way{
-    public enum Load_Unit_Reason
+    public enum Load_Object_Reason
     {
-        CITY_SPAWN,
+        SPAWN,
         LOAD_SAVES
     }
     public class ModState
@@ -21,7 +21,7 @@ namespace Cultivation_Way{
         public NCMod mod_info;
         public CW_EffectManager effect_manager;
         public CW_Library_Manager library_manager;
-        public Load_Unit_Reason load_unit_reason = Load_Unit_Reason.CITY_SPAWN;
+        public Load_Object_Reason load_object_reason = Load_Object_Reason.SPAWN;
     }
     public class World_Data
     {

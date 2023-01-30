@@ -251,7 +251,6 @@ namespace Cultivation_Way.Content.Harmony
                 CW_Actor.func_newCreature(actor, (int)(W_Content_Helper.game_stats_data.gameTime + (double)MapBox.instance.units.Count));
                 // 在func_newCreature中会调用updateStats，从而使得fast_data会指向本身的data
                 // actor.fast_data = (ActorStatus)CW_Actor.get_data(actor);
-                CW_Library_Manager.instance.cultisys.set_cultisys(actor);
             }
             else
             {
@@ -259,9 +258,14 @@ namespace Cultivation_Way.Content.Harmony
                 if (pData.status == null) WorldBoxConsole.Console.print("pData.status is null");
                 actor.cw_cur_stats = new CW_BaseStats(CW_Actor.get_curstats(actor));
                 actor.cw_data = W_Content_Helper.get_load_cw_data(pData); // 由于原版的城市生成生物和存档加载生物采用同样的加载方式，此处通过一个bus函数进行区分。
-                if (Others.CW_Constants.force_load_units && (actor.cw_data==null||actor.cw_data.status==null))
+                if(ModState.instance.load_object_reason == Load_Object_Reason.LOAD_SAVES)
                 {
-                    actor.CW_newCreature();
+                    if (Others.CW_Constants.force_load_units && (actor.cw_data == null || actor.cw_data.status == null))
+                    {
+                        actor.new_creature = true;
+                        actor.CW_newCreature();
+                        Debug.Log("Force Load Unit:" + pData.status.actorID);
+                    }
                 }
                 actor.fast_data = pData.status;
                 actor.cw_status = actor.cw_data.status;
@@ -270,28 +274,31 @@ namespace Cultivation_Way.Content.Harmony
                 CW_Actor.set_professionAsset(actor, AssetManager.professions.get(pData.status.profession));
 
                 __actor_updateStats(actor);
-
-                CW_Library_Manager.instance.cultisys.set_cultisys(actor);
-                if (!Others.CW_Constants.cultibook_force_learn && actor.cw_data.cultisys == 0)
+                
+                
+                if (ModState.instance.load_object_reason == Load_Object_Reason.SPAWN)
                 {
-                    CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(actor.cw_data.cultibook_id);
-                    if (cultibook != null)
+                    CW_Library_Manager.instance.cultisys.set_cultisys(actor);
+                    if (!Others.CW_Constants.cultibook_force_learn && actor.cw_data.cultisys == 0)
                     {
-                        cultibook.cur_culti_nr--;
-                        if (cultibook.cur_culti_nr <= 0) cultibook.try_deprecate();
+                        CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(actor.cw_data.cultibook_id);
+                        if (cultibook != null)
+                        {
+                            cultibook.cur_culti_nr--;
+                            if (cultibook.cur_culti_nr <= 0) cultibook.try_deprecate();
+                        }
+                        actor.cw_data.cultibook_id = null;
                     }
-                    actor.cw_data.cultibook_id = null;
-                }
-                if (ModState.instance.load_unit_reason == Load_Unit_Reason.CITY_SPAWN)
-                {
-                    // 已经进行了预学习，只需再学习法术即可。
-                    CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(actor.cw_data.cultibook_id);
-                    if (cultibook != null)
-                    {
-                        actor.learn_spells(cultibook.spells);
+                    else
+                    {// 已经进行了预学习，只需再学习法术即可。
+                        CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(actor.cw_data.cultibook_id);
+                        if (cultibook != null) actor.learn_spells(cultibook.spells);
                     }
+                    
                 }
             }
+            if (actor.new_creature) CW_Library_Manager.instance.cultisys.set_cultisys(actor);
+
             actor.fast_shake_timer = CW_Actor.get_shake_timer(actor);
             actor.transform.position = pTile.posV3;
             CW_Actor.func_spawnOn(actor, pTile, pZHeight);

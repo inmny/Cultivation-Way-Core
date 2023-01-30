@@ -18,6 +18,7 @@ namespace Cultivation_Way.Library
     }
     public class CW_Library_Race : CW_Asset_Library<CW_Asset_Race>
     {
+        internal List<string> added_races = new List<string>();
         public override void init()
         {
             base.init();
@@ -32,6 +33,7 @@ namespace Cultivation_Way.Library
         }
         public override CW_Asset_Race add(CW_Asset_Race pAsset)
         {
+            added_races.Add(pAsset.id);
             AssetManager.raceLibrary.add(pAsset.origin_asset);
             return base.add(pAsset);
         }

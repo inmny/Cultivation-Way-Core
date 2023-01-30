@@ -18,6 +18,7 @@ namespace Cultivation_Way.Library
     }
     public class CW_Library_Kingdom : CW_Asset_Library<CW_Asset_Kingdom>
     {
+        internal List<string> added_kingdoms = new List<string>();
         public override void init()
         {
             base.init();
@@ -32,6 +33,7 @@ namespace Cultivation_Way.Library
         }
         public override CW_Asset_Kingdom add(CW_Asset_Kingdom pAsset)
         {
+            added_kingdoms.Add(pAsset.id);
             AssetManager.kingdoms.add(pAsset.origin_asset);
             return base.add(pAsset);
         }

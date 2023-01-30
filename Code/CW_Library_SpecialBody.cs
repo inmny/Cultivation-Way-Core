@@ -98,6 +98,11 @@ namespace Cultivation_Way.Library
     }
     public class CW_Library_SpecialBody : CW_Dynamic_Library<CW_Asset_SpecialBody>
     {
+        public override CW_Asset_SpecialBody add_to_static(CW_Asset_SpecialBody asset)
+        {
+            throw new NotImplementedException();
+        }
+
         internal void delete(string id, bool force)
         {
             CW_Asset_SpecialBody body;
@@ -110,10 +115,6 @@ namespace Cultivation_Way.Library
         }
 
         internal override void register()
-        {
-            throw new NotImplementedException();
-        }
-        internal override void reset()
         {
             throw new NotImplementedException();
         }

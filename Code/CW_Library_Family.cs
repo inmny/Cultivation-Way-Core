@@ -26,6 +26,16 @@ namespace Cultivation_Way.Library
     }
     internal class CW_Library_Family : CW_Dynamic_Library<CW_Asset_Family>
     {
+        public override CW_Asset_Family add_to_static(CW_Asset_Family asset)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal override void load_as(List<CW_Asset_Family> list)
+        {
+            throw new NotImplementedException();
+        }
+
         internal override void register()
         {
             throw new NotImplementedException();

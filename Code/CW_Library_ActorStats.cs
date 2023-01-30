@@ -48,6 +48,7 @@ namespace Cultivation_Way.Library
     }
     public class CW_Library_ActorStats : CW_Asset_Library<CW_ActorStats>
     {
+        internal List<string> added_actors = new List<string>();
         public override void init()
         {
             base.init();
@@ -73,6 +74,7 @@ namespace Cultivation_Way.Library
         }
         public override CW_ActorStats add(CW_ActorStats pAsset)
         {
+            added_actors.Add(pAsset.id);
             AssetManager.unitStats.add(pAsset.origin_stats);
             return base.add(pAsset);
         }

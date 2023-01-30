@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Cultivation_Way
 {
+    [Serializable]
     public class CW_Element
     {
         public const int BASE_TYPE_WATER = 0;
@@ -17,6 +18,10 @@ namespace Cultivation_Way
         private const string UNIFORM_TYPE = "CW_uniform";
         public int[] base_elements = new int[Others.CW_Constants.base_element_types];
         public string type_id;
+        internal CW_Element()
+        {
+
+        }
         /// <summary>
         /// 创建CW_Element对象
         /// </summary>

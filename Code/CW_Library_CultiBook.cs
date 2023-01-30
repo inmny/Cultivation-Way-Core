@@ -171,10 +171,6 @@ namespace Cultivation_Way.Library
             base.init();
 
         }
-        internal override void reset()
-        {
-            throw new NotImplementedException();
-        }
         internal override void register()
         {
             throw new NotImplementedException();
@@ -199,6 +195,11 @@ namespace Cultivation_Way.Library
             if (A == null) return B==null?null:b;
             if (B == null) return a;
             return (A.culti_promt + 1) * (A.order << 4 + A.level + A.cur_culti_nr) >= (B.culti_promt + 1) * (B.order << 4 + B.level + B.cur_culti_nr) ? a : b;
+        }
+
+        public override CW_Asset_CultiBook add_to_static(CW_Asset_CultiBook asset)
+        {
+            throw new NotImplementedException();
         }
     }
 }

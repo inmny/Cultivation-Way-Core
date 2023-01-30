@@ -261,6 +261,12 @@ namespace Cultivation_Way
             }
             return true;
         }
+
+        internal void prepare_cw_data_for_save()
+        {
+            //throw new NotImplementedException();
+        }
+
         static int max_wakan_get_once = 128;
         static int[] wakan_get_count = new int[max_wakan_get_once];
         static bool count_init = false;

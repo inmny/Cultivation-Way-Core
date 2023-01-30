@@ -157,7 +157,6 @@ namespace Cultivation_Way.Content.Harmony
         }
         private static bool __city_beh_produceNewCitizen(Building building, City city)
         {
-            ModState.instance.load_unit_reason = Load_Unit_Reason.CITY_SPAWN;
             List<Actor> units = city.units.getSimpleList();
             if (units.Count < 2) return false;
 

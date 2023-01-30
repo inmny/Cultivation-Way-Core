@@ -112,6 +112,38 @@ namespace Cultivation_Way
                 wakan_tide.action(wakan_tide);
             }
         }
+        public List<CW_MapChunk_Data> save()
+        {
+            int i, j;
+            List<CW_MapChunk_Data> ret = new List<CW_MapChunk_Data>();
+            for (i = 0; i < width; i++)
+            {
+                for (j = 0; j < height; j++)
+                {
+                    ret.Add(new CW_MapChunk_Data
+                    {
+                        wakan = chunks[i, j].wakan,
+                        wakan_level = chunks[i,j].wakan_level,
+                        element = chunks[i,j].element == null ? new int[] { 20,20,20,20,20}: chunks[i, j].element.base_elements
+                    });
+                }
+            }
+            return ret;
+        }
+        public void load(List<CW_MapChunk_Data> datas)
+        {
+            if (datas.Count != this.width * this.height) throw new Exception();
+            int i, j;
+            for (i = 0; i < width; i++)
+            {
+                for (j = 0; j < height; j++)
+                {
+                    chunks[i, j].wakan = datas[i * height + j].wakan;
+                    chunks[i, j].wakan_level = datas[i * height + j].wakan;
+                    chunks[i, j].element = new CW_Element(datas[i * height + j].element);
+                }
+            }
+        }
         public CW_MapChunk get_chunk(int x, int y)
         {
             if (x < 0 || y < 0 || x >= width || y >= height) return null;

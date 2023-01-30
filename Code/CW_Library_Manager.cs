@@ -23,8 +23,26 @@ namespace Cultivation_Way.Library
     }
     public abstract class CW_Dynamic_Library<T> : CW_Asset_Library<T> where T : Asset
     {
-        internal List<T> static_list;
-        internal abstract void reset();
+        internal List<T> static_list = new List<T>();
+        public abstract T add_to_static(T asset);
+        internal virtual void reset()
+        {
+            this.dict.Clear();
+            this.list.Clear();
+            foreach (T asset in static_list)
+            {
+                add(asset);
+            }
+        }
+        internal virtual void load_as(List<T> list)
+        {
+            this.list.Clear();
+            this.dict.Clear();
+            foreach (T asset in list)
+            {
+                this.add(asset);
+            }
+        }
     }
     public class CW_Library_Manager
     {

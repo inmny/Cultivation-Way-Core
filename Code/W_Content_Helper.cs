@@ -63,14 +63,33 @@ namespace Cultivation_Way.Content
         internal static CW_ActorData get_load_cw_data(ActorData origin_data)
         {
             CW_ActorData ret = null;
-            switch (ModState.instance.load_unit_reason)
+            switch (ModState.instance.load_object_reason)
             {
-                case Load_Unit_Reason.CITY_SPAWN:
+                case Load_Object_Reason.SPAWN:
                     ret = Harmony.W_Harmony_City.tmp_data;
                     Harmony.W_Harmony_City.tmp_data = null;
                     break;
-                case Load_Unit_Reason.LOAD_SAVES:
+                case Load_Object_Reason.LOAD_SAVES:
+                    ret = CW_SaveManager.tmp_loaded_actor_data;
+                    CW_SaveManager.tmp_loaded_actor_data = null;
+                    break;
+                default:
+                    break;
+            }
+
+            return ret;
+        }
+        internal static CW_BuildingData get_load_cw_data(BuildingData origin_data)
+        {
+            CW_BuildingData ret = null;
+            switch (ModState.instance.load_object_reason)
+            {
+                case Load_Object_Reason.SPAWN:
                     throw new NotImplementedException();
+                    break;
+                case Load_Object_Reason.LOAD_SAVES:
+                    ret = CW_SaveManager.tmp_loaded_building_data;
+                    CW_SaveManager.tmp_loaded_building_data = null;
                     break;
                 default:
                     break;
@@ -88,7 +107,7 @@ namespace Cultivation_Way.Content
         }
         private static void get_building_prefabs()
         {
-            building_prefab = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("buildings/p_building"));
+            building_prefab = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>("buildings/p_building"), Main.instance.transform);
             building_prefab.SetActive(false);
             UnityEngine.Object.Destroy(building_prefab.GetComponent<Building>());
             building_prefab.AddComponent<CW_Building>();
@@ -97,7 +116,7 @@ namespace Cultivation_Way.Content
         {
             for (int i = 0; i < actor_prefab_paths.Length; i++)
             {
-                GameObject newPrefab = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>(actor_prefab_paths[i]));
+                GameObject newPrefab = UnityEngine.Object.Instantiate<GameObject>(Resources.Load<GameObject>(actor_prefab_paths[i]), Main.instance.transform);
                 newPrefab.SetActive(false);
                 UnityEngine.Object.Destroy(newPrefab.GetComponent<Actor>());
                 newPrefab.AddComponent<CW_Actor>();
