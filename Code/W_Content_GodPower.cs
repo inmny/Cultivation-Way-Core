@@ -17,9 +17,23 @@ namespace Cultivation_Way.Content
         {
             add_spawn_EasternHuman();
             add_spawn_Yao();
-
+            add_wakan_check();
             add_wakan_increase();
             add_wakan_decrease();
+        }
+
+        private static void add_wakan_check()
+        {
+            PlayerConfig.dict.Add("map_wakan_zones", new PlayerOptionData("map_wakan_zones") { boolVal = false });
+            GodPower power = new GodPower();
+            power.id = "CW_CheckWakan";
+            power.name = "Wakan Check";
+            power.unselectWhenWindow = true;
+            power.force_map_text = MapMode.None;
+            power.map_modes_switch = true;
+            power.toggle_name = "map_wakan_zones";
+            power.toggle_action = (PowerToggleAction)Delegate.Combine(power.toggle_action, new PowerToggleAction(__toggleOption));
+            AssetManager.powers.add(power);
         }
 
         private static void add_wakan_decrease()
@@ -142,6 +156,18 @@ namespace Cultivation_Way.Content
             anim.cur_frame_idx = cur_frame_idx;
             anim.set_alpha(origin_anim.renderer.color.a);
             anim.gameObject.transform.localScale = origin_anim.gameObject.transform.localScale;
+        }
+        private static void __toggleOption(string pPower)
+        {
+            GodPower godPower = AssetManager.powers.get(pPower);
+            WorldTip.instance.showToolbarText(godPower);
+
+            PlayerOptionData playerOptionData = PlayerConfig.dict[godPower.toggle_name];
+            playerOptionData.boolVal = !playerOptionData.boolVal;
+
+            if (playerOptionData.boolVal) Harmony.W_Harmony_Others.__disableAllOtherMapModes(pPower);
+
+            PlayerConfig.saveData();
         }
     }
 }

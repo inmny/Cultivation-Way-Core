@@ -755,11 +755,16 @@
     <Content Include="GameResources\effects\stxh_XTDT\XTDT_6.png" />
     <Content Include="GameResources\effects\stxh_XTDT\XTDT_7.png" />
     <Content Include="GameResources\effects\wtiger_tooth\白虎之牙.png" />
+    <Content Include="GameResources\ui\cw_window\buttonToggleIndicator_0.png" />
+    <Content Include="GameResources\ui\cw_window\buttonToggleIndicator_1.png" />
     <Content Include="GameResources\ui\cw_window\sim_info_bg.png" />
     <Content Include="GameResources\ui\cw_window\windowInnerSliced.png" />
     <Content Include="GameResources\ui\cw_window\windowNamePlate.png" />
+    <Content Include="GameResources\ui\Icons\iconCheckElement_Off.png" />
+    <Content Include="GameResources\ui\Icons\iconCheckElement_On.png" />
     <Content Include="GameResources\ui\Icons\iconClan.png" />
     <Content Include="GameResources\ui\Icons\iconCheckWakan.png" />
+    <Content Include="GameResources\ui\Icons\iconWakan_Increase.png" />
     <Content Include="GameResources\ui\Icons\iconSpell_Armor.png" />
     <Content Include="GameResources\ui\Icons\iconSpecialBody.png" />
     <Content Include="GameResources\ui\Icons\iconEastern_Humans.png" />

@@ -136,9 +136,21 @@ namespace Cultivation_Way.Content
                 ),
                 CW_Tab_Button_Type.TOOL
                 );
+            #region 一些处理
+            button.type = PowerButtonType.Special;
+            GameObject toggleIcon = new GameObject("ToggleIcon");
+            toggleIcon.AddComponent<Image>();
+            toggleIcon.AddComponent<ToggleIcon>();
+            toggleIcon.GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/cw_window/buttonToggleIndicator_0");
+            toggleIcon.GetComponent<Image>().transform.localScale = new Vector3(0.1f, 0.08f, 0);
+            toggleIcon.GetComponent<ToggleIcon>().spriteON = Resources.Load<Sprite>("ui/cw_window/buttonToggleIndicator_1");
+            toggleIcon.GetComponent<ToggleIcon>().spriteOFF = Resources.Load<Sprite>("ui/cw_window/buttonToggleIndicator_0");
+            toggleIcon.transform.SetParent(button.transform);
+            toggleIcon.transform.localPosition = new Vector3(0, 15);
+            #endregion
             add_button(
                 create_button(
-                    "CW_IncreaseWakan", "ui/Icons/iconIncreaseWakan",
+                    "CW_IncreaseWakan", "ui/Icons/iconWakan_Increase",
                     null, ButtonType.GodPower
                 ),
                 CW_Tab_Button_Type.TOOL

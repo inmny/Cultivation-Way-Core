@@ -96,5 +96,19 @@ namespace Cultivation_Way.Content.Harmony
             //MonoBehaviour.print(string.Format("Try to gen name for '{0}', the result is '{1}'", pAsset.id, __result));
             return string.IsNullOrEmpty(__result);
         }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(PowerLibrary), "disableAllOtherMapModes")]
+        public static void __disableAllOtherMapModes(string pMainPower)
+        {
+            GodPower power = AssetManager.powers.get(pMainPower);
+            if (PlayerConfig.dict[power.toggle_name].boolVal)
+            {
+                ModState.instance.map_mode = power.toggle_name;
+            }
+            else
+            {
+                ModState.instance.map_mode = String.Empty;
+            }
+        }
     }
 }
