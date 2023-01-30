@@ -101,14 +101,7 @@ namespace Cultivation_Way.Content.Harmony
         public static void __disableAllOtherMapModes(string pMainPower)
         {
             GodPower power = AssetManager.powers.get(pMainPower);
-            if (PlayerConfig.dict[power.toggle_name].boolVal)
-            {
-                ModState.instance.map_mode = power.toggle_name;
-            }
-            else
-            {
-                ModState.instance.map_mode = String.Empty;
-            }
+            ModState.instance.map_mode = power.toggle_name;
         }
     }
 }
