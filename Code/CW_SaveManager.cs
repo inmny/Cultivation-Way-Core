@@ -81,6 +81,7 @@ namespace Cultivation_Way
         }
         public static void load_origin_data(SavedMap origin_save)
         {
+            ModState.instance.loading_save_type = Loading_Save_Type.ORIGIN;
             Reflection.SetField(MapBox.instance.saveManager, "data", origin_save);
             origin_save.worldLaws.check();
             #region 按照原版动作加载地图
@@ -135,20 +136,22 @@ namespace Cultivation_Way
             int i;
             
             #region 加载并拓展人物数据, TODO: 将人物等级转换为目前修炼等阶
-            int amount_to_load_each_time = 500;
+            int amount_to_load_each_time = 100;
             int times_to_load = Mathf.CeilToInt((float)origin_save.actors.Count / amount_to_load_each_time);
+            Debug.Log(string.Format("Load time:{0}, count: {1}", times_to_load, origin_save.actors.Count));
             int cur_idx = 0;
             for (i = 0; i < times_to_load; i++)
             {
                 int amount_to_load_this_time = Mathf.Min(amount_to_load_each_time, origin_save.actors.Count - cur_idx);
                 int start_idx = cur_idx;
+                cur_idx += amount_to_load_this_time;
                 SmoothLoader.add(delegate
                 {
                     ModState.instance.load_object_reason = Load_Object_Reason.LOAD_SAVES;
-                    MapBox.instance.saveManager.CallMethod("loadActors", start_idx, amount_to_load_this_time);
+                    //Debug.Log(string.Format("start_idx:{0}, amount:{1}", start_idx, amount_to_load_this_time));
+                    load_origin_actors(origin_save.actors, start_idx, amount_to_load_this_time);
                     ModState.instance.load_object_reason = Load_Object_Reason.SPAWN;
-                }, String.Format("Load Actors ({0}/{1})", cur_idx + amount_to_load_this_time, origin_save.actors.Count), true, 0.001f);
-                cur_idx += amount_to_load_this_time;
+                }, String.Format("Load Actors ({0}/{1})", cur_idx, origin_save.actors.Count), true, 0.001f);
             }
             SmoothLoader.add(delegate
             {
@@ -203,6 +206,7 @@ namespace Cultivation_Way
         }
         public static void load_cw_data(CW_SavedGameData cw_save)
         {
+            ModState.instance.loading_save_type = Loading_Save_Type.CW;
             SavedMap origin_save = cw_save.get_origin_format();
             origin_save.worldLaws.check();
             Reflection.SetField(MapBox.instance.saveManager, "data", origin_save);
@@ -683,6 +687,52 @@ namespace Cultivation_Way
                 }
             }
             MapBox.instance.buildings.checkAddRemove();
+        }
+        private static void load_origin_actors(List<ActorData> actor_datas, int start_idx, int amount)
+        {
+            int end_idx = start_idx + amount;
+            int i, j;
+            for (i = start_idx; i < end_idx; i++)
+            {
+                //Debug.Log(string.Format("Load Actor[{0}]", i));
+                ActorData origin_data = actor_datas[i];
+
+                if (!origin_data.status.alive) continue;
+                if (origin_data.status.gender == ActorGender.Unknown) origin_data.status.gender = Toolbox.randomBool() ? ActorGender.Male : ActorGender.Female;
+                if ((!(origin_data.status.statsID == "livingPlants") && !(origin_data.status.statsID == "livingHouse")) || !string.IsNullOrEmpty(origin_data.status.special_graphics))
+                {
+                    switch (origin_data.status.statsID)
+                    {
+                        case "EasternHuman":
+                        case "unit_EasternHuman":
+                            origin_data.status.statsID = "unit_eastern_human";
+                            break;
+                        case "baby_EasternHuman":
+                            origin_data.status.statsID = "baby_eastern_human";
+                            break;
+                        default:
+                            if(AssetManager.unitStats.get(origin_data.status.statsID)==null) continue;
+                            break;
+                    }
+                    CW_Actor actor = (CW_Actor)MapBox.instance.spawnAndLoadUnit(origin_data.status.statsID, origin_data, MapBox.instance.GetTile(origin_data.x, origin_data.y));
+                    if(actor==null) continue;
+                    j = (int)Mathf.Sqrt(origin_data.status.level);
+                    while(j-->0 && (actor.cw_data.cultisys &0x1)==0)
+                    {
+                        actor.cw_data.element.re_random();
+                        CW_Library_Manager.instance.cultisys.set_cultisys(actor);
+                    }
+                    if((actor.cw_data.cultisys & 0x1) != 0)
+                    {
+                        if(actor.fast_data.level <= 10) actor.cw_data.cultisys_level[0]  = actor.fast_data.level - 1;
+                        else
+                        {
+                            actor.cw_data.cultisys_level[0] = 8 + (actor.fast_data.level + 9) / 10;
+                            actor.setStatsDirty();
+                        }
+                    }
+                }
+            }
         }
     }
 }

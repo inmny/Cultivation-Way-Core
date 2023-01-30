@@ -12,6 +12,12 @@ namespace Cultivation_Way{
         SPAWN,
         LOAD_SAVES
     }
+    public enum Loading_Save_Type
+    {
+        ORIGIN,
+        CW
+    }
+
     public class ModState
     {
         public static ModState instance;
@@ -21,6 +27,7 @@ namespace Cultivation_Way{
         public NCMod mod_info;
         public CW_EffectManager effect_manager;
         public CW_Library_Manager library_manager;
+        public Loading_Save_Type loading_save_type = Loading_Save_Type.CW;
         public Load_Object_Reason load_object_reason = Load_Object_Reason.SPAWN;
     }
     public class World_Data
