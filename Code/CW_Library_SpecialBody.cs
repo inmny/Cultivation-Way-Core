@@ -16,8 +16,8 @@ namespace Cultivation_Way.Library
         public string author_id;
         public int level;
         public string[] spells;
-        public int cur_own_nr { get; internal set; }
-        public int histroy_own_nr { get; internal set; }
+        public int cur_own_nr;
+        public int histroy_own_nr;
         public CW_BaseStats stxh_bonus_stats;
         public CW_BaseStats bonus_stats;
         public CW_Asset_SpecialBody(string id, string name, string description, string author_name, int level, string[] spells, CW_BaseStats bonus_stats, string author_id)

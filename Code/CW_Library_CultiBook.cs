@@ -29,11 +29,11 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 当前修炼人数，用于回收统计
         /// </summary>
-        public int cur_culti_nr { get; internal set; }
+        public int cur_culti_nr;
         /// <summary>
         /// 历史修炼人数
         /// </summary>
-        public int histroy_culti_nr { get; internal set; }
+        public int histroy_culti_nr;
         /// <summary>
         /// 等阶
         /// </summary>

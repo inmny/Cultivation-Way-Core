@@ -21,20 +21,23 @@ namespace Cultivation_Way
         {
             banner_icon_buffer.Clear();
             cw_actor_data_buffer.Clear();
+            Debug.Log("[CW Core]: Start Saving the World (0/12)");
             // 存储原版数据
             SavedMap origin_save = create_origin_save();
+            Debug.Log("[CW Core]: Get the Origin Save Data (1/12)");
             MapMetaData origin_meta = origin_save.getMeta();
-
+            Debug.Log("[CW Core]: Get the Origin Save Meta Data (2/12)");
             SaveManager.saveMetaData(origin_meta, folder_name);
-
+            Debug.Log("[CW Core]: Save the Origin Save Meta Data to File (3/12)");
             string origin_save_json = origin_save.toJson();
+            Debug.Log("[CW Core]: Convert the Origin Save Data to Json (4/12)");
             string path = Reflection.CallStaticMethod(typeof(SaveManager), "folderPath", folder_name) as string;
             if (!only_compressed_data)
             {
                 File.WriteAllText(path + "map.wbax", origin_save_json);
             }
             File.WriteAllBytes(path + "map.wbox", Zip.Compress(origin_save_json));
-            WorldBoxConsole.Console.print("Save origin save successfully");
+            Debug.Log("[CW Core]: Save the Origin Save Data to File (5/12)");
             // 恢复城市未出生人口数据
             foreach(CityData city_data in cw_actor_data_buffer.Keys)
             {
@@ -46,6 +49,7 @@ namespace Cultivation_Way
                 ((CW_CityData)city_data).cw_pop_points = cw_pop_points;
             }
             cw_actor_data_buffer.Clear();
+            Debug.Log("[CW Core]: Restore City CW Pop points (6/12)");
             // 恢复至模组安装时的旗帜
             List<Kingdom> kingdoms_to_restore_banner_icon = MapBox.instance.kingdoms.list_civs;
             for(int i=0;i<kingdoms_to_restore_banner_icon.Count;i++)
@@ -53,20 +57,24 @@ namespace Cultivation_Way
                 kingdoms_to_restore_banner_icon[i].banner_icon_id = banner_icon_buffer[i];
             }
             banner_icon_buffer.Clear();
+            Debug.Log("[CW Core]: Restore Kingdom Banner Icons (7/12)");
             // 存储修仙安装时的完整数据
             CW_SavedGameData cw_save = create_cw_save();
-            WorldBoxConsole.Console.print("Get cw save successfully");
+            Debug.Log("[CW Core]: Get the CW Save Data (8/12)");
             MapMetaData cw_meta = cw_save.getMeta();
+            Debug.Log("[CW Core]: Get the CW Save Meta Data (9/12)");
             cw_meta.prepareForSave();
             File.WriteAllText(SaveManager.generateMetaPath(folder_name).Replace
                 ("map.meta", "cw_map.meta"), cw_meta.toJson());
-
+            Debug.Log("[CW Core]: Save the CW Save Meta Data to File (10/12)");
             string cw_save_json = cw_save.toJson();
+            Debug.Log("[CW Core]: Covert the CW Save Data to Json (11/12)");
             if (!only_compressed_data)
             {
                 File.WriteAllText(path + "cw_map.wbax", cw_save_json);
             }
             File.WriteAllBytes(path + "cw_map.wbox", Zip.Compress(cw_save_json));
+            Debug.Log("[CW Core]: Save the CW Save Data to File (12/12)");
             return origin_save;
         }
         public static void load_origin_data(SavedMap origin_save)
@@ -210,8 +218,12 @@ namespace Cultivation_Way
             }, "Load Tiles");
             #endregion
             #region 加载动态库（功法、体质）
-            CW_Library_Manager.instance.cultibooks.load_as(cw_save.cultibooks);
-            CW_Library_Manager.instance.special_bodies.load_as(cw_save.special_bodies);
+            SmoothLoader.add(delegate
+            {
+                CW_Library_Manager.instance.cultibooks.load_as(cw_save.cultibooks);
+                CW_Library_Manager.instance.special_bodies.load_as(cw_save.special_bodies);
+            }, "Load Dynamic Libraries");
+            
             #endregion
             #region 正常加载文化和国家
             SmoothLoader.add(delegate
@@ -520,7 +532,9 @@ namespace Cultivation_Way
                         y = zones[j].y
                     });
                 }
-                save.cities.Add(data);
+                CityData_For_Save saved_city_data = new CityData_For_Save();
+                saved_city_data.set(data);
+                save.cities.Add(saved_city_data);
             }
             save.tile_map.Clear();
             save.fire.Clear();
@@ -580,7 +594,7 @@ namespace Cultivation_Way
                 CW_Actor actor = (CW_Actor)actors[i];
                 if (!actor.base_data.alive || actor.stats.skipSave) continue;
                 actor.prepare_cw_data_for_save();
-                ActorData actorData = new ActorData
+                ActorData_For_Save actorData = new ActorData_For_Save
                 {
                     status = actor.fast_data,
                     x = actor.currentTile.pos.x,
@@ -592,7 +606,8 @@ namespace Cultivation_Way
                     List<ItemData> dataForSave = actor.equipment.getDataForSave();
                     if (dataForSave.Count > 0)
                     {
-                        actorData.items = dataForSave;
+                        actorData.items = new List<CW_ItemData>();
+                        foreach (ItemData item in dataForSave) actorData.items.Add((CW_ItemData)item);
                     }
                 }
                 if (actor.city != null) actorData.cityID = CW_City.get_data(actor.city).cityID;
@@ -631,14 +646,14 @@ namespace Cultivation_Way
             }
             return new_city_datas;
         }
-        private static void load_actors(List<ActorData> origin_datas, List<CW_ActorData> cw_datas, int start_idx, int amount)
+        private static void load_actors(List<ActorData_For_Save> origin_datas, List<CW_ActorData> cw_datas, int start_idx, int amount)
         {
             int end_idx = start_idx + amount;
             int i;
             for (i = start_idx; i < end_idx; i++)
             {
                 //Debug.Log(string.Format("Load Actor[{0}]", i));
-                ActorData origin_data = origin_datas[i];
+                ActorData origin_data = origin_datas[i].get_data_for_load();
                 tmp_loaded_actor_data = cw_datas[i];
                 
                 if (!origin_data.status.alive) continue;
