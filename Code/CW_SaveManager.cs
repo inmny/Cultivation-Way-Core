@@ -121,7 +121,7 @@ namespace Cultivation_Way
             SmoothLoader.add(delegate
             {
                 MapBox.instance.saveManager.CallMethod("loadCultures");
-                MapBox.instance.saveManager.CallMethod("loadKingdoms");
+                load_origin_kingdoms(origin_save.kingdoms);
             }, "Load Cultures and Kingdoms");
 
             #endregion
@@ -734,5 +734,41 @@ namespace Cultivation_Way
                 }
             }
         }
+        private static void load_origin_kingdoms(List<Kingdom> kingdoms)
+        {
+            for (int i = 0; i < kingdoms.Count; i++)
+            {
+                Kingdom kingdom = kingdoms[i];
+                kingdom.banner_background_id = -1;
+                kingdom.banner_icon_id = -1;
+                MonoBehaviour.print(kingdom.raceID);
+                MonoBehaviour.print("Start fixing");
+                switch (kingdom.raceID)
+                {
+                    case "EasternHuman":
+                        kingdom.raceID = "eastern_human";
+                        break;
+                    case "Yao":
+                        kingdom.raceID = "yao";
+                        break;
+                    case "Ming":
+                        kingdom.raceID = "";
+                        break;
+                    case "Tian":
+                        kingdom.raceID = "";
+                        break;
+                    default:
+                        if(AssetManager.raceLibrary.get(kingdom.raceID)==null) continue;
+                        break;
+                }
+                kingdom.asset = AssetManager.kingdoms.get(kingdom.raceID);
+                Reflection.SetField(kingdom, "race", AssetManager.raceLibrary.get(kingdom.raceID));
+
+                MapBox.instance.kingdoms.addKingdom(kingdom, true);
+
+                kingdom.CallMethod("load1");
+            }
+        }
+
     }
 }
