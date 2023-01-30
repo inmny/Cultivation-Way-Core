@@ -9,6 +9,10 @@ namespace Cultivation_Way.Utils
 {
     public class CW_Utils_Others
     {
+        public static bool is_map_mode_active(string mode_id)
+        {
+            return ModState.instance.map_mode == mode_id && PlayerConfig.dict[mode_id].boolVal;
+        }
         public static float transform_wakan(float wakan, float from_level, float to_level)
         {
             return wakan * Mathf.Pow(Others.CW_Constants.wakan_level_co, from_level - to_level);
