@@ -129,7 +129,7 @@ namespace Cultivation_Way
             SmoothLoader.add(delegate
             {
                 origin_save.cities = convert_origin_city_data(origin_save.cities);
-                MapBox.instance.saveManager.CallMethod("loadCities");
+                load_origin_cities(origin_save.cities, origin_save);
                 MapBox.instance.saveManager.CallMethod("checkOldCityZones");
             }, "Convert and Load Cities' Data");
             #endregion
@@ -162,11 +162,16 @@ namespace Cultivation_Way
             SmoothLoader.add(delegate
             {
                 ModState.instance.load_object_reason = Load_Object_Reason.LOAD_SAVES;
-                MapBox.instance.saveManager.CallMethod("loadBuildings");
+                load_origin_buildings(origin_save.buildings);
                 ModState.instance.load_object_reason = Load_Object_Reason.SPAWN;
             }, "Load Buildings");
             SmoothLoader.add(delegate
             {
+                foreach(City city in MapBox.instance.citiesList)
+                {
+                    city.buildings.checkAddRemove();
+                }
+                Debug.LogWarning("Before Set Home Buildings");
                 MapBox.instance.saveManager.CallMethod("setHomeBuildings");
             }, "Set Home Buildings");
             #endregion
@@ -174,6 +179,7 @@ namespace Cultivation_Way
             #region 城市与国家数据收尾
             SmoothLoader.add(delegate
             {
+                Debug.LogWarning("Finish Cities and Kingdoms");
                 MapBox.instance.saveManager.CallMethod("loadCivs02");
                 MapBox.instance.saveManager.CallMethod("loadLeaders");
                 MapBox.instance.saveManager.CallMethod("loadDiplomacy");
@@ -769,6 +775,92 @@ namespace Cultivation_Way
                 kingdom.CallMethod("load1");
             }
         }
-
+        private static void load_origin_cities(List<CityData> cities, SavedMap save)
+        {
+            MonoBehaviour.print("City Data Count:" + cities.Count.ToString());
+            for (int i = 0; i < cities.Count; i++)
+            {
+                CityData cityData = cities[i];
+                if (cityData.zones.Count != 0)
+                {
+                    if (cityData.race == "ork")
+                    {
+                        cityData.race = "orc";
+                    }
+                    else if(cityData.race == "EasternHuman")
+                    {
+                        cityData.race = "eastern_human";
+                    }
+                    else if(cityData.race == "Ming")
+                    {
+                        cityData.race = "ming";
+                    }
+                    else if(cityData.race == "Yao")
+                    {
+                        cityData.race = "yao";
+                    }
+                    else if(cityData.race == "Tian")
+                    {
+                        cityData.race = "tian";
+                    }
+                    TileZone tileZone = Content.W_Content_Helper.zone_calculator.getZone(cityData.zones[0].x, cityData.zones[0].y);
+                    if (save.saveVersion < 7)
+                    {
+                        tileZone = MapBox.instance.saveManager.CallMethod("findZoneViaBuilding", cityData.cityID, save.buildings) as TileZone;
+                    }
+                    if (tileZone != null)
+                    {
+                        City city = MapBox.instance.buildNewCity(tileZone, cityData, null, true, null);
+                        if (city != null && save.saveVersion >= 7)
+                        {
+                            //MonoBehaviour.print("Build City:" + cityData.cityID + ":" + city.data.cityID);
+                            for (int j = 1; j < cityData.zones.Count; j++)
+                            {
+                                ZoneData zoneData = cityData.zones[j];
+                                TileZone zone = Content.W_Content_Helper.zone_calculator.getZone(zoneData.x, zoneData.y);
+                                if (zone != null)
+                                {
+                                    city.CallMethod("addZone", zone);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        private static void load_origin_buildings(List<BuildingData> buildings)
+        {
+            for (int i = 0; i < buildings.Count; i++)
+            {
+                BuildingData buildingData = buildings[i];
+                if (buildingData.templateID.Contains("ork"))
+                {
+                    buildingData.templateID = buildingData.templateID.Replace("ork", "orc");
+                }
+                else if (buildingData.templateID.Contains("EasternHuman"))
+                {
+                    buildingData.templateID = buildingData.templateID.Replace("EasternHuman", "eastern_human");
+                }
+                else if (buildingData.templateID.Contains("Ming"))
+                {
+                    buildingData.templateID = buildingData.templateID.Replace("Ming", "ming");
+                }
+                else if (buildingData.templateID.Contains("Tian"))
+                {
+                    buildingData.templateID = buildingData.templateID.Replace("Tian", "tian");
+                }
+                else if (buildingData.templateID.Contains("Yao"))
+                {
+                    buildingData.templateID = buildingData.templateID.Replace("Yao", "yao");
+                }
+                
+                if (AssetManager.buildings.get(buildingData.templateID) != null)
+                {
+                    MapBox.instance.CallMethod("loadBuilding", buildingData);
+                }
+            }
+            MapBox.instance.buildings.checkAddRemove();
+            Debug.LogWarning("Building Loaded");
+        }
     }
 }

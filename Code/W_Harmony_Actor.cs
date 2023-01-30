@@ -264,7 +264,7 @@ namespace Cultivation_Way.Content.Harmony
                     {
                         actor.new_creature = true;
                         actor.CW_newCreature();
-                        Debug.Log("Force Load Unit:" + pData.status.actorID);
+                        //Debug.Log("Force Load Unit:" + pData.status.actorID);
                     }
                 }
                 actor.fast_data = pData.status;
@@ -429,8 +429,8 @@ namespace Cultivation_Way.Content.Harmony
                         }
                         catch(InvalidCastException)
                         {
-                            WorldBoxConsole.Console.print(cw_actor.fast_data.actorID+" have type error item in slot " + equipment_slots[i].type.ToString());
-                            WorldBoxConsole.Console.print(Utils.CW_ItemTools.item_to_string(equipment_slots[i].data));
+                            //WorldBoxConsole.Console.print(cw_actor.fast_data.actorID+" have type error item in slot " + equipment_slots[i].type.ToString());
+                            //WorldBoxConsole.Console.print(Utils.CW_ItemTools.item_to_string(equipment_slots[i].data));
                             equipment_slots[i].data = new CW_ItemData(equipment_slots[i].data);
                         }
                         cw_actor.cw_cur_stats.addStats(CW_ItemTools.s_cw_stats);
