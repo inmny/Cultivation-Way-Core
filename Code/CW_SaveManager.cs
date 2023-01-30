@@ -16,11 +16,11 @@ namespace Cultivation_Way
         internal static CW_ActorData tmp_loaded_actor_data;
         internal static CW_BuildingData tmp_loaded_building_data;
         private static List<int> banner_icon_buffer = new List<int>();
-        private static Dictionary<CityData, List<CW_ActorData>> cw_actor_data_buffer = new Dictionary<CityData, List<CW_ActorData>>();
+        //private static Dictionary<CityData, List<CW_ActorData>> cw_actor_data_buffer = new Dictionary<CityData, List<CW_ActorData>>();
         public static SavedMap save_to(string folder_name, bool only_compressed_data = false)
         {
             banner_icon_buffer.Clear();
-            cw_actor_data_buffer.Clear();
+            //cw_actor_data_buffer.Clear();
             Debug.Log("[CW Core]: Start Saving the World (0/12)");
             // 存储原版数据
             SavedMap origin_save = create_origin_save();
@@ -39,6 +39,7 @@ namespace Cultivation_Way
             File.WriteAllBytes(path + "map.wbox", Zip.Compress(origin_save_json));
             Debug.Log("[CW Core]: Save the Origin Save Data to File (5/12)");
             // 恢复城市未出生人口数据
+            /**
             foreach(CityData city_data in cw_actor_data_buffer.Keys)
             {
                 List<CW_ActorData> cw_pop_points = new List<CW_ActorData>();
@@ -49,6 +50,7 @@ namespace Cultivation_Way
                 ((CW_CityData)city_data).cw_pop_points = cw_pop_points;
             }
             cw_actor_data_buffer.Clear();
+            */
             Debug.Log("[CW Core]: Restore City CW Pop points (6/12)");
             // 恢复至模组安装时的旗帜
             List<Kingdom> kingdoms_to_restore_banner_icon = MapBox.instance.kingdoms.list_civs;
@@ -108,8 +110,11 @@ namespace Cultivation_Way
             }, "Load Tiles");
             #endregion
             #region 加载默认动态库（功法、体质）
-            CW_Library_Manager.instance.cultibooks.reset();
-            CW_Library_Manager.instance.special_bodies.reset();
+            SmoothLoader.add(delegate
+            {
+                CW_Library_Manager.instance.cultibooks.reset();
+                CW_Library_Manager.instance.special_bodies.reset();
+            }, "Set Dynamic Libraries to default");
             #endregion
             #region 正常加载文化和国家
             SmoothLoader.add(delegate
@@ -391,6 +396,7 @@ namespace Cultivation_Way
                 }
                 data.storage.save();
                 data.zones.Clear();
+                /**
                 cw_actor_data_buffer[data] = new List<CW_ActorData>();
                 List<CW_ActorData> pop_points = ((CW_CityData)data).cw_pop_points;
                 for (j=0;j< pop_points.Count; j++)
@@ -399,6 +405,7 @@ namespace Cultivation_Way
                 }
                 pop_points.Clear();
                 ((CW_CityData)data).cw_pop_points = null;
+                */
                 List<TileZone> zones = Reflection.GetField(typeof(City), instance.citiesList[i], "zones") as List<TileZone>;
                 for (j = 0; j < zones.Count; j++)
                 {
