@@ -21,7 +21,7 @@ namespace Cultivation_Way.Content
             CW_Asset_WorldEvent _event = new CW_Asset_WorldEvent(
                 id: "wakan_tide",
                 trigger_type: CW_Event_Trigger_Type.CUSTOM,
-                trigger_val: 2000f,
+                trigger_val: 1000f,
                 action: wakan_tide,
                 action_val: 3f
                 );
@@ -29,6 +29,7 @@ namespace Cultivation_Way.Content
         }
         private static void wakan_tide(CW_Asset_WorldEvent event_asset)
         {
+            WorldTip.showNow("CW_Event_Wakan_Tide", pPosition:"top");
             int num = Toolbox.randomInt(1, (int)Mathf.Sqrt(Mathf.Sqrt(World_Data.instance.map_chunk_manager.width * World_Data.instance.map_chunk_manager.height)));
             while (num --> 0)
             {
