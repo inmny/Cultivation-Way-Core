@@ -258,6 +258,9 @@ namespace Cultivation_Way.Content.Harmony
                 CW_Actor.func_newCreature(actor, (int)(W_Content_Helper.game_stats_data.gameTime + (double)MapBox.instance.units.Count));
                 // 在func_newCreature中会调用updateStats，从而使得fast_data会指向本身的data
                 // actor.fast_data = (ActorStatus)CW_Actor.get_data(actor);
+                actor.transform.position = pTile.posV3;
+                CW_Actor.func_spawnOn(actor, pTile, pZHeight);
+                CW_Actor.func_create(actor);
             }
             else
             {
@@ -279,6 +282,10 @@ namespace Cultivation_Way.Content.Harmony
                 actor.cur_spells = new List<string>();
                 CW_Actor.set_data(actor, actor.fast_data);
                 CW_Actor.set_professionAsset(actor, AssetManager.professions.get(pData.status.profession));
+
+                actor.transform.position = pTile.posV3;
+                CW_Actor.func_spawnOn(actor, pTile, pZHeight);
+                CW_Actor.func_create(actor);
 
                 __actor_updateStats(actor);
                 
@@ -307,9 +314,7 @@ namespace Cultivation_Way.Content.Harmony
             if (actor.new_creature) CW_Library_Manager.instance.cultisys.set_cultisys(actor);
 
             actor.fast_shake_timer = CW_Actor.get_shake_timer(actor);
-            actor.transform.position = pTile.posV3;
-            CW_Actor.func_spawnOn(actor, pTile, pZHeight);
-            CW_Actor.func_create(actor);
+            
             if(Others.CW_Constants.is_debugging) LogText.log("createNewUnit", actor.stats.id + ", " + actor.fast_data.actorID, "");
             if (actor.stats.kingdom != "") CW_Actor.func_setKingdom(actor, MapBox.instance.kingdoms.dict_hidden[actor.stats.kingdom]);
             if (actor.stats.hideOnMinimap)

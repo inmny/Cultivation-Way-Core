@@ -65,6 +65,7 @@ namespace Cultivation_Way.Library
                 {
                     cw_actor_stats.allow_cultisys |= this._tag;
                 }
+                if (cw_actor_stats.origin_stats.skipSave) cw_actor_stats.allow_cultisys = 0;
             }
         }
     }

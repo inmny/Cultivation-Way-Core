@@ -79,7 +79,7 @@ namespace Cultivation_Way.Content
         {
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "五步拳", anim_id: null,
-                element: new CW_Element(new int[] { 20,20,20,20,20}),
+                element: new CW_Element(new int[] { 0,0,0,0,0}, comp_type:false),
                 rarity: 4, free_val: 0.1f, cost: 0.05f, min_cost: 5,
                 target_type: CW_Spell_Target_Type.TILE,
                 target_camp: CW_Spell_Target_Camp.ENEMY,

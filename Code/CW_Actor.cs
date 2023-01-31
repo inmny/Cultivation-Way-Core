@@ -478,7 +478,7 @@ namespace Cultivation_Way
         private int gen_cultibook_level()
         {
             int level; float continue_chance = (1f + this.fast_data.intelligence) / (4f + this.fast_data.intelligence);
-            for (level = 0; level < Others.CW_Constants.cultibook_max_level; level++)
+            for (level = 0; level < Others.CW_Constants.cultibook_max_level-1; level++)
             {
                 if (!Toolbox.randomChance(continue_chance)) break;
             }

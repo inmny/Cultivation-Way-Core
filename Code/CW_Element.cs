@@ -18,6 +18,7 @@ namespace Cultivation_Way
         private const string UNIFORM_TYPE = "CW_uniform";
         public int[] base_elements = new int[Others.CW_Constants.base_element_types];
         public string type_id;
+        private static CW_BaseStats tmp_stats = new CW_BaseStats();
         internal CW_Element()
         {
 
@@ -141,7 +142,10 @@ namespace Cultivation_Way
         {
             Library.CW_Asset_Element asset = get_type();
             float promot = asset.promot;
-            CW_BaseStats combine_bonus = get_type().bonus_stats.deepcopy();
+
+            CW_BaseStats combine_bonus = tmp_stats;
+            combine_bonus.clear();
+            combine_bonus.addStats(asset.bonus_stats);
             // 添加五元素的加成
             float real_content;
             // 火

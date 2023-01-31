@@ -42,7 +42,6 @@ namespace Cultivation_Way.Content.Harmony
 			{
 				building.cw_data = W_Content_Helper.get_load_cw_data(pData);
 				building.fast_data = pData;
-				if (cw_stats.origin_stats.cityBuilding) WorldBoxConsole.Console.print(string.Format("Building '{0}'s city is '{2}', should be '{1}'", pData.templateID, pData.cityID, building.city == null ? "NULL" : CW_City.get_data(building.city).cityID));
 				building.loadBuilding(pData);
 				
 			}

@@ -55,7 +55,7 @@ namespace Cultivation_Way.Content
                 immortal.bonus_stats[i].base_stats.damage = (int)Mathf.Sqrt(immortal.bonus_stats[i].base_stats.health);
                 // 灵气以及灵气恢复
                 immortal.bonus_stats[i].wakan = (i+1) * (i+1) * (i+1)*2 + (i+1) * 18+24;
-                immortal.bonus_stats[i].wakan_regen = (int)(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / Mathf.Sqrt(immortal.bonus_stats[i].wakan));
+                immortal.bonus_stats[i].wakan_regen = (int)(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / Mathf.Sqrt(immortal.bonus_stats[i].wakan)*Mathf.Pow(immortal.power_level[i],5));
                 // 法抗
                 immortal.bonus_stats[i].spell_armor = (int)(Mathf.Sqrt(i) * immortal.bonus_stats[i].base_stats.armor * (Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / immortal.bonus_stats[i].wakan, Others.CW_Constants.wakan_level_co)));
                 // 护盾恢复
@@ -63,7 +63,7 @@ namespace Cultivation_Way.Content
                 // 护盾
                 immortal.bonus_stats[i].shield = 12 * immortal.bonus_stats[i].shield_regen;
                 // 抗击退
-                immortal.bonus_stats[i].base_stats.knockbackReduction = (i + 1) * 4.5f;
+                immortal.bonus_stats[i].base_stats.knockbackReduction = Mathf.Min(100,(i + 1) * 6f);
             }
             #endregion
 
@@ -101,7 +101,7 @@ namespace Cultivation_Way.Content
                 // 法抗
                 bushido.bonus_stats[i].spell_armor = (int)(bushido.bonus_stats[i].base_stats.armor/10 * Mathf.Sqrt(Mathf.Sqrt(i)));
                 // 抗击退
-                bushido.bonus_stats[i].base_stats.knockbackReduction = (i + 1) * 5f;
+                bushido.bonus_stats[i].base_stats.knockbackReduction = Mathf.Min(100, (i + 1) * 6f);
                 // 反伤
                 bushido.bonus_stats[i].anti_injury = i;
             }
@@ -121,6 +121,7 @@ namespace Cultivation_Way.Content
                 bushido.bonus_stats[i].shield = bushido.bonus_stats[i].shield_regen * 12;
             }
             bushido.races_list = new List<string>() { "boat" };
+            bushido.units_list = new List<string>() { "whiteMage", "druid", "plagueDoctor", "evilMage" };
             #endregion
         }
         private static bool immortal_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)

@@ -603,13 +603,17 @@ namespace Cultivation_Way
             save.tile_array = tile_array_list.ToArray();
             save.tile_amounts = tile_amount_list.ToArray();
             tile_array_list.Clear(); tile_amount_list.Clear();
-            WorldBoxConsole.Console.print("OBJECTS");
             // simpleList可以重复获取，并且在游戏内容无更新的情况下保持不变
             List<Actor> actors = instance.units.getSimpleList();
             for (i = 0; i < actors.Count; i++)
             {
                 CW_Actor actor = (CW_Actor)actors[i];
-                if (!actor.base_data.alive || actor.stats.skipSave) continue;
+                if (actor.stats.skipSave) continue;
+                if (!actor.base_data.alive)
+                {
+                    MapBox.instance.destroyActor(actor);
+                    continue;
+                }
                 actor.prepare_cw_data_for_save();
                 ActorData_For_Save actorData = new ActorData_For_Save
                 {
@@ -672,12 +676,21 @@ namespace Cultivation_Way
                 //Debug.Log(string.Format("Load Actor[{0}]", i));
                 ActorData origin_data = origin_datas[i].get_data_for_load();
                 tmp_loaded_actor_data = cw_datas[i];
-                
-                if (!origin_data.status.alive) continue;
+
+                if (!origin_data.status.alive)
+                {
+                    clear_actor_data(origin_data, cw_datas[i]);
+                    continue;
+                }
                 if (origin_data.status.gender == ActorGender.Unknown) origin_data.status.gender = Toolbox.randomBool() ? ActorGender.Male : ActorGender.Female;
+
                 if ((!(origin_data.status.statsID == "livingPlants") && !(origin_data.status.statsID == "livingHouse")) || !string.IsNullOrEmpty(origin_data.status.special_graphics))
                 {
                     MapBox.instance.spawnAndLoadUnit(origin_data.status.statsID, origin_data, MapBox.instance.GetTile(origin_data.x, origin_data.y));
+                }
+                else
+                {
+                    clear_actor_data(origin_data, cw_datas[i]);
                 }
             }
         }
@@ -717,7 +730,10 @@ namespace Cultivation_Way
                             origin_data.status.statsID = "baby_eastern_human";
                             break;
                         default:
-                            if(AssetManager.unitStats.get(origin_data.status.statsID)==null) continue;
+                            if(AssetManager.unitStats.get(origin_data.status.statsID)==null)
+                            {
+                                continue;
+                            }
                             break;
                     }
                     CW_Actor actor = (CW_Actor)MapBox.instance.spawnAndLoadUnit(origin_data.status.statsID, origin_data, MapBox.instance.GetTile(origin_data.x, origin_data.y));
@@ -739,6 +755,10 @@ namespace Cultivation_Way
                     }
                 }
             }
+        }
+        private static void clear_actor_data(ActorData origin_data, CW_ActorData cw_data)
+        {
+            
         }
         private static void load_origin_kingdoms(List<Kingdom> kingdoms)
         {
