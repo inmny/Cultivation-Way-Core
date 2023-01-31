@@ -123,7 +123,7 @@ namespace Cultivation_Way.Content
                 );
             add_button(
                 create_button(
-                    "CW_Inspect", "ui/Icons/iconInspect",
+                    "CW_Inspect", "ui/Icons/iconWorldInfo",
                     show_window_inspect_world
                     ),
                 CW_Tab_Button_Type.TOOL

@@ -88,7 +88,7 @@ namespace Cultivation_Way.Content
             power.click_action = new PowerActionWithID((WorldTile pTile, string pPower)
                                 =>
             {
-                return (bool)AssetManager.powers.CallMethod("spawnUnit", pTile, pPower);
+                return spawnUnit(pTile, pPower);
             });
         }
 
@@ -101,8 +101,41 @@ namespace Cultivation_Way.Content
             power.click_action = new PowerActionWithID((WorldTile pTile, string pPower)
                                 =>
             {
-                return (bool)AssetManager.powers.CallMethod("spawnUnit", pTile, pPower);
+                return spawnUnit(pTile, pPower);
             });
+        }
+        private static bool spawnUnit(WorldTile pTile, string pPowerID)
+        {
+            GodPower godPower = AssetManager.powers.get(pPowerID);
+            Sfx.play("spawn", true, -1f, -1f);
+            if (godPower.spawnSound != "")
+            {
+                Sfx.play(godPower.spawnSound, true, -1f, -1f);
+            }
+            if (godPower.id == "sheep")
+            {
+                Sfx.timeout("sheep");
+                if (pTile.Type.lava)
+                {
+                    AchievementLibrary.achievementSacrifice.check(null, null, null);
+                }
+            }
+            if (godPower.showSpawnEffect != string.Empty)
+            {
+                MapBox.instance.stackEffects.CallMethod("startSpawnEffect", pTile, godPower.showSpawnEffect);
+            }
+            string text;
+            if (godPower.actorStatsId.Contains(","))
+            {
+                text = Toolbox.getRandom<string>(godPower.actorStatsId.Split(new char[] { ',' }));
+            }
+            else
+            {
+                text = godPower.actorStatsId;
+            }
+            CW_Actor actor = (CW_Actor)MapBox.instance.spawnNewUnit(text, pTile, "", godPower.actorSpawnHeight);
+            actor.getName();
+            return true;
         }
         private static CW_SpriteAnimation anim;
         private static bool __spawn_wakan_hole(WorldTile center, string id)

@@ -94,6 +94,18 @@ namespace Cultivation_Way.Content.Harmony
             return true;
         }
         [HarmonyPrefix]
+        [HarmonyPatch(typeof(ActorBase), "getName")]
+        public static bool actor_getName(ActorBase __instance, ref string __result)
+        {
+            CW_Actor actor = (CW_Actor)__instance;
+            if (string.IsNullOrEmpty(actor.fast_data.firstName))
+            {
+                actor.fast_data.firstName = CW_NameGenerator.gen_name(__instance.stats.nameTemplate, (CW_Actor)__instance);
+            }
+            __result = actor.fast_data.firstName;
+            return false;
+        }
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(NameGenerator), "getName")]
         public static bool generateName_Prefix(string pAssetID, ref string __result)
         {
