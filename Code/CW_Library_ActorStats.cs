@@ -86,6 +86,7 @@ namespace Cultivation_Way.Library
         private CW_ActorStats __add(ActorStats stats, float culti_velo, int[] prefer_element, float prefer_element_scale, List<string> born_spells, bool anti_time_stop, string fixed_name, CW_BaseStats addition_stats)
         {
             CW_ActorStats cw_actor_stats = new CW_ActorStats();
+            cw_actor_stats.id = stats.id;
             cw_actor_stats.origin_stats = stats;
             cw_actor_stats.culti_velo = culti_velo;
             cw_actor_stats.prefer_element = prefer_element;
@@ -95,6 +96,7 @@ namespace Cultivation_Way.Library
             cw_actor_stats.fixed_name = fixed_name;
             addition_stats.addStats(stats.baseStats);
             cw_actor_stats.cw_base_stats = addition_stats;
+            cw_actor_stats.allow_cultisys = 0;
             this.list.Add(cw_actor_stats);
             this.dict.Add(stats.id, cw_actor_stats);
             return cw_actor_stats;
