@@ -143,6 +143,10 @@ namespace Cultivation_Way.Library
             this.tags = 0;
             this.addition_element_tags = new List<string>();
         }
+        internal void remove_element_tags()
+        {
+            this.tags &= ~((1ul << (element.base_elements.Length + addition_element_tags.Count)) - 1);
+        }
         internal void register()
         {
             int i;
