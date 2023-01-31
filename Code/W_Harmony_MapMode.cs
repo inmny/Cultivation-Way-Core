@@ -19,19 +19,29 @@ namespace Cultivation_Way.Content.Harmony
             Cultures,
             Wakan
         }
+        private static string last_map_mode = string.Empty;
         internal static Action<ZoneCalculator> func_checkDrawnZonesDirty = (Action<ZoneCalculator>)CW_ReflectionHelper.get_method<ZoneCalculator>("checkDrawnZonesDirty");
         internal static Action<ZoneCalculator, ZoneDisplayMode> func_setMode = (Action<ZoneCalculator, ZoneDisplayMode>)CW_ReflectionHelper.get_method<ZoneCalculator>("setMode");
         internal static Action<ZoneCalculator> func_redrawZones = (Action<ZoneCalculator>)CW_ReflectionHelper.get_method<ZoneCalculator>("redrawZones");
         internal static Action<MapLayer, float> func_base_update = (Action<MapLayer, float>)CW_ReflectionHelper.get_method<MapLayer>("update");
         internal static Action<ZoneCalculator> func_updatePixels = (Action<ZoneCalculator>)CW_ReflectionHelper.get_method<ZoneCalculator>("updatePixels");
         internal static Func<ZoneCalculator, Color32[]> get_pixels = CW_ReflectionHelper.create_getter<ZoneCalculator, Color32[]>("pixels");
+        internal static Action<ZoneCalculator> func_setDrawnZonesDirty = (Action<ZoneCalculator>)CW_ReflectionHelper.get_method<ZoneCalculator>("setDrawnZonesDirty");
         private static Color32[] pixels;
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ZoneCalculator), "update")]
         public static bool update_prefix(ZoneCalculator __instance, float pElapsed)
         {
+            func_setDrawnZonesDirty(__instance);
+            if (last_map_mode != ModState.instance.map_mode)
+            {
+                clear_all_zones(__instance);
+                last_map_mode = ModState.instance.map_mode;
+                func_updatePixels(__instance);
+            }
             func_checkDrawnZonesDirty(__instance);
             W_Content_Helper.zone_cal_sprRnd.enabled = true;
+            
             switch (ModState.instance.map_mode)
             {
                 case "map_city_zones":
@@ -51,6 +61,8 @@ namespace Cultivation_Way.Content.Harmony
                     W_Content_Helper.zone_cal_sprRnd.enabled = false;
                     break;
             }
+
+
             switch (ModState.instance.map_mode)
             {
                 case "map_city_zones":
@@ -65,12 +77,28 @@ namespace Cultivation_Way.Content.Harmony
                     func_redrawZones(__instance);
                     break;
             }
+
             Color white = Color.white;
             white.a  = Animation.CW_EffectManager.quality_changer.isFullLowRes()?0.7f: Mathf.Clamp(((float)ReflectionUtility.Reflection.CallStaticMethod(typeof(ZoneCalculator),"getCameraScaleZoom")) * 0.3f, 0f, 0.7f);
+
             W_Content_Helper.zone_cal_sprRnd.color = white;
 
             //func_base_update(__instance, pElapsed);
             return false;
+        }
+
+        private static void clear_all_zones(ZoneCalculator instance)
+        {
+            pixels = get_pixels(instance);
+            for(int i = 0; i < pixels.Length; i++)
+            {
+                pixels[i] = Toolbox.clear;
+            }
+            foreach(TileZone zone in instance.zones)
+            {
+                zone.last_drawn_hashcode = 0;
+                zone.last_drawn_id = 0;
+            }
         }
 
         private static void force_redraw_wakan_zones(ZoneCalculator instance)

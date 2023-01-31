@@ -34,6 +34,9 @@ namespace Cultivation_Way.Content
             power.toggle_name = "map_wakan_zones";
             power.toggle_action = (PowerToggleAction)Delegate.Combine(power.toggle_action, new PowerToggleAction(__toggleOption));
             AssetManager.powers.add(power);
+            AssetManager.powers.get("cityZones").toggle_action = power.toggle_action;
+            AssetManager.powers.get("culture_zones").toggle_action = power.toggle_action;
+            AssetManager.powers.get("kingdom_zones").toggle_action = power.toggle_action;
         }
 
         private static void add_wakan_decrease()
@@ -169,7 +172,7 @@ namespace Cultivation_Way.Content
             PlayerOptionData playerOptionData = PlayerConfig.dict[godPower.toggle_name];
             playerOptionData.boolVal = !playerOptionData.boolVal;
 
-            if (playerOptionData.boolVal) Harmony.W_Harmony_Others.__disableAllOtherMapModes(pPower);
+            Harmony.W_Harmony_Others.switch_to_this_mode(pPower);
 
             PlayerConfig.saveData();
         }

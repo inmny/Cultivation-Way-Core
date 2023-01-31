@@ -141,10 +141,10 @@ namespace Cultivation_Way.Content
             GameObject toggleIcon = new GameObject("ToggleIcon");
             toggleIcon.AddComponent<Image>();
             toggleIcon.AddComponent<ToggleIcon>();
-            toggleIcon.GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/cw_window/buttonToggleIndicator_1");
+            toggleIcon.GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/cw_window/buttonToggleIndicator_0");
             toggleIcon.GetComponent<Image>().transform.localScale = new Vector3(0.1f, 0.08f, 0);
-            toggleIcon.GetComponent<ToggleIcon>().spriteON = Resources.Load<Sprite>("ui/cw_window/buttonToggleIndicator_1");
-            toggleIcon.GetComponent<ToggleIcon>().spriteOFF = Resources.Load<Sprite>("ui/cw_window/buttonToggleIndicator_0");
+            toggleIcon.GetComponent<ToggleIcon>().spriteON = Resources.Load<Sprite>("ui/cw_window/buttonToggleIndicator_0");
+            toggleIcon.GetComponent<ToggleIcon>().spriteOFF = Resources.Load<Sprite>("ui/cw_window/buttonToggleIndicator_1");
             toggleIcon.transform.SetParent(button.transform);
             toggleIcon.transform.localPosition = new Vector3(0, 15);
             PowerButton.toggleButtons.Add(button);

@@ -98,10 +98,29 @@ namespace Cultivation_Way.Content.Harmony
         }
         [HarmonyPostfix]
         [HarmonyPatch(typeof(PowerLibrary), "disableAllOtherMapModes")]
-        public static void __disableAllOtherMapModes(string pMainPower)
+        public static void switch_to_this_mode(string pMainPower)
         {
             GodPower power = AssetManager.powers.get(pMainPower);
-            ModState.instance.map_mode = power.toggle_name;
+            
+            for (int i = 0; i < AssetManager.powers.list.Count; i++)
+            {
+                GodPower godPower = AssetManager.powers.list[i];
+                if (godPower.map_modes_switch && !(godPower.id == pMainPower))
+                {
+                    PlayerOptionData playerOptionData = PlayerConfig.dict[godPower.toggle_name];
+                    if (playerOptionData.boolVal)
+                    {
+                        playerOptionData.boolVal = false;
+                    }
+                }
+            }
+            if (PlayerConfig.dict[power.toggle_name].boolVal)
+                ModState.instance.map_mode = power.toggle_name;
+            else
+            {
+                ModState.instance.map_mode = String.Empty;
+            }
         }
+
     }
 }
