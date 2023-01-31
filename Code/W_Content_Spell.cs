@@ -80,7 +80,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "五步拳", anim_id: null,
                 element: new CW_Element(new int[] { 20,20,20,20,20}),
-                rarity: 1, free_val: 0.1f, cost: 0.05f, min_cost: 5,
+                rarity: 4, free_val: 0.1f, cost: 0.05f, min_cost: 5,
                 target_type: CW_Spell_Target_Type.TILE,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -98,7 +98,7 @@ namespace Cultivation_Way.Content
             clone("齐眉棍法", "五步拳").free_val = 0.19f;
             clone("太祖长棍", "五步拳").free_val = 0.28f;
             spell = clone("一十二路入室拳", "五步拳");
-            spell.rarity = 4;
+            spell.rarity = 16;
             spell.free_val = 0.78f;
             clone("太祖长拳", "一十二路入室拳");
             clone("弈天剑", "一十二路入室拳").free_val = 0.65f;
@@ -134,7 +134,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "fall_wood", anim_id: "fall_wood_anim",
                 new CW_Element(new int[] { 0, 0, 100, 0, 0 }),
-                rarity: 1, free_val: 15, cost: 0.06f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 15, cost: 0.06f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.TILE,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -164,7 +164,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "fall_rock", anim_id: "fall_rock_anim",
                 new CW_Element(new int[] { 0, 0, 0, 0, 100 }),
-                rarity: 1, free_val: 15, cost: 0.06f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 15, cost: 0.06f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.TILE,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -192,7 +192,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "ground_thorn", anim_id: "ground_thorn_anim",
                 new CW_Element(new int[] { 0, 0, 0, 0, 100 }),
-                rarity: 1, free_val: 1, cost: 0.06f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.06f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.TILE,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -222,7 +222,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "wood_thorn", anim_id: "wood_thorn_anim",
                 new CW_Element(new int[] { 0, 0, 100, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.06f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.06f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.TILE,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -271,7 +271,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "landificate", anim_id: "landificate",
                 new CW_Element(new int[] { 0, 0, 0, 0, 100 }),
-                rarity: 10, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 30, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -323,7 +323,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "wind_polo", anim_id: "wind_polo_anim",
                 new CW_Element(new int[] { 40, 40, 20, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.03f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.03f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.TILE,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -352,7 +352,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "lightning_polo", anim_id: "lightning_polo_anim",
                 new CW_Element(new int[] { 40, 40, 0, 20, 0 }),
-                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.TILE,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -381,7 +381,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "water_polo", anim_id: "water_polo_anim",
                 new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.03f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.03f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.TILE,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -410,7 +410,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "fire_polo", anim_id: "fire_polo_anim",
                 new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.03f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.03f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.TILE,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -435,7 +435,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "bushido_base", anim_id: "bushido_base_anim",
                 new CW_Element(new int[5] { 20, 20, 20, 20, 20 }), element_type_limit: null,
-                rarity: 1, free_val: 10, cost: 0.1f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 10, cost: 0.1f, learn_level: 1, cast_level: 1,
                 cultisys_black_or_white_list: true, cultisys_list: null,
                 banned_races: null,
                 target_type: CW_Spell_Target_Type.ACTOR,
@@ -466,7 +466,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "rosefinch_feather", anim_id: "rosefinch_feather",
                 new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -496,7 +496,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "gdragon_scale", anim_id: "gdragon_scale",
                 new CW_Element(new int[] { 0, 0, 100, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.DEFEND,
@@ -526,7 +526,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "basalt_armor", anim_id: "basalt_armor",
                 new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.DEFEND,
@@ -556,7 +556,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "unicorn_horn", anim_id: "unicorn_horn",
                 new CW_Element(new int[] { 0, 0, 0, 0, 100 }),
-                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.DEFEND,
@@ -586,7 +586,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "wtiger_tooth", anim_id: "wtiger_tooth",
                 new CW_Element(new int[] { 0, 0, 0, 100, 0 }),
-                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.DEFEND,
@@ -615,7 +615,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "stxh", anim_id: "stxh_{0}",
                 new CW_Element(), element_type_limit: null,
-                rarity: 1, free_val: 1, cost: 0.3f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.3f, learn_level: 1, cast_level: 1,
                 can_get_by_random: false,
                 cultisys_black_or_white_list: true, cultisys_list: null,
                 banned_races: null,
@@ -645,7 +645,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "negative_quintuple_lightning", anim_id: "negative_quintuple_lightning_anim",
                 new CW_Element(new int[5] { 40, 40, 0, 20, 0 }), element_type_limit: null,
-                rarity: 10, free_val: 1, cost: 0.1f, learn_level: 1, cast_level: 1,
+                rarity: 30, free_val: 1, cost: 0.1f, learn_level: 1, cast_level: 1,
                 cultisys_black_or_white_list: true, cultisys_list: null,
                 banned_races: null,
                 target_type: CW_Spell_Target_Type.TILE,
@@ -675,7 +675,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "positive_quintuple_lightning", anim_id: "positive_quintuple_lightning_anim",
                 new CW_Element(new int[5] { 40, 40, 0, 20, 0 }), element_type_limit: null,
-                rarity: 10, free_val: 1, cost: 0.1f, learn_level: 1, cast_level: 1,
+                rarity: 30, free_val: 1, cost: 0.1f, learn_level: 1, cast_level: 1,
                 cultisys_black_or_white_list: true, cultisys_list: null,
                 banned_races: null,
                 target_type: CW_Spell_Target_Type.TILE,
@@ -739,7 +739,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "gold_shield", anim_id: "gold_shield_anim",
                 new CW_Element(new int[] { 0, 0, 0, 100, 0 }),
-                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.DEFEND,
@@ -775,7 +775,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "water_shield", anim_id: "water_shield_anim",
                 new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ALIAS,
                 triger_type: CW_Spell_Triger_Type.DEFEND,
@@ -807,7 +807,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "gold_sword", anim_id: "single_gold_sword_anim",
                 new CW_Element(new int[] { 0, 0, 0, 100, 0 }),
-                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -837,7 +837,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "wood_sword", anim_id: "single_wood_sword_anim",
                 new CW_Element(new int[] { 0, 0, 100, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.05f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -867,7 +867,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "water_sword", anim_id: "single_water_sword_anim",
                 new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.02f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.02f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -1152,7 +1152,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "gold_blade", anim_id: "gold_blade_anim",
                 new CW_Element(new int[] { 0, 0, 0, 100, 0 }),
-                rarity: 1, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -1183,7 +1183,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "water_blade", anim_id: "water_blade_anim",
                 new CW_Element(new int[] { 100, 0, 0, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -1214,7 +1214,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "fire_blade", anim_id: "fire_blade_anim",
                 new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -1245,7 +1245,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "wind_blade", anim_id: "wind_blade_anim",
                 new CW_Element(new int[] { 40, 40, 20, 0, 0 }),
-                rarity: 1, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0.10f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -1268,7 +1268,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                     id:"example", anim_id: "example_spell_anim", 
                     element:new CW_Element(), element_type_limit: null, 
-                    rarity: 1, free_val: 1, 
+                    rarity: 3, free_val: 1, 
                     cost: 0.05f, min_cost: 20,
                     learn_level: 1, cast_level: 1, can_get_by_random: true,
                     cultisys_black_or_white_list: true, 

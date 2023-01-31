@@ -27,12 +27,12 @@ namespace Cultivation_Way.Content
                 );
             CW_Library_Manager.instance.events.add(_event);
         }
-        private static int time = 0;
+        //private static int time = 0;
         private static void wakan_tide(CW_Asset_WorldEvent event_asset)
         {
             WorldTip.showNow("CW_Event_Wakan_Tide", pPosition:"top");
-            time++;
-            Debug.LogError(string.Format("{0}th wakan tide happened in {1} year", time, MapBox.instance.mapStats.year));
+            //time++;
+            //Debug.LogError(string.Format("{0}th wakan tide happened in {1} year", time, MapBox.instance.mapStats.year));
             int num = Toolbox.randomInt(1, (int)Mathf.Sqrt(Mathf.Sqrt(World_Data.instance.map_chunk_manager.width * World_Data.instance.map_chunk_manager.height)));
             while (num --> 0)
             {
