@@ -71,7 +71,11 @@ namespace Cultivation_Way.Content.Harmony
                     func_redrawZones(__instance);
                     break;
                 case "map_wakan_zones":
-                    if (Utils.CW_Utils_Others.is_map_mode_active("map_wakan_zones") && World_Data.instance.map_chunk_manager.zone_dirty) force_redraw_wakan_zones(__instance);
+                    if (Utils.CW_Utils_Others.is_map_mode_active("map_wakan_zones") && World_Data.instance.map_chunk_manager.zone_dirty)
+                    {
+                        World_Data.instance.map_chunk_manager.zone_dirty = false;
+                        force_redraw_wakan_zones(__instance);
+                    }
                     break;
                 default:
                     func_redrawZones(__instance);
