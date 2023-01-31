@@ -21,6 +21,7 @@ namespace Cultivation_Way.Content
             {
                 if (building.origin_stats.type == "trees") building.origin_stats.priority = -1;
                 if (building.origin_stats.kingdom == "nature") building.origin_stats.upgradeLevel -= 1;
+                if(building.origin_stats.upgradeLevel>=0) building.origin_stats.priority = Math.Max(building.origin_stats.priority, building.origin_stats.upgradeLevel);
             }
         }
 
