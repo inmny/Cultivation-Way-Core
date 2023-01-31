@@ -150,7 +150,7 @@ namespace Cultivation_Way
                 for (j = 0; j < height; j++)
                 {
                     chunks[i, j].wakan = datas[i * height + j].wakan;
-                    chunks[i, j].wakan_level = datas[i * height + j].wakan;
+                    chunks[i, j].wakan_level = datas[i * height + j].wakan_level;
                     chunks[i, j].element = new CW_Element(datas[i * height + j].element);
                 }
             }

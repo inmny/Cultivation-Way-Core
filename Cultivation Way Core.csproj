@@ -865,6 +865,7 @@
     <Compile Include="Code\W_Content_StatusEffect.cs" />
     <Compile Include="Code\W_Content_Tab.cs" />
     <Compile Include="Code\W_Content_WindowCreatureInfo.cs" />
+    <Compile Include="Code\W_Content_WindowKingdomInfo.cs" />
     <Compile Include="Code\W_Content_WindowTop.cs" />
     <Compile Include="Code\W_Content_WindowTop_Helper.cs" />
     <Compile Include="Code\W_Content_Words_Library.cs" />
