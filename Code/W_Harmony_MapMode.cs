@@ -27,11 +27,14 @@ namespace Cultivation_Way.Content.Harmony
         internal static Action<ZoneCalculator> func_updatePixels = (Action<ZoneCalculator>)CW_ReflectionHelper.get_method<ZoneCalculator>("updatePixels");
         internal static Func<ZoneCalculator, Color32[]> get_pixels = CW_ReflectionHelper.create_getter<ZoneCalculator, Color32[]>("pixels");
         internal static Action<ZoneCalculator> func_setDrawnZonesDirty = (Action<ZoneCalculator>)CW_ReflectionHelper.get_method<ZoneCalculator>("setDrawnZonesDirty");
+        private static float __timer = 0;
+        private const float __time_to_update = 1f;
         private static Color32[] pixels;
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ZoneCalculator), "update")]
         public static bool update_prefix(ZoneCalculator __instance, float pElapsed)
         {
+            if(__timer>0)__timer -= pElapsed / (Config.timeScale+1);
             func_setDrawnZonesDirty(__instance);
             if (last_map_mode != ModState.instance.map_mode)
             {
@@ -71,8 +74,9 @@ namespace Cultivation_Way.Content.Harmony
                     func_redrawZones(__instance);
                     break;
                 case "map_wakan_zones":
-                    if (Utils.CW_Utils_Others.is_map_mode_active("map_wakan_zones") && World_Data.instance.map_chunk_manager.zone_dirty)
+                    if (Utils.CW_Utils_Others.is_map_mode_active("map_wakan_zones") && World_Data.instance.map_chunk_manager.zone_dirty && __timer<=0)
                     {
+                        __timer = __time_to_update;
                         World_Data.instance.map_chunk_manager.zone_dirty = false;
                         force_redraw_wakan_zones(__instance);
                     }
