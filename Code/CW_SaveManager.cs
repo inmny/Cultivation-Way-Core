@@ -662,6 +662,12 @@ namespace Cultivation_Way
             foreach(CityData origin_data in origin_city_datas)
             {
                 CW_CityData new_data = new CW_CityData(null);
+                foreach (ItemData weapon in origin_data.storage.items_weapons) new_data.storage.items_weapons.Add(new CW_ItemData(weapon));
+                foreach (ItemData armor in origin_data.storage.items_armor) new_data.storage.items_armor.Add(new CW_ItemData(armor));
+                foreach (ItemData amulet in origin_data.storage.items_amulets) new_data.storage.items_amulets.Add(new CW_ItemData(amulet));
+                foreach (ItemData ring in origin_data.storage.items_rings) new_data.storage.items_rings.Add(new CW_ItemData(ring));
+                foreach (ItemData boot in origin_data.storage.items_boots) new_data.storage.items_boots.Add(new CW_ItemData(boot));
+                foreach (ItemData helmet in origin_data.storage.items_helmets) new_data.storage.items_helmets.Add(new CW_ItemData(helmet));
                 new_data.set_origin_data(origin_data);
                 new_city_datas.Add(new_data);
             }
