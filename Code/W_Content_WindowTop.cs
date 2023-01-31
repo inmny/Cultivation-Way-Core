@@ -418,7 +418,7 @@ namespace Cultivation_Way.Content
             cutivelo_top.name = "cultivelo_top";
             cutivelo_top.GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconCultisys");
             cutivelo_top.GetComponent<Button>().onClick.AddListener(cw_wt.__sort_by_cultivelo);
-            cutivelo_top.transform.localScale = new Vector3(0.3f, 2.4f);
+            cutivelo_top.transform.localScale = new Vector3(0.24f, 0.3f);
             cutivelo_top.transform.localPosition = new Vector3(0, 100);
 
             #endregion
