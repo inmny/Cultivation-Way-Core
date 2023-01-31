@@ -95,6 +95,7 @@ namespace Cultivation_Way.Content.Harmony
         private static void color_wakan_zone(TileZone zone, float wakan_level, float cur_wakan)
         {
             int draw_id = Mathf.CeilToInt(wakan_level * 10);
+            if (draw_id == 10) draw_id = (int)(1000*cur_wakan);
             if(draw_id == zone.last_drawn_id)
             {
                 return;

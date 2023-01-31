@@ -32,7 +32,10 @@ namespace Cultivation_Way.Content
             int num = Toolbox.randomInt(1, (int)Mathf.Sqrt(Mathf.Sqrt(World_Data.instance.map_chunk_manager.width * World_Data.instance.map_chunk_manager.height)));
             while (num --> 0)
             {
-                World_Data.instance.map_chunk_manager.chunks[Toolbox.randomInt(0, World_Data.instance.map_chunk_manager.width), Toolbox.randomInt(0, World_Data.instance.map_chunk_manager.height)].wakan_level = event_asset.action_val;
+                int x = Toolbox.randomInt(0, World_Data.instance.map_chunk_manager.width);
+                int y = Toolbox.randomInt(0, World_Data.instance.map_chunk_manager.height);
+                World_Data.instance.map_chunk_manager.chunks[x, y].wakan_level = event_asset.action_val;
+                World_Data.instance.map_chunk_manager.chunks[x, y].wakan = 1;
             }
         }
     }

@@ -285,14 +285,14 @@ namespace Cultivation_Way
             if (this.cw_status.can_culti && this.cw_status.wakan < this.cw_cur_stats.wakan)
             {
                 float wakan_get = 0; CW_MapChunk chunk = this.currentTile.get_cw_chunk();
-                float chunk_co = chunk.wakan_level;
+                float chunk_co = chunk.wakan_level * chunk.wakan_level;
                 // 计算人物应得的level 1灵气量
                 // 修炼获取
                 wakan_get += this.cw_data.status.culti_velo * chunk_co * Others.CW_Constants.global_immortal_culti_velo;
 
                 if (this.cw_status.wakan * 100  < this.cw_cur_stats.wakan * Others.CW_Constants.wakan_regen_valid_percent)
                 {// 灵气恢复属性的加成
-                    wakan_get += this.cw_cur_stats.wakan_regen * chunk_co * chunk_co;
+                    wakan_get += this.cw_cur_stats.wakan_regen * chunk_co;
                 }
                 if (wakan_get <= 0) goto OUT_WAKAN;
                 

@@ -136,8 +136,8 @@ namespace Cultivation_Way.Content
             if (chunk.wakan_level > 1.1f) chunk.wakan_level -= 0.001f;
             else
             {
-                chunk.wakan *= 0.1f;
-                chunk.wakan_level -= 0.001f;
+                chunk.wakan = 1;
+                chunk.wakan_level = 1;
             }
 
             chunk.update(true);

@@ -120,6 +120,7 @@ namespace Cultivation_Way.Content
                 bushido.bonus_stats[i].shield_regen = (int)bushido.bonus_stats[i].base_stats.attackSpeed / 2;
                 bushido.bonus_stats[i].shield = bushido.bonus_stats[i].shield_regen * 12;
             }
+            bushido.races_list = new List<string>() { "boat" };
             #endregion
         }
         private static bool immortal_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
