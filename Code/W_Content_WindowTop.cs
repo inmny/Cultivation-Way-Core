@@ -118,6 +118,7 @@ namespace Cultivation_Way.Content
         internal Sort_Setting sort_setting = new Sort_Setting();
         internal List<CW_Sim_Info_Elm> elements = new List<CW_Sim_Info_Elm>();
         internal GameObject no_item;
+        internal GameObject prefab_top_type;
         internal GameObject prefab_top_switch_button;
         internal GameObject prefab_city;
         internal GameObject prefab_clan;
@@ -200,7 +201,7 @@ namespace Cultivation_Way.Content
             GameObject top_entry = Instantiate(button_prefab, background_transform);
             cw_wt.creature_top_entry = top_entry;
             top_entry.name = "Creature_Background";
-            top_entry.transform.localPosition = new Vector3(116, 86.5f);
+            top_entry.transform.localPosition = new Vector3(119, 86.5f);
             top_entry.GetComponent<CW_TipButton>().load("CW_Creature_Top", null, "iconEastern_Humans", "normal");
             top_entry.GetComponent<CW_TipButton>().button.onClick.AddListener(cw_wt.switch_to_creature);
             top_entry.SetActive(true);
@@ -208,7 +209,7 @@ namespace Cultivation_Way.Content
             top_entry = Instantiate(button_prefab, background_transform);
             cw_wt.cultibook_top_entry = top_entry;
             top_entry.name = "CultiBook_Background";
-            top_entry.transform.localPosition = new Vector3(116, 30.5f);
+            top_entry.transform.localPosition = new Vector3(119, 30.5f);
             top_entry.GetComponent<CW_TipButton>().load("CW_CultiBook_Top", null, "iconCultiBook_immortal", "normal");
             top_entry.GetComponent<CW_TipButton>().button.onClick.AddListener(cw_wt.switch_to_cultibook);
             top_entry.SetActive(true);
@@ -216,7 +217,7 @@ namespace Cultivation_Way.Content
             top_entry = Instantiate(button_prefab, background_transform);
             cw_wt.S_B_top_entry = top_entry;
             top_entry.name = "S_B_Background";
-            top_entry.transform.localPosition = new Vector3(116, -50.5f);
+            top_entry.transform.localPosition = new Vector3(119, -50.5f);
             top_entry.GetComponent<CW_TipButton>().load("CW_S_B_Top", null, "iconCultiBook_immortal", "normal");
             top_entry.GetComponent<CW_TipButton>().button.onClick.AddListener(cw_wt.switch_to_S_B);
             top_entry.SetActive(true);
@@ -234,7 +235,7 @@ namespace Cultivation_Way.Content
             top_entry = Instantiate(button_prefab, background_transform);
             cw_wt.pope_top_entry = top_entry;
             top_entry.name = "Pope_Background";
-            top_entry.transform.localPosition = new Vector3(-116, 86.5f);
+            top_entry.transform.localPosition = new Vector3(-119, 86.5f);
             top_entry.GetComponent<CW_TipButton>().load("CW_Pope_Top", null, "iconCultiBook_immortal", "normal");
             top_entry.GetComponent<CW_TipButton>().button.onClick.AddListener(cw_wt.switch_to_pope);
             top_entry.SetActive(true);
@@ -242,7 +243,7 @@ namespace Cultivation_Way.Content
             top_entry = Instantiate(button_prefab, background_transform);
             cw_wt.city_top_entry = top_entry;
             top_entry.name = "City_Background";
-            top_entry.transform.localPosition = new Vector3(-116, 30.5f);
+            top_entry.transform.localPosition = new Vector3(-119, 30.5f);
             top_entry.GetComponent<CW_TipButton>().load("CW_City_Top", null, "iconCityList", "normal");
             top_entry.GetComponent<CW_TipButton>().button.onClick.AddListener(cw_wt.switch_to_city);
             top_entry.SetActive(true);
@@ -250,7 +251,7 @@ namespace Cultivation_Way.Content
             top_entry = Instantiate(button_prefab, background_transform);
             cw_wt.kingdom_top_entry = top_entry;
             top_entry.name = "Kingdom_Background";
-            top_entry.transform.localPosition = new Vector3(-116, -50.5f);
+            top_entry.transform.localPosition = new Vector3(-119, -50.5f);
             top_entry.GetComponent<CW_TipButton>().load("CW_Kingdom_Top", null, "iconKingdomList", "normal");
             top_entry.GetComponent<CW_TipButton>().button.onClick.AddListener(cw_wt.switch_to_kingdom);
             top_entry.SetActive(true);
@@ -271,7 +272,16 @@ namespace Cultivation_Way.Content
             cw_wt.no_item.transform.Find("InnerBG/Right").GetComponent<Image>().sprite = no_item_sprite;
             cw_wt.no_item.transform.Find("InnerBG/Description").GetComponent<LocalizedText>().key = "CW_Top_No_Items_Description";
             #region 创造预制体
-            
+            GameObject prefab_top_switch = new GameObject("prefab_top_switch");
+            #region 榜单切换按钮
+            cw_wt.prefab_top_switch_button = prefab_top_switch;
+            prefab_top_switch.AddComponent<Image>();
+            prefab_top_switch.AddComponent<Button>();
+            #endregion
+            GameObject prefab_top_type = new GameObject("prefab_top_type");
+            #region 榜单挂件
+            cw_wt.prefab_top_type = prefab_top_type;
+            #endregion
             GameObject prefab_sim_info_elm = new GameObject("prefab_sim_info_elm");
             GameObject prefab_bar = null;
             GameObject prefab_stat = null;
@@ -394,6 +404,24 @@ namespace Cultivation_Way.Content
             #endregion
 
             #endregion
+
+            #region 生物榜不同排序
+            GameObject creature_top_type = Instantiate(prefab_top_type, background_transform);
+            creature_top_type.name = "creature_top_type";
+            creature_top_type.transform.localPosition = new Vector3(180f,0);
+            GameObject kill_top = Instantiate(prefab_top_switch, creature_top_type.transform);
+            kill_top.name = "kill_top";
+            kill_top.GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconSkulls");
+            kill_top.GetComponent<Button>().onClick.AddListener(cw_wt.__sort_by_kills);
+            kill_top.transform.localScale = new Vector3(0.3f, 0.3f);
+            GameObject cutivelo_top = Instantiate(prefab_top_switch, creature_top_type.transform);
+            cutivelo_top.name = "cultivelo_top";
+            cutivelo_top.GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconCultisys");
+            cutivelo_top.GetComponent<Button>().onClick.AddListener(cw_wt.__sort_by_cultivelo);
+            cutivelo_top.transform.localScale = new Vector3(0.3f, 2.4f);
+            cutivelo_top.transform.localPosition = new Vector3(0, 100);
+
+            #endregion
             WorldBoxConsole.Console.print("INIT WINDOW TOP");
             return window_top_gameobject;
         }
@@ -512,6 +540,15 @@ namespace Cultivation_Way.Content
             clear();
             cur_top_type = Top_Type.CREATURE;
             List<CW_Actor> list = W_Content_WindowTop_Helper.sort_creatures_by_kills(sort_setting.top_k);
+            foreach (CW_Actor actor in list) add_creature_info(actor);
+            scroll_resize();
+            update_window_type();
+        }
+        private void __sort_by_cultivelo()
+        {
+            clear();
+            cur_top_type = Top_Type.CREATURE;
+            List<CW_Actor> list = W_Content_WindowTop_Helper.sort_creatures_by_cultivelo(sort_setting.top_k);
             foreach (CW_Actor actor in list) add_creature_info(actor);
             scroll_resize();
             update_window_type();

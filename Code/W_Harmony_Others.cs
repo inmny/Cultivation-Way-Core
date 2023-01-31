@@ -39,7 +39,6 @@ namespace Cultivation_Way.Content.Harmony
         [HarmonyPatch(typeof(MapBox), "setMapSize")]
         public static bool setMapSize_Prefix(int pWidth, int pHeight)
         {
-            ModState.instance.destroy_unit_reason = Destroy_Unit_Reason.KILL;
             World_Data.instance.map_chunk_manager.reset(pWidth * Config.CITY_ZONE_SIZE, pHeight * Config.CITY_ZONE_SIZE);
             return true;
         }
@@ -49,6 +48,12 @@ namespace Cultivation_Way.Content.Harmony
         {
             ModState.instance.destroy_unit_reason = Destroy_Unit_Reason.CLEAR;
             return true;
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(MapBox), "clearSimObjects")]
+        public static void clearSimObjects_Postfix()
+        {
+            ModState.instance.destroy_unit_reason = Destroy_Unit_Reason.KILL;
         }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(sfx.MusicMan), "count")]

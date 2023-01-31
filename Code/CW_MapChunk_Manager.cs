@@ -67,7 +67,7 @@ namespace Cultivation_Way
             for (i = 0; i < width; i++)
             {
                 for (j = 0; j < height; j++)
-                {
+                {   
                     chunks[i, j].lyse();
                 }
             }
