@@ -11,7 +11,7 @@ namespace Cultivation_Way.Content
         internal static void add_drops()
         {
             add_wakan_increase();
-            add_wakan_decrease();
+            //add_wakan_decrease();
         }
 
         private static void add_wakan_decrease()
@@ -31,9 +31,11 @@ namespace Cultivation_Way.Content
             AssetManager.drops.add(new DropAsset()
             {
                 id = "wakan_increase",
-                path_texture = "drops/drop_shield",
+                path_texture = "drops/drop_lava",
                 random_frame = true,
-                default_scale = 0.1f,
+                animated = true,
+                animation_speed = 0.03f,
+                default_scale = 0.2f,
                 action_landed = wakan_increase
             });
         }
@@ -43,6 +45,10 @@ namespace Cultivation_Way.Content
             CW_MapChunk chunk = tile.get_cw_chunk();
             if (chunk.wakan_level >= 3) return;
             chunk.wakan_level += 0.1f;
+            if (chunk.wakan_level >= 3)
+            {
+                chunk.wakan_level = 3;
+            }
             chunk.update(true);
         }
         private static void wakan_decrease(WorldTile tile, string drop_id)

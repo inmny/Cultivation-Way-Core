@@ -375,6 +375,7 @@ namespace Cultivation_Way.Content
             health.setBar(cw_actor.fast_data.health, cw_actor.cw_cur_stats.base_stats.health, "/" + cw_actor.cw_cur_stats.base_stats.health);
             shield.setBar(cw_actor.cw_status.shield, cw_actor.cw_cur_stats.shield, "/" + cw_actor.cw_cur_stats.shield);
             wakan.setBar(cw_actor.cw_status.wakan, cw_actor.cw_cur_stats.wakan, "/" + cw_actor.cw_cur_stats.wakan);
+            wakan.transform.Find("Mask/Bar").GetComponent<Image>().color = Utils.CW_Utils_Others.get_wakan_color(cw_actor.cw_status.wakan_level, cw_actor.cw_cur_stats.wakan);
             if (cw_actor.stats.needFood || cw_actor.stats.unit)
             {
                 hunger.gameObject.SetActive(value: true);

@@ -124,6 +124,7 @@ namespace Cultivation_Way.Content
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_City), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Culture), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Item), Others.CW_Constants.mod_id);
+            HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_MapMode), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Window), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Spell), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_StatusEffect), Others.CW_Constants.mod_id);

@@ -12,7 +12,7 @@ namespace Cultivation_Way.Animation
         // TODO: MapBox.QualityChanger在低画质情况下隐藏法术动画
         public static CW_EffectManager instance;
         internal bool low_res;
-        private QualityChanger quality_changer;
+        internal static QualityChanger quality_changer;
         private bool initialized = false;
         private GameObject default_prefab = new GameObject();
         private CW_AnimationSetting default_setting = new CW_AnimationSetting();

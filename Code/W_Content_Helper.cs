@@ -21,6 +21,7 @@ namespace Cultivation_Way.Content
         internal static GameStatsData game_stats_data;
         internal static IslandsCalculator islands_calculator;
         internal static ZoneCalculator zone_calculator;
+        internal static SpriteRenderer zone_cal_sprRnd;
         internal static List<SpriteGroupSystem<GroupSpriteObject>> list_systems;
         internal static void init()
         {
@@ -35,6 +36,7 @@ namespace Cultivation_Way.Content
             islands_calculator = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "islandsCalculator") as IslandsCalculator;
             list_systems = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "list_systems") as List<SpriteGroupSystem<GroupSpriteObject>>;
             zone_calculator = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "zoneCalculator") as ZoneCalculator;
+            zone_cal_sprRnd = ReflectionUtility.Reflection.GetField(typeof(ZoneCalculator), zone_calculator, "sprRnd") as SpriteRenderer;
         }
 
         private static void add_color_materials()

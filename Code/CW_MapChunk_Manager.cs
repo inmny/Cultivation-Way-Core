@@ -66,7 +66,7 @@ namespace Cultivation_Way
             */
             // 可采用原地算法，但在区块灵气更新作为单独线程时会造成麻烦，故而，申请额外固定空间
             zone_dirty = true;
-            if (Utils.CW_Utils_Others.is_map_mode_active("map_wakan_zones")) Content.W_Content_Helper.zone_calculator.CallMethod("setDrawnZonesDirty");
+            //if (Utils.CW_Utils_Others.is_map_mode_active("map_wakan_zones")) Content.W_Content_Helper.zone_calculator.CallMethod("setDrawnZonesDirty");
             total_wakan = 0;
             CW_MapChunk chunk_1 = null, chunk_2 = null;
             for (i = 0; i < width; i++)

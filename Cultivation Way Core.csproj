@@ -868,6 +868,7 @@
     <Compile Include="Code\W_Content_WorldEvent.cs" />
     <Compile Include="Code\W_Harmony_Banner.cs" />
     <Compile Include="Code\W_Harmony_Culture.cs" />
+    <Compile Include="Code\W_Harmony_MapMode.cs" />
     <Compile Include="Code\W_Harmony_Others.cs" />
     <Compile Include="Code\W_Harmony_Save.cs" />
     <Compile Include="Code\W_Harmony_Spell.cs" />

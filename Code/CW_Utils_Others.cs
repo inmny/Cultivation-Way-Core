@@ -9,6 +9,27 @@ namespace Cultivation_Way.Utils
 {
     public class CW_Utils_Others
     {
+        private static Color level_0 = Color.white;
+        private static Color level_1 = new Color(0.38f, 0.71f, 1);
+        private static Color level_2 = Color.magenta;
+        private static Color level_3 = Color.yellow;
+        public static Color get_wakan_color(float wakan_level, float wakan)
+        {
+            Color color_to_ret = level_3;
+            if (wakan_level == 1)
+            {
+                color_to_ret = Toolbox.blendColor(level_0, level_1, wakan / (100 + wakan));
+            }
+            else if (wakan_level <= 2)
+            {
+                color_to_ret = Toolbox.blendColor(level_1, level_2, 2 - wakan_level);
+            }
+            else if (wakan_level <= 3)
+            {
+                color_to_ret = Toolbox.blendColor(level_2, level_3, 3 - wakan_level);
+            }
+            return color_to_ret;
+        }
         public static bool is_map_mode_active(string mode_id)
         {
             return ModState.instance.map_mode == mode_id && PlayerConfig.dict[mode_id].boolVal;
