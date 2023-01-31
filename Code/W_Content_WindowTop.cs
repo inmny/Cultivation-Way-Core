@@ -137,6 +137,8 @@ namespace Cultivation_Way.Content
         internal GameObject kingdom_top_entry;
         internal GameObject pope_top_entry;
         internal Transform content_transform;
+        internal UnityAction last_action;
+        internal Dictionary<Top_Type, GameObject> top_types = new Dictionary<Top_Type, GameObject>();
         internal static GameObject window_top_gameobject;
         internal static GameObject origin_favorites_gameobject;
         internal static GameObject create_window_gameobject()
@@ -271,6 +273,7 @@ namespace Cultivation_Way.Content
             cw_wt.no_item.transform.Find("InnerBG/Left").GetComponent<Image>().sprite = no_item_sprite;
             cw_wt.no_item.transform.Find("InnerBG/Right").GetComponent<Image>().sprite = no_item_sprite;
             cw_wt.no_item.transform.Find("InnerBG/Description").GetComponent<LocalizedText>().key = "CW_Top_No_Items_Description";
+            cw_wt.no_item.SetActive(true);
             #region 创造预制体
             GameObject prefab_top_switch = new GameObject("prefab_top_switch");
             #region 榜单切换按钮
@@ -414,26 +417,30 @@ namespace Cultivation_Way.Content
             kill_top.GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconSkulls");
             kill_top.GetComponent<Button>().onClick.AddListener(cw_wt.__sort_by_kills);
             kill_top.transform.localScale = new Vector3(0.3f, 0.3f);
+            kill_top.GetComponent<Button>().OnHover(new UnityAction(delegate
+            {
+                Tooltip.instance.show(kill_top, "normal", "cw_kill_top");
+            }));
             GameObject cutivelo_top = Instantiate(prefab_top_switch, creature_top_type.transform);
             cutivelo_top.name = "cultivelo_top";
             cutivelo_top.GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconCultisys");
             cutivelo_top.GetComponent<Button>().onClick.AddListener(cw_wt.__sort_by_cultivelo);
             cutivelo_top.transform.localScale = new Vector3(0.24f, 0.3f);
             cutivelo_top.transform.localPosition = new Vector3(0, 100);
-
+            cutivelo_top.GetComponent<Button>().OnHover(new UnityAction(delegate
+            {
+                Tooltip.instance.show(cutivelo_top, "normal", "cw_cultivelo_top");
+            }));
+            cw_wt.top_types[Top_Type.CREATURE] = creature_top_type;
+            creature_top_type.gameObject.SetActive(false);
             #endregion
             WorldBoxConsole.Console.print("INIT WINDOW TOP");
             return window_top_gameobject;
         }
-        void Start()
-        {
-            clear();
-            // W_Content_WindowTop_Helper.clear_tmp_lists();
-            if (no_item) no_item.SetActive(true);
-        }
         void OnEnable()
         {
-            
+            update_window_type();
+            if(last_action!=null)last_action();
         }
         void OnDisable()
         {
@@ -449,7 +456,7 @@ namespace Cultivation_Way.Content
                 elements.RemoveAt(elements.Count - 1);
                 Destroy(__to_destroy.gameObject);
             }
-            cur_top_type = Top_Type.NONE;
+            //cur_top_type = Top_Type.NONE;
             if(no_item) no_item.SetActive(false);
         }
         private void scroll_resize()
@@ -458,10 +465,12 @@ namespace Cultivation_Way.Content
         }
         private void update_window_type()
         {
-            //throw new NotImplementedException();
+            foreach (GameObject top_type in top_types.Values) top_type.SetActive(false);
+            if(top_types.ContainsKey(cur_top_type)) top_types[cur_top_type].SetActive(true);
         }
         private void switch_to_creature()
         {
+            last_action = switch_to_creature;
             clear();
             cur_top_type = Top_Type.CREATURE;
             List<CW_Actor> list = W_Content_WindowTop_Helper.sort_creatures_by_level(sort_setting.top_k);
@@ -528,6 +537,7 @@ namespace Cultivation_Way.Content
         }
         private void __sort_by_health_level()
         {
+            last_action = __sort_by_health_level;
             clear();
             cur_top_type = Top_Type.CREATURE;
             List<CW_Actor> list = W_Content_WindowTop_Helper.sort_creatures_by_health_level(sort_setting.top_k);
@@ -537,6 +547,7 @@ namespace Cultivation_Way.Content
         }
         private void __sort_by_kills()
         {
+            last_action = __sort_by_kills;
             clear();
             cur_top_type = Top_Type.CREATURE;
             List<CW_Actor> list = W_Content_WindowTop_Helper.sort_creatures_by_kills(sort_setting.top_k);
@@ -546,6 +557,7 @@ namespace Cultivation_Way.Content
         }
         private void __sort_by_cultivelo()
         {
+            last_action = __sort_by_cultivelo;
             clear();
             cur_top_type = Top_Type.CREATURE;
             List<CW_Actor> list = W_Content_WindowTop_Helper.sort_creatures_by_cultivelo(sort_setting.top_k);
