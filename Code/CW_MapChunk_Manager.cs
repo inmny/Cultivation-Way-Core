@@ -14,6 +14,7 @@ namespace Cultivation_Way
         public float total_wakan;
         public CW_MapChunk[,] chunks;
         public bool zone_dirty = false;
+        private Library.CW_Asset_WorldEvent wakan_tide;
         internal void init(int x, int y)
         {
             width = x; height = y;
@@ -25,6 +26,8 @@ namespace Cultivation_Way
                     chunks[i, j] = new CW_MapChunk(i,j);
                 }
             }
+            wakan_tide = Library.CW_Library_Manager.instance.events.get("wakan_tide");
+            wakan_tide.action(wakan_tide);
         }
         internal void reset(int x, int y)
         {
@@ -50,6 +53,7 @@ namespace Cultivation_Way
                     }
                 }
             }
+            wakan_tide.action(wakan_tide);
         }
         private float __comp_delta_wakan(float wakan_1, float wakan_2)
         {
@@ -113,7 +117,7 @@ namespace Cultivation_Way
                     chunks[i, j].update(false);
                 }
             }
-            Library.CW_Asset_WorldEvent wakan_tide = Library.CW_Library_Manager.instance.events.get("wakan_tide");
+
             if (this.total_wakan / (this.width * this.height) < wakan_tide.trigger_val)
             {
                 wakan_tide.action(wakan_tide);

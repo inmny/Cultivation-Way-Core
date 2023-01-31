@@ -76,11 +76,11 @@ namespace Cultivation_Way{
                 mod_state.library_manager.init();
 
                 world_data.map_chunk_manager = new CW_MapChunk_Manager();
-                world_data.map_chunk_manager.init(32,32);
                 
                 Utils.CW_ItemTools.init();
                 W_Content_Manager.add_content();
 
+                world_data.map_chunk_manager.init(32, 32);
                 //mod_state.library_manager.register();
                 print("[CW Core]: Finish Initialization");
             }
