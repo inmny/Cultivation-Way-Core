@@ -33,10 +33,8 @@ namespace Cultivation_Way.Others
         public const int max_cultisys_level = 20;
         public const float default_spell_damage_co = 32;
         public const float chunk_wakan_compress_co = 0.9f;
-        public const float chunk_wakan_spread_grad = 0.01f;
+        public const float chunk_wakan_spread_grad = 0.3f;
         public const float chunk_wakan_level_spread_grad = 0.1f;
-        public const float chunk_wakan_lyse_grad = 0.1f;
-        public const float chunk_wakan_lyse_base = 1f;
         public const uint cultisys_immortol_tag = 0x1;
         public const uint cultisys_bushido_tag = 0x2;
         public const float bushido_force_culti_chance = 8f;

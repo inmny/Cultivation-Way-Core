@@ -51,6 +51,10 @@ namespace Cultivation_Way
                 }
             }
         }
+        private float __comp_delta_wakan(float wakan_1, float wakan_2)
+        {
+            return Mathf.Sign(wakan_2-wakan_1) * Mathf.Sqrt(Mathf.Abs(wakan_2 - wakan_1)) * Others.CW_Constants.chunk_wakan_spread_grad;
+        }
         internal void update()
         {
             int i; int j;
@@ -87,7 +91,7 @@ namespace Cultivation_Way
                 for (j = 0; j < height - 1; j++)
                 {
                     chunk_1 = chunks[i, j]; chunk_2 = chunks[i, j + 1];
-                    delta_wakan = (chunk_2.total_wakan - chunk_1.total_wakan) * Others.CW_Constants.chunk_wakan_spread_grad;
+                    delta_wakan = __comp_delta_wakan(chunk_1.total_wakan, chunk_2.total_wakan);
                     chunk_2.tmp_wakan -= delta_wakan;
                     chunk_1.tmp_wakan += delta_wakan;
                 }
@@ -97,7 +101,7 @@ namespace Cultivation_Way
                 for (i = 0; i < width - 1; i++)
                 {
                     chunk_1 = chunks[i, j]; chunk_2 = chunks[i + 1, j];
-                    delta_wakan = (chunk_2.total_wakan - chunk_1.total_wakan) * Others.CW_Constants.chunk_wakan_spread_grad;
+                    delta_wakan = __comp_delta_wakan(chunk_1.total_wakan, chunk_2.total_wakan);
                     chunk_2.tmp_wakan -= delta_wakan;
                     chunk_1.tmp_wakan += delta_wakan;
                 }

@@ -18,7 +18,7 @@ namespace Cultivation_Way.Utils
             Color color_to_ret = level_3;
             if (wakan_level == 1)
             {
-                color_to_ret = Toolbox.blendColor(level_0, level_1, wakan / (100 + wakan));
+                color_to_ret = Toolbox.blendColor(level_0, level_1, 100 / (100 + wakan));
             }
             else if (wakan_level <= 2)
             {

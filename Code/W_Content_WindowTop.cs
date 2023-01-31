@@ -518,6 +518,7 @@ namespace Cultivation_Way.Content
         {
             CW_Sim_Creature_Info_Elm actor_info = Instantiate(prefab_unit, content_transform).GetComponent<CW_Sim_Creature_Info_Elm>();
             this.elements.Add(actor_info);
+            actor_info.wakan_bar.transform.Find("Mask/Bar").GetComponent<Image>().color = Utils.CW_Utils_Others.get_wakan_color(actor.cw_status.wakan_level, actor.cw_cur_stats.wakan);
             actor_info.GetComponent<RectTransform>().anchoredPosition = new Vector3(7, 20 - 60f * elements.Count);
             actor_info.show(actor);
             actor_info.gameObject.SetActive(true);

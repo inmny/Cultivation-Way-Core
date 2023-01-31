@@ -136,6 +136,9 @@
     <Reference Include="UnityEngine.AssetBundleModule">
       <HintPath>Includes\UnityEngine.AssetBundleModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>Includes\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.ClothModule">
       <HintPath>Includes\UnityEngine.ClothModule.dll</HintPath>
     </Reference>

@@ -154,6 +154,13 @@ namespace Cultivation_Way.Content.Harmony
             __baby_growup(cw_actor);
             return false;
         }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Actor), "restoreHealth")]
+        public static bool actor_restore_health(Actor __instance, int pVal)
+        {
+            ((CW_Actor)__instance).regen_health(pVal, Mathf.Max(1, ((CW_Actor)__instance).cw_status.health_level - 0.1f));
+            return false;
+        }
         private static void __baby_growup(CW_Actor cw_actor)
         {
             CW_Actor new_cw_actor = (CW_Actor)MapBox.instance.createNewUnit(cw_actor.stats.growIntoID, cw_actor.currentTile, null, 0f, null);

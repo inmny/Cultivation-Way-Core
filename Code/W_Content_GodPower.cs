@@ -133,8 +133,12 @@ namespace Cultivation_Way.Content
             CW_MapChunk chunk = center.get_cw_chunk();
             if (chunk.wakan <= 1) return true;
 
-            if (chunk.wakan_level > 1.2f) chunk.wakan_level *= 0.999f;
-            else chunk.wakan *= 0.5f;
+            if (chunk.wakan_level > 1.1f) chunk.wakan_level -= 0.001f;
+            else
+            {
+                chunk.wakan *= 0.1f;
+                chunk.wakan_level -= 0.001f;
+            }
 
             chunk.update(true);
             return true;
