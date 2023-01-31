@@ -34,7 +34,7 @@ namespace Cultivation_Way
         {
             this.wakan = Toolbox.randomFloat(0, 10f);
             this.wakan_level = Toolbox.randomFloat(1, 2);
-            update();
+            update(true);
         }
         internal void update(bool force = false)
         {
