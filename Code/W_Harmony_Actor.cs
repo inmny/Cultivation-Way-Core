@@ -134,7 +134,7 @@ namespace Cultivation_Way.Content.Harmony
                 }
             }
             // 灵气归还
-            if (cw_actor.cw_status.wakan > 0)
+            if (cw_actor.cw_status.wakan > 0 && ModState.instance.destroy_unit_reason == Destroy_Unit_Reason.KILL)
             {
                 CW_MapChunk chunk = cw_actor.currentTile.get_cw_chunk();
                 chunk.wakan += Utils.CW_Utils_Others.compress_raw_wakan(CW_Utils_Others.get_raw_wakan(cw_actor.cw_status.wakan, cw_actor.cw_status.wakan_level), chunk.wakan_level);

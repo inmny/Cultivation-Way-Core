@@ -17,6 +17,11 @@ namespace Cultivation_Way{
         ORIGIN,
         CW
     }
+    public enum Destroy_Unit_Reason
+    {
+        KILL,
+        CLEAR
+    }
 
     public class ModState
     {
@@ -28,6 +33,7 @@ namespace Cultivation_Way{
         public NCMod mod_info;
         public CW_EffectManager effect_manager;
         public CW_Library_Manager library_manager;
+        public Destroy_Unit_Reason destroy_unit_reason = Destroy_Unit_Reason.KILL;
         public Loading_Save_Type loading_save_type = Loading_Save_Type.CW;
         public Load_Object_Reason load_object_reason = Load_Object_Reason.SPAWN;
     }

@@ -118,6 +118,7 @@ namespace Cultivation_Way.Content
         internal Sort_Setting sort_setting = new Sort_Setting();
         internal List<CW_Sim_Info_Elm> elements = new List<CW_Sim_Info_Elm>();
         internal GameObject no_item;
+        internal GameObject prefab_top_switch_button;
         internal GameObject prefab_city;
         internal GameObject prefab_clan;
         internal GameObject prefab_unit;
@@ -194,6 +195,7 @@ namespace Cultivation_Way.Content
             
 
             button_bg.transform.eulerAngles = new Vector3(0, 0, 270);
+
             // 生物排序
             GameObject top_entry = Instantiate(button_prefab, background_transform);
             cw_wt.creature_top_entry = top_entry;
