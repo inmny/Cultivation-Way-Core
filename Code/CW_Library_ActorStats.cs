@@ -42,6 +42,10 @@ namespace Cultivation_Way.Library
         /// </summary>
         internal uint allow_cultisys = 0;
         /// <summary>
+        /// 强制的修炼体系，或关系
+        /// </summary>
+        internal uint force_cultisys = 0;
+        /// <summary>
         /// 拓展属性加成
         /// </summary>
         public CW_BaseStats cw_base_stats;
