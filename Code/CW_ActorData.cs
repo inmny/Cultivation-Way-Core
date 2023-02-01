@@ -6,6 +6,7 @@ namespace Cultivation_Way
     [Serializable]
     public class CW_ActorData
     {
+        public CW_BaseStats fixed_base_stats;
         public CW_ActorStatus status;
         public int[] cultisys_level;
         public string[] jobs;
@@ -38,6 +39,15 @@ namespace Cultivation_Way
         }
         public void deepcopy_to(CW_ActorData cw_actor_data)
         {
+            if (cw_actor_data.fixed_base_stats != null)
+            {
+                cw_actor_data.fixed_base_stats.clear();
+                cw_actor_data.fixed_base_stats.addStats(fixed_base_stats);
+            }
+            else if (fixed_base_stats != null)
+            {
+                cw_actor_data.fixed_base_stats = fixed_base_stats.deepcopy();
+            }
             element.deepcopy_to(cw_actor_data.element);
             status.deepcopy_to(cw_actor_data.status);
             int i;

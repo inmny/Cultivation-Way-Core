@@ -270,6 +270,11 @@ namespace Cultivation_Way
         static int max_wakan_get_once = 128;
         static int[] wakan_get_count = new int[max_wakan_get_once];
         static bool count_init = false;
+        public CW_BaseStats get_fixed_base_stats()
+        {
+            if (this.cw_data.fixed_base_stats == null) this.cw_data.fixed_base_stats = new CW_BaseStats();
+            return this.cw_data.fixed_base_stats;
+        }
         public void updateStatus_month()
         {
             if (!count_init)

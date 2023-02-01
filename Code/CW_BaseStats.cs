@@ -163,7 +163,7 @@ namespace Cultivation_Way
             this.anti_spell_armor = 0;
             this.anti_time_stop = false;
             this.base_stats = new BaseStats();
-            this.element = new CW_Element(random_generate: true, comp_type: false);
+            //this.element = new CW_Element(random_generate: true, comp_type: false);
             this.health_regen = 0;
             this.mod_age = 0;
             this.mod_anti_armor = 0;
@@ -193,7 +193,7 @@ namespace Cultivation_Way
         }
         internal CW_BaseStats(BaseStats baseStats)
         {
-            this.element = new CW_Element(random_generate: true, comp_type: false);
+            //this.element = new CW_Element(random_generate: true, comp_type: false);
             #region Extend Stats
             this.age_bonus = 0;
             this.anti_armor = 0;
@@ -234,7 +234,7 @@ namespace Cultivation_Way
         internal CW_BaseStats(CW_BaseStats copy)
         {
             this.base_stats = new BaseStats();
-            this.element = copy.element.deepcopy();
+            if(copy.element!=null) this.element = copy.element.deepcopy();
             #region Extend Stats
             this.age_bonus = copy.age_bonus;
             this.anti_armor = copy.anti_armor;
@@ -311,6 +311,11 @@ namespace Cultivation_Way
             this.base_stats.mod_speed = copy.base_stats.mod_speed;
             this.base_stats.mod_supply_timer = copy.base_stats.mod_supply_timer;
             #endregion
+        }
+        public CW_Element get_element()
+        {
+            if (this.element == null) this.element = new CW_Element();
+            return this.element;
         }
         public void addStats(CW_BaseStats CW_basestats, bool except_element = true)
         {
@@ -404,6 +409,7 @@ namespace Cultivation_Way
         }
         public void change_to_better(CW_BaseStats another)
         {
+            if (another == null) return;
             #region Extend Stats
             if(another.age_bonus > age_bonus) this.age_bonus = another.age_bonus;
             if (another.anti_armor > anti_armor) this.anti_armor = another.anti_armor;
@@ -636,7 +642,7 @@ namespace Cultivation_Way
         public void normalize(bool normalize_element = true, int element_normalize_ceil = 100)
         {
             this.base_stats.normalize();
-            if(normalize_element) this.element.normalize(element_normalize_ceil);
+            if(normalize_element && this.element!=null) this.element.normalize(element_normalize_ceil);
             // Others Normalization.
 
         }
