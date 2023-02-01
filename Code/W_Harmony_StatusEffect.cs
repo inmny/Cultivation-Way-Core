@@ -16,7 +16,8 @@ namespace Cultivation_Way.Content.Harmony
             {
                 CW_Actor cw_actor = (CW_Actor)__instance;
                 cw_actor.update_status_effects(pElapsed);
-                if(cw_actor.default_spell_timer>0)cw_actor.default_spell_timer -= pElapsed;
+                if(cw_actor.default_spell_timer>0) cw_actor.default_spell_timer -= pElapsed;
+                if(cw_actor.__battle_timer>0) cw_actor.__battle_timer -= pElapsed;
             }
             else
             {

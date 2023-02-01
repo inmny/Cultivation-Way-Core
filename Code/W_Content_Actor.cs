@@ -13,6 +13,14 @@ namespace Cultivation_Way.Content
         internal static void add_actors()
         {
             add_eastern_humans();
+            add_yaos();
+        }
+
+        private static void add_yaos()
+        {
+            CW_ActorStats _yao = new CW_ActorStats();
+            
+            throw new NotImplementedException();
         }
 
         private static void add_eastern_humans()

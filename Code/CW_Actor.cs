@@ -25,6 +25,7 @@ namespace Cultivation_Way
         internal float m_attackSpeed_seconds = 0;
         internal float default_spell_timer = 1f;
         internal float s_spell_seconds = 1f;
+        internal float __battle_timer = 0f;
         private static List<string> _status_effects_to_remove = new List<string>();
         /// <summary>
         /// 仅提供高效访问，待权限开放后删除
@@ -44,23 +45,23 @@ namespace Cultivation_Way
         internal static Func<Actor, BaseSimObject> get_beh_actor_target = CW_ReflectionHelper.create_getter<Actor, BaseSimObject>("beh_actor_target");
         #endregion
         #region Setter
-        public static Action<Actor, bool> set_statsDirty = CW_ReflectionHelper.create_setter<Actor, bool>("statsDirty");
-        public static Action<Actor, bool> set_event_full_heal = CW_ReflectionHelper.create_setter<Actor, bool>("event_full_heal");
+        internal static Action<Actor, bool> set_statsDirty = CW_ReflectionHelper.create_setter<Actor, bool>("statsDirty");
+        internal static Action<Actor, bool> set_event_full_heal = CW_ReflectionHelper.create_setter<Actor, bool>("event_full_heal");
         public static Action<Actor, bool> set_item_sprite_dirty = CW_ReflectionHelper.create_setter<Actor, bool>("item_sprite_dirty");
-        public static Action<Actor, bool> set_trait_weightless = CW_ReflectionHelper.create_setter<Actor, bool>("_trait_weightless");
-        public static Action<Actor, bool> set_trait_peaceful = CW_ReflectionHelper.create_setter<Actor, bool>("_trait_peaceful");
-        public static Action<Actor, bool> set_trait_fire_resistant = CW_ReflectionHelper.create_setter<Actor, bool>("_trait_fire_resistant");
-        public static Action<Actor, bool> set_status_frozen = CW_ReflectionHelper.create_setter<Actor, bool>("_status_frozen");
-        public static Action<Actor, float> set_attackTimer = CW_ReflectionHelper.create_setter<Actor, float>("attackTimer");
-        public static Action<Actor, float> set_s_attackSpeed_seconds = CW_ReflectionHelper.create_setter<Actor, float>("s_attackSpeed_seconds");
-        public static Action<Actor, WeaponType> set_s_attackType = CW_ReflectionHelper.create_setter<Actor, WeaponType>("s_attackType");
-        public static Action<Actor, string> set_s_slashType = CW_ReflectionHelper.create_setter<Actor, string>("s_slashType");
-        public static Action<Actor, string> set_s_weapon_texture = CW_ReflectionHelper.create_setter<Actor, string>("s_weapon_texture");
-        public static Action<Actor, PersonalityAsset> set_s_personality = CW_ReflectionHelper.create_setter<Actor, PersonalityAsset>("s_personality");
+        internal static Action<Actor, bool> set_trait_weightless = CW_ReflectionHelper.create_setter<Actor, bool>("_trait_weightless");
+        internal static Action<Actor, bool> set_trait_peaceful = CW_ReflectionHelper.create_setter<Actor, bool>("_trait_peaceful");
+        internal static Action<Actor, bool> set_trait_fire_resistant = CW_ReflectionHelper.create_setter<Actor, bool>("_trait_fire_resistant");
+        internal static Action<Actor, bool> set_status_frozen = CW_ReflectionHelper.create_setter<Actor, bool>("_status_frozen");
+        internal static Action<Actor, float> set_attackTimer = CW_ReflectionHelper.create_setter<Actor, float>("attackTimer");
+        internal static Action<Actor, float> set_s_attackSpeed_seconds = CW_ReflectionHelper.create_setter<Actor, float>("s_attackSpeed_seconds");
+        internal static Action<Actor, WeaponType> set_s_attackType = CW_ReflectionHelper.create_setter<Actor, WeaponType>("s_attackType");
+        internal static Action<Actor, string> set_s_slashType = CW_ReflectionHelper.create_setter<Actor, string>("s_slashType");
+        internal static Action<Actor, string> set_s_weapon_texture = CW_ReflectionHelper.create_setter<Actor, string>("s_weapon_texture");
+        internal static Action<Actor, PersonalityAsset> set_s_personality = CW_ReflectionHelper.create_setter<Actor, PersonalityAsset>("s_personality");
         public static Action<Actor, ProfessionAsset> set_professionAsset = CW_ReflectionHelper.create_setter<Actor, ProfessionAsset>("professionAsset");
         public static Action<Actor, ActorStatus> set_data = CW_ReflectionHelper.create_setter<Actor, ActorStatus>("data");
-        public static Action<Actor, List<ActorTrait>> set_s_special_effect_traits = CW_ReflectionHelper.create_setter<Actor, List<ActorTrait>>("s_special_effect_traits");
-        public static Action<Actor, BaseSimObject> set_attackedBy = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("attackedBy");
+        internal static Action<Actor, List<ActorTrait>> set_s_special_effect_traits = CW_ReflectionHelper.create_setter<Actor, List<ActorTrait>>("s_special_effect_traits");
+        internal static Action<Actor, BaseSimObject> set_attackedBy = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("attackedBy");
         public static Action<Actor, BaseSimObject> set_attackTarget = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("attackTarget");
         public static Action<Actor, float> set_colorEffect = CW_ReflectionHelper.create_setter<Actor, float>("colorEffect");
         public static Action<Actor, Material> set_colorMaterial = CW_ReflectionHelper.create_setter<Actor, Material>("colorMaterial");
@@ -79,10 +80,26 @@ namespace Cultivation_Way
         public static Action<Actor, Vector3, WorldTile, bool, bool, float> func_punchTargetAnimation = (Action<Actor, Vector3, WorldTile, bool, bool, float>)CW_ReflectionHelper.get_method<Actor>("punchTargetAnimation");
         public static Func<Actor, BaseSimObject, bool> func_tryToAttack = (Func<Actor, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("tryToAttack");
         #endregion
+        /// <summary>
+        /// 是否处在战斗状态
+        /// </summary>
+        /// <returns></returns>
+        public bool is_in_battle()
+        {
+            return this.__battle_timer <= 0;
+        }
         // TODO: 等建筑拓展后适配建筑
         public bool is_in_default_attack_range(BaseSimObject target)
         {
             return Toolbox.DistVec3(this.currentPosition, target.currentPosition) < this.cw_cur_stats.base_stats.range + (target.objectType == MapObjectType.Actor?((CW_Actor)target).cw_cur_stats.base_stats.size : 5);
+        }
+        /// <summary>
+        /// 强制添加修炼体系
+        /// </summary>
+        /// <param name="cultisys_id">修炼体系id</param>
+        public void add_cultisys(string cultisys_id)
+        {
+            this.cw_data.cultisys |= CW_Library_Manager.instance.cultisys.get(cultisys_id)._tag;
         }
         public void start_color_effect(string type, float time)
         {
@@ -93,10 +110,19 @@ namespace Cultivation_Way
             set_colorMaterial(this, material);
             func_updateColorEffect(this, 0);
         }
+        /// <summary>
+        /// 是否拥有修炼体系
+        /// </summary>
+        /// <param name="cultisys_id">需要判断的修炼体系id</param>
+        /// <returns></returns>
         public bool has_cultisys(string cultisys_id)
         {
             return (this.cw_data.cultisys & CW_Library_Manager.instance.cultisys.get(cultisys_id)._tag) > 0;
         }
+        /// <summary>
+        /// 强制移除人物状态，会触发状态结束函数
+        /// </summary>
+        /// <param name="status_effect_id">状态id</param>
         public void remove_status_effect_forcely(string status_effect_id)
         {
             if (status_effects == null || !status_effects.ContainsKey(status_effect_id)) return;
@@ -106,6 +132,13 @@ namespace Cultivation_Way
             status_to_remove.force_finish();
             this.setStatsDirty();
         }
+        /// <summary>
+        /// 添加人物状态
+        /// </summary>
+        /// <param name="status_effect_id">在状态库中查询的模板id</param>
+        /// <param name="as_id">添加入人物状态列表的id，默认为模板id</param>
+        /// <param name="user">导致添加状态的对象</param>
+        /// <returns></returns>
         public CW_StatusEffectData add_status_effect(string status_effect_id, string as_id = null, BaseSimObject user = null)
         {
             if (status_effects == null) status_effects = new Dictionary<string, CW_StatusEffectData>();
@@ -176,6 +209,8 @@ namespace Cultivation_Way
         internal bool __get_hit(float damage, Others.CW_Enums.CW_AttackType attack_type, BaseSimObject attacker, bool pSkipIfShake)
         {
             if ((pSkipIfShake && this.fast_shake_timer.isActive) || this.fast_data.health <= 0) return false;
+
+            this.__battle_timer = Others.CW_Constants.battle_timer;
 
             float damage_reduce = 0;
             // 区分法抗和物抗作用

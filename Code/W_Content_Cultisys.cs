@@ -79,7 +79,7 @@ namespace Cultivation_Way.Content
             );
             for (i = 10; i < Others.CW_Constants.max_cultisys_level; i++)
             {
-                bushido.power_level[i] = 1 + (i - 9) / 20f;
+                bushido.power_level[i] = 1 + (i - 9) / 30f;
             }
             //WorldBoxConsole.Console.print(bushido == null);
             #region 武道属性
@@ -121,7 +121,7 @@ namespace Cultivation_Way.Content
                 bushido.bonus_stats[i].shield = bushido.bonus_stats[i].shield_regen * 12;
             }
             bushido.races_list = new List<string>() { "boat" };
-            bushido.units_list = new List<string>() { "whiteMage", "druid", "plagueDoctor", "evilMage" };
+            bushido.units_list = new List<string>() { "whiteMage", "druid", "plagueDoctor", "evilMage", "necromancer" };
             #endregion
         }
         private static bool immortal_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
