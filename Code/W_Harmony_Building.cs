@@ -13,9 +13,9 @@ namespace Cultivation_Way.Content.Harmony
         [HarmonyPatch(typeof(Building), "checkTilesForUpgrade")]
         public static void building_checkTilesForUpgrade(Building __instance, bool __result)
         {
-            if (__result) return;
-            if (__instance.city != null) __instance.city.abandonBuilding(__instance);
-            CW_Building.func_startDestroyBuilding(__instance, true);
+            //if (__result) return;
+            //if (__instance.city != null) __instance.city.abandonBuilding(__instance);
+            //CW_Building.func_startDestroyBuilding(__instance, true);
         }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(MapBox),"addBuilding")]

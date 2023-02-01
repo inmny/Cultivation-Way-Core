@@ -156,6 +156,13 @@ namespace Cultivation_Way
             this.setStatsDirty();
             return ret;
         }
+        /// <summary>
+        /// 清除默认法术释放计时器
+        /// </summary>
+        public void clear_default_spell_timer()
+        {
+            this.default_spell_timer = 0;
+        }
         internal void update_status_effects(float elapsed)
         {
             if (this.status_effects == null || this.status_effects.Count==0) return;
@@ -196,7 +203,7 @@ namespace Cultivation_Way
         {
             return (this.cw_data.cultisys & cultisys_tag) > 0;
         }
-        public void add_child(ActorStatus orgin_status)
+        internal void add_child(ActorStatus orgin_status)
         {
             //if (this.cw_data.children_info == null) this.cw_data.children_info = new List<CW_Family_Member_Info>();
             //this.cw_data.children_info.Add(new CW_Family_Member_Info(orgin_status));
@@ -305,12 +312,16 @@ namespace Cultivation_Way
         static int max_wakan_get_once = 128;
         static int[] wakan_get_count = new int[max_wakan_get_once];
         static bool count_init = false;
+        /// <summary>
+        /// 获取人物的永久加成属性
+        /// </summary>
+        /// <returns></returns>
         public CW_BaseStats get_fixed_base_stats()
         {
             if (this.cw_data.fixed_base_stats == null) this.cw_data.fixed_base_stats = new CW_BaseStats();
             return this.cw_data.fixed_base_stats;
         }
-        public void updateStatus_month()
+        internal void updateStatus_month()
         {
             if (!count_init)
             {
@@ -370,6 +381,9 @@ namespace Cultivation_Way
             this.fast_data.health += (int)health_to_regen;
             
         }
+        /// <summary>
+        /// 检查各个修炼体系能否晋级
+        /// </summary>
         public void checkLevelUp()
         {
             uint cultisys = this.cw_data.cultisys;
