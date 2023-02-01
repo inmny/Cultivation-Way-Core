@@ -30,6 +30,11 @@ namespace Cultivation_Way.Content.Harmony
         private static float __timer = 0;
         private const float __time_to_update = 1f;
         private static Color32[] pixels;
+        internal static void force_update()
+        {
+            __timer = 0;
+            World_Data.instance.map_chunk_manager.zone_dirty = true;
+        }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ZoneCalculator), "update")]
         public static bool update_prefix(ZoneCalculator __instance, float pElapsed)

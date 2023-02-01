@@ -50,6 +50,7 @@ namespace Cultivation_Way.Content
                 chunk.wakan_level = 3;
             }
             chunk.update(true);
+            Harmony.W_Harmony_MapMode.force_update();
         }
         private static void wakan_decrease(WorldTile tile, string drop_id)
         {

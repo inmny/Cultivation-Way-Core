@@ -177,6 +177,7 @@ namespace Cultivation_Way.Content
             }
 
             chunk.update(true);
+            Harmony.W_Harmony_MapMode.force_update();
             return true;
         }
         private static void __wakan_decrease_loop_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
