@@ -274,6 +274,7 @@ namespace Cultivation_Way.Content.Harmony
                     {
                         actor.new_creature = true;
                         actor.CW_newCreature();
+                        //CW_Actor.func_newCreature(actor, (int)(W_Content_Helper.game_stats_data.gameTime + (double)MapBox.instance.units.Count));
                         Debug.Log("Force Load Unit:" + pData.status.actorID);
                     }
                 }

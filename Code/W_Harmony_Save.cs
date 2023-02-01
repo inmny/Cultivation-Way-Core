@@ -81,7 +81,7 @@ namespace Cultivation_Way.Content.Harmony
             if (File.Exists(cw_save_path))
             {
                 Reflection.CallStaticMethod(typeof(SaveManager),"fileInfo", cw_save_path);
-                CW_SaveManager.load_origin_data(JsonConvert.DeserializeObject<SavedMap>(File.ReadAllText(cw_save_path)));
+                CW_SaveManager.load_origin_data(JsonConvert.DeserializeObject<SavedMap>(Zip.Decompress(File.ReadAllText(cw_save_path))));
                 return false;
             }
             Debug.LogError(string.Format("No found save files under '{0}'", main_path));

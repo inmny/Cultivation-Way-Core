@@ -17,7 +17,7 @@ namespace Cultivation_Way.Content
                 new CW_Asset_CultiSys()
                 {
                     id = "immortal",
-                    sprite_name = "icon_immortal",
+                    sprite_name = "iconCultiBook_immortal",
                     judge = immortal_judge,
                     level_judge = immortal_level_judge,
                     addition_spell_require = new CW_Spell_Tag[] { CW_Spell_Tag.IMMORTAL}
@@ -71,7 +71,7 @@ namespace Cultivation_Way.Content
                 new CW_Asset_CultiSys()
                 {
                     id = "bushido",
-                    sprite_name = "icon_bushido",
+                    sprite_name = "iconCultiBook_bushido",
                     judge = bushido_judge,
                     level_judge = bushido_level_judge,
                     addition_spell_require = new CW_Spell_Tag[] { CW_Spell_Tag.BUSHIDO, CW_Spell_Tag.ACQUIRED_POWER }

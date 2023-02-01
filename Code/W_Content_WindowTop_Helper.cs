@@ -43,7 +43,25 @@ namespace Cultivation_Way.Content
             }
             return ret;
         }
-        internal static List<CW_Actor> sort_creatures_by_health_level(int amount)
+        internal static List<CW_Actor> sort_by_cultisys_level(int amount, int tag)
+        {
+            collect_actors();
+            List<CW_Actor> ret = new List<CW_Actor>();
+            _actors.Sort((left, right) =>
+            {
+                float l_1 = (left.cw_data.cultisys & (1ul<<tag)) > 0 ? left.cw_data.cultisys_level[tag] : -1;
+                float l_2 = (right.cw_data.cultisys & (1ul<<tag)) > 0 ? right.cw_data.cultisys_level[tag] : -1;
+                if (l_1 == l_2) return 0;
+                return l_1 < l_2 ? 1 : -1;
+            });
+            amount = Math.Min(amount, _actors.Count);
+            for (int i = 0; i < amount; i++)
+            {
+                ret.Add(_actors[i]);
+            }
+            return ret;
+        }
+        internal static List<CW_Actor> sort_by_bushido_level(int amount)
         {
             collect_actors();
             List<CW_Actor> ret = new List<CW_Actor>();
