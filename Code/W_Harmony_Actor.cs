@@ -274,7 +274,7 @@ namespace Cultivation_Way.Content.Harmony
                     {
                         actor.new_creature = true;
                         actor.CW_newCreature();
-                        //Debug.Log("Force Load Unit:" + pData.status.actorID);
+                        Debug.Log("Force Load Unit:" + pData.status.actorID);
                     }
                 }
                 actor.fast_data = pData.status;

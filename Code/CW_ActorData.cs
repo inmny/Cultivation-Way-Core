@@ -10,7 +10,7 @@ namespace Cultivation_Way
         public int[] cultisys_level;
         public string[] jobs;
         public int[] job_levels;
-        internal uint cultisys;
+        public uint cultisys;
         public CW_Element element;
         public List<string> spells;
         public Compose.CW_ComposeSetting compose_setting;
