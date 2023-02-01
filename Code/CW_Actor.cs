@@ -165,8 +165,8 @@ namespace Cultivation_Way
         }
         public void add_child(ActorStatus orgin_status)
         {
-            if (this.cw_data.children_info == null) this.cw_data.children_info = new List<CW_Family_Member_Info>();
-            this.cw_data.children_info.Add(new CW_Family_Member_Info(orgin_status));
+            //if (this.cw_data.children_info == null) this.cw_data.children_info = new List<CW_Family_Member_Info>();
+            //this.cw_data.children_info.Add(new CW_Family_Member_Info(orgin_status));
             this.fast_data.children++;
         }
         public void get_hit(float damage, bool flash = true, Others.CW_Enums.CW_AttackType type = Others.CW_Enums.CW_AttackType.Other, BaseSimObject attacker = null, bool skip_if_shake = true)
@@ -531,11 +531,17 @@ namespace Cultivation_Way
             __modify_cultibook_last_step(culti_book);
             this.learn_cultibook(culti_book);
         }
-        public void regen_health(float health, float health_level)
+        public void regen_health(float health, float health_level = 1)
         {
             float health_to_regen = Utils.CW_Utils_Others.transform_wakan(health, health_level, this.cw_status.health_level);
             this.fast_data.health += (int)health_to_regen;
             if (this.fast_data.health > this.cw_cur_stats.base_stats.health) this.fast_data.health = this.cw_cur_stats.base_stats.health;
+        }
+        public void regen_wakan(float wakan, float wakan_level = 1)
+        {
+            float wakan_to_regen = Utils.CW_Utils_Others.transform_wakan(wakan, wakan_level, this.cw_status.wakan_level);
+            this.cw_status.wakan += (int)wakan_to_regen;
+            if (this.cw_status.wakan > this.cw_cur_stats.wakan) this.cw_status.wakan = this.cw_cur_stats.wakan;
         }
         public CW_Asset_Item get_weapon_asset()
         {
