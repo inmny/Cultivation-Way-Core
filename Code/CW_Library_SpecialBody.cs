@@ -9,9 +9,9 @@ namespace Cultivation_Way.Library
     [Serializable]
     public class CW_Asset_SpecialBody : Asset
     {
-        internal string name;
+        public string name;
         public string description;
-        internal string author_name;
+        public string author_name;
         public int anim_id;
         public string author_id;
         public int level;
