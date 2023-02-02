@@ -11,19 +11,20 @@ namespace Cultivation_Way.Content
         internal static void add_buildings()
         {
             add_eastern_human_building();
+            add_yao_building();
             fix_origin_bugs();
         }
 
-        private static void fix_origin_bugs()
+        private static void add_yao_building()
         {
-            // 修复树阻止建筑升级
-            foreach(CW_Asset_Building building in CW_Library_Manager.instance.buildings.list)
+            RaceBuildOrderAsset yao_building_order = AssetManager.race_build_orders.add(new RaceBuildOrderAsset()
             {
-                if (building.origin_stats.type == "trees") building.origin_stats.priority = -1;
-                if (building.origin_stats.kingdom == "nature") building.origin_stats.upgradeLevel -= 1;
-                if(building.origin_stats.upgradeLevel>=0) building.origin_stats.priority = Math.Max(building.origin_stats.priority, building.origin_stats.upgradeLevel);
-            }
+                id = "yao",
+                list = new List<BuildOrder>()
+            });
+            yao_building_order.addBuilding("bonfire", 1, 0, 0, 0, false, false, 0);
         }
+
 
         private static void add_eastern_human_building()
         {
@@ -64,6 +65,16 @@ namespace Cultivation_Way.Content
             AssetManager.buildings.get("windmill_eastern_human").fundament = new BuildingFundament(2, 1, 2, 0);
             AssetManager.buildings.get("1windmill_eastern_human").fundament = new BuildingFundament(2, 2, 2, 0);
             AssetManager.buildings.get("watch_tower_eastern_human").fundament = new BuildingFundament(2, 2, 3, 0);
+        }
+        private static void fix_origin_bugs()
+        {
+            // 修复树阻止建筑升级
+            foreach (CW_Asset_Building building in CW_Library_Manager.instance.buildings.list)
+            {
+                if (building.origin_stats.type == "trees") building.origin_stats.priority = -1;
+                if (building.origin_stats.kingdom == "nature") building.origin_stats.upgradeLevel -= 1;
+                if (building.origin_stats.upgradeLevel >= 0) building.origin_stats.priority = Math.Max(building.origin_stats.priority, building.origin_stats.upgradeLevel);
+            }
         }
     }
 }

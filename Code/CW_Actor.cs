@@ -81,6 +81,26 @@ namespace Cultivation_Way
         public static Func<Actor, BaseSimObject, bool> func_tryToAttack = (Func<Actor, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("tryToAttack");
         #endregion
         /// <summary>
+        /// 化形
+        /// </summary>
+        internal void transform_to_yao()
+        {
+            CW_ActorData cw_data = this.cw_data.deepcopy();
+            ActorStatus status = this.fast_data.deepcopy();
+            status.actorID = MapBox.instance.mapStats.getNextId("unit");
+            status.statsID = status.statsID + "_yao";
+            status.skin = -1;
+            status.skin_set = -1;
+            CW_Actor new_one = Utils.CW_Utils_ActorTools.spawn_actor(status.statsID, this.currentTile, status, cw_data, 0);
+            status.transportID = String.Empty;
+            if(MoveCamera.inSpectatorMode() && MoveCamera.focusUnit == this)
+            {
+                MoveCamera.focusUnit = new_one;
+            }
+            new_one.takeItems(this, new_one.stats.take_items_ignore_range_weapons);
+            this.killHimself(true, AttackType.GrowUp, false, false);
+        }
+        /// <summary>
         /// 是否处在战斗状态
         /// </summary>
         /// <returns></returns>

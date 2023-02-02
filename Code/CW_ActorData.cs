@@ -48,7 +48,14 @@ namespace Cultivation_Way
             {
                 cw_actor_data.fixed_base_stats = fixed_base_stats.deepcopy();
             }
-            element.deepcopy_to(cw_actor_data.element);
+            if (cw_actor_data.element == null)
+            {
+                cw_actor_data.element = element.deepcopy();
+            }
+            else
+            {
+                element.deepcopy_to(cw_actor_data.element);
+            }
             status.deepcopy_to(cw_actor_data.status);
             int i;
             for (i = 0; i < cultisys_level.Length; i++)
@@ -70,6 +77,16 @@ namespace Cultivation_Way
             cw_actor_data.special_body_id = special_body_id;
             cw_actor_data.family_name = family_name;
             cw_actor_data.pope_id = pope_id;
+        }
+        public CW_ActorData deepcopy()
+        {
+            CW_ActorData copy = new CW_ActorData();
+            copy.status = new CW_ActorStatus();
+            copy.element = new CW_Element(random_generate: false);
+            copy.spells = new List<string>();
+            copy.cultisys_level = new int[CW_Library_Manager.instance.cultisys.list.Count];
+            this.deepcopy_to(copy);
+            return copy;
         }
     }
 }

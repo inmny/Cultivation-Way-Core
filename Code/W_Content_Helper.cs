@@ -23,6 +23,7 @@ namespace Cultivation_Way.Content
         internal static ZoneCalculator zone_calculator;
         internal static SpriteRenderer zone_cal_sprRnd;
         internal static List<SpriteGroupSystem<GroupSpriteObject>> list_systems;
+        internal static List<string> yaos;
         internal static void init()
         {
             get_actor_prefabs();
@@ -37,6 +38,7 @@ namespace Cultivation_Way.Content
             list_systems = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "list_systems") as List<SpriteGroupSystem<GroupSpriteObject>>;
             zone_calculator = ReflectionUtility.Reflection.GetField(typeof(MapBox), MapBox.instance, "zoneCalculator") as ZoneCalculator;
             zone_cal_sprRnd = ReflectionUtility.Reflection.GetField(typeof(ZoneCalculator), zone_calculator, "sprRnd") as SpriteRenderer;
+            yaos = new List<string>();
         }
 
         private static void add_color_materials()

@@ -134,38 +134,34 @@ namespace Cultivation_Way.Content
         }
         private static bool bushido_level_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
         {
-            if (cw_actor.cw_data.cultisys_level[cultisys.tag] <= Others.CW_Constants.max_cultisys_level - 1 - 1 && cw_actor.fast_data.health >= cw_actor.cw_cur_stats.base_stats.health)
+            if (cw_actor.cw_data.cultisys_level[cultisys.tag] > Others.CW_Constants.max_cultisys_level - 1 - 1 || cw_actor.fast_data.health < cw_actor.cw_cur_stats.base_stats.health) return false;
+
+            if (cw_actor.cw_status.health_level < cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1])
             {
-                if (cw_actor.cw_data.cultisys_level[cultisys.tag] == 9) cw_actor.fast_data.age = 0;
+                cw_actor.fast_data.health = (int)Utils.CW_Utils_Others.get_raw_wakan(cw_actor.fast_data.health, cw_actor.cw_status.health_level);
 
-                if (cw_actor.cw_status.health_level < cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1])
-                {
-                    cw_actor.fast_data.health = (int)Utils.CW_Utils_Others.get_raw_wakan(cw_actor.fast_data.health, cw_actor.cw_status.health_level);
+                cw_actor.cw_status.health_level = cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1];
 
-                    cw_actor.cw_status.health_level = cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1];
-
-                    cw_actor.fast_data.health = (int)Utils.CW_Utils_Others.compress_raw_wakan(cw_actor.fast_data.health, cw_actor.cw_status.health_level);
-                }
-                return true;
+                cw_actor.fast_data.health = (int)Utils.CW_Utils_Others.compress_raw_wakan(cw_actor.fast_data.health, cw_actor.cw_status.health_level);
             }
-            return false;
+            return true;
         }
         private static bool immortal_level_judge(CW_Actor cw_actor, CW_Asset_CultiSys cultisys)
         {
             //if(cw_actor_data.cultisys_level[cultisys.tag] < Others.CW_Constants.max_cultisys_level) WorldBoxConsole.Console.print(cw_actor_data.status.wakan + "/" + cultisys.power_level[cw_actor_data.cultisys_level[cultisys.tag]]);
-            if( cw_actor.cw_data.cultisys_level[cultisys.tag]+1 < Others.CW_Constants.max_cultisys_level && cw_actor.cw_status.wakan >= cw_actor.cw_cur_stats.wakan)
+            if (cw_actor.cw_data.cultisys_level[cultisys.tag] + 1 >= Others.CW_Constants.max_cultisys_level || cw_actor.cw_status.wakan < cw_actor.cw_cur_stats.wakan) return false;
+
+            if(cw_actor.cw_status.wakan_level < cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1])
             {
-                if(cw_actor.cw_status.wakan_level < cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1])
-                {
-                    cw_actor.cw_status.wakan = (int)Utils.CW_Utils_Others.get_raw_wakan(cw_actor.cw_status.wakan, cw_actor.cw_status.wakan_level);
+                cw_actor.cw_status.wakan = (int)Utils.CW_Utils_Others.get_raw_wakan(cw_actor.cw_status.wakan, cw_actor.cw_status.wakan_level);
 
-                    cw_actor.cw_status.wakan_level = cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1];
+                cw_actor.cw_status.wakan_level = cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1];
 
-                    cw_actor.cw_status.wakan = (int)Utils.CW_Utils_Others.compress_raw_wakan(cw_actor.cw_status.wakan, cw_actor.cw_status.wakan_level);
-                }
-                return true;
+                cw_actor.cw_status.wakan = (int)Utils.CW_Utils_Others.compress_raw_wakan(cw_actor.cw_status.wakan, cw_actor.cw_status.wakan_level);
             }
-            return false;
+
+            if (cw_actor.cw_data.cultisys_level[cultisys.tag] == 6 && W_Content_Helper.yaos.Contains(cw_actor.stats.id)) cw_actor.transform_to_yao();
+            return true;
         }
     }
 }

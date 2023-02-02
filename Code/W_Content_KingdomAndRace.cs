@@ -78,7 +78,7 @@ namespace Cultivation_Way.Content
             origin.stats.bonus_max_unit_level.value = 18;               // 人物最大等级
             origin.id = race.id;
             CW_Library_Manager.instance.races.add(race);
-            Reflection.CallStaticMethod(typeof(BannerGenerator), "loadTexturesFromResources", origin.banner_id);
+            //Reflection.CallStaticMethod(typeof(BannerGenerator), "loadTexturesFromResources", origin.banner_id);
         }
 
         private static void add_eastern_human_race()

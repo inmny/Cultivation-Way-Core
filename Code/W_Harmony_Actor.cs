@@ -329,7 +329,7 @@ namespace Cultivation_Way.Content.Harmony
             MapBox.instance.units.Add(actor);
             __result = actor;
         }
-        private static void __actor_updateStats(ActorBase actor_base)
+        internal static void __actor_updateStats(ActorBase actor_base)
         {
             Actor actor = (Actor)actor_base;
             CW_Actor cw_actor = (CW_Actor)actor;
