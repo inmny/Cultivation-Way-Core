@@ -30,11 +30,12 @@ namespace Cultivation_Way.Content
             _yao.cw_base_stats = new CW_BaseStats();
             _yao.cw_base_stats.base_stats = _yao.origin_stats.baseStats;
             ActorStats origin_stats = _yao.origin_stats;
-            origin_stats.unit = false;
+            origin_stats.unit = true;
             origin_stats.nameLocale = "Yaos";
             origin_stats.nameTemplate = "eastern_human_name";
             origin_stats.race = "yao";
             origin_stats.maxAge = 300;
+            origin_stats.kingdom = "nomads_yao";
             origin_stats.icon = "iconYaos";
             origin_stats.color = Toolbox.makeColor("#005E72", -1f);
             origin_stats.zombieID = "zombie";
@@ -44,11 +45,26 @@ namespace Cultivation_Way.Content
             origin_stats.body_separate_part_head = false;
             addColorSet(origin_stats, "default", "#FFC984", "#543E2C");
             CW_Library_Manager.instance.units.add(_yao);
-            add_yao("sheep");
             add_yao("bear");
             add_yao("cat");
             add_yao("chicken");
             add_yao("cow");
+            add_yao("crab");
+            add_yao("dog");
+            add_yao("fox");
+            add_yao("frog");
+            add_yao("hyena");
+            add_yao("monkey");
+            add_yao("penguin");
+            add_yao("rabbit");
+            add_yao("rat");
+            add_yao("ratking");
+            add_yao("reindeer");
+            add_yao("rhino");
+            add_yao("sheep");
+            add_yao("snake");
+            add_yao("turtle");
+            add_yao("wolf");
         }
 
         private static void add_eastern_humans()
@@ -236,12 +252,13 @@ namespace Cultivation_Way.Content
             AssetManager.unitStats.CallMethod("loadShadow", origin);
             AssetManager.unitStats.CallMethod("loadShadow", baby_origin);
         }
-        private static void add_yao(string origin_id)
+        private static CW_ActorStats add_yao(string origin_id)
         {
             CW_ActorStats yao = CW_Library_Manager.instance.units.clone(origin_id+"_yao", "_yao");
             yao.origin_stats.texture_path = String.Format("yaos/t_{0}_yao", origin_id);
             addColorSet(yao.origin_stats, "default", "#FFC984", "#543E2C");
             W_Content_Helper.yaos.Add(origin_id);
+            return yao;
         }
         private static void addColorSet(ActorStats stats, string pID, string pColorFrom, string pColorTo)
         {

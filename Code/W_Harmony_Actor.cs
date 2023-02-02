@@ -18,6 +18,14 @@ namespace Cultivation_Way.Content.Harmony
         private static CW_Actor new_created_actor;
         private static CW_BaseStats tmp_base_stats = new CW_BaseStats();
         [HarmonyPrefix]
+        [HarmonyPatch(typeof(ActorBase), "getUnitTexture")]
+        public static bool actor_getUnitTexture(ActorBase __instance, ref string __result)
+        {
+            if (__instance.stats.race != "yao") return true; 
+            __result = __instance.stats.texture_path;
+            return false;
+        }
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(Actor), "getHit")]
         public static bool actor_getHit(Actor __instance, ref float pDamage, bool pFlash = true, AttackType pType = AttackType.Other, BaseSimObject pAttacker = null, bool pSkipIfShake = true)
         {

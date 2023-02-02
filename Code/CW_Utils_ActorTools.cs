@@ -36,7 +36,7 @@ namespace Cultivation_Way.Utils
                 CW_Actor.func_setKingdom(actor, MapBox.instance.kingdoms.dict_hidden["nomads_" + actor.stats.race]);
             }
             actor.transform.parent = actor.stats.hideOnMinimap?W_Content_Helper.transformUnits: W_Content_Helper.transformCreatures;
-
+            actor.fast_shake_timer = CW_Actor.get_shake_timer(actor);
             MapBox.instance.units.Add(actor);
             return actor;
         }
