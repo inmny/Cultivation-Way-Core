@@ -20,7 +20,7 @@ namespace Cultivation_Way.Content
         {
             CW_ActorStats _yao = new CW_ActorStats();
             _yao.anti_time_stop = false;
-            //_yao.born_spells = new List<string>() { "brutalize" }; 兽化
+            _yao.born_spells = new List<string>() { "brutalize" }; //兽化
             _yao.culti_velo = 0.95f;
             _yao.fixed_name = null;
             _yao.id = "_yao";
