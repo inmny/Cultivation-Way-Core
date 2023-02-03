@@ -73,6 +73,7 @@ namespace Cultivation_Way.Library
             new_stats.origin_stats = JsonUtility.FromJson<ActorStats>(JsonUtility.ToJson(AssetManager.unitStats.dict[pFrom]));
             new_stats.origin_stats.id = pNew;
             new_stats.origin_stats.baseStats = new_stats.cw_base_stats.base_stats;
+            new_stats.born_spells.AddRange(dict[pFrom].born_spells);
             this.add(new_stats);
             return new_stats;
         }
