@@ -17,7 +17,7 @@ namespace Cultivation_Way.Content
 
         private static void add_yao_building()
         {
-            AssetManager.race_build_orders.clone("yao", "eastern_human").replace("eastern_human", "yao");
+            AssetManager.race_build_orders.clone("yao", "human").replace("human", "yao");
 
             List<CW_Asset_Building> human_buildings = new List<CW_Asset_Building>();
             foreach (CW_Asset_Building building in CW_Library_Manager.instance.buildings.list)
@@ -44,6 +44,7 @@ namespace Cultivation_Way.Content
         private static void add_eastern_human_building()
         {
             AssetManager.race_build_orders.clone("eastern_human", "human").replace("human", "eastern_human");
+            AssetManager.race_build_orders.get("eastern_human").replace("bonfire", "bonfire_eastern_human");
 
             List<CW_Asset_Building> human_buildings = new List<CW_Asset_Building>();
             foreach (CW_Asset_Building building in CW_Library_Manager.instance.buildings.list)
@@ -64,6 +65,11 @@ namespace Cultivation_Way.Content
 
                 AssetManager.buildings.loadSprites(new_building.origin_stats);
             }
+            CW_Asset_Building bonfire = CW_Library_Manager.instance.buildings.clone("bonfire_eastern_human", "bonfire");
+            bonfire.origin_stats.smoke = false;
+            bonfire.origin_stats.race = "eastern_human";
+            AssetManager.buildings.loadSprites(bonfire.origin_stats);
+
             AssetManager.buildings.get("tent_eastern_human").fundament = new BuildingFundament(1, 1, 1, 0);
             AssetManager.buildings.get("house_eastern_human").fundament = new BuildingFundament(3, 3, 4, 0);
             AssetManager.buildings.get("1house_eastern_human").fundament = new BuildingFundament(3, 3, 4, 0);
