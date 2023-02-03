@@ -136,7 +136,12 @@ namespace Cultivation_Way.Content
         {
             if (cw_actor.cw_data.cultisys_level[cultisys.tag] > Others.CW_Constants.max_cultisys_level - 1 - 1 || cw_actor.fast_data.health < cw_actor.cw_cur_stats.base_stats.health) return false;
 
-            cw_actor.addTrait("fire_proof");
+            if (cw_actor.cw_data.cultisys_level[cultisys.tag] >= 8)
+            {
+                cw_actor.addTrait("fire_proof");
+                cw_actor.addTrait("immune");
+            }
+            
             if (cw_actor.cw_status.health_level < cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1])
             {
                 cw_actor.fast_data.health = (int)Utils.CW_Utils_Others.get_raw_wakan(cw_actor.fast_data.health, cw_actor.cw_status.health_level);
@@ -152,8 +157,12 @@ namespace Cultivation_Way.Content
             //if(cw_actor_data.cultisys_level[cultisys.tag] < Others.CW_Constants.max_cultisys_level) WorldBoxConsole.Console.print(cw_actor_data.status.wakan + "/" + cultisys.power_level[cw_actor_data.cultisys_level[cultisys.tag]]);
             if (cw_actor.cw_data.cultisys_level[cultisys.tag] + 1 >= Others.CW_Constants.max_cultisys_level || cw_actor.cw_status.wakan < cw_actor.cw_cur_stats.wakan) return false;
 
-            cw_actor.addTrait("fire_proof");
-            if(cw_actor.cw_status.wakan_level < cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1])
+            if (cw_actor.cw_data.cultisys_level[cultisys.tag] >= 4)
+            {
+                cw_actor.addTrait("fire_proof");
+                cw_actor.addTrait("immune");
+            }
+            if (cw_actor.cw_status.wakan_level < cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1])
             {
                 cw_actor.cw_status.wakan = (int)Utils.CW_Utils_Others.get_raw_wakan(cw_actor.cw_status.wakan, cw_actor.cw_status.wakan_level);
 
