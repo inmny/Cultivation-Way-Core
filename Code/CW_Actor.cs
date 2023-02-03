@@ -376,7 +376,7 @@ namespace Cultivation_Way
 
                 if (this.cw_status.wakan * 100  < this.cw_cur_stats.wakan * Others.CW_Constants.wakan_regen_valid_percent)
                 {// 灵气恢复属性的加成
-                    wakan_get += this.cw_cur_stats.wakan_regen * chunk_co;
+                    wakan_get += Mathf.Min(Utils.CW_Utils_Others.get_raw_wakan(this.cw_cur_stats.wakan * Others.CW_Constants.wakan_regen_valid_percent/100 - this.cw_status.wakan, this.cw_status.wakan_level), this.cw_cur_stats.wakan_regen * chunk_co);
                 }
                 if (wakan_get <= 0) goto OUT_WAKAN;
                 
