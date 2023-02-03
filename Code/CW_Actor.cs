@@ -102,6 +102,14 @@ namespace Cultivation_Way
             {
                 MoveCamera.focusUnit = new_one;
             }
+            if (!string.IsNullOrEmpty(cw_data.cultibook_id))
+            {
+                CW_Library_Manager.instance.cultibooks.get(cw_data.cultibook_id).cur_culti_nr++;
+            }
+            if (!string.IsNullOrEmpty(cw_data.special_body_id))
+            {
+                CW_Library_Manager.instance.special_bodies.get(cw_data.special_body_id).cur_own_nr++;
+            }
             new_one.takeItems(this, new_one.stats.take_items_ignore_range_weapons);
             this.killHimself(true, AttackType.GrowUp, false, false);
         }
