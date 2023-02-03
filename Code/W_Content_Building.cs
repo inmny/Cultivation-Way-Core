@@ -17,12 +17,27 @@ namespace Cultivation_Way.Content
 
         private static void add_yao_building()
         {
-            RaceBuildOrderAsset yao_building_order = AssetManager.race_build_orders.add(new RaceBuildOrderAsset()
+            AssetManager.race_build_orders.clone("yao", "eastern_human").replace("eastern_human", "yao");
+
+            List<CW_Asset_Building> human_buildings = new List<CW_Asset_Building>();
+            foreach (CW_Asset_Building building in CW_Library_Manager.instance.buildings.list)
             {
-                id = "yao",
-                list = new List<BuildOrder>()
-            });
-            yao_building_order.addBuilding("bonfire", 1, 0, 0, 0, false, false, 0);
+                if (building.origin_stats.race == "eastern_human") human_buildings.Add(building);
+            }
+
+            foreach (CW_Asset_Building building in human_buildings)
+            {
+                CW_Asset_Building new_building = CW_Library_Manager.instance.buildings.clone(building.id.Replace("eastern_human", "yao"), building.id);
+
+                new_building.origin_stats.id = new_building.id;
+                new_building.origin_stats.race = "yao";
+
+                if (building.origin_stats.canBeUpgraded) new_building.origin_stats.upgradeTo = new_building.origin_stats.upgradeTo.Replace("eastern_human", "yao");
+
+                if (!string.IsNullOrEmpty(new_building.origin_stats.upgradedFrom)) new_building.origin_stats.upgradedFrom = new_building.origin_stats.upgradedFrom.Replace("eastern_human", "yao");
+
+                AssetManager.buildings.loadSprites(new_building.origin_stats);
+            }
         }
 
 
