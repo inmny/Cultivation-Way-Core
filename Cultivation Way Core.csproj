@@ -1171,6 +1171,7 @@
     <Compile Include="Code\CW_Utils_SpellHelper.cs" />
     <Compile Include="Code\W_Content_Actor.cs" />
     <Compile Include="Code\W_Content_Building.cs" />
+    <Compile Include="Code\W_Harmony_ChunkInfo.cs" />
     <Compile Include="Code\W_Content_Cultisys.cs" />
     <Compile Include="Code\W_Content_Drop.cs" />
     <Compile Include="Code\W_Content_GodPower.cs" />
