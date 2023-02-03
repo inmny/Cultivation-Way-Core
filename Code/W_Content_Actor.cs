@@ -58,8 +58,8 @@ namespace Cultivation_Way.Content
             add_yao("penguin");
             add_yao("rabbit");
             add_yao("rat");
-            add_yao("ratking");
-            add_yao("reindeer");
+            add_yao("ratKing");
+            //add_yao("reindeer");
             add_yao("rhino");
             add_yao("sheep");
             add_yao("snake");

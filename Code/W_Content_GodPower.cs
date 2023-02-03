@@ -84,7 +84,17 @@ namespace Cultivation_Way.Content
             GodPower power = AssetManager.powers.clone("spawnYao", "_spawnActor");
             power.name = "Yaos";
             power.spawnSound = "spawnOrc";
-            power.actorStatsId = "unit_Yao,";// TODO:其他妖族
+            StringBuilder string_builder = new StringBuilder();
+            string_builder.Append(W_Content_Helper.yaos[0]);
+            string_builder.Append("_yao");
+            int i;
+            for (i = 1; i < W_Content_Helper.yaos.Count; i++)
+            {
+                string_builder.Append(",");
+                string_builder.Append(W_Content_Helper.yaos[i]);
+                string_builder.Append("_yao");
+            }
+            power.actorStatsId = string_builder.ToString();
             power.click_action = new PowerActionWithID((WorldTile pTile, string pPower)
                                 =>
             {
