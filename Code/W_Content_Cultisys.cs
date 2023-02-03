@@ -55,7 +55,7 @@ namespace Cultivation_Way.Content
                 immortal.bonus_stats[i].base_stats.damage = (int)Mathf.Sqrt(immortal.bonus_stats[i].base_stats.health);
                 // 灵气以及灵气恢复
                 immortal.bonus_stats[i].wakan = (i+1) * (i+1) * (i+1)*2 + (i+1) * 18+24;
-                immortal.bonus_stats[i].wakan_regen = (int)(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / Mathf.Sqrt(immortal.bonus_stats[i].wakan)*Mathf.Pow(immortal.power_level[i],5));
+                immortal.bonus_stats[i].wakan_regen = (int)(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / Mathf.Sqrt(immortal.bonus_stats[i].wakan)*Mathf.Pow(immortal.power_level[i],2));
                 // 法抗
                 immortal.bonus_stats[i].spell_armor = (int)(Mathf.Sqrt(i) * immortal.bonus_stats[i].base_stats.armor * (Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / immortal.bonus_stats[i].wakan, Others.CW_Constants.wakan_level_co)));
                 // 护盾恢复
