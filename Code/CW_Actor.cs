@@ -401,7 +401,7 @@ namespace Cultivation_Way
             }
             else
             {
-                health_to_regen = this.cw_cur_stats.base_stats.health - this.fast_data.health;
+                health_to_regen = Mathf.Min(this.cw_cur_stats.health_regen, this.cw_cur_stats.base_stats.health - this.fast_data.health);
             }
             this.fast_data.health += (int)health_to_regen;
             
