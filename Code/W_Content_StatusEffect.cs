@@ -5,10 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Library;
 using Cultivation_Way.Animation;
+using Cultivation_Way.Others;
+using UnityEngine;
+
 namespace Cultivation_Way.Content
 {
     internal static class W_Content_StatusEffect
     {
+
         internal static void add_status_effects()
         {
             add_gold_shield_status_effect();
@@ -30,8 +34,35 @@ namespace Cultivation_Way.Content
             add_fen_fire_status_effect();
             add_loltus_fire_status_effect();
 
+            add_brutalization_status_effect();
+
             load_status_effects_anims();
         }
+        // 兽化 TODO: 添加get action，人物贴图变化
+        private static void add_brutalization_status_effect()
+        {
+            CW_BaseStats bonus_stats = new CW_BaseStats();
+            bonus_stats.mod_health_regen += 80;
+            bonus_stats.mod_shield_regen += 50;
+            bonus_stats.base_stats.mod_health += 30;
+            bonus_stats.base_stats.mod_damage += 50;
+            bonus_stats.base_stats.mod_speed += 30;
+            bonus_stats.base_stats.mod_armor += 20;
+            bonus_stats.base_stats.scale += 0.2f;
+            CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
+                id: "status_brutalization",
+                anim_id: null,//"burning_anim",
+                bonus_stats: bonus_stats,
+                effect_val: 0,
+                effect_time: 5f,
+                action_on_get: change_body_sprite_to_beast,
+                action_on_update: brutalization_on_update,
+                action_on_end: change_body_sprite_to_yao
+                );
+            CW_Library_Manager.instance.status_effects.add(status_effect);
+        }
+
+
         // 红莲业火
         private static void add_loltus_fire_status_effect()
         {
@@ -354,6 +385,49 @@ namespace Cultivation_Way.Content
             {
                 // TODO: 转换成骷髅
                 ActionLibrary.turnIntoSkeleton(_object);
+            }
+        }
+
+
+        private static void change_body_sprite_to_beast(CW_StatusEffectData status_effect, BaseSimObject _object)
+        {
+            if (_object.objectType != MapObjectType.Actor) return;
+            
+            CW_Actor actor = (CW_Actor)_object;
+
+            if (actor.stats.race != "yao") return;
+            CW_ActorStats beast_stats = CW_Library_Manager.instance.units.get(actor.stats.id.Replace("_yao", ""));
+            AnimationDataUnit actorAnimationData = ActorAnimationLoader.loadAnimationUnit("actors/" + beast_stats.origin_stats.texture_path, beast_stats.origin_stats);
+
+            CW_Actor.set_actorAnimationData(actor, actorAnimationData);
+            //CW_Actor.func_setBodySprite(actor, Resources.Load<Sprite>("actors/" + beast_stats.origin_stats.texture_path + "/walk_0"));
+            bool __is_moving = CW_Actor.get_is_moving(actor);
+            if (!__is_moving) CW_Actor.set_is_moving(actor, true);
+            CW_Actor.func_updateAnimation(actor, 0, true);
+            if (!__is_moving) CW_Actor.set_is_moving(actor, false);
+        }
+
+        private static void change_body_sprite_to_yao(CW_StatusEffectData status_effect, BaseSimObject _object)
+        {
+            if (_object.objectType != MapObjectType.Actor) return;
+
+            CW_Actor actor = (CW_Actor)_object;
+
+            if (actor.stats.race != "yao") return;
+            CW_Actor.set_actorAnimationData(actor, ActorAnimationLoader.loadAnimationUnit("actors/" + actor.stats.texture_path, actor.stats));
+            //CW_Actor.func_setBodySprite(actor, Resources.Load<Sprite>("actors/" + actor.stats.texture_path + "/walk_0"));
+            bool __is_moving = CW_Actor.get_is_moving(actor);
+            if (!__is_moving) CW_Actor.set_is_moving(actor, true);
+            CW_Actor.func_updateAnimation(actor, 0, true);
+            if (!__is_moving) CW_Actor.set_is_moving(actor, false);
+        }
+        private static void brutalization_on_update(CW_StatusEffectData status_effect, BaseSimObject _object)
+        {
+            if (_object.objectType != MapObjectType.Actor) return;
+            CW_Actor actor = (CW_Actor)_object;
+            if (actor.is_in_battle())
+            {
+                status_effect.left_time = Others.CW_Constants.battle_timer;
             }
         }
     }

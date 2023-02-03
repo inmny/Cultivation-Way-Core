@@ -66,9 +66,32 @@ namespace Cultivation_Way.Content
             add_rosefinch_feather_spell();
 
             add_stxh_spell();
+            add_brutalize_spell();
 
             add_bushido_spells();
             load_other_anims();
+        }
+
+        private static void add_brutalize_spell()
+        {
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "brutalize", anim_id: "brutalization",
+                new CW_Element(new int[] { 20,20,20,20,20 }),
+                rarity: 3, free_val: 0.6f, cost: 0.05f, 
+                can_get_by_random: false,
+                learn_level: 1, cast_level: 1,
+                anim_type: CW_Spell_Animation_Type.CUSTOM,
+                damage_action: null,
+                anim_action: null,
+                spell_action: CW_SpellAction_Spell.default_add_status,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.DEFEND);
+            spell.add_tag(CW_Spell_Tag.POSITIVE_STATUS);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            spell.add_tag(CW_Spell_Tag.BUSHIDO);
+            CW_Library_Manager.instance.spells.add(spell);
         }
 
         private static CW_Asset_Spell clone(string pNew, string pFrom)

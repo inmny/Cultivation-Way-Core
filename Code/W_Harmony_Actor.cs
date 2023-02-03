@@ -356,6 +356,7 @@ namespace Cultivation_Way.Content.Harmony
             cw_actor.cur_spells.Clear();
             cw_actor.cw_cur_stats.clear();
             cw_actor.cw_status.culti_velo = 0;
+            cw_actor.cur_spells.AddRange(cw_actor.cw_stats.born_spells);
             cw_actor.cur_spells.AddRange(cw_actor.cw_data.spells);
             // 基础属性样板
             cw_actor.cw_cur_stats.addStats(cw_actor.cw_stats.cw_base_stats);

@@ -43,6 +43,7 @@ namespace Cultivation_Way
         public static Func<Actor, List<ActorTrait>> get_s_special_effect_traits = CW_ReflectionHelper.create_getter<Actor, List<ActorTrait>>("s_special_effect_traits");
         internal static Func<Actor, WorldTimer> get_shake_timer = CW_ReflectionHelper.create_getter<Actor, WorldTimer>("shakeTimer");
         internal static Func<Actor, BaseSimObject> get_beh_actor_target = CW_ReflectionHelper.create_getter<Actor, BaseSimObject>("beh_actor_target");
+        public static Func<Actor, bool> get_is_moving = CW_ReflectionHelper.create_getter<Actor, bool>("is_moving");
         #endregion
         #region Setter
         internal static Action<Actor, bool> set_statsDirty = CW_ReflectionHelper.create_setter<Actor, bool>("statsDirty");
@@ -65,6 +66,8 @@ namespace Cultivation_Way
         public static Action<Actor, BaseSimObject> set_attackTarget = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("attackTarget");
         public static Action<Actor, float> set_colorEffect = CW_ReflectionHelper.create_setter<Actor, float>("colorEffect");
         public static Action<Actor, Material> set_colorMaterial = CW_ReflectionHelper.create_setter<Actor, Material>("colorMaterial");
+        public static Action<Actor, AnimationDataUnit> set_actorAnimationData = CW_ReflectionHelper.create_setter<Actor, AnimationDataUnit>("actorAnimationData");
+        internal static Action<Actor, bool> set_is_moving = CW_ReflectionHelper.create_setter<Actor, bool>("is_moving");
         #endregion
         #region Func
         public static Action<Actor> func_updateTargetScale = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("updateTargetScale");
@@ -73,12 +76,14 @@ namespace Cultivation_Way
         public static Func<Actor, string, bool> func_haveStatus = (Func<Actor, string, bool>)CW_ReflectionHelper.get_method<Actor>("haveStatus");
         public static Action<Actor, int> func_newCreature = (Action<Actor, int>)CW_ReflectionHelper.get_method<Actor>("newCreature");
         public static Action<Actor, Kingdom> func_setKingdom = (Action<Actor, Kingdom>)CW_ReflectionHelper.get_method<Actor>("setKingdom");
+        public static Action<Actor, Sprite> func_setBodySprite = (Action<Actor, Sprite>)CW_ReflectionHelper.get_method<Actor>("setBodySprite");
         public static Action<Actor, WorldTile, float> func_spawnOn = (Action<Actor, WorldTile, float>)CW_ReflectionHelper.get_method<Actor>("spawnOn");
         public static Action<Actor> func_create = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("create");
         internal static Action<Actor, float, bool, AttackType, BaseSimObject, bool> func_getHit = (Action<Actor, float, bool, AttackType, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("getHit");
         public static Action<Actor, float> func_updateColorEffect = (Action<Actor, float>)CW_ReflectionHelper.get_method<Actor>("updateColorEffect");
         public static Action<Actor, Vector3, WorldTile, bool, bool, float> func_punchTargetAnimation = (Action<Actor, Vector3, WorldTile, bool, bool, float>)CW_ReflectionHelper.get_method<Actor>("punchTargetAnimation");
         public static Func<Actor, BaseSimObject, bool> func_tryToAttack = (Func<Actor, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("tryToAttack");
+        public static Action<Actor, float, bool> func_updateAnimation = (Action<Actor, float, bool>)CW_ReflectionHelper.get_method<Actor>("updateAnimation");
         #endregion
         /// <summary>
         /// 化形
@@ -106,7 +111,7 @@ namespace Cultivation_Way
         /// <returns></returns>
         public bool is_in_battle()
         {
-            return this.__battle_timer <= 0;
+            return this.__battle_timer < 0;
         }
         // TODO: 等建筑拓展后适配建筑
         public bool is_in_default_attack_range(BaseSimObject target)
