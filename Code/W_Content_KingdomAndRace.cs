@@ -45,7 +45,7 @@ namespace Cultivation_Way.Content
             });                                                         // 文化颜色
             origin.culture_decors = new List<string> { "cultures/culture_decor_0", "cultures/culture_decor_1", "cultures/culture_decor_2", "cultures/culture_decor_3", "cultures/culture_decor_4", "cultures/culture_decor_5", "cultures/culture_decor_6", "cultures/culture_decor_7", "cultures/culture_decor_8" };           // 文化窗口装饰
             origin.culture_elements = new List<string> { "cultures/culture_element_0", "cultures/culture_element_1", "cultures/culture_element_2", "cultures/culture_element_3", "cultures/culture_element_4", "cultures/culture_element_5", "cultures/culture_element_6", "cultures/culture_element_7" };                          // 文化窗口元素
-            origin.culture_forbidden_tech = new List<string>();         // 文化禁用科技
+            origin.culture_forbidden_tech = new List<string>() { "building_roads" };         // 文化禁用科技
             origin.culture_knowledge_gain_base = 1;                     // 文化知识获取基础量
             origin.culture_knowledge_gain_per_intelligence = 1.0f;      // 每点领导人智力增加的文化知识获取量
             origin.culture_knowledge_gain_rate = 0.1f;                  // 总的领导人增加的文化知识量的系数
