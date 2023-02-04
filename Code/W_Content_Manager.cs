@@ -10,6 +10,7 @@ namespace Cultivation_Way.Content
     {
         internal static void add_content()
         {
+            add_harmony();
             W_Content_Helper.init();
             others_init();
             add_actors();
@@ -29,7 +30,6 @@ namespace Cultivation_Way.Content
             add_god_powers();
             add_world_events();
             add_world_laws();
-            add_harmony();
 
             add_words_libraries();
             add_name_generators();
@@ -41,6 +41,7 @@ namespace Cultivation_Way.Content
         {
             W_Content_WindowWorldLaw.init();
             W_Content_WorldLaws.add_world_laws();
+            MapBox.instance.worldLaws.check();
         }
 
         private static void others_init()
