@@ -257,7 +257,8 @@ namespace Cultivation_Way.Content
             CW_ActorStats yao = CW_Library_Manager.instance.units.clone(origin_id+"_yao", "_yao");
             yao.origin_stats.texture_path = String.Format("yaos/t_{0}_yao", origin_id);
             addColorSet(yao.origin_stats, "default", "#FFC984", "#543E2C");
-            W_Content_Helper.yaos.Add(origin_id);
+            W_Content_Helper.yaos.Add(origin_id); 
+            AssetManager.unitStats.CallMethod("loadShadow", yao.origin_stats);
             return yao;
         }
         private static void addColorSet(ActorStats stats, string pID, string pColorFrom, string pColorTo)
