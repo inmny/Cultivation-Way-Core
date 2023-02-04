@@ -209,15 +209,8 @@ namespace Cultivation_Way.Library
         CONTAIN_ANY_TAGS,
         CONTAIN_ALL_TAGS
     }
-    public class CW_Library_Spell : AssetLibrary<CW_Asset_Spell>
+    public class CW_Library_Spell : CW_Asset_Library<CW_Asset_Spell>
     {
-        internal void register()
-        {
-            for(int i = 0; i < this.list.Count; i++)
-            {
-                this.list[i].register();
-            }
-        }
         internal static ulong make_tags(uint cultisys)
         {
             ulong tags = 0;
@@ -424,6 +417,14 @@ namespace Cultivation_Way.Library
             }
             
             return list;
+        }
+
+        internal override void register()
+        {
+            for (int i = 0; i < this.list.Count; i++)
+            {
+                this.list[i].register();
+            }
         }
     }
 }

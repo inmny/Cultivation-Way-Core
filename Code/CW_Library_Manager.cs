@@ -20,6 +20,10 @@ namespace Cultivation_Way.Library
         {
             this.dict.Add(new_id, this.get(from_id));
         }
+        public bool has_asset(string id)
+        {
+            return this.dict.ContainsKey(id);
+        }
     }
     public abstract class CW_Dynamic_Library<T> : CW_Asset_Library<T> where T : Asset
     {
