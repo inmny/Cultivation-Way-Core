@@ -224,6 +224,7 @@ namespace Cultivation_Way
                 MapBox.instance.setMapSize(cw_save.world_width, cw_save.world_height);
                 MapBox.instance.mapStats = cw_save.map_stats;
                 MapBox.instance.worldLaws = cw_save.world_laws;
+                Content.Harmony.W_Harmony_WorldLaw.worldLaws_init(MapBox.instance.worldLaws);
             }, "Clear World");
             SmoothLoader.add(delegate
             {

@@ -16,10 +16,7 @@ namespace Cultivation_Way.Content.Harmony
             foreach(PlayerOptionData world_law in __instance.list)
             {
                 if (__instance.dict.ContainsKey(world_law.name) || !W_Content_WorldLaws.added_world_laws.Contains(world_law.name)) continue;
-                __instance.dict[world_law.name] = new PlayerOptionData(world_law.name)
-                {
-                    boolVal = W_Content_WorldLaws.default_world_law_bool_val[W_Content_WorldLaws.added_world_laws.IndexOf(world_law.name)]
-                };
+                __instance.dict[world_law.name] = world_law;
             }
             foreach(string added_world_law in W_Content_WorldLaws.added_world_laws)
             {
@@ -29,6 +26,7 @@ namespace Cultivation_Way.Content.Harmony
                 {
                     boolVal = W_Content_WorldLaws.default_world_law_bool_val[W_Content_WorldLaws.added_world_laws.IndexOf(added_world_law)]
                 };
+                __instance.list.Add(__instance.dict[added_world_law]);
             }
         }
     }
