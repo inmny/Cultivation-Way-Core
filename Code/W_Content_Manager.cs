@@ -11,6 +11,7 @@ namespace Cultivation_Way.Content
         internal static void add_content()
         {
             W_Content_Helper.init();
+            others_init();
             add_actors();
             add_buildings();
             add_cultisys();
@@ -31,7 +32,13 @@ namespace Cultivation_Way.Content
 
             add_words_libraries();
             add_name_generators();
+
             create_tab();
+        }
+
+        private static void others_init()
+        {
+            W_Content_SpectateUnit.init();
         }
 
         private static void add_jobs()

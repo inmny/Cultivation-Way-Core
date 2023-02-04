@@ -1209,6 +1209,7 @@
     <Compile Include="Code\W_Content_ActorJob.cs" />
     <Compile Include="Code\W_Content_ActorTask.cs" />
     <Compile Include="Code\W_Content_Building.cs" />
+    <Compile Include="Code\W_Content_SpectateUnit.cs" />
     <Compile Include="Code\W_Harmony_ChunkInfo.cs" />
     <Compile Include="Code\W_Content_Cultisys.cs" />
     <Compile Include="Code\W_Content_Drop.cs" />

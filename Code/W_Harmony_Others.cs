@@ -146,6 +146,11 @@ namespace Cultivation_Way.Content.Harmony
                 ModState.instance.map_mode = String.Empty;
             }
         }
-
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(SpectateUnit), "updateStats")]
+        public static void spectateUnit_updateStats(SpectateUnit __instance)
+        {
+            W_Content_SpectateUnit.updateStats(__instance);
+        }
     }
 }
