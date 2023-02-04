@@ -95,12 +95,20 @@ namespace Cultivation_Way.Content.Harmony
                 }
             }
             int min_val = int.MaxValue; CW_CityData cw_data = (CW_CityData)CW_City.get_data(__instance);
+            int max_val = 0;
             foreach(string key in city_unit_count.Keys)
             {
-                if (city_unit_count[key] >= min_val) continue;
+                if (city_unit_count[key] < min_val)
+                {
+                    min_val = city_unit_count[key];
+                    cw_data.least_unit_id = key;
+                }
+                else if (city_unit_count[key] > max_val)
+                {
+                    max_val = city_unit_count[key];
+                    cw_data.most_unit_id = key;
+                }
                 
-                min_val = city_unit_count[key];
-                cw_data.least_unit_id = key;
             }
         }
         private static void __city_create(City __instance)

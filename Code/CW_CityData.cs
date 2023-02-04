@@ -10,6 +10,7 @@ namespace Cultivation_Way
     {
         public List<CW_ActorData> cw_pop_points;
         internal string least_unit_id;
+        internal string most_unit_id;
         public CW_CityData(City pCity) : base(pCity)
         {
             this.cw_pop_points = new List<CW_ActorData>();
