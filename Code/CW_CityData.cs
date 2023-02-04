@@ -9,7 +9,7 @@ namespace Cultivation_Way
     public class CW_CityData : CityData
     {
         public List<CW_ActorData> cw_pop_points;
-
+        internal string least_unit_id;
         public CW_CityData(City pCity) : base(pCity)
         {
             this.cw_pop_points = new List<CW_ActorData>();

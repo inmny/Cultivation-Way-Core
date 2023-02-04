@@ -11,6 +11,7 @@ namespace Cultivation_Way.Content.Harmony
     {
         private static int parent_idx = 0;
         internal static CW_ActorData tmp_data;
+        private static Dictionary<string, int> city_unit_count = new Dictionary<string, int>();
         // build cw city
         [HarmonyPrefix]
         [HarmonyPatch(typeof(City), "create")]
@@ -78,6 +79,29 @@ namespace Cultivation_Way.Content.Harmony
             cw_city_data.popPoints.RemoveAtSwapBack(__result);
             cw_city_data.cw_pop_points.RemoveAtSwapBack(tmp_data);
             return false;
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(City), "updateAge")]
+        public static void city_updateAge(City __instance)
+        {
+            city_unit_count.Clear();
+            List<Actor> units = __instance.units.getSimpleList();
+            foreach(Actor unit in units)
+            {
+                if (city_unit_count.ContainsKey(unit.stats.id)) city_unit_count[unit.stats.id]++;
+                else
+                {
+                    city_unit_count[unit.stats.id] = 1;
+                }
+            }
+            int min_val = int.MaxValue; CW_CityData cw_data = (CW_CityData)CW_City.get_data(__instance);
+            foreach(string key in city_unit_count.Keys)
+            {
+                if (city_unit_count[key] >= min_val) continue;
+                
+                min_val = city_unit_count[key];
+                cw_data.least_unit_id = key;
+            }
         }
         private static void __city_create(City __instance)
         {
@@ -219,7 +243,12 @@ namespace Cultivation_Way.Content.Harmony
             {
                 pList.ShuffleOne(parent_idx);
                 CW_Actor actor = (CW_Actor)pList[parent_idx];
-                if (actor.fast_data.alive && !(actor == actor_to_ignore) && (actor_to_ignore==null || actor.fast_data.gender != actor_to_ignore.fast_data.gender)&& !actor.haveTrait("plague") && actor.fast_data.age > actor.stats.maxAge * 18 / 150)
+                // 人物可选择作为父母的条件：
+                // 存活
+                // 与另一方不同，且性别不同，属于同一类生物
+                // 没有感染
+                // 年龄超过初始最大生命的12%
+                if (actor.fast_data.alive && !(actor == actor_to_ignore) && (actor_to_ignore==null || (actor.fast_data.gender != actor_to_ignore.fast_data.gender && actor.stats.id == actor_to_ignore.stats.id))&& !actor.haveTrait("plague") && actor.fast_data.age > actor.stats.maxAge * 18 / 150)
                 {
                     return actor;
                 }

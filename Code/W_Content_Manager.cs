@@ -19,6 +19,7 @@ namespace Cultivation_Way.Content
             add_item_armor_materials();
             add_item_weapon_materials();
             add_localized_text();
+            add_jobs();
             add_kingdoms_and_races();
             add_special_bodies();
             add_spells();
@@ -31,6 +32,13 @@ namespace Cultivation_Way.Content
             add_words_libraries();
             add_name_generators();
             create_tab();
+        }
+
+        private static void add_jobs()
+        {
+            W_Content_ActorJob.add_actor_jobs();
+            W_Content_ActorJob.modify_actor_jobs();
+            W_Content_ActorTask.add_actor_tasks();
         }
 
         private static void add_name_generators()
