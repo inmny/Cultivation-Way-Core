@@ -23,8 +23,8 @@ namespace Cultivation_Way.Content
 
             rect_transform = spectate_unit_object.transform.GetChild(1).GetComponent<RectTransform>();
             rect_transform.transform.GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/cw_window/sim_info_bg");
-            rect_transform.transform.localPosition = new Vector3(-7, 15.38f);
-            rect_transform.transform.localScale = new Vector3(1.09f, 1.60f);
+            rect_transform.transform.localPosition = new Vector3(-6.80f, 15.38f);
+            rect_transform.transform.localScale = new Vector3(1.10f, 1.60f);
 
             for(int i = 2; i < 7; i++)
             {
@@ -38,22 +38,22 @@ namespace Cultivation_Way.Content
             WakanBar.name = "WakanBar";
             WakanBar.transform.Find("Mask/Bar").GetComponent<Image>().color = new Color(0.38f, 0.71f, 1, 0.75f);
             rect_transform = WakanBar.transform.Find("Mask/Bar").GetComponent<RectTransform>();
-            rect_transform.offsetMin = new Vector2(0.1f, rect_transform.offsetMin.y);
+            //rect_transform.offsetMin = new Vector2(0.1f, rect_transform.offsetMin.y);
             WakanBar.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconWakan");
             WakanBar.transform.Find("Icon").GetComponent<Image>().transform.localScale = new Vector3(0.35f, 0.35f);
 
-            WakanBar.transform.localPosition = new Vector3(-44, -14);
-            rect_transform = WakanBar.transform.GetComponent<RectTransform>();
-            rect_transform.offsetMax = new Vector2(-5, rect_transform.offsetMax.y);
+            WakanBar.transform.localPosition = new Vector3(-47, -14);
+            //rect_transform = WakanBar.transform.GetComponent<RectTransform>();
+            //rect_transform.offsetMax = new Vector2(-5, rect_transform.offsetMax.y);
             wakan_bar = WakanBar.GetComponent<StatBar>();
 
             GameObject ShieldBar = GameObject.Instantiate(icons.Find("HealthBar").gameObject, icons);
             ShieldBar.name = "ShieldBar";
             ShieldBar.transform.Find("Mask/Bar").GetComponent<Image>().color = new Color(1, 1, 1, 0.79f);
             ShieldBar.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconShield");
-            rect_transform = ShieldBar.transform.GetComponent<RectTransform>();
-            rect_transform.sizeDelta = new Vector2(85.5f, rect_transform.sizeDelta.y);
-            ShieldBar.transform.localPosition = new Vector3(50, -14);
+            //rect_transform = ShieldBar.transform.GetComponent<RectTransform>();
+            //rect_transform.sizeDelta = new Vector2(85.5f, rect_transform.sizeDelta.y);
+            ShieldBar.transform.localPosition = new Vector3(48, -14);
             shield_bar = ShieldBar.GetComponent<StatBar>();
 
             spectate_unit_object.transform.localPosition = new Vector3(0, 30);
