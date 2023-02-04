@@ -53,7 +53,7 @@ namespace Cultivation_Way
                     }
                 }
             }
-            wakan_tide.action(wakan_tide);
+            //wakan_tide.action(wakan_tide);
         }
         private float __comp_delta_wakan(float wakan_1, float wakan_2)
         {
