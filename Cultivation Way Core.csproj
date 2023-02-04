@@ -213,6 +213,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\-135%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\-135%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\-45%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\-45%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\-90%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\-90%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\0%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\0%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\135%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\135%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\180%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\180%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\45%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\45%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\90%400.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\90%401.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\broken.png" />
+    <Content Include="GameResources\actors\boats\boat_trading_eastern_yao\normal.png" />
     <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-90%400.png" />
     <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-45%400.png" />
     <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-45%401.png" />
@@ -231,6 +249,24 @@
     <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-135%401.png" />
     <Content Include="GameResources\actors\boats\boat_trading_eastern_human\normal.png" />
     <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-90%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\-135%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\-135%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\-45%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\-45%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\-90%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\-90%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\0%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\0%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\135%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\135%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\180%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\180%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\45%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\45%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\90%400.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\90%401.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\broken.png" />
+    <Content Include="GameResources\actors\boats\boat_transport_eastern_yao\normal.png" />
     <Content Include="GameResources\actors\boats\boat_transport_eastern_human\-90%400.png" />
     <Content Include="GameResources\actors\boats\boat_transport_eastern_human\-45%400.png" />
     <Content Include="GameResources\actors\boats\boat_transport_eastern_human\-45%401.png" />
