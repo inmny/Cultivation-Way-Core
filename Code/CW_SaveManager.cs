@@ -692,6 +692,14 @@ namespace Cultivation_Way
 
                 if ((!(origin_data.status.statsID == "livingPlants") && !(origin_data.status.statsID == "livingHouse")) || !string.IsNullOrEmpty(origin_data.status.special_graphics))
                 {
+                    if (!CW_Library_Manager.instance.cultibooks.has_asset(tmp_loaded_actor_data.cultibook_id)) tmp_loaded_actor_data.cultibook_id = null;
+                    if (!CW_Library_Manager.instance.special_bodies.has_asset(tmp_loaded_actor_data.special_body_id)) tmp_loaded_actor_data.special_body_id = null;
+                    for(int j = 0; j < tmp_loaded_actor_data.spells.Count; j++)
+                    {
+                        if (CW_Library_Manager.instance.spells.has_asset(tmp_loaded_actor_data.spells[j])) continue;
+                        tmp_loaded_actor_data.spells.RemoveAt(j);
+                        j--;
+                    }
                     MapBox.instance.spawnAndLoadUnit(origin_data.status.statsID, origin_data, MapBox.instance.GetTile(origin_data.x, origin_data.y));
                 }
                 else
@@ -742,6 +750,7 @@ namespace Cultivation_Way
                             }
                             break;
                     }
+
                     CW_Actor actor = (CW_Actor)MapBox.instance.spawnAndLoadUnit(origin_data.status.statsID, origin_data, MapBox.instance.GetTile(origin_data.x, origin_data.y));
                     if(actor==null) continue;
                     j = (int)Mathf.Sqrt(origin_data.status.level);
