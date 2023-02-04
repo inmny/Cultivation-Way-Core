@@ -37,8 +37,11 @@ namespace Cultivation_Way.Content
             GameObject WakanBar = GameObject.Instantiate(icons.Find("HealthBar").gameObject, icons);
             WakanBar.name = "WakanBar";
             WakanBar.transform.Find("Mask/Bar").GetComponent<Image>().color = new Color(0.38f, 0.71f, 1, 0.75f);
+            rect_transform = WakanBar.transform.Find("Mask/Bar").GetComponent<RectTransform>();
+            rect_transform.offsetMin = new Vector2(0.1f, rect_transform.offsetMin.y);
             WakanBar.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconWakan");
             WakanBar.transform.Find("Icon").GetComponent<Image>().transform.localScale = new Vector3(0.35f, 0.35f);
+
             WakanBar.transform.localPosition = new Vector3(-44, -14);
             rect_transform = WakanBar.transform.GetComponent<RectTransform>();
             rect_transform.offsetMax = new Vector2(-5, rect_transform.offsetMax.y);
