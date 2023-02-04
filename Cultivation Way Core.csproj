@@ -1210,6 +1210,8 @@
     <Compile Include="Code\W_Content_ActorTask.cs" />
     <Compile Include="Code\W_Content_Building.cs" />
     <Compile Include="Code\W_Content_SpectateUnit.cs" />
+    <Compile Include="Code\W_Content_WindowWorldLaw.cs" />
+    <Compile Include="Code\W_Content_WorldLaws.cs" />
     <Compile Include="Code\W_Harmony_ChunkInfo.cs" />
     <Compile Include="Code\W_Content_Cultisys.cs" />
     <Compile Include="Code\W_Content_Drop.cs" />
@@ -1279,6 +1281,7 @@
     <Compile Include="Code\W_Harmony_Building.cs" />
     <Compile Include="Code\W_Harmony_City.cs" />
     <Compile Include="Code\W_Harmony_Item.cs" />
+    <Compile Include="Code\W_Harmony_WorldLaw.cs" />
     <Compile Include="Code\W_NOT_Arch_Data.cs" />
     <Compile Include="Code\Z_Useless.cs" />
     <Content Include="GameResources\cw_words_libraries\kingdoms\kingdom_mottos.txt" />

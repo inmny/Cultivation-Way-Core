@@ -28,12 +28,18 @@ namespace Cultivation_Way.Content
             add_traits();
             add_god_powers();
             add_world_events();
+            add_world_laws();
             add_harmony();
 
             add_words_libraries();
             add_name_generators();
 
             create_tab();
+        }
+
+        private static void add_world_laws()
+        {
+            W_Content_WorldLaws.add_world_laws();
         }
 
         private static void others_init()
@@ -146,6 +152,7 @@ namespace Cultivation_Way.Content
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Others), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Save), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_ChunkInfo), Others.CW_Constants.mod_id);
+            HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_WorldLaw), Others.CW_Constants.mod_id);
             WorldBoxConsole.Console.print("Finish Harmony");
         }
     }
