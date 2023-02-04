@@ -57,9 +57,9 @@ namespace Cultivation_Way.Content
                 immortal.bonus_stats[i].wakan = (i+1) * (i+1) * (i+1)*2 + (i+1) * 18+24;
                 immortal.bonus_stats[i].wakan_regen = (int)(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / Mathf.Sqrt(immortal.bonus_stats[i].wakan)*Mathf.Pow(immortal.power_level[i],2));
                 // 法抗
-                immortal.bonus_stats[i].spell_armor = (int)(Mathf.Sqrt(i) * immortal.bonus_stats[i].base_stats.armor * (Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / immortal.bonus_stats[i].wakan, Others.CW_Constants.wakan_level_co)));
+                immortal.bonus_stats[i].spell_armor = (int)(Mathf.Sqrt(i) * immortal.bonus_stats[i].base_stats.armor * (Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / immortal.bonus_stats[i].wakan, Others.CW_Constants.wakan_level_co)+1));
                 // 护盾恢复
-                immortal.bonus_stats[i].shield_regen = (int)(Mathf.Sqrt(i) * Mathf.Sqrt(Mathf.Sqrt(immortal.bonus_stats[i].wakan)) * (Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / immortal.bonus_stats[i].wakan, Others.CW_Constants.wakan_level_co) + 1) * 2);
+                immortal.bonus_stats[i].shield_regen = (int)(Mathf.Sqrt(i) * Mathf.Sqrt(Mathf.Sqrt(immortal.bonus_stats[i].wakan)) * (Mathf.Log(Utils.CW_Utils_Others.get_raw_wakan(immortal.bonus_stats[i].wakan, immortal.power_level[i]) / immortal.bonus_stats[i].wakan, Others.CW_Constants.wakan_level_co) + 1) * 2)*4;
                 // 护盾
                 immortal.bonus_stats[i].shield = 12 * immortal.bonus_stats[i].shield_regen;
                 // 抗击退
