@@ -64,7 +64,7 @@ namespace Cultivation_Way.Content
             CW_Actor cw_actor = (CW_Actor)MoveCamera.focusUnit;
             wakan_bar.setBar((int)cw_actor.cw_status.wakan, cw_actor.cw_cur_stats.wakan, "/" + cw_actor.cw_cur_stats.wakan, false, false);
             wakan_bar.transform.Find("Mask/Bar").GetComponent<Image>().color = Utils.CW_Utils_Others.get_wakan_color(cw_actor.cw_status.wakan_level, cw_actor.cw_cur_stats.wakan);
-            shield_bar.setBar((int)cw_actor.cw_status.shield, cw_actor.cw_cur_stats.shield, "/" + cw_actor.cw_cur_stats.shield, false, false,);
+            shield_bar.setBar((int)cw_actor.cw_status.shield, cw_actor.cw_cur_stats.shield, "/" + cw_actor.cw_cur_stats.shield, false, false);
         }
     }
 }
