@@ -630,7 +630,7 @@ namespace Cultivation_Way.Content
                 StringBuilder string_builder = new StringBuilder();
                 for (int i = 0; i < cw_actor.cw_data.spells.Count; i++)
                 {
-                    string_builder.AppendLine(String.Format("法术[{0}]\t\t{1}", i, LocalizedTextManager.getText("spell_" + cw_actor.cw_data.spells[i])));
+                    string_builder.AppendLine(String.Format("法术[{0}]\t\t{1}", i, LocalizedTextManager.getText("spell_" + cw_actor.cur_spells[i])));
                 }
                 NCMS.Utils.Localization.Set("CW_cultisys_info", cultisys_info + "\n" + string_builder.ToString());
                 button_cultisys.load("cultisys", "CW_cultisys_info", "iconCultiSys", "normal");
