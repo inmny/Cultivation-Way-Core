@@ -365,3 +365,6 @@ FodyWeavers.xsd
 !GameResources/
 !Assemblies/
 *.zip
+/tmp.txt
+/Class1.cs
+/sim_script.py
