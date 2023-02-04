@@ -221,7 +221,7 @@ namespace Cultivation_Way.Content
         }
         private static void show_window_world_law()
         {
-            Windows.ShowWindow("cw_window_world_law");
+            Windows.ShowWindow("cw_world_laws");
         }
         private static void show_window_top()
         {

@@ -30,6 +30,8 @@ namespace Cultivation_Way.Content
         //private static int time = 0;
         private static void wakan_tide(CW_Asset_WorldEvent event_asset)
         {
+            if (!W_Content_WorldLaws.is_wakan_tide_working()) return;
+
             WorldTip.showNow("CW_Event_Wakan_Tide", pPosition:"top");
             //time++;
             //Debug.LogError(string.Format("{0}th wakan tide happened in {1} year", time, MapBox.instance.mapStats.year));

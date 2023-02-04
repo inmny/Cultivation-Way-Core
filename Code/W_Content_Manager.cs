@@ -39,6 +39,7 @@ namespace Cultivation_Way.Content
 
         private static void add_world_laws()
         {
+            W_Content_WindowWorldLaw.init();
             W_Content_WorldLaws.add_world_laws();
         }
 
