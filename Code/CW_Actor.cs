@@ -16,9 +16,9 @@ namespace Cultivation_Way
         public CW_BaseStats cw_cur_stats = null;
         public CW_ActorData cw_data = null;
         public CW_ActorStatus cw_status = null;
-        public List<CW_Actor> compose_actors = null;
-        public List<CW_Building> compose_buildings = null;
-        public Dictionary<string, CW_StatusEffectData> status_effects = null;
+        internal List<CW_Actor> compose_actors = null;
+        internal List<CW_Building> compose_buildings = null;
+        internal Dictionary<string, CW_StatusEffectData> status_effects = null;
         public List<string> cur_spells = null;
         public bool can_act = true;
         internal float m_attackSpeed_seconds = 0;
@@ -34,15 +34,15 @@ namespace Cultivation_Way
         internal WorldTimer fast_shake_timer = null;
         #region Getter
         internal static Func<Actor, HashSet<BaseMapObject>> get_targets_to_ignore = CW_ReflectionHelper.create_getter<Actor, HashSet<BaseMapObject>>("targetsToIgnore");
-        public static Func<Actor, ActorStatus> get_data = CW_ReflectionHelper.create_getter<Actor, ActorStatus>("data");
-        public static Func<Actor, BaseStats> get_curstats = CW_ReflectionHelper.create_getter<Actor, BaseStats>("curStats");
+        internal static Func<Actor, ActorStatus> get_data = CW_ReflectionHelper.create_getter<Actor, ActorStatus>("data");
+        internal static Func<Actor, BaseStats> get_curstats = CW_ReflectionHelper.create_getter<Actor, BaseStats>("curStats");
         public static Func<Actor, BaseSimObject> get_attackedBy = CW_ReflectionHelper.create_getter<Actor, BaseSimObject>("attackedBy");
         public static Func<Actor, BaseSimObject> get_attackTarget = CW_ReflectionHelper.create_getter<Actor, BaseSimObject>("attackTarget");
         public static Func<Actor, float> get_attackTimer = CW_ReflectionHelper.create_getter<Actor, float>("attackTimer");
         public static Func<Actor, Dictionary<string, StatusEffectData>> get_activeStatus_dict = CW_ReflectionHelper.create_getter<Actor, Dictionary<string, StatusEffectData>>("activeStatus_dict");
         public static Func<Actor, PersonalityAsset> get_s_personality = CW_ReflectionHelper.create_getter<Actor, PersonalityAsset>("s_personality");
-        public static Func<Actor, bool> get_event_full_heal = CW_ReflectionHelper.create_getter<Actor, bool>("event_full_heal");
-        public static Func<Actor, List<ActorTrait>> get_s_special_effect_traits = CW_ReflectionHelper.create_getter<Actor, List<ActorTrait>>("s_special_effect_traits");
+        internal static Func<Actor, bool> get_event_full_heal = CW_ReflectionHelper.create_getter<Actor, bool>("event_full_heal");
+        internal static Func<Actor, List<ActorTrait>> get_s_special_effect_traits = CW_ReflectionHelper.create_getter<Actor, List<ActorTrait>>("s_special_effect_traits");
         internal static Func<Actor, WorldTimer> get_shake_timer = CW_ReflectionHelper.create_getter<Actor, WorldTimer>("shakeTimer");
         internal static Func<Actor, BaseSimObject> get_beh_actor_target = CW_ReflectionHelper.create_getter<Actor, BaseSimObject>("beh_actor_target");
         public static Func<Actor, bool> get_is_moving = CW_ReflectionHelper.create_getter<Actor, bool>("is_moving");
@@ -57,37 +57,37 @@ namespace Cultivation_Way
         internal static Action<Actor, bool> set_trait_peaceful = CW_ReflectionHelper.create_setter<Actor, bool>("_trait_peaceful");
         internal static Action<Actor, bool> set_trait_fire_resistant = CW_ReflectionHelper.create_setter<Actor, bool>("_trait_fire_resistant");
         internal static Action<Actor, bool> set_status_frozen = CW_ReflectionHelper.create_setter<Actor, bool>("_status_frozen");
-        internal static Action<Actor, float> set_attackTimer = CW_ReflectionHelper.create_setter<Actor, float>("attackTimer");
+        public static Action<Actor, float> set_attackTimer = CW_ReflectionHelper.create_setter<Actor, float>("attackTimer");
         internal static Action<Actor, float> set_s_attackSpeed_seconds = CW_ReflectionHelper.create_setter<Actor, float>("s_attackSpeed_seconds");
         internal static Action<Actor, WeaponType> set_s_attackType = CW_ReflectionHelper.create_setter<Actor, WeaponType>("s_attackType");
         internal static Action<Actor, string> set_s_slashType = CW_ReflectionHelper.create_setter<Actor, string>("s_slashType");
         internal static Action<Actor, string> set_s_weapon_texture = CW_ReflectionHelper.create_setter<Actor, string>("s_weapon_texture");
         internal static Action<Actor, PersonalityAsset> set_s_personality = CW_ReflectionHelper.create_setter<Actor, PersonalityAsset>("s_personality");
         public static Action<Actor, ProfessionAsset> set_professionAsset = CW_ReflectionHelper.create_setter<Actor, ProfessionAsset>("professionAsset");
-        public static Action<Actor, ActorStatus> set_data = CW_ReflectionHelper.create_setter<Actor, ActorStatus>("data");
+        internal static Action<Actor, ActorStatus> set_data = CW_ReflectionHelper.create_setter<Actor, ActorStatus>("data");
         internal static Action<Actor, List<ActorTrait>> set_s_special_effect_traits = CW_ReflectionHelper.create_setter<Actor, List<ActorTrait>>("s_special_effect_traits");
         internal static Action<Actor, BaseSimObject> set_attackedBy = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("attackedBy");
-        public static Action<Actor, BaseSimObject> set_attackTarget = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("attackTarget");
-        public static Action<Actor, float> set_colorEffect = CW_ReflectionHelper.create_setter<Actor, float>("colorEffect");
-        public static Action<Actor, Material> set_colorMaterial = CW_ReflectionHelper.create_setter<Actor, Material>("colorMaterial");
-        public static Action<Actor, AnimationDataUnit> set_actorAnimationData = CW_ReflectionHelper.create_setter<Actor, AnimationDataUnit>("actorAnimationData");
+        internal static Action<Actor, BaseSimObject> set_attackTarget = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("attackTarget");
+        internal static Action<Actor, float> set_colorEffect = CW_ReflectionHelper.create_setter<Actor, float>("colorEffect");
+        internal static Action<Actor, Material> set_colorMaterial = CW_ReflectionHelper.create_setter<Actor, Material>("colorMaterial");
+        internal static Action<Actor, AnimationDataUnit> set_actorAnimationData = CW_ReflectionHelper.create_setter<Actor, AnimationDataUnit>("actorAnimationData");
         internal static Action<Actor, bool> set_is_moving = CW_ReflectionHelper.create_setter<Actor, bool>("is_moving");
         #endregion
         #region Func
-        public static Action<Actor> func_updateTargetScale = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("updateTargetScale");
-        public static Action<Actor> func_findHeadSprite = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("findHeadSprite");
-        public static Action<Actor, bool> func_checkMadness = (Action<Actor, bool>)CW_ReflectionHelper.get_method<Actor>("checkMadness");
+        internal static Action<Actor> func_updateTargetScale = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("updateTargetScale");
+        internal static Action<Actor> func_findHeadSprite = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("findHeadSprite");
+        internal static Action<Actor, bool> func_checkMadness = (Action<Actor, bool>)CW_ReflectionHelper.get_method<Actor>("checkMadness");
         public static Func<Actor, string, bool> func_haveStatus = (Func<Actor, string, bool>)CW_ReflectionHelper.get_method<Actor>("haveStatus");
-        public static Action<Actor, int> func_newCreature = (Action<Actor, int>)CW_ReflectionHelper.get_method<Actor>("newCreature");
+        internal static Action<Actor, int> func_newCreature = (Action<Actor, int>)CW_ReflectionHelper.get_method<Actor>("newCreature");
         public static Action<Actor, Kingdom> func_setKingdom = (Action<Actor, Kingdom>)CW_ReflectionHelper.get_method<Actor>("setKingdom");
         public static Action<Actor, Sprite> func_setBodySprite = (Action<Actor, Sprite>)CW_ReflectionHelper.get_method<Actor>("setBodySprite");
         public static Action<Actor, WorldTile, float> func_spawnOn = (Action<Actor, WorldTile, float>)CW_ReflectionHelper.get_method<Actor>("spawnOn");
-        public static Action<Actor> func_create = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("create");
+        internal static Action<Actor> func_create = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("create");
         internal static Action<Actor, float, bool, AttackType, BaseSimObject, bool> func_getHit = (Action<Actor, float, bool, AttackType, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("getHit");
-        public static Action<Actor, float> func_updateColorEffect = (Action<Actor, float>)CW_ReflectionHelper.get_method<Actor>("updateColorEffect");
-        public static Action<Actor, Vector3, WorldTile, bool, bool, float> func_punchTargetAnimation = (Action<Actor, Vector3, WorldTile, bool, bool, float>)CW_ReflectionHelper.get_method<Actor>("punchTargetAnimation");
+        internal static Action<Actor, float> func_updateColorEffect = (Action<Actor, float>)CW_ReflectionHelper.get_method<Actor>("updateColorEffect");
+        internal static Action<Actor, Vector3, WorldTile, bool, bool, float> func_punchTargetAnimation = (Action<Actor, Vector3, WorldTile, bool, bool, float>)CW_ReflectionHelper.get_method<Actor>("punchTargetAnimation");
         public static Func<Actor, BaseSimObject, bool> func_tryToAttack = (Func<Actor, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("tryToAttack");
-        public static Action<Actor, float, bool> func_updateAnimation = (Action<Actor, float, bool>)CW_ReflectionHelper.get_method<Actor>("updateAnimation");
+        internal static Action<Actor, float, bool> func_updateAnimation = (Action<Actor, float, bool>)CW_ReflectionHelper.get_method<Actor>("updateAnimation");
         public static Func<Actor, BaseSimObject, bool> func_canAttackTarget = (Func<Actor, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("canAttackTarget");
         #endregion
         /// <summary>
