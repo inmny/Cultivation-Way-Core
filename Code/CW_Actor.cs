@@ -98,6 +98,7 @@ namespace Cultivation_Way
             status.skin_set = -1;
             CW_Actor new_one = Utils.CW_Utils_ActorTools.spawn_actor(status.statsID, this.currentTile, status, cw_data, 0);
             status.transportID = String.Empty;
+            status.gender = Toolbox.randomBool()?ActorGender.Male:ActorGender.Female;
             if(MoveCamera.inSpectatorMode() && MoveCamera.focusUnit == this)
             {
                 MoveCamera.focusUnit = new_one;
@@ -112,6 +113,7 @@ namespace Cultivation_Way
             }
             new_one.takeItems(this, new_one.stats.take_items_ignore_range_weapons);
             this.killHimself(true, AttackType.GrowUp, false, false);
+            
         }
         /// <summary>
         /// 是否处在战斗状态
@@ -365,7 +367,10 @@ namespace Cultivation_Way
             {
                 this.cw_status.shield += Mathf.Min(this.cw_cur_stats.shield_regen, this.cw_cur_stats.shield - this.cw_status.shield);
             }
-            
+            if (this.cw_status.soul < this.cw_cur_stats.soul)
+            {
+                this.cw_status.soul += Mathf.Min(this.cw_cur_stats.soul_regen, this.cw_cur_stats.soul - this.cw_status.soul);
+            }
             if (this.cw_status.can_culti && this.cw_status.wakan < this.cw_cur_stats.wakan)
             {
                 float wakan_get = 0; CW_MapChunk chunk = this.currentTile.get_cw_chunk();
