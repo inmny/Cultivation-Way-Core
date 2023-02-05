@@ -88,6 +88,7 @@ namespace Cultivation_Way.Content
                 );
             spell.add_tag(CW_Spell_Tag.ATTACK);
             spell.add_tag(CW_Spell_Tag.DEFEND);
+            spell.add_tag(CW_Spell_Tag.INBORN_POWER);
             spell.add_tag(CW_Spell_Tag.POSITIVE_STATUS);
             spell.add_tag(CW_Spell_Tag.IMMORTAL);
             spell.add_tag(CW_Spell_Tag.BUSHIDO);

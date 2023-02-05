@@ -290,5 +290,14 @@ namespace Cultivation_Way
             }
             return string_builder.ToString();
         }
+        internal void fill_string_builder(StringBuilder description, StringBuilder value)
+        {
+            description.Clear(); value.Clear();
+            for (int i = 0; i < Others.CW_Constants.base_element_types; i++)
+            {
+                description.AppendLine(LocalizedTextManager.getText("$base_element_" + i + "$"));
+                value.AppendLine(base_elements[i] + "%");
+            }
+        }
     }
 }

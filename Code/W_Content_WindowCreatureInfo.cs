@@ -19,9 +19,12 @@ namespace Cultivation_Way.Content
         public string icon;
         public string type;
         public string description;
+        public bool is_stats = false;
         public bool tooltip_enabled = true;
         public bool force_tooltip_position = false;
         private Vector3 origin_scale = new Vector3(-1,-1);
+        internal string stats_description;
+        internal string stats_value;
         private void Awake()
         {
             this.button = GetComponent<Button>();
@@ -41,6 +44,22 @@ namespace Cultivation_Way.Content
             if (string.IsNullOrEmpty(description) || !LocalizedTextManager.stringExists(description)) description = null;
             Tooltip.instance.show(gameObject, type, title, description);
             if(force_tooltip_position) Tooltip.instance.gameObject.transform.localPosition = new Vector3(-220, 100);
+            if (is_stats)
+            {
+                Tooltip.instance.description.gameObject.SetActive(false);
+                Tooltip.instance.stats_description.text = stats_description;
+                Tooltip.instance.stats_values.text = stats_value;
+                
+                int line = stats_description.Count((ch) => { return ch == '\n'; })+1;
+                RectTransform rect = Tooltip.instance.GetComponent<RectTransform>();
+                rect.sizeDelta = new Vector2(rect.sizeDelta.x, 23.6f + 9 * line);
+
+                Tooltip.instance.stats_description.transform.localPosition = new Vector3(0, -27);
+                Tooltip.instance.stats_values.transform.localPosition = new Vector3(0, -27);
+
+                Tooltip.instance.stats_description.gameObject.SetActive(true);
+                Tooltip.instance.stats_values.gameObject.SetActive(true);
+            }
             if (this.origin_scale.x<0 && this.origin_scale.y < 0)
             {
                 this.origin_scale = transform.localScale;
@@ -337,6 +356,11 @@ namespace Cultivation_Way.Content
             cw_wci.button_cultibook.force_tooltip_position = true;
             cw_wci.button_cultisys.force_tooltip_position = true;
             cw_wci.button_special_body.force_tooltip_position = true;
+
+            cw_wci.button_element.is_stats = true;
+            cw_wci.button_cultibook.is_stats = true;
+            cw_wci.button_cultisys.is_stats = true;
+            cw_wci.button_special_body.is_stats = true;
             inner_bg_transform.localPosition = new Vector3(129.22f, -209.05f);
             return origin_inspect_unit_gameobject;
 		}
@@ -594,15 +618,14 @@ namespace Cultivation_Way.Content
         }
         private void load_cw_tip_buttons()
         {
+            StringBuilder description = new StringBuilder();
+            StringBuilder value = new StringBuilder();
+
             int num = 0;
-            string tmp_description = cw_actor.cw_data.element.__to_string();
-            for (int i = 0; i < Others.CW_Constants.base_element_types; i++)
-            {
-                string replace_text = "$base_element_" + i + "$";
-                tmp_description = tmp_description.Replace(replace_text, LocalizedTextManager.getText(replace_text));
-            }
-            NCMS.Utils.Localization.Set("element_info", tmp_description);
-            button_element.load(cw_actor.cw_data.element.comp_type(), "element_info", "iconElement", "normal");
+            cw_actor.cw_data.element.fill_string_builder(description, value);
+            button_element.load(cw_actor.cw_data.element.comp_type(), null, "iconElement", "normal");
+            button_element.stats_description = description.ToString();
+            button_element.stats_value = value.ToString();
             set_position_on_more_info_field(button_element.GetComponent<RectTransform>(), num++);
 
 
@@ -613,8 +636,10 @@ namespace Cultivation_Way.Content
                 {
                     button_cultibook.gameObject.SetActive(true);
                     NCMS.Utils.Localization.Set("CW_cultibook_name", cultibook.get_name());
-                    NCMS.Utils.Localization.Set("CW_cultibook_info", cultibook.get_info_without_name());
-                    button_cultibook.load("CW_cultibook_name", "CW_cultibook_info", (cw_actor.cw_data.cultisys & Others.CW_Constants.cultisys_immortol_tag) != 0 ? "iconCultiBook_immortal" : "iconCultiBook_bushido", "normal");
+                    button_cultibook.load("CW_cultibook_name", null, (cw_actor.cw_data.cultisys & Others.CW_Constants.cultisys_immortol_tag) != 0 ? "iconCultiBook_immortal" : "iconCultiBook_bushido", "normal");
+                    cultibook.fill_string_builder(description, value);
+                    button_cultibook.stats_description = description.ToString();
+                    button_cultibook.stats_value = value.ToString();
                     set_position_on_more_info_field(button_cultibook.GetComponent<RectTransform>(), num++);
                 }
             }
@@ -626,14 +651,19 @@ namespace Cultivation_Way.Content
             if (cw_actor.cw_data.cultisys != 0)
             {
                 button_cultisys.gameObject.SetActive(true);
-                string cultisys_info = CW_Library_Manager.instance.cultisys.parse_cultisys(cw_actor.cw_data);
-                StringBuilder string_builder = new StringBuilder();
+                CW_Library_Manager.instance.cultisys.parse_cultisys(cw_actor.cw_data,description,value);
+
+                cw_actor.cur_spells.Sort((left, right) => { return CW_Library_Manager.instance.spells.get(left).get_type().CompareTo(CW_Library_Manager.instance.spells.get(right).get_type()); });
+
                 for (int i = 0; i < cw_actor.cur_spells.Count; i++)
                 {
-                    string_builder.AppendLine(String.Format("法术[{0}]\t\t{1}", i, LocalizedTextManager.getText("spell_" + cw_actor.cur_spells[i])));
+                    description.AppendLine(String.Format("{1}[{0}]", i, LocalizedTextManager.getText(CW_Library_Manager.instance.spells.get(cw_actor.cur_spells[i]).get_type())));
+                    value.AppendLine(LocalizedTextManager.getText("spell_" + cw_actor.cur_spells[i]));
                 }
-                NCMS.Utils.Localization.Set("CW_cultisys_info", cultisys_info + "\n" + string_builder.ToString());
-                button_cultisys.load("cultisys", "CW_cultisys_info", "iconCultiSys", "normal");
+
+                button_cultisys.load("cultisys", null, "iconCultiSys", "normal");
+                button_cultisys.stats_description = description.ToString();
+                button_cultisys.stats_value = value.ToString();
                 button_cultisys.transform.localScale = new Vector3(2.84f, 3.5f);
 
                 set_position_on_more_info_field(button_cultisys.GetComponent<RectTransform>(), num++);
@@ -649,8 +679,10 @@ namespace Cultivation_Way.Content
                 if (body != null)
                 {
                     NCMS.Utils.Localization.Set("CW_special_body_name", body.get_name(cw_actor));
-                    NCMS.Utils.Localization.Set("CW_special_body_info", body.get_info_without_name());
+                    body.fill_string_builder(description, value);
                     button_special_body.load("CW_special_body_name", "CW_special_body_info", cw_actor.stats.icon, "normal");
+                    button_special_body.stats_description = description.ToString();
+                    button_special_body.stats_value = value.ToString();
                     set_position_on_more_info_field(button_special_body.GetComponent<RectTransform>(), num++);
                 }
             }

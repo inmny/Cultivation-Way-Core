@@ -190,6 +190,33 @@ namespace Cultivation_Way.Library
         {
             this.tags |= 1ul << (int)tag;
         }
+        public bool have_tag(CW_Spell_Tag tag)
+        {
+            return (this.tags & (1ul << (int)tag)) > 0;
+        }
+        public string get_type()
+        {
+            if (this.have_tag(CW_Spell_Tag.INBORN_POWER))
+            {
+                return "0_inborn_power_spell";
+            }
+            else if (this.have_tag(CW_Spell_Tag.ACQUIRED_POWER))
+            {
+                return "1_acquired_power_spell";
+            }
+            else if (this.have_tag(CW_Spell_Tag.IMMORTAL))
+            {
+                return "2_immortal_spell";
+            }
+            else if (this.have_tag(CW_Spell_Tag.BUSHIDO))
+            {
+                return "3_bushido_spell";
+            }
+            else
+            {
+                return "4_other_spell";
+            }
+        }
         public void add_element_tag(string element_id)
         {
             this.addition_element_tags.Add(element_id);

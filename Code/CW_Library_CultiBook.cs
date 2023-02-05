@@ -136,6 +136,18 @@ namespace Cultivation_Way.Library
             }
             return string_builder.ToString();
         }
+        internal void fill_string_builder(StringBuilder description, StringBuilder value)
+        {
+            description.Clear(); value.Clear();
+            description.AppendLine("创始人");  value.AppendLine(get_author_name());
+            description.AppendLine("品阶");   value.AppendLine(LocalizedTextManager.getText("cultibook_order_" + this.order) + Others.CW_Constants.num_to_cz[9 - level] + "品");
+            for (int i = 0; i < this.spells.Length; i++)
+            {
+                if (this.spells[i] == null) break;
+                description.AppendLine(String.Format("法术[{0}]", i));
+                value.AppendLine(LocalizedTextManager.getText("spell_" + this.spells[i]));
+            }
+        }
         internal void gen_bonus_stats(CW_Actor author)
         {
             this.bonus_stats.clear();

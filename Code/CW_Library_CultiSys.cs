@@ -105,26 +105,24 @@ namespace Cultivation_Way.Library
             }
             if (actor.cw_data.cultisys > 0) actor.cw_status.can_culti = true;
         }
-        internal string parse_cultisys(CW_ActorData cw_actor_data)
+        internal void parse_cultisys(CW_ActorData cw_actor_data, StringBuilder description, StringBuilder value)
         {
+            description.Clear(); value.Clear();
             uint cultisys = cw_actor_data.cultisys;
             int cultisys_tag = 0;
-            StringBuilder string_builder = new StringBuilder();
             CW_Asset_CultiSys cultisys_asset;
             while (cultisys > 0)
             {
                 if ((cultisys & 0x1) == 1)
                 {
                     cultisys_asset = list[cultisys_tag];
-                    string_builder.Append(LocalizedTextManager.getText("CW_cultisys_" + cultisys_asset.id));
-                    string_builder.Append("\t");
-                    string_builder.Append(LocalizedTextManager.getText("cultisys_" + cultisys_asset.id + "_" + cw_actor_data.cultisys_level[cultisys_tag]));
-                    string_builder.Append("[" + cw_actor_data.cultisys_level[cultisys_tag] + "]\n");
+                    description.AppendLine(LocalizedTextManager.getText("CW_cultisys_" + cultisys_asset.id));
+                    value.AppendLine(string.Format("{0}[{1}]",LocalizedTextManager.getText("cultisys_" + cultisys_asset.id + "_" + cw_actor_data.cultisys_level[cultisys_tag]), cw_actor_data.cultisys_level[cultisys_tag]));
                 }
                 cultisys >>= 1;
                 cultisys_tag++;
             }
-            return string_builder.ToString();
+            description.Append("\n"); value.Append("\n");
         }
     }
 }

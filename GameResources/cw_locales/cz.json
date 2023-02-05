@@ -1,4 +1,9 @@
 {
+  "2_immortal_spell": "法术",
+  "3_bushido_spell": "武技",
+  "0_inborn_power_spell": "先天神通",
+  "1_acquired_power_spell": "后天神通",
+  "4_other_spell": "秘籍",
   "$base_element_0$": "水",
   "$base_element_1$": "火",
   "$base_element_2$": "木",

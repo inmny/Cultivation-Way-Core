@@ -85,6 +85,13 @@ namespace Cultivation_Way.Library
             string_builder.AppendLine("描述:\t\t\t\t" + description);
             return string_builder.ToString();
         }
+        internal void fill_string_builder(StringBuilder description, StringBuilder value)
+        {
+            description.Clear();               value.Clear();
+            description.AppendLine("创造者");  value.AppendLine(get_author_name());
+            description.AppendLine("等级");    value.AppendLine(level.ToString());
+            description.AppendLine("描述");    value.AppendLine(this.description);
+        }
         public string get_author_name(CW_Actor author = null)
         {
             if (string.IsNullOrEmpty(author_name)) author_name = (author == null ? ((CW_Actor)MapBox.instance.getActorByID(author_id)) : author).getName();
