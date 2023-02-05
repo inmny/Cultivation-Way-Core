@@ -17,8 +17,14 @@ namespace Cultivation_Way.Actions
                 if ((spell_asset.tags & (1ul<<(int)CW_Spell_Tag.IMMORTAL))>0)
                 {
                     cost = cw_actor.cw_status.wakan * spell_asset.cost;
-                    if(cost > spell_asset.min_cost_val)
+                    if(cost >= spell_asset.min_cost_val)
                     {
+                        cw_actor.cw_status.wakan -= (int)cost;
+                        cost = Utils.CW_Utils_Others.get_raw_wakan(cost, cw_actor.cw_status.wakan_level);
+                    }
+                    else if(cw_actor.cw_status.wakan >= spell_asset.min_cost_val)
+                    {
+                        cost = spell_asset.min_cost_val;
                         cw_actor.cw_status.wakan -= (int)cost;
                         cost = Utils.CW_Utils_Others.get_raw_wakan(cost, cw_actor.cw_status.wakan_level);
                     }
@@ -31,7 +37,7 @@ namespace Cultivation_Way.Actions
                 else if ((spell_asset.tags & (1ul << (int)CW_Spell_Tag.BUSHIDO)) > 0)
                 {
                     float health_cost = (cw_actor.fast_data.health - 10) * spell_asset.cost;
-                    if (health_cost > spell_asset.min_cost_val)
+                    if (health_cost >= spell_asset.min_cost_val)
                     {
                         cw_actor.fast_data.health -= (int)health_cost;
                         cost = Utils.CW_Utils_Others.get_raw_wakan(health_cost, cw_actor.cw_status.health_level);
