@@ -61,7 +61,7 @@ namespace Cultivation_Way
             if (this.race != "yao") return UnityEngine.Resources.Load<UnityEngine.Sprite>(AssetManager.raceLibrary.get(this.race).path_icon);
             else
             {
-                return UnityEngine.Resources.Load<UnityEngine.Sprite>("ui/Icons/"+AssetManager.unitStats.get(string.IsNullOrEmpty(this.most_unit_id) ? this.race : this.most_unit_id).icon);
+                return UnityEngine.Resources.Load<UnityEngine.Sprite>("ui/Icons/"+AssetManager.unitStats.get(string.IsNullOrEmpty(this.most_unit_id) ? "_yao" : this.most_unit_id).icon);
             }
         }
     }
