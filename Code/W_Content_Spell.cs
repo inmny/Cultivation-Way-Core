@@ -77,9 +77,11 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "brutalize", anim_id: "brutalization",
                 new CW_Element(new int[] { 20,20,20,20,20 }),
-                rarity: 3, free_val: 0.6f, cost: 0.05f, 
+                rarity: 3, free_val: 0.6f, cost: 0f, min_cost:-1,
                 can_get_by_random: false,
                 learn_level: 1, cast_level: 1,
+                target_camp: CW_Spell_Target_Camp.ALIAS,
+                target_type: CW_Spell_Target_Type.ACTOR,
                 anim_type: CW_Spell_Animation_Type.CUSTOM,
                 damage_action: null,
                 anim_action: null,
@@ -640,7 +642,8 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "stxh", anim_id: "stxh_{0}",
                 new CW_Element(), element_type_limit: null,
-                rarity: 3, free_val: 1, cost: 0.3f, learn_level: 1, cast_level: 1,
+                rarity: 3, free_val: 1, cost: 0f, min_cost: -1,
+                learn_level: 1, cast_level: 1,
                 can_get_by_random: false,
                 cultisys_black_or_white_list: true, cultisys_list: null,
                 banned_races: null,
@@ -652,7 +655,9 @@ namespace Cultivation_Way.Content
                 check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
                 );
             spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.DEFEND);
             spell.add_tag(CW_Spell_Tag.POSITIVE_STATUS);
+            spell.add_tag(CW_Spell_Tag.INBORN_POWER);
             spell.add_tag(CW_Spell_Tag.IMMORTAL);
             spell.add_tag(CW_Spell_Tag.BUSHIDO);
             CW_Library_Manager.instance.spells.add(spell);
