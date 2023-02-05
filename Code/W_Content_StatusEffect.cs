@@ -423,11 +423,11 @@ namespace Cultivation_Way.Content
         }
         private static void brutalization_on_update(CW_StatusEffectData status_effect, BaseSimObject _object)
         {
-            if (_object.objectType != MapObjectType.Actor) return;
+            if (_object.objectType != MapObjectType.Actor || status_effect.finished) return;
             CW_Actor actor = (CW_Actor)_object;
             if (actor.is_in_battle())
             {
-                status_effect.left_time = Others.CW_Constants.battle_timer;
+                status_effect.left_time = Mathf.Max(status_effect.left_time, Others.CW_Constants.battle_timer);
             }
         }
     }
