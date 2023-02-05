@@ -20,7 +20,6 @@ namespace Cultivation_Way
         public List<CW_Building> compose_buildings = null;
         public Dictionary<string, CW_StatusEffectData> status_effects = null;
         public List<string> cur_spells = null;
-        internal WorldTimer fast_shake_timer = null;
         public bool can_act = true;
         internal float m_attackSpeed_seconds = 0;
         internal float default_spell_timer = 1f;
@@ -31,7 +30,10 @@ namespace Cultivation_Way
         /// 仅提供高效访问，待权限开放后删除
         /// </summary>
         public ActorStatus fast_data = null;
+        internal HashSet<BaseMapObject> fast_targets_to_ignore = null;
+        internal WorldTimer fast_shake_timer = null;
         #region Getter
+        internal static Func<Actor, HashSet<BaseMapObject>> get_targets_to_ignore = CW_ReflectionHelper.create_getter<Actor, HashSet<BaseMapObject>>("targetsToIgnore");
         public static Func<Actor, ActorStatus> get_data = CW_ReflectionHelper.create_getter<Actor, ActorStatus>("data");
         public static Func<Actor, BaseStats> get_curstats = CW_ReflectionHelper.create_getter<Actor, BaseStats>("curStats");
         public static Func<Actor, BaseSimObject> get_attackedBy = CW_ReflectionHelper.create_getter<Actor, BaseSimObject>("attackedBy");
@@ -46,6 +48,8 @@ namespace Cultivation_Way
         public static Func<Actor, bool> get_is_moving = CW_ReflectionHelper.create_getter<Actor, bool>("is_moving");
         #endregion
         #region Setter
+        internal static Action<Actor, BaseSimObject> set_beh_actor_target = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("beh_actor_target");
+        internal static Action<Actor, float> set_timer_action = CW_ReflectionHelper.create_setter<Actor, float>("timer_action");
         internal static Action<Actor, bool> set_statsDirty = CW_ReflectionHelper.create_setter<Actor, bool>("statsDirty");
         internal static Action<Actor, bool> set_event_full_heal = CW_ReflectionHelper.create_setter<Actor, bool>("event_full_heal");
         public static Action<Actor, bool> set_item_sprite_dirty = CW_ReflectionHelper.create_setter<Actor, bool>("item_sprite_dirty");
@@ -84,6 +88,7 @@ namespace Cultivation_Way
         public static Action<Actor, Vector3, WorldTile, bool, bool, float> func_punchTargetAnimation = (Action<Actor, Vector3, WorldTile, bool, bool, float>)CW_ReflectionHelper.get_method<Actor>("punchTargetAnimation");
         public static Func<Actor, BaseSimObject, bool> func_tryToAttack = (Func<Actor, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("tryToAttack");
         public static Action<Actor, float, bool> func_updateAnimation = (Action<Actor, float, bool>)CW_ReflectionHelper.get_method<Actor>("updateAnimation");
+        public static Func<Actor, BaseSimObject, bool> func_canAttackTarget = (Func<Actor, BaseSimObject, bool>)CW_ReflectionHelper.get_method<Actor>("canAttackTarget");
         #endregion
         /// <summary>
         /// 化形
@@ -135,6 +140,15 @@ namespace Cultivation_Way
         public void add_cultisys(string cultisys_id)
         {
             this.cw_data.cultisys |= CW_Library_Manager.instance.cultisys.get(cultisys_id)._tag;
+        }
+        public void try_to_set_attack_target_by_attacked_by()
+        {
+            BaseSimObject cur_target = CW_Actor.get_attackTarget(this);
+            BaseSimObject attacked_by = CW_Actor.get_attackedBy(this);
+            if(cur_target != null && attacked_by != null && !this.fast_targets_to_ignore.Contains(attacked_by) && CW_Actor.func_canAttackTarget(this, attacked_by))
+            {
+                CW_Actor.set_attackTarget(this, attacked_by);
+            }
         }
         public void start_color_effect(string type, float time)
         {

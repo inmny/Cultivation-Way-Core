@@ -19,6 +19,12 @@ namespace Cultivation_Way.Content
             {
                 id = "check_settler_appropriate"
             });
+
+            AssetManager.job_actor.get("animal").addTask("attack_back");
+            AssetManager.job_actor.get("animal_herd").addTask("attack_back");
+            AssetManager.job_actor.get("animal_water_eater").addTask("attack_back");
+            AssetManager.job_actor.get("crab").addTask("attack_back");
+            AssetManager.job_actor.get("unit_on_fire").addTask("attack_back");
         }
     }
 }

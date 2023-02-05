@@ -25,9 +25,10 @@ namespace Cultivation_Way.Content.Harmony
             __result = __instance.stats.texture_path;
             return false;
         }
+        
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Actor), "getHit")]
-        public static bool actor_getHit(Actor __instance, ref float pDamage, bool pFlash = true, AttackType pType = AttackType.Other, BaseSimObject pAttacker = null, bool pSkipIfShake = true)
+        public static bool actor_getHit(Actor __instance, ref float pDamage, ref bool pFlash, AttackType pType = AttackType.Other, BaseSimObject pAttacker = null, bool pSkipIfShake = true)
         {
             if(((CW_Actor)__instance).__get_hit(pDamage, (Others.CW_Enums.CW_AttackType)pType, pAttacker, pSkipIfShake))
             {
@@ -39,10 +40,19 @@ namespace Cultivation_Way.Content.Harmony
             {
                 if (pAttacker != __instance)
                 {
-                    CW_Actor.set_attackTarget(__instance, pAttacker);
+                    CW_Actor.set_attackedBy(__instance, pAttacker);
+                    ((CW_Actor)__instance).try_to_set_attack_target_by_attacked_by();
+                    //CW_Actor.set_attackTarget(__instance, pAttacker);
                 }
+                pFlash = false;
                 return false;
             }
+        }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Actor), "getHit")]
+        public static void actor_getHit_post(Actor __instance, bool pFlash)
+        {
+            if(pFlash) CW_Actor.set_timer_action(__instance, -1);
         }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Actor), "updateAge")]
@@ -269,6 +279,7 @@ namespace Cultivation_Way.Content.Harmony
                 actor.transform.position = pTile.posV3;
                 CW_Actor.func_spawnOn(actor, pTile, pZHeight);
                 CW_Actor.func_create(actor);
+                actor.fast_targets_to_ignore = CW_Actor.get_targets_to_ignore(actor);
             }
             else
             {
@@ -295,6 +306,7 @@ namespace Cultivation_Way.Content.Harmony
                 actor.transform.position = pTile.posV3;
                 CW_Actor.func_spawnOn(actor, pTile, pZHeight);
                 CW_Actor.func_create(actor);
+                actor.fast_targets_to_ignore = CW_Actor.get_targets_to_ignore(actor);
 
                 __actor_updateStats(actor);
                 
