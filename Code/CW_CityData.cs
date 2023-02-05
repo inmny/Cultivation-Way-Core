@@ -9,8 +9,14 @@ namespace Cultivation_Way
     public class CW_CityData : CityData
     {
         public List<CW_ActorData> cw_pop_points;
+        [NonSerialized]
         internal string least_unit_id;
+        [NonSerialized]
         internal string most_unit_id;
+        [NonSerialized]
+        internal int tmp_wakan_total;
+        [NonSerialized]
+        internal int tmp_avg_level;
         public CW_CityData(City pCity) : base(pCity)
         {
             this.cw_pop_points = new List<CW_ActorData>();
@@ -33,6 +39,30 @@ namespace Cultivation_Way
             this.timer_supply = origin.timer_supply;
             this.timer_trade = origin.timer_trade;
             this.zones = origin.zones;
+        }
+        internal void comp_avg_level()
+        {
+            throw new NotImplementedException();
+        }
+        internal void comp_wakan()
+        {
+            tmp_wakan_total = 0;
+            List<TileZone> zones = ReflectionUtility.Reflection.GetField(typeof(City), MapBox.instance.getCityByID(this.cityID), "zones") as List<TileZone>;
+            foreach(TileZone zone in zones)
+            {
+                tmp_wakan_total += (int)((World_Data.instance.map_chunk_manager.get_chunk(zone.chunk.x, zone.chunk.y).wakan_level)*100);
+            }
+            tmp_wakan_total /= zones.Count == 0?1:zones.Count;
+            tmp_wakan_total -= 99;
+            if (tmp_wakan_total < 0) tmp_wakan_total = 0;
+        }
+        internal UnityEngine.Sprite get_race_icon()
+        {
+            if (this.race != "yao") return UnityEngine.Resources.Load<UnityEngine.Sprite>(AssetManager.raceLibrary.get(this.race).path_icon);
+            else
+            {
+                return UnityEngine.Resources.Load<UnityEngine.Sprite>("ui/Icons/"+AssetManager.unitStats.get(string.IsNullOrEmpty(this.most_unit_id) ? this.race : this.most_unit_id).icon);
+            }
         }
     }
 }

@@ -256,6 +256,7 @@ namespace Cultivation_Way.Content
         {
             CW_ActorStats yao = CW_Library_Manager.instance.units.clone(origin_id+"_yao", "_yao");
             yao.origin_stats.texture_path = String.Format("yaos/t_{0}_yao", origin_id);
+            yao.origin_stats.icon = CW_Library_Manager.instance.units.has_asset(origin_id) ? AssetManager.unitStats.get(origin_id).icon : yao.origin_stats.icon;
             addColorSet(yao.origin_stats, "default", "#FFC984", "#543E2C");
             W_Content_Helper.yaos.Add(origin_id); 
             AssetManager.unitStats.CallMethod("loadShadow", yao.origin_stats);

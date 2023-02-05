@@ -69,7 +69,31 @@ namespace Cultivation_Way.Content
     }
     internal class CW_Sim_City_Info_Elm : CW_Sim_Info_Elm
     {
-
+        public City city;
+        public BannerLoader banner;
+        public Image race_icon;
+        public Text text_age;
+        public Text text_pop;
+        public Text text_army;
+        public Text text_zones;
+        public Text text_wakan;
+        public Text text_avg_lvl;
+        public Button inspect_button;
+        public void show()
+        {
+            inspect_button.onClick.RemoveAllListeners();
+            inspect_button.onClick = new Button.ButtonClickedEvent();
+            inspect_button.onClick.AddListener(inspect);
+        }
+        public void inspect()
+        {
+            Config.selectedCity = this.city;
+            if (Config.selectedCity == null)
+            {
+                return;
+            }
+            ScrollWindow.showWindow("village");
+        }
     }
     internal class CW_Sim_Kingdom_Info_Elm : CW_Sim_Info_Elm
     {
@@ -406,7 +430,85 @@ namespace Cultivation_Way.Content
             cw_wt.prefab_unit.SetActive(false);
 #endif
             #endregion
+            cw_wt.prefab_city = Instantiate(prefab_sim_info_elm);
+            #region 城市信息
+            cw_wt.prefab_city.name = "prefab_city_info_elm";
+            CW_Sim_City_Info_Elm __sim_city_info_elm = cw_wt.prefab_city.AddComponent<CW_Sim_City_Info_Elm>();
+#if true
+            __sim_city_info_elm.transform.SetParent(content_transform);
+#endif
+            cw_wt.prefab_city.SetActive(false);
+            cw_wt.prefab_city.transform.localScale = prefab_sim_info_elm.transform.localScale;
+            cw_wt.prefab_city.transform.localPosition = prefab_sim_info_elm.transform.localPosition;
+            cw_wt.prefab_city.transform.Find("bg").localPosition = __sim_info_elm_bg.transform.localPosition;
 
+            __sim_city_info_elm.inspect_button = __sim_city_info_elm.gameObject.AddComponent<Button>();
+
+            __sim_city_info_elm.transform.localScale = new Vector3(1, 1);
+            __sim_city_info_elm.bg = cw_wt.prefab_city.transform.Find("bg").gameObject;
+            __sim_city_info_elm.bg.GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/cw_window/city_info_bg");
+            __sim_city_info_elm.bg.GetComponent<RectTransform>().sizeDelta = new Vector2(90, 100);
+            __sim_city_info_elm.bg.transform.localScale = new Vector3(2.1f, 0.4f);
+            __sim_city_info_elm.bg.transform.localPosition = new Vector3(-3f, 0f);
+            __sim_city_info_elm.bg.transform.Find("title").localScale = new Vector3(0.5f, 2.8f);
+            __sim_city_info_elm.bg.transform.Find("title").localPosition = new Vector3(8f, 27f);
+            GameObject race_icon = new GameObject("race", typeof(Image));
+            race_icon.transform.SetParent(__sim_city_info_elm.bg.transform);
+            race_icon.transform.localPosition = new Vector3(-25, 23);
+            race_icon.transform.localScale = new Vector3(0.08f, 0.42f);
+            __sim_city_info_elm.race_icon = race_icon.GetComponent<Image>();
+
+            __sim_city_info_elm.info = cw_wt.prefab_city.transform.Find("info").gameObject;
+            __sim_city_info_elm.object_name = cw_wt.prefab_city.transform.Find("bg/title").GetComponent<Text>();
+            __sim_city_info_elm.banner = Instantiate(NCMS.Utils.GameObjects.FindEvenInactive("PrefabBanner").gameObject, __sim_city_info_elm.transform).GetComponent<BannerLoader>();
+            __sim_city_info_elm.banner.transform.localScale = new Vector3(1.3f, 1.3f);
+            __sim_city_info_elm.banner.transform.localPosition = new Vector3(-85f, 0f);
+
+            GameObject __city_info_object;
+
+
+            GridLayoutGroup __city_info_layout_group = __sim_city_info_elm.info.AddComponent<GridLayoutGroup>();
+            __city_info_layout_group.cellSize = new Vector2(29, 12);
+            __city_info_layout_group.startAxis = GridLayoutGroup.Axis.Horizontal;
+            __city_info_layout_group.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+            __city_info_layout_group.constraintCount = 4;
+            __city_info_layout_group.startCorner = GridLayoutGroup.Corner.LowerRight;
+            __city_info_layout_group.spacing = new Vector2(7, 7);
+            __sim_city_info_elm.info.transform.localPosition = new Vector3(-8, -34);
+
+            __city_info_object = Instantiate(prefab_stat, __sim_city_info_elm.info.transform);
+            __city_info_object.name = "zones";
+            __city_info_object.transform.Find("GameObject/Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconTileSoil");
+            __sim_city_info_elm.text_zones = __city_info_object.transform.Find("GameObject/Text").GetComponent<Text>();
+
+            __city_info_object = Instantiate(prefab_stat, __sim_city_info_elm.info.transform);
+            __city_info_object.name = "army";
+            __city_info_object.transform.Find("GameObject/Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconDamage");
+            __sim_city_info_elm.text_army = __city_info_object.transform.Find("GameObject/Text").GetComponent<Text>();
+
+
+            __city_info_object = Instantiate(prefab_stat, __sim_city_info_elm.info.transform);
+            __city_info_object.name = "pop";
+            __city_info_object.transform.Find("GameObject/Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconPopulation");
+            __sim_city_info_elm.text_pop = __city_info_object.transform.Find("GameObject/Text").GetComponent<Text>();
+
+
+            __city_info_object = Instantiate(prefab_stat, __sim_city_info_elm.info.transform);
+            __city_info_object.name = "age";
+            __city_info_object.transform.Find("GameObject/Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/icon_oldage");
+            __sim_city_info_elm.text_age = __city_info_object.transform.Find("GameObject/Text").GetComponent<Text>();
+
+
+            __city_info_object = Instantiate(prefab_stat, __sim_city_info_elm.info.transform);
+            __city_info_object.name = "wakan";
+            __city_info_object.transform.Find("GameObject/Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconCheckWakan");
+            __sim_city_info_elm.text_wakan = __city_info_object.transform.Find("GameObject/Text").GetComponent<Text>();
+
+            __city_info_object = Instantiate(prefab_stat, __sim_city_info_elm.info.transform);
+            __city_info_object.name = "avg_lvl";
+            __city_info_object.transform.Find("GameObject/Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconLevels");
+            __sim_city_info_elm.text_avg_lvl = __city_info_object.transform.Find("GameObject/Text").GetComponent<Text>();
+            #endregion
             #endregion
 
             #region 生物榜不同排序
@@ -521,12 +623,16 @@ namespace Cultivation_Way.Content
         }
         private void switch_to_city()
         {
+            last_action = switch_to_city;
             clear();
             cur_top_type = Top_Type.CITY;
-
+            List<CW_CityData> list = W_Content_WindowTop_Helper.sort_cities_by_wakan(sort_setting.top_k);
+            foreach (CW_CityData city in list) add_city_info(city);
+            scroll_resize();
 
             update_window_type();
         }
+
         private void switch_to_clan()
         {
             clear();
@@ -610,6 +716,28 @@ namespace Cultivation_Way.Content
             actor_info.GetComponent<RectTransform>().anchoredPosition = new Vector3(7, 20 - 60f * elements.Count);
             actor_info.show(actor);
             actor_info.gameObject.SetActive(true);
+        }
+
+        private void add_city_info(CW_CityData city_data)
+        {
+            CW_Sim_City_Info_Elm city_info = Instantiate(prefab_city, content_transform).GetComponent<CW_Sim_City_Info_Elm>();
+            this.elements.Add(city_info);
+            City city = MapBox.instance.getCityByID(city_data.cityID);
+
+            city_info.city = city;
+            city_info.banner.load(MapBox.instance.kingdoms.getKingdomByID(city_data.kingdomID));
+            city_info.object_name.text = city_data.cityName;
+            city_info.text_age.text = Toolbox.formatNumber(city_data.age);
+            city_info.text_army.text = Toolbox.formatNumber(city.getArmy());
+            city_info.text_pop.text = Toolbox.formatNumber(city.getPopulationTotal());
+            city_info.text_zones.text = Toolbox.formatNumber(city.getZoneRange(false));
+            city_info.text_avg_lvl.text = Toolbox.formatNumber(city_data.tmp_avg_level);
+            city_info.text_wakan.text = Toolbox.formatNumber(city_data.tmp_wakan_total);
+            city_info.race_icon.sprite = city_data.get_race_icon();
+
+            city_info.GetComponent<RectTransform>().anchoredPosition = new Vector3(7, 20 - 60f * elements.Count);
+            city_info.show();
+            city_info.gameObject.SetActive(true);
         }
 
 
