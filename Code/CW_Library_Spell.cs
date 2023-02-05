@@ -177,6 +177,10 @@ namespace Cultivation_Way.Library
                     this.allowed_cultisys &= CW_Library_Manager.instance.cultisys.get(cultisys)._tag;
                 }
             }
+            if (element_type_limit == "none")
+            {
+                remove_element_tags();
+            }
         }
         internal bool judge_can_get(CW_Actor actor)
         {
