@@ -451,7 +451,7 @@ namespace Cultivation_Way.Content
             __sim_city_info_elm.bg.transform.localScale = new Vector3(2.1f, 0.4f);
             __sim_city_info_elm.bg.transform.localPosition = new Vector3(-3f, 0f);
             __sim_city_info_elm.bg.transform.Find("title").localScale = new Vector3(0.5f, 2.8f);
-            __sim_city_info_elm.bg.transform.Find("title").localPosition = new Vector3(8f, 27f);
+            __sim_city_info_elm.bg.transform.Find("title").localPosition = new Vector3(10f, 24f);
             GameObject race_icon = new GameObject("race", typeof(Image));
             race_icon.transform.SetParent(__sim_city_info_elm.bg.transform);
             race_icon.transform.localPosition = new Vector3(-25, 23);
