@@ -8,13 +8,14 @@ namespace Cultivation_Way
 {
 	public class CW_ActorStatus
 	{
-		public float wakan;
-		public float shield;
-		public float culti_velo;
-		public bool can_culti;
-		public float health_level;
-		public float wakan_level;
-		public int max_age;
+		public float wakan=0;
+		public float shield=0;
+		public float soul=0;
+		public float culti_velo=0;
+		public bool can_culti=false;
+		public float health_level=1;
+		public float wakan_level=1;
+		public int max_age=0;
 		public static Func<ActorStatus, HashSet<string>> get_s_traits_ids = CW_ReflectionHelper.create_getter<ActorStatus, HashSet<string>>("s_traits_ids");
 		public static void actorstatus_inheritTraits(ActorStatus origin_status, List<string> traits)
 		{
@@ -55,6 +56,7 @@ namespace Cultivation_Way
         {
 			cw_actor_status.wakan = wakan;
 			cw_actor_status.shield = shield;
+			cw_actor_status.soul = soul;
 			cw_actor_status.culti_velo = culti_velo;
 			cw_actor_status.can_culti = can_culti;
 			cw_actor_status.health_level = health_level;
