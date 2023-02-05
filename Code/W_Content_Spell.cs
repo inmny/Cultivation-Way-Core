@@ -996,7 +996,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "loltus_fire", anim_id: "loltus_fire_anim",
                 new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
-                rarity: 20, free_val: 1, cost: 0.08f, learn_level: 1, cast_level: 1,
+                rarity: 50, free_val: 1, cost: 0.08f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -1026,7 +1026,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "fen_fire", anim_id: "fen_fire_anim",
                 new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
-                rarity: 20, free_val: 1, cost: 0.08f, learn_level: 1, cast_level: 1,
+                rarity: 50, free_val: 1, cost: 0.08f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -1703,18 +1703,20 @@ namespace Cultivation_Way.Content
         {
             if (anim.dst_object == null || !anim.dst_object.base_data.alive) return;
             CW_StatusEffectData status_effect = Utils.CW_SpellHelper.add_status_to_target(anim.src_object, anim.dst_object, "status_samadhi_fire");
+            status_effect.effect_val += Mathf.Sqrt(((CW_Actor)anim.src_object).cw_cur_stats.soul_regen);
         }
         private static void loltus_fire_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             if (anim.dst_object == null || !anim.dst_object.base_data.alive || anim.src_object == null || !anim.src_object.base_data.alive) return;
             CW_StatusEffectData status_effect = Utils.CW_SpellHelper.add_status_to_target(anim.src_object, anim.dst_object, "status_loltus_fire");
             status_effect.left_time = (1 + ((CW_Actor)anim.dst_object).fast_data.kills / 10f) * status_effect.status_asset.effect_time;
-            status_effect.effect_val = Utils.CW_Utils_Others.get_raw_wakan(status_effect.status_asset.effect_val, ((CW_Actor)anim.src_object).cw_status.wakan_level);
+            status_effect.effect_val = Utils.CW_Utils_Others.get_raw_wakan(status_effect.status_asset.effect_val, ((CW_Actor)anim.src_object).cw_status.wakan_level)* ((CW_Actor)anim.dst_object).fast_data.kills;
         }
         private static void fen_fire_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             if (anim.dst_object == null || !anim.dst_object.base_data.alive) return;
             CW_StatusEffectData status_effect = Utils.CW_SpellHelper.add_status_to_target(anim.src_object, anim.dst_object, "status_fen_fire");
+            status_effect.effect_val = ((CW_Actor)anim.src_object).cw_cur_stats.soul_regen;
         }
         private static void bushido_base_damage_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {

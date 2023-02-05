@@ -71,7 +71,7 @@ namespace Cultivation_Way.Content
                 anim_id: "status_loltus_fire_anim",//"burning_anim",
                 bonus_stats: null,
                 effect_val: 5,
-                effect_time: 60f,
+                effect_time: 6f,
                 action_on_update: loltus_fire_on_update
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
@@ -381,7 +381,9 @@ namespace Cultivation_Way.Content
         {
             if (_object.objectType != MapObjectType.Actor) return;
             Utils.CW_SpellHelper.cause_damage_to_target(status_effect.user, _object, status_effect.effect_val, Others.CW_Enums.CW_AttackType.Status_Spell);
-            if (!_object.base_data.alive)
+            CW_Actor target = (CW_Actor)_object;
+            if(target.cw_status.soul>0) target.cw_status.soul -= status_effect.effect_val;
+            if (target.cw_status.soul<=0 || !_object.base_data.alive)
             {
                 // TODO: 转换成骷髅
                 ActionLibrary.turnIntoSkeleton(_object);
