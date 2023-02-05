@@ -22,7 +22,7 @@ namespace Cultivation_Way.Others
         public const bool is_debugging = true;
         public const int wakan_level_co = 1000;
         public const int wakan_regen_valid_percent = 60;
-        public const int health_regen_valid_percent = 60;
+        public const int health_regen_valid_percent = 40;
         public const int fix_cultibook_line = 10000;
         public const int cultibook_spell_limit = 4;
         public const int cultibook_levelup_require = 5;
