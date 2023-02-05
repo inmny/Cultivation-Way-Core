@@ -628,7 +628,7 @@ namespace Cultivation_Way.Content
                 button_cultisys.gameObject.SetActive(true);
                 string cultisys_info = CW_Library_Manager.instance.cultisys.parse_cultisys(cw_actor.cw_data);
                 StringBuilder string_builder = new StringBuilder();
-                for (int i = 0; i < cw_actor.cw_data.spells.Count; i++)
+                for (int i = 0; i < cw_actor.cur_spells.Count; i++)
                 {
                     string_builder.AppendLine(String.Format("法术[{0}]\t\t{1}", i, LocalizedTextManager.getText("spell_" + cw_actor.cur_spells[i])));
                 }
