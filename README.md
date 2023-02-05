@@ -13,7 +13,6 @@
 
 [制作新的附属](https://github.com/inmny/CW_Addon_Template)
 ## TODO
-·国家界面修炼信息
 
 ·天榜（完成大体框架，该项内容较多
 
@@ -23,6 +22,5 @@
 
 ·妖族
 
-·法术获取机制调整（剩余等级需求
 ## 附属/fork Attention
 ·法术循环调用导致无限递归bug
