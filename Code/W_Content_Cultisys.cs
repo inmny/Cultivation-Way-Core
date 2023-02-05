@@ -51,6 +51,8 @@ namespace Cultivation_Way.Content
                 // 生命以及生命回复
                 immortal.bonus_stats[i].base_stats.health = 3 * i * i * i/2 + i * 142;
                 immortal.bonus_stats[i].health_regen = (int)Mathf.Sqrt(Mathf.Sqrt(immortal.bonus_stats[i].base_stats.health));
+                immortal.bonus_stats[i].soul = immortal.bonus_stats[i].base_stats.health / 10f;
+                immortal.bonus_stats[i].soul_regen = immortal.bonus_stats[i].soul / 120f;
                 // 攻击
                 immortal.bonus_stats[i].base_stats.damage = (int)Mathf.Sqrt(immortal.bonus_stats[i].base_stats.health);
                 // 灵气以及灵气恢复
@@ -96,6 +98,8 @@ namespace Cultivation_Way.Content
                 // 生命及生命回复
                 bushido.bonus_stats[i].base_stats.health = 3*i*i*i+42*i;
                 bushido.bonus_stats[i].health_regen = (int)Mathf.Sqrt(bushido.bonus_stats[i].base_stats.health * Utils.CW_Utils_Others.get_raw_wakan(bushido.bonus_stats[i].base_stats.health, bushido.power_level[i]))/50;
+                bushido.bonus_stats[i].soul = bushido.bonus_stats[i].base_stats.health / 100f;
+                bushido.bonus_stats[i].soul_regen = bushido.bonus_stats[i].soul / 120f;
                 // 攻击
                 bushido.bonus_stats[i].base_stats.damage = i * i * i /2+ 2 * i * i;
                 // 法抗
