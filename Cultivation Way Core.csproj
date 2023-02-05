@@ -1310,6 +1310,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="docs\index.md" />
     <None Include="GameResources\actors\races\eastern_human\unit_female_1\sprites.json" />
     <None Include="GameResources\actors\races\eastern_human\unit_king\sprites.json" />
     <None Include="GameResources\actors\races\eastern_human\unit_leader\sprites.json" />

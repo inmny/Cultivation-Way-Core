@@ -4,7 +4,7 @@
 |中|英（中文版都没写完）|
 |:----:|:----:|
 |[百科](https://github.com/inmny/Cultivation-Way-Core/wiki/Home)|[Wiki](https://github.com/inmny/Cultivation-Way-Core/)|   
-|[文档](https://github.com/inmny/Cultivation-Way-Core/wiki/Documentation)|[Documentation](https://github.com/inmny/Cultivation-Way-Core/)|	
+|[文档](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/index.md)|[Documentation](https://github.com/inmny/Cultivation-Way-Core/)|	
 
 ## 附属
 |附属|仓库/下载地址|
