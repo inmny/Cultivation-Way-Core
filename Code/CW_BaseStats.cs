@@ -32,7 +32,7 @@ namespace Cultivation_Way
         /// <summary>
         /// 元神
         /// </summary>
-        public int soul;
+        public float soul;
         /// <summary>
         /// 元神系数
         /// </summary>
@@ -40,7 +40,7 @@ namespace Cultivation_Way
         /// <summary>
         /// 元神恢复/月
         /// </summary>
-        public int soul_regen;
+        public float soul_regen;
         /// <summary>
         /// 元神恢复系数
         /// </summary>
