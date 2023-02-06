@@ -550,7 +550,7 @@ namespace Cultivation_Way
         {
             learn_cultibook(CW_Library_Manager.instance.cultibooks.get(cultibook_id));
         }
-        public void learn_cultibook(CW_Asset_CultiBook cultibook) 
+        internal void learn_cultibook(CW_Asset_CultiBook cultibook) 
         {
             if (cultibook == null) throw new Exception("Try to learn 'null' cultibook");
             if (!Others.CW_Constants.cultibook_force_learn && this.cw_data.cultisys == 0) return;
