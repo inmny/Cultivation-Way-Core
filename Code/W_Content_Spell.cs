@@ -1603,7 +1603,7 @@ namespace Cultivation_Way.Content
                     // 夺取灵气
                     ((CW_Actor)anim.src_object).cw_status.wakan += (int)Utils.CW_Utils_Others.transform_wakan(((CW_Actor)enemy).cw_status.wakan, ((CW_Actor)enemy).cw_status.wakan_level, ((CW_Actor)anim.src_object).cw_status.wakan_level);
                     ((CW_Actor)enemy).cw_status.wakan = 0;
-                    ((CW_Actor)anim.src_object).checkLevelUp();
+                    ((CW_Actor)anim.src_object).check_level_up();
                 }
                 else
                 {

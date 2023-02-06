@@ -250,6 +250,7 @@ namespace Cultivation_Way
                 this.stopMovement();
             }
         }
+        
         internal bool has_cultisys(uint cultisys_tag)
         {
             return (this.cw_data.cultisys & cultisys_tag) > 0;
@@ -438,7 +439,7 @@ namespace Cultivation_Way
         /// <summary>
         /// 检查各个修炼体系能否晋级
         /// </summary>
-        public void checkLevelUp()
+        public void check_level_up()
         {
             uint cultisys = this.cw_data.cultisys;
             int cultisys_tag = 0;
@@ -521,7 +522,7 @@ namespace Cultivation_Way
             if (this.cw_data.spells.Contains(spell.id)) return;
             if (spell.allow_actor(this)) this.cw_data.spells.Add(spell.id);
         }
-        public void learn_spells(string[] spell_ids)
+        internal void learn_spells(string[] spell_ids)
         {
             if (spell_ids == null) throw new Exception("Null spells array");
             List<CW_Asset_Spell> spells = new List<CW_Asset_Spell>(4);
