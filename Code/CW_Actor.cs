@@ -140,6 +140,7 @@ namespace Cultivation_Way
         /// <param name="cultisys_id">修炼体系id</param>
         public void add_cultisys(string cultisys_id)
         {
+            this.cw_status.can_culti = true;
             this.cw_data.cultisys |= CW_Library_Manager.instance.cultisys.get(cultisys_id)._tag;
         }
         public void try_to_set_attack_target_by_attacked_by()
