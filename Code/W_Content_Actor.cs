@@ -45,26 +45,27 @@ namespace Cultivation_Way.Content
             origin_stats.body_separate_part_head = false;
             addColorSet(origin_stats, "default", "#FFC984", "#543E2C");
             CW_Library_Manager.instance.units.add(_yao);
-            add_yao("bear");
-            add_yao("cat");
-            add_yao("chicken");
-            add_yao("cow");
-            add_yao("crab");
-            add_yao("dog");
-            add_yao("fox");
-            add_yao("frog");
-            add_yao("hyena");
-            add_yao("monkey");
-            add_yao("penguin");
-            add_yao("rabbit");
-            add_yao("rat");
-            add_yao("ratKing");
-            //add_yao("reindeer");
-            add_yao("rhino");
-            add_yao("sheep");
-            add_yao("snake");
-            add_yao("turtle");
-            add_yao("wolf");
+            add_yao("bear");        // 熊
+            add_yao("cat");         // 猫
+            add_yao("chicken");     // 鸡
+            add_yao("cow");         // 牛
+            //add_yao("crab");      // 螃蟹
+            add_yao("crocodile");   // 鳄鱼
+            add_yao("dog");         // 狗
+            add_yao("fox");         // 狐狸
+            add_yao("frog");        // 青蛙
+            add_yao("hyena");       // 鬣狗
+            add_yao("monkey");      // 猴
+            add_yao("penguin");     // 企鹅
+            add_yao("rabbit");      // 兔
+            add_yao("rat");         // 鼠
+            add_yao("ratKing");     // 鼠王
+            //add_yao("reindeer");  // 鹿
+            add_yao("rhino");       // 犀牛
+            add_yao("sheep");       // 羊
+            add_yao("snake");       // 蛇
+            add_yao("turtle");      // 龟
+            add_yao("wolf");        // 狼
         }
 
         private static void add_eastern_humans()
