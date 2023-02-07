@@ -12,6 +12,7 @@ namespace Cultivation_Way.Content
         {
             add_harmony();
             W_Content_Helper.init();
+            add_localized_text();
             others_init();
             add_actors();
             add_buildings();
@@ -20,7 +21,6 @@ namespace Cultivation_Way.Content
             add_item_accesory_materials();
             add_item_armor_materials();
             add_item_weapon_materials();
-            add_localized_text();
             add_jobs();
             add_kingdoms_and_races();
             add_special_bodies();
@@ -48,6 +48,7 @@ namespace Cultivation_Way.Content
         private static void others_init()
         {
             W_Content_SpectateUnit.init();
+            W_Content_WindowCultisysSetting.init();
         }
 
         private static void add_jobs()
