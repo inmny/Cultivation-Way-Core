@@ -156,7 +156,7 @@ namespace Cultivation_Way.Content
         void OnEnable()
         {
             if (!initialized) return;
-            if (first_open) addition_init();
+            if (first_open) postfix_init();
             if (string.IsNullOrEmpty(cur_cultisys))
             {
                 cur_cultisys = "immortal";
@@ -171,7 +171,7 @@ namespace Cultivation_Way.Content
             }
         }
 
-        private void addition_init()
+        private void postfix_init()
         {
             first_open = false;
             List<CW_Asset_CultiSys> cultisys_list = CW_Library_Manager.instance.cultisys.list;
