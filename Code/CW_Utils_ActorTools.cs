@@ -28,6 +28,7 @@ namespace Cultivation_Way.Utils
             CW_Actor.func_spawnOn(actor, tile, height);
             CW_Actor.func_create(actor);
 
+            actor.fast_targets_to_ignore = CW_Actor.get_targets_to_ignore(actor);
             Cultivation_Way.Content.Harmony.W_Harmony_Actor.__actor_updateStats(actor);
 
             if (actor.stats.kingdom != "") CW_Actor.func_setKingdom(actor, MapBox.instance.kingdoms.dict_hidden[actor.stats.kingdom]);
