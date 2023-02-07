@@ -20,6 +20,9 @@ namespace Cultivation_Way.Content
         private static void add_animals()
         {
             ActorStats origin_stats;
+            CW_ActorStats rooster = CW_Library_Manager.instance.units.clone("rooster", "chicken");
+            rooster.origin_stats.nameLocale = "Rooster";
+            rooster.origin_stats.nameTemplate = "iconRooster";
             CW_ActorStats deer = CW_Library_Manager.instance.units.clone("deer", "hyena");
             origin_stats = deer.origin_stats;
             //origin_stats.nameTemplate = "deer_name";  //TODO
@@ -28,22 +31,32 @@ namespace Cultivation_Way.Content
             origin_stats.diet_grass = true;
             origin_stats.diet_berries = true;
             origin_stats.job = "animal";
+            origin_stats.icon = "iconDeer";
             CW_ActorStats lion = CW_Library_Manager.instance.units.clone("lion", "bear");
             origin_stats = lion.origin_stats;
             //origin_stats.nameTemplate = "lion_name";
             origin_stats.nameLocale = "Lions";
+            origin_stats.icon = "iconLion";
             CW_ActorStats tiger = CW_Library_Manager.instance.units.clone("tiger", "bear");
             origin_stats = tiger.origin_stats;
             //origin_stats.nameTemplate = "tiger_name";
             origin_stats.nameLocale = "Tigers";
+            origin_stats.icon = "iconTiger";
+            CW_ActorStats wild_boar = CW_Library_Manager.instance.units.clone("wild_boar", "bear");
+            origin_stats = wild_boar.origin_stats;
+            origin_stats.icon = "iconWild_Boar";
+            origin_stats.nameLocale = "Wild Boars";
+            origin_stats.baseStats.damage = origin_stats.baseStats.damage * 2;
             CW_ActorStats pig = CW_Library_Manager.instance.units.clone("pig", "cow");
             origin_stats= pig.origin_stats;
             //origin_stats.nameTemplate = "pig_name";
             origin_stats.nameLocale = "Pigs";
+            origin_stats.icon = "iconPig";
             CW_ActorStats horse = CW_Library_Manager.instance.units.clone("horse", "cow");
             origin_stats = horse.origin_stats;
             //origin_stats.nameTemplate = "horse";
             origin_stats.nameLocale = "Horses";
+            origin_stats.icon = "iconHorse";
             CW_ActorStats fairy_fox = CW_Library_Manager.instance.units.clone("fairy_fox", "fox");
             fairy_fox.culti_velo = 1.5f;
             origin_stats = fairy_fox.origin_stats;
@@ -55,6 +68,7 @@ namespace Cultivation_Way.Content
             origin_stats.setBaseStats(500, 30, 60, 20, 0, 100, 0);
             origin_stats.nameLocale = "Fairy Foxes";
             //origin_stats.nameTemplate = "fairy_fox_name";
+            origin_stats.icon = "iconFairy_Fox";
         }
 
         private static void add_yaos()

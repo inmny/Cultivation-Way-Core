@@ -430,6 +430,12 @@
     <Content Include="GameResources\actors\t_pig\walk_0.png" />
     <Content Include="GameResources\actors\t_pig\walk_1.png" />
     <Content Include="GameResources\actors\t_pig\walk_2.png" />
+    <Content Include="GameResources\actors\t_rooster\swim_0.png" />
+    <Content Include="GameResources\actors\t_rooster\swim_1.png" />
+    <Content Include="GameResources\actors\t_rooster\swim_2.png" />
+    <Content Include="GameResources\actors\t_rooster\walk_0.png" />
+    <Content Include="GameResources\actors\t_rooster\walk_1.png" />
+    <Content Include="GameResources\actors\t_rooster\walk_2.png" />
     <Content Include="GameResources\actors\t_tiger\swim_0.png" />
     <Content Include="GameResources\actors\t_tiger\swim_1.png" />
     <Content Include="GameResources\actors\t_tiger\swim_2.png" />
@@ -1332,6 +1338,13 @@
     <Content Include="GameResources\ui\Icons\iconCheckElement_On.png" />
     <Content Include="GameResources\ui\Icons\iconClan.png" />
     <Content Include="GameResources\ui\Icons\iconCheckWakan.png" />
+    <Content Include="GameResources\ui\Icons\iconDeer.png" />
+    <Content Include="GameResources\ui\Icons\iconFairy_Fox.png" />
+    <Content Include="GameResources\ui\Icons\iconHorse.png" />
+    <Content Include="GameResources\ui\Icons\iconLion.png" />
+    <Content Include="GameResources\ui\Icons\iconPig.png" />
+    <Content Include="GameResources\ui\Icons\iconRooster.png" />
+    <Content Include="GameResources\ui\Icons\iconTiger.png" />
     <Content Include="GameResources\ui\Icons\iconWakan_Increase.png" />
     <Content Include="GameResources\ui\Icons\iconSpell_Armor.png" />
     <Content Include="GameResources\ui\Icons\iconSpecialBody.png" />
@@ -1345,6 +1358,7 @@
     <Content Include="GameResources\ui\Icons\iconCultiBook_bushido.png" />
     <Content Include="GameResources\ui\Icons\iconCultiBook_immortal.png" />
     <Content Include="GameResources\ui\Icons\iconText.png" />
+    <Content Include="GameResources\ui\Icons\iconWild_Boar.png" />
     <Content Include="GameResources\ui\Icons\iconYaos.png" />
     <Content Include="GameResources\ui\Icons\iconWiki.png" />
     <Content Include="GameResources\effects\water_escape\940.png" />
