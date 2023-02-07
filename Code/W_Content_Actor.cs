@@ -23,7 +23,7 @@ namespace Cultivation_Way.Content
             CW_ActorStats rooster = CW_Library_Manager.instance.units.get("rooster");
             origin_stats = rooster.origin_stats;
             origin_stats.nameLocale = "Rooster";
-            origin_stats.nameTemplate = "iconRooster";
+            origin_stats.icon = "iconRooster";
             origin_stats.texture_path = "t_rooster";
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats deer = CW_Library_Manager.instance.units.clone("deer", "hyena");
@@ -34,7 +34,9 @@ namespace Cultivation_Way.Content
             origin_stats.diet_grass = true;
             origin_stats.diet_berries = true;
             origin_stats.job = "animal";
+            origin_stats.race = "deer";
             origin_stats.icon = "iconDeer";
+            origin_stats.kingdom = "neutral_animals";
             origin_stats.texture_path = "t_deer";
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats lion = CW_Library_Manager.instance.units.clone("lion", "bear");
@@ -42,6 +44,7 @@ namespace Cultivation_Way.Content
             //origin_stats.nameTemplate = "lion_name";
             origin_stats.nameLocale = "Lions";
             origin_stats.icon = "iconLion";
+            origin_stats.race = "lion";
             origin_stats.texture_path = "t_lion";
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats tiger = CW_Library_Manager.instance.units.clone("tiger", "bear");
@@ -49,6 +52,7 @@ namespace Cultivation_Way.Content
             //origin_stats.nameTemplate = "tiger_name";
             origin_stats.nameLocale = "Tigers";
             origin_stats.icon = "iconTiger";
+            origin_stats.race = "tiger";
             origin_stats.texture_path = "t_tiger";
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats wild_boar = CW_Library_Manager.instance.units.clone("wild_boar", "bear");
@@ -65,13 +69,17 @@ namespace Cultivation_Way.Content
             //origin_stats.nameTemplate = "pig_name";
             origin_stats.nameLocale = "Pigs";
             origin_stats.icon = "iconPig";
+            origin_stats.race = "pig";
             origin_stats.texture_path = "t_pig";
+            origin_stats.kingdom = "neutral_animals";
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats horse = CW_Library_Manager.instance.units.clone("horse", "cow");
             origin_stats = horse.origin_stats;
             //origin_stats.nameTemplate = "horse";
             origin_stats.nameLocale = "Horses";
             origin_stats.icon = "iconHorse";
+            origin_stats.race = "horse";
+            origin_stats.kingdom = "neutral_animals";
             origin_stats.texture_path = "t_horse";
             origin_stats.disableJumpAnimation = true;
             origin_stats.color = Toolbox.makeColor("#2D2D2D", -1f);
@@ -89,10 +97,12 @@ namespace Cultivation_Way.Content
             fairy_fox.cw_base_stats.wakan = 100;
             fairy_fox.cw_base_stats.wakan_regen = 10;
             origin_stats.job = "animal_herd";
+            origin_stats.kingdom = "neutral_animals";
             origin_stats.setBaseStats(500, 30, 60, 20, 0, 100, 0);
             origin_stats.nameLocale = "Fairy_Foxes";
             //origin_stats.nameTemplate = "fairy_fox_name";
             origin_stats.icon = "iconFairy_Fox";
+            origin_stats.race = "fairy_fox";
             origin_stats.texture_path = "t_fairy_fox";
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
         }
