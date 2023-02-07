@@ -20,7 +20,7 @@ namespace Cultivation_Way.Content
         private static void add_animals()
         {
             ActorStats origin_stats;
-            CW_ActorStats rooster = CW_Library_Manager.instance.units.clone("rooster", "chicken");
+            CW_ActorStats rooster = CW_Library_Manager.instance.units.get("rooster");
             rooster.origin_stats.nameLocale = "Rooster";
             rooster.origin_stats.nameTemplate = "iconRooster";
             CW_ActorStats deer = CW_Library_Manager.instance.units.clone("deer", "hyena");
