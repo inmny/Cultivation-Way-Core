@@ -460,7 +460,14 @@ namespace Cultivation_Way.Content
 
             __sim_city_info_elm.info = cw_wt.prefab_city.transform.Find("info").gameObject;
             __sim_city_info_elm.object_name = cw_wt.prefab_city.transform.Find("bg/title").GetComponent<Text>();
-            __sim_city_info_elm.banner = Instantiate(NCMS.Utils.GameObjects.FindEvenInactive("PrefabBanner").gameObject, __sim_city_info_elm.transform).GetComponent<BannerLoader>();
+            try
+            {
+                __sim_city_info_elm.banner = Instantiate(NCMS.Utils.GameObjects.FindEvenInactive("PrefabBanner").gameObject, __sim_city_info_elm.transform).GetComponent<BannerLoader>();
+            }
+            catch (NullReferenceException)
+            {
+                __sim_city_info_elm.banner = Instantiate(Resources.FindObjectsOfTypeAll<BannerLoader>()[0].gameObject, __sim_city_info_elm.transform).GetComponent<BannerLoader>();
+            }
             __sim_city_info_elm.banner.transform.localScale = new Vector3(1.3f, 1.3f);
             __sim_city_info_elm.banner.transform.localPosition = new Vector3(-85f, 0f);
 
