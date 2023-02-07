@@ -44,6 +44,7 @@ namespace Cultivation_Way.Content
         private GameObject level_setting_prefab;
         private static W_Content_WindowCultisysSetting wcs;
         private bool initialized = false;
+        private bool first_open = true;
         internal static void init()
         {
             ScrollWindow scroll_window = GameObject.Instantiate(Resources.Load<ScrollWindow>("windows/empty"), CanvasMain.instance.transformWindows);
@@ -155,6 +156,7 @@ namespace Cultivation_Way.Content
         void OnEnable()
         {
             if (!initialized) return;
+            if (first_open) addition_init();
             if (string.IsNullOrEmpty(cur_cultisys))
             {
                 cur_cultisys = "immortal";
@@ -168,6 +170,35 @@ namespace Cultivation_Way.Content
                 Debug.Log("Not found " + cur_cultisys + " now");
             }
         }
+
+        private void addition_init()
+        {
+            first_open = false;
+            List<CW_Asset_CultiSys> cultisys_list = CW_Library_Manager.instance.cultisys.list;
+            int i;
+            for (i = 0; i < cultisys_list.Count; i++)
+            {
+                GameObject cultisys_switch = new GameObject("switch_to_" + cultisys_list[i].id);
+                GameObject button = new GameObject("Button", typeof(Image), typeof(Button), typeof(TipButton));
+                cultisys_switch.transform.SetParent(this.transform.Find("Background"));
+                button.transform.SetParent(cultisys_switch.transform);
+
+                cultisys_switch.transform.localPosition = new Vector3(150, 100 - i * 40);
+                button.transform.localScale = new Vector3(1, 1);
+
+                button.GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/" + cultisys_list[i].sprite_name);
+
+                string cultisys_id = cultisys_list[i].id;
+                button.GetComponent<TipButton>().textOnClick = LocalizedTextManager.getText("cultisys_name_setting").Replace("$cultisys_name$", LocalizedTextManager.getText("CW_cultisys_" + cultisys_id));
+
+                Button button_button = button.GetComponent<Button>();
+                button_button.onClick.AddListener(new UnityEngine.Events.UnityAction(() =>
+                {
+                    this.switch_cultisys(cultisys_id);
+                }));
+            }
+        }
+
         void OnDisable()
         {
             clear();
