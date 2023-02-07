@@ -142,7 +142,8 @@ namespace Cultivation_Way.Content
             add_yao("rabbit");      // 兔
             add_yao("rat");         // 鼠
             add_yao("ratKing");     // 鼠王
-            //add_yao("reindeer");  // 鹿
+            add_yao("deer");        // 鹿
+            add_yao("rooster");     // 公鸡
             add_yao("rhino");       // 犀牛
             add_yao("sheep");       // 羊
             add_yao("snake");       // 蛇
