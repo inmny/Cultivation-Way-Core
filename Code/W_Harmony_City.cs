@@ -256,7 +256,7 @@ namespace Cultivation_Way.Content.Harmony
                 // 与另一方不同，且性别不同，属于同一类生物
                 // 没有感染
                 // 年龄超过初始最大生命的12%
-                if (actor.fast_data.alive && !(actor == actor_to_ignore) && (actor_to_ignore==null || (actor.fast_data.gender != actor_to_ignore.fast_data.gender && actor.stats.id == actor_to_ignore.stats.id))&& !actor.haveTrait("plague") && actor.fast_data.age > actor.stats.maxAge * 18 / 150)
+                if (actor.fast_data.alive && !(actor == actor_to_ignore) && (actor_to_ignore==null || (actor.fast_data.gender != actor_to_ignore.fast_data.gender && actor.stats.id == actor_to_ignore.stats.id))&& !actor.haveTrait("plague") && actor.fast_data.age >= 18)
                 {
                     return actor;
                 }
