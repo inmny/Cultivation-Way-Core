@@ -1376,6 +1376,7 @@
     <None Include="GameResources\actors\races\eastern_human\unit_male_1\sprites.json" />
     <None Include="GameResources\actors\races\eastern_human\unit_special\sprites.json" />
     <None Include="GameResources\actors\races\eastern_human\unit_warrior_1\sprites.json" />
+    <None Include="GameResources\actors\t_horse\sprites.json" />
     <None Include="GameResources\actors\yaos\t_bear_yao\sprites.json" />
     <None Include="GameResources\actors\yaos\t_buffalo_yao\sprites.json" />
     <None Include="GameResources\actors\yaos\t_cat_yao\sprites.json" />

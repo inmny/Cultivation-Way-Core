@@ -15,10 +15,22 @@ namespace Cultivation_Way.Content
         {
             add_wakan_tide_trigger();
         }
+        internal static void add_world_settings()
+        {
+            add_cultisys_name_setting();
+        }
+
+        private static void add_cultisys_name_setting()
+        {
+            W_Content_WindowWorldLaw.add_world_setting("cultisys_setting", "iconCultiSys", new UnityEngine.Vector3(0.6f, 0.75f), CW_WorldLaw_Type.World_Setting, delegate
+            {
+                ScrollWindow.showWindow("cultisys_setting");
+            });
+        }
 
         private static void add_wakan_tide_trigger()
         {
-            add_law(wakan_tide_trigger, true, CW_WorldLaw_Type.World_Setting);
+            add_law(wakan_tide_trigger, true, CW_WorldLaw_Type.World_Option);
         }
         private static void add_law(string id, bool default_val, CW_WorldLaw_Type type)
         {

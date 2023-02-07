@@ -41,6 +41,7 @@ namespace Cultivation_Way.Content
         {
             W_Content_WindowWorldLaw.init();
             W_Content_WorldLaws.add_world_laws();
+            W_Content_WorldLaws.add_world_settings();
             MapBox.instance.worldLaws.check();
         }
 
