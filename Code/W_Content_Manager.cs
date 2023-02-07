@@ -13,7 +13,6 @@ namespace Cultivation_Way.Content
             add_harmony();
             W_Content_Helper.init();
             add_localized_text();
-            others_init();
             add_actors();
             add_buildings();
             add_cultisys();
@@ -34,6 +33,7 @@ namespace Cultivation_Way.Content
             add_words_libraries();
             add_name_generators();
 
+            others_init();
             create_tab();
         }
 
