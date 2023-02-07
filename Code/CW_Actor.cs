@@ -25,7 +25,8 @@ namespace Cultivation_Way
         internal float default_spell_timer = 1f;
         internal float s_spell_seconds = 1f;
         internal float __battle_timer = 0f;
-        private static List<string> _status_effects_to_remove = new List<string>();
+        private static List<string> __status_effects_to_remove = new List<string>();
+        private static List<City> __tmp_city_list = new List<City>();
         /// <summary>
         /// 仅提供高效访问，待权限开放后删除
         /// </summary>
@@ -119,7 +120,23 @@ namespace Cultivation_Way
             }
             new_one.takeItems(this, new_one.stats.take_items_ignore_range_weapons);
             this.killHimself(true, AttackType.GrowUp, false, false);
-            
+            if (new_one.city == null)
+            {
+                __tmp_city_list.Clear();
+                foreach(City city in MapBox.instance.citiesList)
+                {
+                    CW_CityData cw_city_data = (CW_CityData)CW_City.get_data(city);
+                    if (cw_city_data.race != "yao") continue;
+                    __tmp_city_list.Add(city);
+                    if(cw_city_data.most_unit_id == new_one.stats.id)
+                    {
+                        city.addNewUnit(new_one, true);
+                        return;
+                    }
+                }
+                if (__tmp_city_list.Count == 0) return;
+                if(Toolbox.randomChance(0.8f)) __tmp_city_list.GetRandom().addNewUnit(new_one);
+            }
         }
         /// <summary>
         /// 是否处在战斗状态
@@ -217,7 +234,7 @@ namespace Cultivation_Way
         internal void update_status_effects(float elapsed)
         {
             if (this.status_effects == null || this.status_effects.Count==0) return;
-            _status_effects_to_remove.Clear();
+            __status_effects_to_remove.Clear();
             string last_effect_id = "null";
             try
             {
@@ -228,7 +245,7 @@ namespace Cultivation_Way
                     
                     if (status_effect.finished)
                     {
-                        _status_effects_to_remove.Add(status_effect.status_asset.id);
+                        __status_effects_to_remove.Add(status_effect.status_asset.id);
                         
                     }
                 }
@@ -236,9 +253,9 @@ namespace Cultivation_Way
             {
                 MonoBehaviour.print(string.Format("Last effect '{0}' cause dict modified", last_effect_id));
             }
-            if (_status_effects_to_remove.Count > 0)
+            if (__status_effects_to_remove.Count > 0)
             {
-                foreach (string status_effect_to_remove in _status_effects_to_remove)
+                foreach (string status_effect_to_remove in __status_effects_to_remove)
                 {
                     status_effects.Remove(status_effect_to_remove);
                 }
