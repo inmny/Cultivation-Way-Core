@@ -22,7 +22,7 @@ namespace Cultivation_Way.Content
             ActorStats origin_stats;
             CW_ActorStats rooster = CW_Library_Manager.instance.units.get("rooster");
             origin_stats = rooster.origin_stats;
-            origin_stats.nameLocale = "Rooster";
+            origin_stats.nameLocale = "Roosters";
             origin_stats.icon = "iconRooster";
             origin_stats.texture_path = "t_rooster";
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
