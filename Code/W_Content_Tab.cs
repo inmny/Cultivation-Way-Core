@@ -14,6 +14,7 @@ namespace Cultivation_Way.Content
     {
         INFO,
         TOOL,
+        RACE,
         ACTOR,
         BUILDING,
         BOSS,
@@ -84,6 +85,7 @@ namespace Cultivation_Way.Content
             buttons_to_apply = new Dictionary<CW_Tab_Button_Type, List<PowerButton>>();
             buttons_to_apply[CW_Tab_Button_Type.INFO] = new List<PowerButton>();
             buttons_to_apply[CW_Tab_Button_Type.TOOL] = new List<PowerButton>();
+            buttons_to_apply[CW_Tab_Button_Type.RACE] = new List<PowerButton>();
             buttons_to_apply[CW_Tab_Button_Type.ACTOR] = new List<PowerButton>();
             buttons_to_apply[CW_Tab_Button_Type.BUILDING] = new List<PowerButton>();
             buttons_to_apply[CW_Tab_Button_Type.BOSS] = new List<PowerButton>();
@@ -169,15 +171,73 @@ namespace Cultivation_Way.Content
                     "spawnEastern_Human", "ui/Icons/iconEastern_Humans",
                     null, ButtonType.GodPower
                 ),
-                CW_Tab_Button_Type.ACTOR
+                CW_Tab_Button_Type.RACE
                 );
             add_button(
                 create_button(
                     "spawnYao", "ui/Icons/iconYaos",
                     null, ButtonType.GodPower
                 ),
+                CW_Tab_Button_Type.RACE
+                );
+            #region 更多动物
+            add_button(
+                create_button(
+                    "spawnDeer", "ui/Icons/iconDeer",
+                    null, ButtonType.GodPower
+                ),
                 CW_Tab_Button_Type.ACTOR
                 );
+            add_button(
+                create_button(
+                    "spawnHorse", "ui/Icons/iconHorse",
+                    null, ButtonType.GodPower
+                ),
+                CW_Tab_Button_Type.ACTOR
+                );
+            add_button(
+                create_button(
+                    "spawnLion", "ui/Icons/iconLion",
+                    null, ButtonType.GodPower
+                ),
+                CW_Tab_Button_Type.ACTOR
+                );
+            add_button(
+                create_button(
+                    "spawnTiger", "ui/Icons/iconTiger",
+                    null, ButtonType.GodPower
+                ),
+                CW_Tab_Button_Type.ACTOR
+                );
+            add_button(
+                create_button(
+                    "spawnPig", "ui/Icons/iconPig",
+                    null, ButtonType.GodPower
+                ),
+                CW_Tab_Button_Type.ACTOR
+                );
+            add_button(
+                create_button(
+                    "spawnWild_Boar", "ui/Icons/iconWild_Boar",
+                    null, ButtonType.GodPower
+                ),
+                CW_Tab_Button_Type.ACTOR
+                );
+            add_button(
+                create_button(
+                    "spawnRooster", "ui/Icons/iconRooster",
+                    null, ButtonType.GodPower
+                ),
+                CW_Tab_Button_Type.ACTOR
+                );
+            add_button(
+                create_button(
+                    "spawnFairy_Fox", "ui/Icons/iconFairy_Fox",
+                    null, ButtonType.GodPower
+                ),
+                CW_Tab_Button_Type.ACTOR
+                );
+            #endregion
         }
         internal static PowerButton create_button(string id, string sprite_path, UnityAction action, ButtonType button_type = ButtonType.Click)
         {

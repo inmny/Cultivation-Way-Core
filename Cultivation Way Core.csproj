@@ -445,9 +445,9 @@
     <Content Include="GameResources\actors\t_wild_boar\swim_0.png" />
     <Content Include="GameResources\actors\t_wild_boar\swim_1.png" />
     <Content Include="GameResources\actors\t_wild_boar\swim_2.png" />
-    <Content Include="GameResources\actors\t_wild_boar\walk-0.png" />
-    <Content Include="GameResources\actors\t_wild_boar\walk-1.png" />
-    <Content Include="GameResources\actors\t_wild_boar\walk-2.png" />
+    <Content Include="GameResources\actors\t_wild_boar\walk_0.png" />
+    <Content Include="GameResources\actors\t_wild_boar\walk_1.png" />
+    <Content Include="GameResources\actors\t_wild_boar\walk_2.png" />
     <Content Include="GameResources\actors\yaos\t_bear_yao\swim_0.png" />
     <Content Include="GameResources\actors\yaos\t_bear_yao\swim_1.png" />
     <Content Include="GameResources\actors\yaos\t_bear_yao\swim_2.png" />

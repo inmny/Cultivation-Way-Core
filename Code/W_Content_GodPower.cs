@@ -15,11 +15,90 @@ namespace Cultivation_Way.Content
     {
         internal static void add_god_powers()
         {
+            add_spawn_animals();
             add_spawn_EasternHuman();
             add_spawn_Yao();
             add_wakan_check();
             add_wakan_increase();
             add_wakan_decrease();
+        }
+
+        private static void add_spawn_animals()
+        {
+            GodPower power;
+            power = AssetManager.powers.clone("spawnDeer", "_spawnActor");
+            power.name = "Deers";
+            power.spawnSound = "spawnHuman";
+            power.actorStatsId = "deer";
+            power.click_action = new PowerActionWithID((WorldTile pTile, string pPower)
+                                =>
+            {
+                return spawnUnit(pTile, pPower);
+            });
+            power = AssetManager.powers.clone("spawnHorse", "_spawnActor");
+            power.name = "Horses";
+            power.spawnSound = "spawnHuman";
+            power.actorStatsId = "horse";
+            power.click_action = new PowerActionWithID((WorldTile pTile, string pPower)
+                                =>
+            {
+                return spawnUnit(pTile, pPower);
+            });
+            power = AssetManager.powers.clone("spawnLion", "_spawnActor");
+            power.name = "Lions";
+            power.spawnSound = "spawnHuman";
+            power.actorStatsId = "lion";
+            power.click_action = new PowerActionWithID((WorldTile pTile, string pPower)
+                                =>
+            {
+                return spawnUnit(pTile, pPower);
+            });
+            power = AssetManager.powers.clone("spawnTiger", "_spawnActor");
+            power.name = "Tigers";
+            power.spawnSound = "spawnHuman";
+            power.actorStatsId = "tiger";
+            power.click_action = new PowerActionWithID((WorldTile pTile, string pPower)
+                                =>
+            {
+                return spawnUnit(pTile, pPower);
+            });
+            power = AssetManager.powers.clone("spawnPig", "_spawnActor");
+            power.name = "Pigs";
+            power.spawnSound = "spawnHuman";
+            power.actorStatsId = "pig";
+            power.click_action = new PowerActionWithID((WorldTile pTile, string pPower)
+                                =>
+            {
+                return spawnUnit(pTile, pPower);
+            });
+            power = AssetManager.powers.clone("spawnWild_Boar", "_spawnActor");
+            power.name = "Wild_Boars";
+            power.spawnSound = "spawnHuman";
+            power.actorStatsId = "wild_boar";
+            power.click_action = new PowerActionWithID((WorldTile pTile, string pPower)
+                                =>
+            {
+                return spawnUnit(pTile, pPower);
+            });
+            power = AssetManager.powers.clone("spawnRooster", "_spawnActor");
+            power.name = "Roosters";
+            power.spawnSound = "spawnHuman";
+            power.actorStatsId = "rooster";
+            power.click_action = new PowerActionWithID((WorldTile pTile, string pPower)
+                                =>
+            {
+                return spawnUnit(pTile, pPower);
+            });
+            power = AssetManager.powers.clone("spawnFairy_Fox", "_spawnActor");
+            power.name = "Fairy_Foxes";
+            power.spawnSound = "spawnHuman";
+            power.actorStatsId = "fairy_fox";
+            power.click_action = new PowerActionWithID((WorldTile pTile, string pPower)
+                                =>
+            {
+                return spawnUnit(pTile, pPower);
+            });
+
         }
 
         private static void add_wakan_check()
