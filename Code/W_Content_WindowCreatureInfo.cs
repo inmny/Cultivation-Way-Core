@@ -357,7 +357,7 @@ namespace Cultivation_Way.Content
             cw_wci.button_cultisys.force_tooltip_position = true;
             cw_wci.button_special_body.force_tooltip_position = true;
 
-            cw_wci.button_element.is_stats = true;
+            //cw_wci.button_element.is_stats = true;
             cw_wci.button_cultibook.is_stats = true;
             cw_wci.button_cultisys.is_stats = true;
             cw_wci.button_special_body.is_stats = true;
@@ -622,10 +622,11 @@ namespace Cultivation_Way.Content
             StringBuilder value = new StringBuilder();
 
             int num = 0;
-            cw_actor.cw_data.element.fill_string_builder(description, value);
-            button_element.load(cw_actor.cw_data.element.comp_type(), null, "iconElement", "normal");
-            button_element.stats_description = description.ToString();
-            button_element.stats_value = value.ToString();
+            NCMS.Utils.Localization.Set("cw_element_description", cw_actor.cw_data.element.__to_string());
+            //cw_actor.cw_data.element.fill_string_builder(description, value);
+            button_element.load(cw_actor.cw_data.element.comp_type(), "cw_element_description", "iconElement", "normal");
+            //button_element.stats_description = description.ToString();
+            //button_element.stats_value = value.ToString();
             set_position_on_more_info_field(button_element.GetComponent<RectTransform>(), num++);
 
 

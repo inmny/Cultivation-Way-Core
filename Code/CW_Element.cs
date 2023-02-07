@@ -280,13 +280,22 @@ namespace Cultivation_Way
         {
             throw new NotImplementedException();
         }
+        private const int stats_length = 15;
         internal string __to_string()
         {
             StringBuilder string_builder = new StringBuilder();
-            int i = 0;
+            int i = 0; int j;
             for (i = 0; i < base_elements.Length; i++)
             {
-                string_builder.AppendLine("$base_element_"+i+"$\t" + base_elements[i]+"%\t");
+                string description = LocalizedTextManager.getText("$base_element_" + i + "$");
+                string value = base_elements[i] + "%\n";
+                j = stats_length - description.Length - value.Length*2;
+                string_builder.Append(description);
+                for(;j > 0; j--)
+                {
+                    string_builder.Append(" ");
+                }
+                string_builder.Append(value);
             }
             return string_builder.ToString();
         }
