@@ -469,7 +469,7 @@ namespace Cultivation_Way.Content
 
             if (cw_actor.stats.inspect_children) showStat("creature_statistics_children", cw_actor.fast_data.children);
 
-
+            if (cw_actor.stats.unit) showStat("creature_data_gender", cw_actor.fast_data.gender == ActorGender.Female ? LocalizedTextManager.getText("creature_gender_female") : LocalizedTextManager.getText("creature_gender_male"));
             if (cw_actor.stats.isBoat)
             {
                 Boat component = cw_actor.GetComponent<Boat>();
