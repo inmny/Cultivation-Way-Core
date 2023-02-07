@@ -12,8 +12,49 @@ namespace Cultivation_Way.Content
     {
         internal static void add_actors()
         {
+            add_animals();
             add_eastern_humans();
             add_yaos();
+        }
+
+        private static void add_animals()
+        {
+            ActorStats origin_stats;
+            CW_ActorStats deer = CW_Library_Manager.instance.units.clone("deer", "hyena");
+            origin_stats = deer.origin_stats;
+            //origin_stats.nameTemplate = "deer_name";  //TODO
+            origin_stats.nameLocale = "Deers";
+            origin_stats.diet_meat = false;
+            origin_stats.diet_grass = true;
+            origin_stats.diet_berries = true;
+            origin_stats.job = "animal";
+            CW_ActorStats lion = CW_Library_Manager.instance.units.clone("lion", "bear");
+            origin_stats = lion.origin_stats;
+            //origin_stats.nameTemplate = "lion_name";
+            origin_stats.nameLocale = "Lions";
+            CW_ActorStats tiger = CW_Library_Manager.instance.units.clone("tiger", "bear");
+            origin_stats = tiger.origin_stats;
+            //origin_stats.nameTemplate = "tiger_name";
+            origin_stats.nameLocale = "Tigers";
+            CW_ActorStats pig = CW_Library_Manager.instance.units.clone("pig", "cow");
+            origin_stats= pig.origin_stats;
+            //origin_stats.nameTemplate = "pig_name";
+            origin_stats.nameLocale = "Pigs";
+            CW_ActorStats horse = CW_Library_Manager.instance.units.clone("horse", "cow");
+            origin_stats = horse.origin_stats;
+            //origin_stats.nameTemplate = "horse";
+            origin_stats.nameLocale = "Horses";
+            CW_ActorStats fairy_fox = CW_Library_Manager.instance.units.clone("fairy_fox", "fox");
+            fairy_fox.culti_velo = 1.5f;
+            origin_stats = fairy_fox.origin_stats;
+            origin_stats.maxAge = 500;
+            origin_stats.needFood = false;
+            fairy_fox.cw_base_stats.wakan = 100;
+            fairy_fox.cw_base_stats.wakan_regen = 10;
+            origin_stats.job = "animal_herb";
+            origin_stats.setBaseStats(500, 30, 60, 20, 0, 100, 0);
+            origin_stats.nameLocale = "Fairy Foxes";
+            //origin_stats.nameTemplate = "fairy_fox_name";
         }
 
         private static void add_yaos()
@@ -46,6 +87,7 @@ namespace Cultivation_Way.Content
             addColorSet(origin_stats, "default", "#FFC984", "#543E2C");
             CW_Library_Manager.instance.units.add(_yao);
             add_yao("bear");        // 熊
+            add_yao("buffalo");     // 野牛
             add_yao("cat");         // 猫
             add_yao("chicken");     // 鸡
             add_yao("cow");         // 牛
