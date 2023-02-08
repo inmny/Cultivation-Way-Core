@@ -278,7 +278,7 @@ namespace Cultivation_Way.Content.Harmony
                 // actor.fast_data = (ActorStatus)CW_Actor.get_data(actor);
                 actor.transform.position = pTile.posV3;
                 CW_Actor.func_spawnOn(actor, pTile, pZHeight);
-                CW_Actor.func_create(actor);
+                W_Actor.func_create(actor);
                 actor.fast_targets_to_ignore = CW_Actor.get_targets_to_ignore(actor);
             }
             else
