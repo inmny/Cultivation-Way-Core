@@ -129,14 +129,21 @@ namespace Cultivation_Way
                     CW_CityData cw_city_data = (CW_CityData)CW_City.get_data(city);
                     if (cw_city_data.race != "yao") continue;
                     __tmp_city_list.Add(city);
-                    if(cw_city_data.most_unit_id == new_one.stats.id)
+                    if(cw_city_data.most_unit_id == new_one.stats.id && new_one.currentTile.isSameIsland(city.getTile()))
                     {
                         city.addNewUnit(new_one, true);
                         return;
                     }
                 }
                 if (__tmp_city_list.Count == 0) return;
-                if(Toolbox.randomChance(0.8f)) __tmp_city_list.GetRandom().addNewUnit(new_one);
+                if(Toolbox.randomChance(0.8f))
+                {
+                    City city_to_join = __tmp_city_list.GetRandom();
+                    if (new_one.currentTile.isSameIsland(city_to_join.getTile()))
+                    {
+                        __tmp_city_list.GetRandom().addNewUnit(new_one);
+                    }
+                }
             }
         }
         /// <summary>
