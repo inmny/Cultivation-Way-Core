@@ -110,6 +110,10 @@ namespace Cultivation_Way{
             }
             
         }
+        void OnDisable()
+        {
+            W_Content_WindowCultisysSetting.save_to_file();
+        }
         private void gc()
         {
             GC.Collect();

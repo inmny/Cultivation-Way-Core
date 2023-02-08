@@ -31,7 +31,7 @@ namespace Cultivation_Way.Content
         }
         internal void set_level_name(string name)
         {
-            NCMS.Utils.Localization.Set("cultisys_" + cultisys_id + "_" + level.text.Replace("境",""), name);
+            W_Content_WindowCultisysSetting.set_localized("cultisys_" + cultisys_id + "_" + level.text.Replace("境",""), name);
         }
     }
     internal class W_Content_WindowCultisysSetting : MonoBehaviour
@@ -44,6 +44,8 @@ namespace Cultivation_Way.Content
         private Transform content_transform;
         private GameObject level_setting_prefab;
         private static W_Content_WindowCultisysSetting wcs;
+        private static string path_to_save = Application.streamingAssetsPath + "/cw/cw_cultisys_name.json";
+        private Dictionary<string, string> changed_name = new Dictionary<string, string>();
         private bool initialized = false;
         private bool first_open = true;
         internal static void init()
@@ -56,6 +58,7 @@ namespace Cultivation_Way.Content
             NCMS.Utils.Windows.AllWindows[scroll_window.name] = scroll_window;
 
             wcs = scroll_window.gameObject.AddComponent<W_Content_WindowCultisysSetting>();
+            wcs.load_from_file();
             wcs.transform.Find("Background/Scroll View").gameObject.SetActive(true);
             wcs.content_transform = wcs.transform.Find("Background/Scroll View/Viewport/Content");
             wcs.gameObject.SetActive(false);
@@ -88,8 +91,8 @@ namespace Cultivation_Way.Content
 
             GameObject setting_description = new GameObject("Description", typeof(Text));
             setting_description.transform.SetParent(wcs.content_transform);
-            setting_description.GetComponent<RectTransform>().sizeDelta = new Vector2(120, 100);
-            setting_description.GetComponent<Text>().text = "调整仅本次游戏有效";
+            setting_description.GetComponent<RectTransform>().sizeDelta = new Vector2(162, 100);
+            setting_description.GetComponent<Text>().text = "调整始终有效\n如需恢复请删除\nworldbox_Data/StreamingAssets/cw/cw_cultisys_name.json";
             wcs.description = setting_description.GetComponent<Text>();
             wcs.description.alignment = TextAnchor.UpperCenter;
             wcs.description.font = W_Content_Helper.font_STKaiti;
@@ -236,7 +239,7 @@ namespace Cultivation_Way.Content
             RectTransform rect = this.content_transform.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(rect.sizeDelta.x, 80 + (this.level_settings==null?0:this.level_settings.Length * 30));
             this.content_transform.Find("name_setting").localPosition = new Vector3(130, -17.5f);
-            this.description.transform.localPosition = new Vector3(130, -90f);
+            this.description.transform.localPosition = new Vector3(130, -78f);
         }
         private void switch_cultisys(string new_id)
         {
@@ -275,7 +278,30 @@ namespace Cultivation_Way.Content
         private void set_cultisys_name(string new_name)
         {
             if (string.IsNullOrEmpty(cur_cultisys)) return;
-            NCMS.Utils.Localization.Set("CW_cultisys_" + cur_cultisys, new_name);
+            set_localized("CW_cultisys_" + cur_cultisys, new_name);
+        }
+        internal static void set_localized(string key, string text)
+        {
+            NCMS.Utils.Localization.Set(key, text);
+            wcs.changed_name[key] = text;
+        }
+        private void load_from_file()
+        {
+            if (!System.IO.File.Exists(path_to_save)) return;
+            wcs.changed_name = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string,string>>(System.IO.File.ReadAllText(path_to_save));
+            if (wcs.changed_name == null)
+            {
+                wcs.changed_name = new Dictionary<string, string>();
+                return;
+            }
+            foreach (string key in wcs.changed_name.Keys)
+            {
+                NCMS.Utils.Localization.Set(key, wcs.changed_name[key]);
+            }
+        }
+        internal static void save_to_file()
+        {
+            System.IO.File.WriteAllText(path_to_save, Newtonsoft.Json.JsonConvert.SerializeObject(wcs.changed_name));
         }
     }
 }
