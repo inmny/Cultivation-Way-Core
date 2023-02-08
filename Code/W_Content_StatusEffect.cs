@@ -416,12 +416,7 @@ namespace Cultivation_Way.Content
             CW_Actor actor = (CW_Actor)_object;
 
             if (actor.stats.race != "yao") return;
-            CW_Actor.set_actorAnimationData(actor, ActorAnimationLoader.loadAnimationUnit("actors/" + actor.stats.texture_path, actor.stats));
-            //CW_Actor.func_setBodySprite(actor, Resources.Load<Sprite>("actors/" + actor.stats.texture_path + "/walk_0"));
-            //bool __is_moving = CW_Actor.get_is_moving(actor);
-            //if (!__is_moving) CW_Actor.set_is_moving(actor, true);
-            CW_Actor.func_updateAnimation(actor, 0, true);
-            //if (!__is_moving) CW_Actor.set_is_moving(actor, false);
+            CW_Actor.func_loadTexture(actor);
         }
         private static void brutalization_on_update(CW_StatusEffectData status_effect, BaseSimObject _object)
         {

@@ -75,6 +75,7 @@ namespace Cultivation_Way
         internal static Action<Actor, bool> set_is_moving = CW_ReflectionHelper.create_setter<Actor, bool>("is_moving");
         #endregion
         #region Func
+        internal static Action<Actor> func_loadTexture = (Action<Actor>)CW_ReflectionHelper.get_method<Actor>("loadTexture");
         public static Action<Actor, Kingdom> func_setKingdom = (Action<Actor, Kingdom>)CW_ReflectionHelper.get_method<Actor>("setKingdom");
         public static Action<Actor, Sprite> func_setBodySprite = (Action<Actor, Sprite>)CW_ReflectionHelper.get_method<Actor>("setBodySprite");
         public static Action<Actor, WorldTile, float> func_spawnOn = (Action<Actor, WorldTile, float>)CW_ReflectionHelper.get_method<Actor>("spawnOn");
