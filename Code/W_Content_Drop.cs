@@ -49,6 +49,7 @@ namespace Cultivation_Way.Content
             {
                 chunk.wakan_level = 3;
             }
+            chunk.wakan = UnityEngine.Mathf.Max(1, chunk.wakan);
             chunk.update(true);
             Harmony.W_Harmony_MapMode.force_update();
         }
