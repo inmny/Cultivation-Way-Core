@@ -1336,6 +1336,7 @@
     <Content Include="GameResources\ui\cw_window\sim_info_bg.png" />
     <Content Include="GameResources\ui\cw_window\windowInnerSliced.png" />
     <Content Include="GameResources\ui\cw_window\windowNamePlate.png" />
+    <Content Include="GameResources\ui\Icons\iconNo_Wakan_Spread.png" />
     <Content Include="GameResources\ui\Icons\iconCheckElement_Off.png" />
     <Content Include="GameResources\ui\Icons\iconCheckElement_On.png" />
     <Content Include="GameResources\ui\Icons\iconClan.png" />

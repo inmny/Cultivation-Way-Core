@@ -62,6 +62,8 @@
   "cultisys_setting_description": "",
   "wakan_tide_trigger_title": "灵气潮汐",
   "wakan_tide_trigger_description": "禁用此项后，灵气将逐渐枯竭",
+  "no_wakan_spread_title": "禁止灵气扩散",
+  "no_wakan_spread_description": "启用此项后，灵气将不会扩散",
   "creature_data_gender": "性别",
   "creature_gender_female": "女",
   "creature_gender_male": "男",

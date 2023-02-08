@@ -57,6 +57,7 @@ namespace Cultivation_Way
         }
         private float __comp_delta_wakan(float wakan_1, float wakan_2)
         {
+            if (Content.W_Content_WorldLaws.is_no_wakan_spread_working()) return 0;
             return Mathf.Sign(wakan_2-wakan_1) * Mathf.Sqrt(Mathf.Abs(wakan_2 - wakan_1)) * Others.CW_Constants.chunk_wakan_spread_grad;
         }
         internal void update()

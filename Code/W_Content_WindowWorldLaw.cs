@@ -114,14 +114,14 @@ namespace Cultivation_Way.Content
             setting_button.transform.localPosition = get_button_pos(grid_transform.Find("Grid").childCount - 1);
             setting_button.SetActive(true);
         }
-        internal static void add_world_law(string id, bool default_val, CW_WorldLaw_Type type)
+        internal static void add_world_law(string id, bool default_val, string icon_name, CW_WorldLaw_Type type)
         {
             Transform grid_transform = grids[(int)type];
             GameObject law_button = GameObject.Instantiate(law_button_prefab, grid_transform.Find("Grid"));
             set_grid_size(grid_transform, grid_transform.Find("Grid").childCount - 1);
             law_button.name = id;
             law_button.transform.localPosition = get_button_pos(grid_transform.Find("Grid").childCount-1);
-            law_button.GetComponent<WorldLawElement>().icon.sprite = Resources.Load<Sprite>("ui/Icons/iconCheckWakan");
+            law_button.GetComponent<WorldLawElement>().icon.sprite = Resources.Load<Sprite>("ui/Icons/"+ icon_name);
             law_button.SetActive(true);
         }
         private const float start_x = -74f;
