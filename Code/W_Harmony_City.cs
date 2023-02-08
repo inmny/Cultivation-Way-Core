@@ -103,7 +103,7 @@ namespace Cultivation_Way.Content.Harmony
                     min_val = city_unit_count[key];
                     cw_data.least_unit_id = key;
                 }
-                else if (city_unit_count[key] > max_val)
+                if (city_unit_count[key] > max_val)
                 {
                     max_val = city_unit_count[key];
                     cw_data.most_unit_id = key;
