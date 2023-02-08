@@ -10,7 +10,8 @@ namespace Cultivation_Way.Content
     {
         internal static void add_name_generators()
         {
-            add_intelligent_names();
+            add_eh_names();
+            add_yao_names();
             add_city_names();
             add_kingdom_names();
             add_culture_names();
@@ -206,7 +207,7 @@ namespace Cultivation_Way.Content
             CW_Library_Manager.instance.name_generators.add(name_generator);
         }
 
-        private static void add_intelligent_names()
+        private static void add_eh_names()
         {
             CW_Template_Elm family_name = new CW_Template_Elm()
             {
@@ -241,6 +242,35 @@ namespace Cultivation_Way.Content
             CW_Asset_NameGenerator name_generator = new CW_Asset_NameGenerator("eastern_human_name");
             name_generator.add_template(name_template);
             CW_Library_Manager.instance.name_generators.add(name_generator);
+        }
+
+        private static void add_yao_names()
+        {
+            foreach(string yao_id in W_Content_Helper.yaos)
+            {
+                string name_template_id = AssetManager.unitStats.get(yao_id + "_yao").nameTemplate;
+                CW_Template_Elm yao_family_name = new CW_Template_Elm()
+                {
+                    id = "family_name",
+                    words_id = yao_id + "_yao_postfix",
+                    select_from_objects = Actions.CW_NameTemplateActions.must_select
+                };
+                CW_Template_Elm yao_main_name = new CW_Template_Elm()
+                {
+                    id = "main_name",
+                    words_id = "yao_main_name",
+                    select_from_objects = Actions.CW_NameTemplateActions.must_select
+                };
+                CW_Template name_template = new CW_Template();
+                name_template.weight = 1;
+                name_template.id = "default";
+                name_template.format = "{0}{1}";
+                name_template.children.Add(yao_main_name);
+                name_template.children.Add(yao_family_name);
+                CW_Asset_NameGenerator name_generator = new CW_Asset_NameGenerator(name_template_id);
+                name_generator.add_template(name_template);
+                CW_Library_Manager.instance.name_generators.add(name_generator);
+            }
         }
     }
 }

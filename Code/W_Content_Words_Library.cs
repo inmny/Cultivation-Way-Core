@@ -24,6 +24,11 @@ namespace Cultivation_Way.Content
             load_words("S_B_postfix_name", "special_bodies/");
             load_words("S_B_random_main_name", "special_bodies/");
             load_words("kingdom_mottos", "kingdoms/");
+            load_words("yao_main_name", "creatures/");
+            foreach(string yao_id in W_Content_Helper.yaos)
+            {
+                load_words(yao_id + "_yao_postfix", "creatures/");
+            }
         }
         private static void load_words(string id, string dir)
         {
