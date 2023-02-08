@@ -39,6 +39,7 @@ namespace Cultivation_Way.Content
                 AssetManager.buildings.loadSprites(new_building.origin_stats);
             }
             AssetManager.buildings.get("windmill_yao").fundament = new BuildingFundament(2, 2, 1, 0);
+            AssetManager.buildings.get("1windmill_yao").fundament = new BuildingFundament(3, 3, 1, 0);
         }
 
 
