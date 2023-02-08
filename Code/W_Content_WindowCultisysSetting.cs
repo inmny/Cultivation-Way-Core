@@ -301,6 +301,10 @@ namespace Cultivation_Way.Content
         }
         internal static void save_to_file()
         {
+            if (!System.IO.Directory.Exists(Application.streamingAssetsPath + "/cw"))
+            {
+                System.IO.Directory.CreateDirectory(Application.streamingAssetsPath+"/cw");
+            }
             System.IO.File.WriteAllText(path_to_save, Newtonsoft.Json.JsonConvert.SerializeObject(wcs.changed_name));
         }
     }
