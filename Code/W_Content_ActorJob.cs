@@ -15,10 +15,10 @@ namespace Cultivation_Way.Content
         internal static void modify_actor_jobs()
         {
             ActorJob settler = AssetManager.job_actor.get("settler");
-            settler.tasks.Prepend(new TaskContainer<BehaviourActorCondition>
+            settler.tasks = settler.tasks.Prepend(new TaskContainer<BehaviourActorCondition>
             {
                 id = "check_settler_appropriate"
-            });
+            }).ToList();
 
             AssetManager.job_actor.get("animal").addTask("attack_back");
             AssetManager.job_actor.get("animal_herd").addTask("attack_back");

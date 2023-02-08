@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ai;
 using ai.behaviours;
+using UnityEngine;
 
 namespace Cultivation_Way.Content
 {
@@ -18,6 +19,7 @@ namespace Cultivation_Way.Content
             };
             AssetManager.tasks_actor.add(check_settler_appropriate);
             check_settler_appropriate.addBeh(new BehCheckSettler());
+            check_settler_appropriate.addBeh(new BehEndJob());
 
             BehaviourTaskActor attack_back = new BehaviourTaskActor()
             {
@@ -54,11 +56,13 @@ namespace Cultivation_Way.Content
     {
         public override BehResult execute(Actor pObject)
         {
-            if (pObject.stats.race != "yao") return BehResult.Continue;
-            if (pObject.city == null) return BehResult.Continue;
+            if (pObject.stats.race != "yao") return BehResult.Stop;
+            if (pObject.city == null) return BehResult.Stop;
             CW_CityData cw_data = (CW_CityData)CW_City.get_data(pObject.city);
-            if (pObject.stats.id == cw_data.least_unit_id) return BehResult.Continue;
-            return BehResult.Stop;
+            if (pObject.stats.id != cw_data.most_unit_id || cw_data.most_unit_id==cw_data.least_unit_id) return BehResult.Stop;
+
+            //Debug.LogFormat("{0} in {1}, least {2}, most {3}.", pObject.stats.id, cw_data.cityName, cw_data.least_unit_id, cw_data.most_unit_id);
+            return BehResult.Continue;
         }
     }
 }

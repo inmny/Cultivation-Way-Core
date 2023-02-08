@@ -108,8 +108,13 @@ namespace Cultivation_Way.Content.Harmony
                     max_val = city_unit_count[key];
                     cw_data.most_unit_id = key;
                 }
-                
             }
+            /**
+            if(cw_data.most_unit_id == cw_data.least_unit_id)
+            {
+                cw_data.least_unit_id = null;
+            }
+            */
         }
         private static void __city_create(City __instance)
         {
