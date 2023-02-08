@@ -48,7 +48,7 @@ namespace Cultivation_Way{
         public ModState mod_state;
         public World_Data world_data;
         public CW_WorldConfig world_config;
-        private bool initialized = false;
+        internal bool initialized = false;
         private bool mod_state_prepared = false;
         private int last_month;
         void Awake(){

@@ -35,7 +35,7 @@ namespace Cultivation_Way
         }
         internal void Update()
         {
-            if (!initialized)
+            if (!initialized && Main.instance.initialized)
             {
                 load_localized_text(ModState.instance.cur_language);
                 initialize();
