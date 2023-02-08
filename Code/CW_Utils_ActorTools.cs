@@ -18,18 +18,22 @@ namespace Cultivation_Way.Utils
             actor.cw_stats = actor_stats;
             actor.loadStats(actor_stats.origin_stats);
             actor.new_creature = false;
-            actor.cw_cur_stats = new CW_BaseStats(CW_Actor.get_curstats(actor));
             actor.cw_data = cw_data;
             actor.fast_data = origin_status;
             actor.cw_status = cw_data.status;
+            actor.cur_spells = new List<string>();
             actor.setData(origin_status);
+            actor.cw_cur_stats = new CW_BaseStats(CW_Actor.get_curstats(actor));
+            
+            //CW_Actor.set_data(actor, origin_status);
+            //actor.setData(origin_status);
             CW_Actor.set_professionAsset(actor, AssetManager.professions.get(origin_status.profession));
             actor.transform.position = tile.posV3;
             CW_Actor.func_spawnOn(actor, tile, height);
             CW_Actor.func_create(actor);
 
             actor.fast_targets_to_ignore = CW_Actor.get_targets_to_ignore(actor);
-            Cultivation_Way.Content.Harmony.W_Harmony_Actor.__actor_updateStats(actor);
+            //Cultivation_Way.Content.Harmony.W_Harmony_Actor.__actor_updateStats(actor);
 
             if (actor.stats.kingdom != "") CW_Actor.func_setKingdom(actor, MapBox.instance.kingdoms.dict_hidden[actor.stats.kingdom]);
             else

@@ -88,6 +88,7 @@ namespace Cultivation_Way
             {
                 copy.base_elements[i] = this.base_elements[i];
             }
+            copy.type_id = this.type_id;
             return copy;
         }
         public void deepcopy_to(CW_Element element)
@@ -97,6 +98,7 @@ namespace Cultivation_Way
             {
                 element.base_elements[i] = this.base_elements[i];
             }
+            element.type_id = this.type_id;
         }
         /// <summary>
         /// 计算类别，未来将支持自定义算法
@@ -142,7 +144,6 @@ namespace Cultivation_Way
         {
             Library.CW_Asset_Element asset = get_type();
             float promot = asset.promot;
-
             CW_BaseStats combine_bonus = tmp_stats;
             combine_bonus.clear();
             combine_bonus.addStats(asset.bonus_stats);

@@ -62,7 +62,7 @@ namespace Cultivation_Way.Content.Harmony
             // 单独为武道添加的经验获取方式
             if (cw_actor.fast_data.health < cw_actor.cw_cur_stats.base_stats.health && cw_actor.has_cultisys(Others.CW_Constants.cultisys_bushido_tag) && Toolbox.randomChance(Others.CW_Constants.bushido_force_culti_chance*(cw_actor.cw_cur_stats.base_stats.health - cw_actor.fast_data.health) / (cw_actor.cw_cur_stats.base_stats.health * (1+cw_actor.cw_data.cultisys_level[1]))))
             {
-                cw_actor.get_fixed_base_stats().age_bonus--;
+                cw_actor.get_fixed_base_stats().age_bonus-= cw_actor.cw_data.cultisys_level[1]+1;
                 // 允许血量超限
                 cw_actor.fast_data.health += (int)(Others.CW_Constants.bushido_force_culti_co/cw_actor.cw_status.health_level * cw_actor.cw_cur_stats.base_stats.health);
                 cw_actor.check_level_up();
