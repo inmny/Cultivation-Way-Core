@@ -120,6 +120,7 @@ namespace Cultivation_Way
             }
             new_one.takeItems(this, new_one.stats.take_items_ignore_range_weapons);
             this.killHimself(true, AttackType.GrowUp, false, false);
+            new_one.setStatsDirty();
             if (new_one.city == null)
             {
                 __tmp_city_list.Clear();
