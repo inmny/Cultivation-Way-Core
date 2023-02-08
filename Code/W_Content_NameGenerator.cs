@@ -253,7 +253,8 @@ namespace Cultivation_Way.Content
                 {
                     id = "family_name",
                     words_id = yao_id + "_yao_postfix",
-                    select_from_objects = Actions.CW_NameTemplateActions.must_select
+                    select_from_objects = Actions.CW_NameTemplateActions.must_select,
+                    get_part_from_objects = Actions.CW_NameTemplateActions.descend_family_name
                 };
                 CW_Template_Elm yao_main_name = new CW_Template_Elm()
                 {

@@ -121,6 +121,10 @@ namespace Cultivation_Way
             new_one.takeItems(this, new_one.stats.take_items_ignore_range_weapons);
             this.killHimself(true, AttackType.GrowUp, false, false);
             Cultivation_Way.Content.Harmony.W_Harmony_Actor.__actor_updateStats(new_one);
+            if (!string.IsNullOrEmpty(status.firstName))
+            {
+                status.firstName = CW_NameGenerator.gen_name(new_one.stats.nameTemplate, new_one);
+            }
             if (new_one.city == null)
             {
                 __tmp_city_list.Clear();
