@@ -20,6 +20,7 @@ namespace Cultivation_Way.Library
         public int histroy_own_nr;
         public CW_BaseStats stxh_bonus_stats;
         public CW_BaseStats bonus_stats;
+        public CW_Asset_SpecialBody() { }
         public CW_Asset_SpecialBody(string id, string name, string description, string author_name, int level, string[] spells, CW_BaseStats bonus_stats, string author_id)
         {
             this.id = id;
