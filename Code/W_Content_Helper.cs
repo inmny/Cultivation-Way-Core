@@ -13,6 +13,7 @@ namespace Cultivation_Way.Content
         private static Dictionary<string, GameObject> actor_prefabs = new Dictionary<string, GameObject>();
         private static Dictionary<string, Material> color_materials = new Dictionary<string, Material>();
         internal static Font font_STLiti = Font.CreateDynamicFontFromOSFont("STLiti", 18);
+        internal static Font font_STKaiti = Font.CreateDynamicFontFromOSFont("STKaiti", 18);
         private static GameObject building_prefab;
         internal static Transform transformUnits;
         internal static Transform transformCreatures;

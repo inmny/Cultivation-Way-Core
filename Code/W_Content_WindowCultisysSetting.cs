@@ -39,6 +39,7 @@ namespace Cultivation_Way.Content
         private string cur_cultisys;
         private InputField name_input_field;
         private Cultisys_Level_Element[] level_settings;
+        private Text description;
         private Button reset;
         private Transform content_transform;
         private GameObject level_setting_prefab;
@@ -84,6 +85,16 @@ namespace Cultivation_Way.Content
                 wcs.set_cultisys_name(text);
             }));
             wcs.name_input_field = cultisys_name_input_field_component;
+
+            GameObject setting_description = new GameObject("Description", typeof(Text));
+            setting_description.transform.SetParent(wcs.content_transform);
+            setting_description.GetComponent<RectTransform>().sizeDelta = new Vector2(120, 100);
+            setting_description.GetComponent<Text>().text = "调整仅本次游戏有效";
+            wcs.description = setting_description.GetComponent<Text>();
+            wcs.description.alignment = TextAnchor.UpperCenter;
+            wcs.description.font = W_Content_Helper.font_STKaiti;
+            wcs.description.fontSize = 12;
+            wcs.description.transform.localScale = new Vector3(1, 1);
 
             wcs.level_setting_prefab = new GameObject("level_setting_prefab", typeof(Image), typeof(Cultisys_Level_Element));
             GameObject level_setting_prefab = wcs.level_setting_prefab;
@@ -225,6 +236,7 @@ namespace Cultivation_Way.Content
             RectTransform rect = this.content_transform.GetComponent<RectTransform>();
             rect.sizeDelta = new Vector2(rect.sizeDelta.x, 80 + (this.level_settings==null?0:this.level_settings.Length * 30));
             this.content_transform.Find("name_setting").localPosition = new Vector3(130, -17.5f);
+            this.description.transform.localPosition = new Vector3(130, -90f);
         }
         private void switch_cultisys(string new_id)
         {
