@@ -23,14 +23,20 @@ namespace Cultivation_Way.Content
         internal static void init()
         {
             Reflection.CallStaticMethod(typeof(ScrollWindow), "checkWindowExist", "world_laws");
-            GameObject cw_wwl = GameObject.Instantiate(NCMS.Utils.Windows.GetWindow("world_laws").gameObject, CanvasMain.instance.transformWindows);
+            
             NCMS.Utils.Windows.GetWindow("world_laws").gameObject.SetActive(false);
+
+            GameObject cw_wwl = GameObject.Instantiate(NCMS.Utils.Windows.GetWindow("world_laws").gameObject, CanvasMain.instance.transformWindows);
+            
             cw_wwl.name = "cw_world_laws";
             
             ScrollWindow cw_wwl_sw = cw_wwl.GetComponent<ScrollWindow>();
             NCMS.Utils.Windows.AllWindows.Add(cw_wwl.name, cw_wwl_sw);
 
+            cw_wwl.SetActive(true);
             cw_wwl_sw.CallMethod("create", true);
+            cw_wwl.SetActive(false);
+
             cw_wwl.transform.Find("Background/Scroll View").gameObject.SetActive(true);
 
             // 设置标题
@@ -81,6 +87,7 @@ namespace Cultivation_Way.Content
             world_setting.Find("Title").GetComponent<LocalizedText>().key = "cw_world_setting";
             grids.Add(world_setting);
             world_setting.gameObject.SetActive(true);
+
         }
         private static GameObject create_new_grid(string id, Transform content_transform)
         {
