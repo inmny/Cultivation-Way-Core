@@ -772,7 +772,7 @@ namespace Cultivation_Way
                         }
                         for (j = 1; j <= actor.cw_data.cultisys_level[0]; j++)
                         {
-                            actor.level_up_bonus(0, 0, j);
+                            actor.level_up_bonus(1, 0, j);
                         }
                     }
                 }
