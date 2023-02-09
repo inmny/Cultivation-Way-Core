@@ -703,6 +703,13 @@ namespace Cultivation_Way
                     }
                     tmp_loaded_actor_data.cultisys = (uint)tmp_loaded_actor_data.cultisys_to_save;
                     tmp_loaded_actor_data.cultisys &= ~((1u << CW_Library_Manager.instance.cultisys.list.Count) - 1);
+                    if (tmp_loaded_actor_data.cultisys == 0)
+                    {
+                        for(int j = 0; j < tmp_loaded_actor_data.cultisys_level.Length; j++)
+                        {
+                            if (tmp_loaded_actor_data.cultisys_level[j] > 0) tmp_loaded_actor_data.cultisys |= (1u << j);
+                        }
+                    }
 
                     MapBox.instance.spawnAndLoadUnit(origin_data.status.statsID, origin_data, MapBox.instance.GetTile(origin_data.x, origin_data.y));
                 }
