@@ -527,7 +527,10 @@ namespace Cultivation_Way.Content
                 moodBG.gameObject.SetActive(value: true);
                 showStat("creature_statistics_mood", LocalizedTextManager.getText("mood_" + cw_actor.fast_data.mood));
                 MoodAsset moodAsset = AssetManager.moods.get(cw_actor.fast_data.mood);
-                moodSprite.sprite = moodAsset.getSprite();
+                if(moodAsset != null)
+                {
+                    moodSprite.sprite = moodAsset.getSprite();
+                }
                 if (CW_Actor.get_s_personality(cw_actor) != null)
                 {
                     showStat("creature_statistics_personality", LocalizedTextManager.getText("personality_" + CW_Actor.get_s_personality(cw_actor).id));
