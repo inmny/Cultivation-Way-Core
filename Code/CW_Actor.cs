@@ -492,35 +492,50 @@ namespace Cultivation_Way
                 cultisys_tag++;
                 cultisys >>= 1;
             }
+            level_up_bonus(level_up_tag, max_cultisys_tag, max_level);
+        }
+        internal void level_up_bonus(uint level_up_tag, int max_cultisys_tag, int max_level)
+        {
             if (level_up_tag != 0)
             {
-                List<CW_Asset_Spell> spells = CW_Library_Manager.instance.spells.search_for_random_learn(CW_Library_Spell.make_tags(CW_Spell_Tag.ATTACK, CW_Spell_Tag.POSITIVE_STATUS, CW_Spell_Tag.DEFEND, CW_Spell_Tag.SUMMON, CW_Spell_Tag.MOVE), Spell_Search_Type.CONTAIN_ANY_TAGS, this);
-                CW_Library_Spell.filter_list(spells, CW_Library_Spell.make_tags(level_up_tag), Spell_Search_Type.CONTAIN_ANY_TAGS);
-                this.filter_allowed_spells(spells);
+                this.level_up_learn_spell(level_up_tag);
+            }
+            if ((level_up_tag & (1 << max_cultisys_tag)) != 0 && max_level % Others.CW_Constants.cultibook_levelup_require == Others.CW_Constants.cultibook_levelup_require - 1)
+            {
+                this.level_up_cm_cultibook(max_level);
+            }
+            if (level_up_tag != 0 && max_level == Others.CW_Constants.special_body_create_level && (string.IsNullOrEmpty(this.cw_data.special_body_id) || this.fast_data.level > CW_Library_Manager.instance.special_bodies.get(this.cw_data.special_body_id).level))
+            {
+                this.level_up_create_body();
+            }
+        }
+        private void level_up_create_body()
+        {
+            CW_Asset_SpecialBody new_body = new CW_Asset_SpecialBody(this);
+            new_body.store();
+            this.change_special_body(new_body);
+        }
+        private void level_up_cm_cultibook(int max_level)
+        {
+            if (string.IsNullOrEmpty(this.cw_data.cultibook_id))
+            {
+                this.create_cultibook();
+            }
+            else if (max_level + 1 > (CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id).order + 1) * Others.CW_Constants.cultibook_levelup_require)
+            {
+                this.modify_cultibook();
+            }
+        }
+        private void level_up_learn_spell(uint level_up_tag)
+        {
+            List<CW_Asset_Spell> spells = CW_Library_Manager.instance.spells.search_for_random_learn(CW_Library_Spell.make_tags(CW_Spell_Tag.ATTACK, CW_Spell_Tag.POSITIVE_STATUS, CW_Spell_Tag.DEFEND, CW_Spell_Tag.SUMMON, CW_Spell_Tag.MOVE), Spell_Search_Type.CONTAIN_ANY_TAGS, this);
+            CW_Library_Spell.filter_list(spells, CW_Library_Spell.make_tags(level_up_tag), Spell_Search_Type.CONTAIN_ANY_TAGS);
+            this.filter_allowed_spells(spells);
 
-                if (spells.Count > 0)
-                {
-                    CW_Asset_Spell spell = spells.GetRandom();
-                    this.learn_spell(spell);
-                }
-                
-            }
-            if((level_up_tag & (1<<max_cultisys_tag))!=0 && max_level % Others.CW_Constants.cultibook_levelup_require == Others.CW_Constants.cultibook_levelup_require - 1)
+            if (spells.Count > 0)
             {
-                if (string.IsNullOrEmpty(this.cw_data.cultibook_id))
-                {
-                    this.create_cultibook();
-                }
-                else if(max_level+1>(CW_Library_Manager.instance.cultibooks.get(this.cw_data.cultibook_id).order +1)*Others.CW_Constants.cultibook_levelup_require)
-                {
-                    this.modify_cultibook();
-                }
-            }
-            if(level_up_tag!=0 && max_level == Others.CW_Constants.special_body_create_level && (string.IsNullOrEmpty(this.cw_data.special_body_id) || this.fast_data.level > CW_Library_Manager.instance.special_bodies.get(this.cw_data.special_body_id).level))
-            {
-                CW_Asset_SpecialBody new_body = new CW_Asset_SpecialBody(this);
-                new_body.store();
-                this.change_special_body(new_body);
+                CW_Asset_Spell spell = spells.GetRandom();
+                this.learn_spell(spell);
             }
         }
         public void change_special_body(CW_Asset_SpecialBody target_special_body)
