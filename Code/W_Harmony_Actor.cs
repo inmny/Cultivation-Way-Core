@@ -179,6 +179,14 @@ namespace Cultivation_Way.Content.Harmony
             ((CW_Actor)__instance).regen_health(pVal, Mathf.Max(1, ((CW_Actor)__instance).cw_status.health_level - 0.1f));
             return false;
         }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Actor), "killHimself")]
+        public static bool actor_killhimself(Actor __instance, AttackType pType)
+        {
+            if (pType == AttackType.GrowUp) return true;
+            if (__instance.haveTrait("asylum")) return false;
+            return true;
+        }
         private static void __baby_growup(CW_Actor cw_actor)
         {
             CW_Actor new_cw_actor = (CW_Actor)MapBox.instance.createNewUnit(cw_actor.stats.growIntoID, cw_actor.currentTile, null, 0f, null);

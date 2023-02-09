@@ -1471,6 +1471,7 @@
     <Compile Include="Code\W_Content_ActorTask.cs" />
     <Compile Include="Code\W_Content_Building.cs" />
     <Compile Include="Code\W_Content_SpectateUnit.cs" />
+    <Compile Include="Code\W_Content_Trait.cs" />
     <Compile Include="Code\W_Content_WindowCultisysSetting.cs" />
     <Compile Include="Code\W_Content_WindowWorldLaw.cs" />
     <Compile Include="Code\W_Content_WorldLaws.cs" />

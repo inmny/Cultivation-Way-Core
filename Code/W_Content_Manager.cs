@@ -134,7 +134,7 @@ namespace Cultivation_Way.Content
         }
         private static void add_traits()
         {
-
+            W_Content_Trait.add_traits();
         }
         private static void add_world_events()
         {
