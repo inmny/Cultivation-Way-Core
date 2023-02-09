@@ -46,6 +46,8 @@ namespace Cultivation_Way.Content
             origin_stats.icon = "iconLion";
             origin_stats.race = "lion";
             origin_stats.texture_path = "t_lion";
+            origin_stats.baseStats.damage *= 2;
+            origin_stats.baseStats.armor *= 2;
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats tiger = CW_Library_Manager.instance.units.clone("tiger", "bear");
             origin_stats = tiger.origin_stats;
@@ -54,6 +56,8 @@ namespace Cultivation_Way.Content
             origin_stats.icon = "iconTiger";
             origin_stats.race = "tiger";
             origin_stats.texture_path = "t_tiger";
+            origin_stats.baseStats.damage *= 2;
+            origin_stats.baseStats.armor *= 2;
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats wild_boar = CW_Library_Manager.instance.units.clone("wild_boar", "bear");
             origin_stats = wild_boar.origin_stats;
@@ -62,7 +66,8 @@ namespace Cultivation_Way.Content
             origin_stats.nameLocale = "Wild_Boars";
             origin_stats.animation_walk = "walk_0,walk_1,walk_2";
             origin_stats.animation_swim = "swim_0,swim_1,swim_2";
-            origin_stats.baseStats.damage = origin_stats.baseStats.damage * 2;
+            origin_stats.baseStats.health *= 2;
+            origin_stats.baseStats.damage *= 2;
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats pig = CW_Library_Manager.instance.units.clone("pig", "cow");
             origin_stats= pig.origin_stats;
