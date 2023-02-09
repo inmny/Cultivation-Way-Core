@@ -13,7 +13,7 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 功法名
         /// </summary>
-        internal string name;
+        public string name;
         /// <summary>
         /// 这个暂时用不到，以后可能会用到
         /// </summary>
@@ -21,7 +21,7 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 作者名，作者id加上等级即功法的id
         /// </summary>
-        internal string author_name;
+        public string author_name;
         /// <summary>
         /// 作者id
         /// </summary>
