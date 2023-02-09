@@ -768,12 +768,12 @@ namespace Cultivation_Way
                         else
                         {
                             actor.cw_data.cultisys_level[0] = 8 + (actor.fast_data.level + 9) / 10;
-                            actor.setStatsDirty();
                         }
                         for (j = 1; j <= actor.cw_data.cultisys_level[0]; j++)
                         {
                             actor.level_up_bonus(1, 0, j);
                         }
+                        actor.setStatsDirty();
                     }
                 }
             }
