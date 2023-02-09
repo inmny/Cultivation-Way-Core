@@ -21,6 +21,7 @@ namespace Cultivation_Way
         public string special_body_id;
         public string family_name;
         public string pope_id;
+        public int cultisys_to_save;
         //public List<Library.CW_Family_Member_Info> children_info;
         ~CW_ActorData()
         {

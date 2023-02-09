@@ -388,6 +388,7 @@ namespace Cultivation_Way
 
         internal void prepare_cw_data_for_save()
         {
+            this.cw_data.cultisys_to_save = (int)this.cw_data.cultisys;
             //throw new NotImplementedException();
         }
 
