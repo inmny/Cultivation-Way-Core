@@ -43,7 +43,10 @@ namespace Cultivation_Way.Content
             string description = this.description;
             if (string.IsNullOrEmpty(description) || !LocalizedTextManager.stringExists(description)) description = null;
             Tooltip.instance.show(gameObject, type, title, description);
-            if(force_tooltip_position) Tooltip.instance.gameObject.transform.localPosition = new Vector3(-220, 100);
+            if (force_tooltip_position)
+            {
+                Tooltip.instance.gameObject.transform.localPosition = new Vector3(-220, 100);
+            }
             if (is_stats)
             {
                 Tooltip.instance.description.gameObject.SetActive(false);
@@ -53,9 +56,11 @@ namespace Cultivation_Way.Content
                 int line = stats_description.Count((ch) => { return ch == '\n'; })+1;
                 RectTransform rect = Tooltip.instance.GetComponent<RectTransform>();
                 rect.sizeDelta = new Vector2(rect.sizeDelta.x, 23.6f + 9 * line);
+                Tooltip.instance.gameObject.transform.localPosition = new Vector3(-220, line*5);
 
                 Tooltip.instance.stats_description.transform.localPosition = new Vector3(0, -27);
                 Tooltip.instance.stats_values.transform.localPosition = new Vector3(0, -27);
+
 
                 Tooltip.instance.stats_description.gameObject.SetActive(true);
                 Tooltip.instance.stats_values.gameObject.SetActive(true);
