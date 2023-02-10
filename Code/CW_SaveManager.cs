@@ -610,9 +610,9 @@ namespace Cultivation_Way
             {
                 CW_Actor actor = (CW_Actor)actors[i];
                 if (actor.stats.skipSave) continue;
-                if (!actor.base_data.alive)
+                if (!actor.fast_data.alive)
                 {
-                    MapBox.instance.destroyActor(actor);
+                    MapBox.instance.destroyActor(actors[i]);
                     continue;
                 }
                 actor.prepare_cw_data_for_save();
