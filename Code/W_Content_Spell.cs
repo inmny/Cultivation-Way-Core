@@ -16,6 +16,8 @@ namespace Cultivation_Way.Content
         {
             //add_bushido_base_spell();
             //add_example_spell();
+            add_regen_spell();
+            add_tornado_spell();
 
             add_fall_rock();
             add_fall_wood();
@@ -71,6 +73,7 @@ namespace Cultivation_Way.Content
             add_bushido_spells();
             load_other_anims();
         }
+
 
         private static void add_brutalize_spell()
         {
@@ -166,6 +169,57 @@ namespace Cultivation_Way.Content
         {
             CW_AnimationSetting anim_setting = new CW_AnimationSetting();
             CW_EffectManager.instance.load_as_controller("explosion_anim", "effects/explosion/", controller_setting: anim_setting, base_scale: 1f);
+        }
+        // 飓风术
+        private static void add_tornado_spell()
+        {
+            CW_AnimationSetting anim_setting = new CW_AnimationSetting();
+            anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
+            anim_setting.loop_time_limit = 5f;
+            anim_setting.loop_nr_limit = -1;
+            anim_setting.frame_interval = 0.05f;
+            anim_setting.layer_name = "Objects";
+            anim_setting.trace_grad = 10f;
+            anim_setting.free_val = 0.2f;
+            anim_setting.frame_action = tornado_anim_frame_action;
+            anim_setting.set_trace(AnimationTraceType.LINE);
+
+            CW_EffectManager.instance.load_as_controller("simple_tornado_anim", "effects/simple_tornado/", controller_setting: anim_setting, base_scale: 0.25f);
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "tornado", anim_id: "simple_tornado_anim",
+                new CW_Element(new int[] { 40, 40, 20, 0, 0 }),
+                rarity: 16, free_val: 3, cost: 0.08f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ENEMY,
+                triger_type: CW_Spell_Triger_Type.ATTACK,
+                anim_type: CW_Spell_Animation_Type.USER_TO_TARGET,
+                damage_action: null,
+                anim_action: CW_SpellAction_Anim.default_anim,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.ATTACK);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
+        }
+        // 复苏
+        private static void add_regen_spell()
+        {
+            CW_Asset_Spell spell = new CW_Asset_Spell(
+                id: "regen", anim_id: "",
+                new CW_Element(new int[] { 0, 0, 100, 0, 0 }),
+                rarity: 5, free_val: 0.2f, cost: 0.02f, learn_level: 1, cast_level: 1,
+                target_type: CW_Spell_Target_Type.ACTOR,
+                target_camp: CW_Spell_Target_Camp.ALIAS,
+                triger_type: CW_Spell_Triger_Type.DEFEND,
+                anim_type: CW_Spell_Animation_Type.CUSTOM,
+                damage_action: null,
+                anim_action: null,
+                spell_action: __regen_spell_action,
+                check_and_cost_action: CW_SpellAction_Cost.default_check_and_cost
+                );
+            spell.add_tag(CW_Spell_Tag.DEFEND);
+            spell.add_tag(CW_Spell_Tag.IMMORTAL);
+            CW_Library_Manager.instance.spells.add(spell);
         }
         // 落木
         private static void add_fall_wood()
@@ -1342,7 +1396,12 @@ namespace Cultivation_Way.Content
             spell.add_tag(CW_Spell_Tag.IMMORTAL);
             CW_Library_Manager.instance.spells.add(spell);
         }
-        
+        private static void __regen_spell_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
+        {
+            if (pUser.objectType != MapObjectType.Actor) return;
+            CW_Actor cw_actor = (CW_Actor)pUser;
+            cw_actor.regen_health(cw_actor.cw_cur_stats.base_stats.health*spell_asset.free_val, cw_actor.cw_status.wakan_level);
+        }
         private static void stxh_spell_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
             if (pUser.objectType != MapObjectType.Actor) return;
@@ -1611,6 +1670,60 @@ namespace Cultivation_Way.Content
                     anim.force_stop(false);
                 }
             }
+        }
+        private static void tornado_anim_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
+        {
+            float cur_scale = anim.get_scale().x;
+            if (anim.setting.loop_time_limit - anim.play_time > 32 * anim.setting.frame_interval && anim.setting.free_val > cur_scale)
+            {
+                anim.change_scale(0.3f * (anim.setting.free_val - cur_scale) + 1);
+            }
+            else
+            {
+                anim.change_scale(1 - cur_scale * 0.1f);
+            }
+            if(anim.src_object==null || !anim.src_object.base_data.alive)
+            {
+                anim.change_scale(1 - cur_scale * 0.1f);
+                return;
+            }
+
+            WorldTile center = MapBox.instance.GetTile((int)(anim.gameObject.transform.position.x - 0.5f), (int)(anim.gameObject.transform.position.y - 0.5f));
+            if (center == null) return;
+
+            BrushData brush = Brush.get((int)(cur_scale * 6f), "circ_");
+            for (int i = 0; i < brush.pos.Count; i++)
+            {
+                BrushPixelData brushPixelData = brush.pos[i];
+                int num = center.x + brushPixelData.x;
+                int num2 = center.y + brushPixelData.y;
+                if (num >= 0 && num < MapBox.width && num2 >= 0 && num2 < MapBox.height)
+                {
+                    WorldTile tileSimple = MapBox.instance.GetTileSimple(num, num2);
+                    if (tileSimple.Type.ocean && Toolbox.randomBool())
+                    {
+                        __spawn_burst(tileSimple, "rain", false);
+                    }
+                    if (tileSimple.Type.lava)
+                    {
+                        MapBox.instance.lavaLayer.removeLava(tileSimple);
+                        if (Toolbox.randomBool())
+                        {
+                            __spawn_burst(tileSimple, "lava", true);
+                        }
+                    }
+                }
+            }
+            List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 3);
+            foreach(BaseSimObject enemy in enemies)
+            {
+                if (enemy.objectType == MapObjectType.Actor) ((CW_Actor)enemy).add_force(0, 0, 2f);
+                Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, enemy, anim.cost_for_spell, Others.CW_Enums.CW_AttackType.Spell, false);
+            }
+        }
+        private static void __spawn_burst(WorldTile tile, string drop, bool create_ground)
+        {
+            MapBox.instance.dropManager.spawnBurstPixel(tile, drop, Toolbox.randomFloat(0.2f, 0.5f), Toolbox.randomFloat(1.3f, 1.8f), 0f, -1f);
         }
         private static void anti_matter_loop_frame_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {

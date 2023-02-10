@@ -51,7 +51,7 @@ namespace Cultivation_Way.Animation
         /// <summary>
         /// 自由变量
         /// </summary>
-        public int free_val = 0;
+        public float free_val = 0;
         internal bool possible_associated = true;
         /// <summary>
         /// 帧间隔

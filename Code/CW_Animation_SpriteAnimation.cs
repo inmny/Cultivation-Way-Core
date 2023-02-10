@@ -257,6 +257,10 @@ namespace Cultivation_Way.Animation
         {
             gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x * scale, gameObject.transform.localScale.y * scale, gameObject.transform.localScale.z);
         }
+        public Vector3 get_scale()
+        {
+            return gameObject.transform.localScale;
+        }
         public void set_position(Vector3 pos)
         {
             this.gameObject.transform.position = pos;
