@@ -38,6 +38,7 @@ namespace Cultivation_Way.Content
             origin_stats.icon = "iconDeer";
             origin_stats.kingdom = "neutral_animals";
             origin_stats.texture_path = "t_deer";
+            origin_stats.disableJumpAnimation = false;
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats lion = CW_Library_Manager.instance.units.clone("lion", "bear");
             origin_stats = lion.origin_stats;
@@ -48,6 +49,7 @@ namespace Cultivation_Way.Content
             origin_stats.texture_path = "t_lion";
             origin_stats.baseStats.damage *= 2;
             origin_stats.baseStats.armor *= 2;
+            origin_stats.disableJumpAnimation = false;
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats tiger = CW_Library_Manager.instance.units.clone("tiger", "bear");
             origin_stats = tiger.origin_stats;
@@ -58,6 +60,7 @@ namespace Cultivation_Way.Content
             origin_stats.texture_path = "t_tiger";
             origin_stats.baseStats.damage *= 2;
             origin_stats.baseStats.armor *= 2;
+            origin_stats.disableJumpAnimation = false;
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats wild_boar = CW_Library_Manager.instance.units.clone("wild_boar", "bear");
             origin_stats = wild_boar.origin_stats;
@@ -68,6 +71,7 @@ namespace Cultivation_Way.Content
             origin_stats.animation_swim = "swim_0,swim_1,swim_2";
             origin_stats.baseStats.health *= 2;
             origin_stats.baseStats.damage *= 2;
+            origin_stats.disableJumpAnimation = false;
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats pig = CW_Library_Manager.instance.units.clone("pig", "cow");
             origin_stats= pig.origin_stats;
@@ -77,6 +81,7 @@ namespace Cultivation_Way.Content
             origin_stats.race = "pig";
             origin_stats.texture_path = "t_pig";
             origin_stats.kingdom = "neutral_animals";
+            origin_stats.disableJumpAnimation = false;
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
             CW_ActorStats horse = CW_Library_Manager.instance.units.clone("horse", "cow");
             origin_stats = horse.origin_stats;
@@ -109,6 +114,7 @@ namespace Cultivation_Way.Content
             origin_stats.icon = "iconFairy_Fox";
             origin_stats.race = "fairy_fox";
             origin_stats.texture_path = "t_fairy_fox";
+            origin_stats.disableJumpAnimation = false;
             AssetManager.unitStats.CallMethod("loadShadow", origin_stats);
         }
 
