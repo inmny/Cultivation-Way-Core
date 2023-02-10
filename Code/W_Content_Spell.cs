@@ -125,7 +125,7 @@ namespace Cultivation_Way.Content
             clone("齐眉棍法", "五步拳").free_val = 0.19f;
             clone("太祖长棍", "五步拳").free_val = 0.28f;
             spell = clone("一十二路入室拳", "五步拳");
-            spell.rarity = 16;
+            spell.rarity = 8;
             spell.free_val = 0.78f;
             clone("太祖长拳", "一十二路入室拳");
             clone("弈天剑", "一十二路入室拳").free_val = 0.65f;
@@ -135,6 +135,32 @@ namespace Cultivation_Way.Content
             clone("震山棍法", "一十二路入室拳").free_val = 0.7f;
             clone("里合腿", "一十二路入室拳").free_val = 0.68f;
             clone("飞星腿", "一十二路入室拳").free_val = 0.78f;
+            spell = clone("五岳剑法", "五步拳");
+            spell.rarity = 12;
+            spell.free_val = 1.04f;
+            clone("奔雷刀法", "五岳剑法").free_val = 9.80f;
+            clone("六合大枪", "五岳剑法").free_val = 1.20f;
+            clone("半月斩", "五岳剑法").free_val = 1.10f;
+            clone("一十二路谭腿", "五岳剑法").free_val = 1.10f;
+            spell = clone("虎鹤双形", "五步拳");
+            spell.rarity = 16;
+            spell.free_val = 2.0f;
+            clone("伏魔剑", "虎鹤双形").free_val = 2.0f;
+            clone("昆仑十三剑", "虎鹤双形").free_val = 1.66f;
+            clone("铁屏枪", "虎鹤双形").free_val = 1.5f;
+            clone("降龙棍法", "虎鹤双形").free_val = 1.8f;
+            clone("秋风扫叶腿", "虎鹤双形").free_val = 2.3f;
+            spell = clone("凤舞飘香手", "五步拳");
+            spell.rarity = 25;
+            spell.free_val = 3.6f;
+            clone("太乙冲霄剑", "凤舞飘香手").free_val = 4.2f;
+            spell = clone("龙爪手", "五步拳");
+            spell.rarity = 36;
+            spell.free_val = 5f;
+            clone("八卦乾坤腿", "龙爪手").free_val = 5.5f;
+            spell = clone("龙魂绝魄刀", "五步拳");
+            spell.rarity = 49;
+            spell.free_val = 8f;
         }
         private static void load_other_anims()
         {
