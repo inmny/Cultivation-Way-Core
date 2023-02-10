@@ -276,13 +276,13 @@ namespace Cultivation_Way.Content
             new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
             new_stats.name = "anti_injury";
             cw_wci.anti_injuries = new_stats.GetComponent<CityIcon>();
-            cw_wci.anti_injuries.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconSoul");
+            cw_wci.anti_injuries.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconAnti_Injury");
             new_stats.GetComponent<TipButton>().textOnClick = "anti_injury";
 
             new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);
             new_stats.name = "knockback_reduction";
             cw_wci.knockback_reduction = new_stats.GetComponent<CityIcon>();
-            cw_wci.knockback_reduction.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconSoul");
+            cw_wci.knockback_reduction.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconKnockback_Reduction");
             new_stats.GetComponent<TipButton>().textOnClick = "knockback_reduction";
 
             new_stats = Instantiate<GameObject>(stat_icons.Find("damage").gameObject, stat_icons);

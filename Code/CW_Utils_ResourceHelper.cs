@@ -11,11 +11,14 @@ namespace Cultivation_Way.Utils
 {
     public class CW_ResourceHelper
     {
-        public static Sprite[] load_sprites(string path)
+        internal static Sprite[] load_sprites(string path)
         {
             throw new NotImplementedException();
         }
-        private static string __encode_path(string path, string postfix) { return string.Format("{0}/GameResources/{1}{2}", ModState.instance.mod_info.path, path, postfix); }
+        private static string __encode_path(string path, string postfix) 
+        { 
+            return string.Format("{0}/GameResources/{1}{2}", ModState.instance.mod_info.path, path, postfix); 
+        }
         /// <summary>
         /// 加载JSON为string，低效，请确保加载次数有限
         /// </summary>

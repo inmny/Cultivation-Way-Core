@@ -3362,6 +3362,9 @@
     <Content Include="GameResources\ui\cw_window\sim_info_bg.png" />
     <Content Include="GameResources\ui\cw_window\windowInnerSliced.png" />
     <Content Include="GameResources\ui\cw_window\windowNamePlate.png" />
+    <Content Include="GameResources\ui\Icons\iconKnockback_Reduction.png" />
+    <Content Include="GameResources\ui\Icons\iconSoul.png" />
+    <Content Include="GameResources\ui\Icons\iconAnti_Injury.png" />
     <Content Include="GameResources\ui\Icons\iconNo_Wakan_Spread.png" />
     <Content Include="GameResources\ui\Icons\iconCheckElement_Off.png" />
     <Content Include="GameResources\ui\Icons\iconCheckElement_On.png" />
@@ -3391,7 +3394,6 @@
     <Content Include="GameResources\ui\Icons\iconYaos.png" />
     <Content Include="GameResources\ui\Icons\iconWiki.png" />
     <Content Include="GameResources\effects\water_escape\940.png" />
-    <Content Include="GameResources\ui\Icons\iconSoul.png" />
     <Content Include="GameResources\ui\Icons\iconWakan_Decrease.png" />
     <Content Include="GameResources\ui\Icons\icon_oldage.png" />
     <Content Include="icon.png" />
