@@ -93,6 +93,13 @@ namespace Cultivation_Way
         
         internal static Action<Actor, float, bool> func_updateAnimation = (Action<Actor, float, bool>)CW_ReflectionHelper.get_method<Actor>("updateAnimation");
         #endregion
+        internal void add_force(float x, float y, float z)
+        {
+            x *= Mathf.Max(0, 1 - this.cw_cur_stats.base_stats.knockbackReduction / 100);
+            y *= Mathf.Max(0, 1 - this.cw_cur_stats.base_stats.knockbackReduction / 100);
+            z *= Mathf.Max(0, 1 - this.cw_cur_stats.base_stats.knockbackReduction / 100);
+            this.addForce(x, y, z);
+        }
         /// <summary>
         /// 化形
         /// </summary>

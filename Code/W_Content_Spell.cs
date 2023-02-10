@@ -1502,7 +1502,7 @@ namespace Cultivation_Way.Content
                     foreach (BaseSimObject actor in targets)
                     {
                         Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
-                        if (actor.objectType == MapObjectType.Actor) ((CW_Actor)actor).addForce(0, 0, force_z);
+                        if (actor.objectType == MapObjectType.Actor) ((CW_Actor)actor).add_force(0, 0, force_z);
                     }
 
                 }
@@ -1553,7 +1553,7 @@ namespace Cultivation_Way.Content
                     foreach (BaseSimObject actor in targets)
                     {
                         Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
-                        if (actor.objectType == MapObjectType.Actor) ((CW_Actor)actor).addForce(force_x, force_y, force_z);
+                        if (actor.objectType == MapObjectType.Actor) ((CW_Actor)actor).add_force(force_x, force_y, force_z);
                     }
 
                 }
@@ -1578,7 +1578,7 @@ namespace Cultivation_Way.Content
                     foreach (BaseSimObject actor in targets)
                     {
                         Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
-                        if (actor.objectType == MapObjectType.Actor) ((CW_Actor)actor).addForce(0, 0, force_z);
+                        if (actor.objectType == MapObjectType.Actor) ((CW_Actor)actor).add_force(0, 0, force_z);
                     }
 
                 }
@@ -1634,7 +1634,7 @@ namespace Cultivation_Way.Content
                 else
                 {
                     // 拖拽
-                    ((CW_Actor)enemy).addForce((dst_vec.x-enemy.currentPosition.x)*0.1f, (dst_vec.y - enemy.currentPosition.y)*0.1f, 0.05f);
+                    ((CW_Actor)enemy).add_force((dst_vec.x-enemy.currentPosition.x)*0.1f, (dst_vec.y - enemy.currentPosition.y)*0.1f, 0.05f);
                 }
             }
         }
@@ -1654,7 +1654,7 @@ namespace Cultivation_Way.Content
             {
                 Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
                 if (actor.objectType != MapObjectType.Actor) continue;
-                ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force, (actor.currentPosition.y - dst_vec.y) / force, 1/force);
+                ((CW_Actor)actor).add_force((actor.currentPosition.x - dst_vec.x) / force, (actor.currentPosition.y - dst_vec.y) / force, 1/force);
             }
         }
         private static void fire_polo_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
@@ -1670,7 +1670,7 @@ namespace Cultivation_Way.Content
                 Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
 
                 if (actor.objectType != MapObjectType.Actor) continue;
-                ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force, (actor.currentPosition.y - dst_vec.y) / force, Toolbox.DistVec2Float(actor.currentPosition, dst_vec) / force);
+                ((CW_Actor)actor).add_force((actor.currentPosition.x - dst_vec.x) / force, (actor.currentPosition.y - dst_vec.y) / force, Toolbox.DistVec2Float(actor.currentPosition, dst_vec) / force);
             }
         }
         private static void water_polo_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
@@ -1688,7 +1688,7 @@ namespace Cultivation_Way.Content
                 Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
 
                 if (actor.objectType != MapObjectType.Actor) continue;
-                ((CW_Actor)actor).addForce(force_x, force_y, force_z);
+                ((CW_Actor)actor).add_force(force_x, force_y, force_z);
             }
         }
         private static void wind_polo_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
@@ -1703,7 +1703,7 @@ namespace Cultivation_Way.Content
                 Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);
 
                 if (actor.objectType != MapObjectType.Actor) continue;
-                ((CW_Actor)actor).addForce(0, 0, force_z);
+                ((CW_Actor)actor).add_force(0, 0, force_z);
             }
         }
         private static void lightning_polo_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
@@ -1751,7 +1751,7 @@ namespace Cultivation_Way.Content
             foreach(BaseSimObject actor in enemies)
             {
                 if (actor.objectType != MapObjectType.Actor) continue;
-                ((CW_Actor)actor).addForce((actor.currentPosition.x - pUser.currentPosition.x) * force, (actor.currentPosition.y - pUser.currentPosition.y) * force, force);
+                ((CW_Actor)actor).add_force((actor.currentPosition.x - pUser.currentPosition.x) * force, (actor.currentPosition.y - pUser.currentPosition.y) * force, force);
             }
         }
     }

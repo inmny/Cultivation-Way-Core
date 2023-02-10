@@ -65,7 +65,7 @@ namespace Cultivation_Way.Content
                 // 护盾
                 immortal.bonus_stats[i].shield = 12 * immortal.bonus_stats[i].shield_regen;
                 // 抗击退
-                immortal.bonus_stats[i].base_stats.knockbackReduction = Mathf.Min(100,(i + 1) * 6f);
+                immortal.bonus_stats[i].base_stats.knockbackReduction = (i + 1) * 5f;
             }
             #endregion
 
@@ -105,7 +105,7 @@ namespace Cultivation_Way.Content
                 // 法抗
                 bushido.bonus_stats[i].spell_armor = (int)(bushido.bonus_stats[i].base_stats.armor/10 * Mathf.Sqrt(Mathf.Sqrt(i)));
                 // 抗击退
-                bushido.bonus_stats[i].base_stats.knockbackReduction = Mathf.Min(100, (i + 1) * 6f);
+                bushido.bonus_stats[i].base_stats.knockbackReduction = (i + 1) * 6f;
                 // 反伤
                 bushido.bonus_stats[i].anti_injury = i;
             }
