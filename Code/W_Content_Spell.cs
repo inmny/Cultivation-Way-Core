@@ -1417,7 +1417,7 @@ namespace Cultivation_Way.Content
         private static void positive_lightning_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             float radius = 5;
-            WorldTile center = MapBox.instance.GetTile((int)src_vec.x, (int)src_vec.y);
+            WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
             if (center == null) return;
             List<WorldTile> tiles = Utils.CW_SpellHelper.get_circle_tiles(center, radius);
             List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_tiles(tiles, anim.src_object.kingdom);
@@ -1438,7 +1438,7 @@ namespace Cultivation_Way.Content
         private static void negative_lightning_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             float radius = 5;
-            WorldTile center = MapBox.instance.GetTile((int)src_vec.x, (int)src_vec.y);
+            WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
             if (center == null) return;
             List<WorldTile> tiles = Utils.CW_SpellHelper.get_circle_tiles(center, radius);
             List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_tiles(tiles, anim.src_object.kingdom);
@@ -1459,8 +1459,8 @@ namespace Cultivation_Way.Content
         {
             if (cur_frame_idx != 5) return;
             float radius = 5;
-            if (anim.src_object == null || !anim.src_object.base_data.alive) return;
-            WorldTile center = anim.src_object.currentTile;
+            if (anim.src_object == null || !anim.src_object.base_data.alive|| anim.dst_object == null || !anim.dst_object.base_data.alive) return;
+            WorldTile center = anim.dst_object.currentTile;
             if (center == null) return;
             List<WorldTile> tiles = Utils.CW_SpellHelper.get_circle_tiles(center, radius);
             List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_tiles(tiles, anim.src_object.kingdom);
