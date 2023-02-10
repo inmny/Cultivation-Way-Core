@@ -699,6 +699,10 @@ namespace Cultivation_Way.Content
                 button_special_body.load(cw_actor.stats.nameLocale, "CW_special_body_info", cw_actor.stats.icon, "normal");
                 button_special_body.stats_description = "";
                 button_special_body.stats_value = "";
+                if (button_special_body.image.sprite ==null)
+                {
+                    button_special_body.image.sprite = Resources.Load<Sprite>("actors/" + cw_actor.stats.texture_path + "/walk_0");
+                }
             }
             set_position_on_more_info_field(button_special_body.GetComponent<RectTransform>(), num++);
         }
