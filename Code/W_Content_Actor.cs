@@ -131,6 +131,8 @@ namespace Cultivation_Way.Content
             _yao.origin_stats = AssetManager.unitStats.clone("_yao", "_unit");
             _yao.cw_base_stats = new CW_BaseStats();
             _yao.cw_base_stats.base_stats = _yao.origin_stats.baseStats;
+            _yao.cw_base_stats.mod_shield = 25;
+            _yao.cw_base_stats.mod_health_regen = 20;
             ActorStats origin_stats = _yao.origin_stats;
             origin_stats.unit = true;
             origin_stats.nameLocale = "Yaos";
@@ -142,6 +144,8 @@ namespace Cultivation_Way.Content
             origin_stats.color = Toolbox.makeColor("#005E72", -1f);
             origin_stats.zombieID = "zombie";
             origin_stats.setBaseStats(300, 30, 50, 20, 5, 80, 0);
+            origin_stats.baseStats.mod_damage = 30;
+            origin_stats.baseStats.mod_health = 50;
             origin_stats.disableJumpAnimation = true;
             origin_stats.heads = 1;
             origin_stats.body_separate_part_head = false;
