@@ -1,8 +1,8 @@
 {
-  "name": "修真之路核心",
+  "name": "启源核心",
   "author": "启源",
   "version": "1.0.0",
-  "description": "提供修真之路运行环境",
+  "description": "提供核心内容以及附属运行环境",
   "targetGameBuild": 472,
   "iconPath": "icon.png"
 }
