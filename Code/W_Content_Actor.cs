@@ -372,6 +372,8 @@ namespace Cultivation_Way.Content
             yao.origin_stats.texture_path = String.Format("yaos/t_{0}_yao", origin_id);
             yao.origin_stats.icon = CW_Library_Manager.instance.units.has_asset(origin_id) ? AssetManager.unitStats.get(origin_id).icon : yao.origin_stats.icon;
             yao.origin_stats.nameTemplate = origin_id + "_yao_name";
+            yao.origin_stats.nameLocale = AssetManager.unitStats.get(origin_id).nameLocale;
+            yao.origin_stats.icon = AssetManager.unitStats.get(origin_id).icon;
             addColorSet(yao.origin_stats, "default", "#FFC984", "#543E2C");
             W_Content_Helper.yaos.Add(origin_id); 
             AssetManager.unitStats.CallMethod("loadShadow", yao.origin_stats);

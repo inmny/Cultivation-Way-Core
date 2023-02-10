@@ -676,9 +676,9 @@ namespace Cultivation_Way.Content
             {
                 button_cultisys.gameObject.SetActive(false);
             }
+            button_special_body.gameObject.SetActive(true);
             if (!string.IsNullOrEmpty(cw_actor.cw_data.special_body_id))
             {
-                button_special_body.gameObject.SetActive(true);
                 CW_Asset_SpecialBody body = CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id);
                 if (body != null)
                 {
@@ -687,13 +687,15 @@ namespace Cultivation_Way.Content
                     button_special_body.load("CW_special_body_name", "CW_special_body_info", cw_actor.stats.icon, "normal");
                     button_special_body.stats_description = description.ToString();
                     button_special_body.stats_value = value.ToString();
-                    set_position_on_more_info_field(button_special_body.GetComponent<RectTransform>(), num++);
                 }
             }
             else
             {
-                button_special_body.gameObject.SetActive(false);
+                button_special_body.load(cw_actor.stats.nameLocale, "CW_special_body_info", cw_actor.stats.icon, "normal");
+                button_special_body.stats_description = "";
+                button_special_body.stats_value = "";
             }
+            set_position_on_more_info_field(button_special_body.GetComponent<RectTransform>(), num++);
         }
         private void loadTraits()
         {
