@@ -502,6 +502,34 @@ namespace Cultivation_Way
             }
             level_up_bonus(level_up_tag, max_cultisys_tag, max_level);
         }
+        /// <summary>
+        /// 检查给定一系列修炼体系能否晋级
+        /// </summary>
+        /// <param name="cultisys"></param>
+        public void check_level_up(uint cultisys)
+        {
+            int cultisys_tag = 0;
+            int max_cultisys_tag = -1;
+            int max_level = -1;
+            uint level_up_tag = 0;
+            while (cultisys > 0)
+            {
+                if (((cultisys & 0x1) == 1) && (CW_Library_Manager.instance.cultisys.list[cultisys_tag].level_judge(this, CW_Library_Manager.instance.cultisys.list[cultisys_tag])))
+                {
+                    this.cw_data.cultisys_level[cultisys_tag]++;
+                    this.setStatsDirty();
+                    level_up_tag |= (uint)(1 << cultisys_tag);
+                }
+                if (this.cw_data.cultisys_level[cultisys_tag] > max_level)
+                {
+                    max_level = this.cw_data.cultisys_level[cultisys_tag];
+                    max_cultisys_tag = cultisys_tag;
+                }
+                cultisys_tag++;
+                cultisys >>= 1;
+            }
+            level_up_bonus(level_up_tag, max_cultisys_tag, max_level);
+        }
         internal void level_up_bonus(uint level_up_tag, int max_cultisys_tag, int max_level)
         {
             if (level_up_tag != 0)
