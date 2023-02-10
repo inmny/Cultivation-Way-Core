@@ -6,7 +6,7 @@ namespace Cultivation_Way.Others
 {
     public class CW_Constants
     {
-        public const string mod_name = "启源";
+        public const string mod_name = "启源核心";
         public const string mod_id = "inmny.cw_core";
         public const float anim_dst_error = 0.5f;
         public const float global_immortal_culti_velo = 0.2f;
