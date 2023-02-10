@@ -240,6 +240,7 @@ namespace Cultivation_Way.Content
                     {
                         actor.level_up_bonus(1, 1, i);
                     }
+                    actor.cw_data.cultisys_level[0] = Others.CW_Constants.yao_transform_level;
                 }
                 if (actor.has_cultisys("bushido"))
                 {
@@ -247,6 +248,7 @@ namespace Cultivation_Way.Content
                     {
                         actor.level_up_bonus(2, has_immortal ? 1 : 2, has_immortal ? 7 : i);
                     }
+                    actor.cw_data.cultisys_level[1] = Others.CW_Constants.yao_transform_level;
                 }
                 actor.setStatsDirty();
             }
