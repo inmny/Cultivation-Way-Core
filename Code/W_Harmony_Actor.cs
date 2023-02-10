@@ -22,7 +22,26 @@ namespace Cultivation_Way.Content.Harmony
         public static bool actor_getUnitTexture(ActorBase __instance, ref string __result)
         {
             if (__instance.stats.race != "yao") return true; 
-            __result = __instance.stats.texture_path;
+            CW_Actor actor = (CW_Actor)__instance;
+            switch (actor.fast_data.profession)
+            {
+                case UnitProfession.Baby:
+                    __result = __instance.stats.texture_path + "/unit_child";
+                    break;
+                case UnitProfession.Null:
+                case UnitProfession.Unit:
+                    __result = __instance.stats.texture_path + (actor.fast_data.gender == ActorGender.Male ? "/unit_male_1" : "/unit_female_1");
+                    break;
+                case UnitProfession.Warrior:
+                    __result = __instance.stats.texture_path + "/unit_warrior_1";
+                    break;
+                case UnitProfession.Leader:
+                    __result = __instance.stats.texture_path + "/unit_leader";
+                    break;
+                case UnitProfession.King:
+                    __result = "races/eastern_human/unit_king";
+                    break;
+            }
             return false;
         }
         

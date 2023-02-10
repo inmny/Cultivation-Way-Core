@@ -153,22 +153,27 @@ namespace Cultivation_Way.Content
             add_yao("chicken");     // 鸡
             add_yao("cow");         // 牛
             //add_yao("crab");      // 螃蟹
-            add_yao("crocodile");   // 鳄鱼
+            //add_yao("crocodile");   // 鳄鱼
+            add_yao("deer");        // 鹿
             add_yao("dog");         // 狗
             add_yao("fox");         // 狐狸
             add_yao("frog");        // 青蛙
+            add_yao("horse");       // 马
             add_yao("hyena");       // 鬣狗
+            add_yao("lion");        // 狮
             add_yao("monkey");      // 猴
             add_yao("penguin");     // 企鹅
+            add_yao("pig");         // 猪
             add_yao("rabbit");      // 兔
             add_yao("rat");         // 鼠
             add_yao("ratKing");     // 鼠王
-            add_yao("deer");        // 鹿
-            add_yao("rooster");     // 公鸡
             add_yao("rhino");       // 犀牛
+            add_yao("rooster");     // 公鸡
             add_yao("sheep");       // 羊
             add_yao("snake");       // 蛇
-            add_yao("turtle");      // 龟
+            add_yao("tiger");       // 虎
+            //add_yao("turtle");      // 龟
+            add_yao("wild_boar");   // 野猪
             add_yao("wolf");        // 狼
         }
 
