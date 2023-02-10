@@ -95,6 +95,10 @@ namespace Cultivation_Way.Content.Harmony
             {
                 __instance.addTrait("wise", false);
             }
+            if(cw_actor.fast_data.age > 8 && cw_actor.fast_data.profession == UnitProfession.Baby)
+            {
+                cw_actor.fast_data.profession = UnitProfession.Unit;
+            }
             return false;
         }
         [HarmonyPrefix]
