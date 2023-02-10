@@ -224,6 +224,32 @@ namespace Cultivation_Way.Content
             }
             CW_Actor actor = (CW_Actor)MapBox.instance.spawnNewUnit(text, pTile, "", godPower.actorSpawnHeight);
             actor.getName();
+            if(actor.stats.race == "yao")
+            {
+                int max_count = 100;
+                while(max_count-->0 && actor.cw_data.element.comp_type() == "CW_common")
+                {
+                    actor.cw_data.element.re_random();
+                }
+                actor.cw_data.cultisys = 0;
+                Library.CW_Library_Manager.instance.cultisys.set_cultisys(actor);
+                bool has_immortal = actor.has_cultisys("immortal");
+                if (has_immortal)
+                {
+                    for(int i = 1; i <= Others.CW_Constants.yao_transform_level; i++)
+                    {
+                        actor.level_up_bonus(1, 1, i);
+                    }
+                }
+                if (actor.has_cultisys("bushido"))
+                {
+                    for(int i = 1; i <= Others.CW_Constants.yao_transform_level; i++)
+                    {
+                        actor.level_up_bonus(2, has_immortal ? 1 : 2, has_immortal ? 7 : i);
+                    }
+                }
+                actor.setStatsDirty();
+            }
             return true;
         }
         private static CW_SpriteAnimation anim;

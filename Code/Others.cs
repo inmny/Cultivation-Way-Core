@@ -41,6 +41,7 @@ namespace Cultivation_Way.Others
         public const float bushido_force_culti_chance = 3f;
         public const float bushido_force_culti_co = 0.01f;
         public const float seconds_per_month = 3f;
+        public const int yao_transform_level = 7;
         public const int special_body_create_level = 19;
         public const float new_family_name_chance = 0.1f;
 

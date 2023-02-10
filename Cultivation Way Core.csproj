@@ -3223,6 +3223,10 @@
     <Content Include="GameResources\effects\lightning_polo\20.png" />
     <Content Include="GameResources\effects\lightning_polo\30.png" />
     <Content Include="GameResources\effects\lightning_polo\40.png" />
+    <Content Include="GameResources\effects\simple_tornado\tornado1.png" />
+    <Content Include="GameResources\effects\simple_tornado\tornado2.png" />
+    <Content Include="GameResources\effects\simple_tornado\tornado3.png" />
+    <Content Include="GameResources\effects\simple_tornado\tornado4.png" />
     <Content Include="GameResources\effects\wakan_hole\000.png" />
     <Content Include="GameResources\effects\wakan_hole\010.png" />
     <Content Include="GameResources\effects\wakan_hole\100.png" />
@@ -3599,6 +3603,7 @@
     <None Include="GameResources\effects\gold_shield\sprites.json" />
     <None Include="GameResources\effects\gold_shield_on_hit\sprites.json" />
     <None Include="GameResources\effects\lightning_polo\sprites.json" />
+    <None Include="GameResources\effects\simple_tornado\sprites.json" />
     <None Include="GameResources\effects\single_gold_sword\sprites.json" />
     <None Include="GameResources\effects\single_water_sword\sprites.json" />
     <None Include="GameResources\effects\single_wood_sword\sprites.json" />
