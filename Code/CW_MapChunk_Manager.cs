@@ -62,6 +62,10 @@ namespace Cultivation_Way
         }
         internal void update()
         {
+            if(this.width!=Config.ZONE_AMOUNT_X*Config.CITY_ZONE_SIZE || this.height != Config.ZONE_AMOUNT_Y * Config.CITY_ZONE_SIZE)
+            {
+                this.reset(Config.ZONE_AMOUNT_X * Config.CITY_ZONE_SIZE, Config.ZONE_AMOUNT_Y * Config.CITY_ZONE_SIZE);
+            }
             int i; int j;
             // 首先更新各个区块的灵气裂解
             /**

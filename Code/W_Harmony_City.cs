@@ -72,7 +72,10 @@ namespace Cultivation_Way.Content.Harmony
                 __result = null;
                 return false;
             }
-            if (Others.CW_Constants.is_debugging && cw_city_data.popPoints.Count != cw_city_data.cw_pop_points.Count) throw new Exception("Pop points Not match"); 
+            if (Others.CW_Constants.is_debugging && cw_city_data.popPoints.Count != cw_city_data.cw_pop_points.Count) throw new Exception("Pop points Not match");
+
+            ModState.instance.load_object_reason = Load_Object_Reason.SPAWN;
+
             int random_idx = Toolbox.randomInt(0, cw_city_data.popPoints.Count);
             __result = cw_city_data.popPoints[random_idx];
             tmp_data = cw_city_data.cw_pop_points[random_idx];

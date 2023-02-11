@@ -35,7 +35,7 @@ namespace Cultivation_Way{
         public CW_Library_Manager library_manager;
         public Destroy_Unit_Reason destroy_unit_reason = Destroy_Unit_Reason.KILL;
         public Loading_Save_Type loading_save_type = Loading_Save_Type.CW;
-        public Load_Object_Reason load_object_reason = Load_Object_Reason.SPAWN;
+        public Load_Object_Reason load_object_reason = Load_Object_Reason.LOAD_SAVES;
     }
     public class World_Data
     {
