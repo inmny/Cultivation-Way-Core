@@ -44,6 +44,19 @@ namespace Cultivation_Way.Content
         {
             if (tile == null) return;
             CW_MapChunk chunk = tile.get_cw_chunk();
+
+            if (W_Content_WorldLaws.is_wakan_increase_enpowered())
+            {
+                MapBox.instance.CallMethod("getObjectsInChunks", tile, 3, MapObjectType.Actor);
+                List<BaseSimObject> objects = W_Content_Helper.temp_map_objects;
+                for (int i = 0; i < objects.Count; i++)
+                {
+                    CW_Actor actor = (CW_Actor)objects[i];
+
+                    actor.regen_wakan(actor.cw_cur_stats.wakan, actor.cw_status.wakan_level);
+                }
+            }
+
             if (chunk.wakan_level >= 3) return;
             chunk.wakan_level += 0.1f;
             if (chunk.wakan_level >= 3)
@@ -52,14 +65,6 @@ namespace Cultivation_Way.Content
             }
             //chunk.wakan = UnityEngine.Mathf.Max(1, chunk.wakan);
             chunk.update(true);
-            MapBox.instance.CallMethod("getObjectsInChunks", tile, 3, MapObjectType.Actor);
-            List<BaseSimObject> objects = W_Content_Helper.temp_map_objects;
-            for (int i = 0; i < objects.Count; i++)
-            {
-                CW_Actor actor = (CW_Actor)objects[i];
-
-                actor.regen_wakan(actor.cw_cur_stats.wakan, actor.cw_status.wakan_level);
-            }
 
             Harmony.W_Harmony_MapMode.force_update();
         }

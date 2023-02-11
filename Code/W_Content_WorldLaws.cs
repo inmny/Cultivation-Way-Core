@@ -12,11 +12,14 @@ namespace Cultivation_Way.Content
         internal static List<bool> default_world_law_bool_val = new List<bool>();
         private const string wakan_tide_trigger = "wakan_tide_trigger";
         private const string no_wakan_spread = "no_wakan_spread";
+        private const string enpowered_wakan_increase = "enpowered_wakan_increase";
         internal static void add_world_laws()
         {
             add_wakan_tide_trigger();
             add_no_wakan_spread();
+            add_enpowered_wakan_increase();
         }
+
 
         internal static void add_world_settings()
         {
@@ -29,6 +32,10 @@ namespace Cultivation_Way.Content
             {
                 ScrollWindow.showWindow("cultisys_setting");
             });
+        }
+        private static void add_enpowered_wakan_increase()
+        {
+            add_law(enpowered_wakan_increase, false, "iconWakan_Increase", CW_WorldLaw_Type.World_Option);
         }
 
         private static void add_wakan_tide_trigger()
@@ -48,5 +55,6 @@ namespace Cultivation_Way.Content
         }
         public static bool is_wakan_tide_working() { return MapBox.instance.worldLaws.dict[wakan_tide_trigger].boolVal; }
         public static bool is_no_wakan_spread_working() { return MapBox.instance.worldLaws.dict[no_wakan_spread].boolVal; }
+        public static bool is_wakan_increase_enpowered() { return MapBox.instance.worldLaws.dict[enpowered_wakan_increase].boolVal; }
     }
 }
