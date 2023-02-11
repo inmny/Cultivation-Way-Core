@@ -71,7 +71,7 @@ namespace Cultivation_Way.Content.Harmony
         [HarmonyPatch(typeof(Actor), "getHit")]
         public static void actor_getHit_post(Actor __instance, bool pFlash)
         {
-            if(pFlash) CW_Actor.set_timer_action(__instance, -1);
+            CW_Actor.set_timer_action(__instance, -1);
         }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Actor), "updateAge")]

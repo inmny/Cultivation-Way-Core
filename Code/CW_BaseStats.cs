@@ -644,7 +644,7 @@ namespace Cultivation_Way
             this.base_stats.normalize();
             if(normalize_element && this.element!=null) this.element.normalize(element_normalize_ceil);
             // Others Normalization.
-            if (this.base_stats.knockbackReduction > 90) this.base_stats.knockbackReduction = 90;
+            if (this.base_stats.knockbackReduction > Others.CW_Constants.max_knockback_reduction) this.base_stats.knockbackReduction = Others.CW_Constants.max_knockback_reduction;
         }
         public CW_BaseStats deepcopy()
         {
