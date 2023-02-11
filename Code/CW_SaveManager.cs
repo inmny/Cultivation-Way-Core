@@ -710,7 +710,7 @@ namespace Cultivation_Way
                             if (tmp_loaded_actor_data.cultisys_level[j] > 0) tmp_loaded_actor_data.cultisys |= (1u << j);
                         }
                     }
-
+                    tmp_loaded_actor_data.cultisys_level = Toolbox.resizeArray(tmp_loaded_actor_data.cultisys_level, CW_Library_Manager.instance.cultisys.list.Count);
                     MapBox.instance.spawnAndLoadUnit(origin_data.status.statsID, origin_data, MapBox.instance.GetTile(origin_data.x, origin_data.y));
                 }
                 else
