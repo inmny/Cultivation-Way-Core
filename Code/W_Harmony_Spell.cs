@@ -67,7 +67,7 @@ namespace Cultivation_Way.Content.Harmony
         [HarmonyPatch(typeof(MapBox), "applyAttack")]
         public static void status_effect_on_attack(BaseSimObject pAttacker, BaseSimObject pTarget)
         {
-            if(pAttacker!=null && pAttacker.objectType== MapObjectType.Actor && ((CW_Actor)pAttacker).status_effects!=null && ((CW_Actor)pAttacker).status_effects.Count > 0)
+            if(pAttacker!=null && pAttacker.objectType== MapObjectType.Actor &&pAttacker!=pTarget&& ((CW_Actor)pAttacker).status_effects!=null && ((CW_Actor)pAttacker).status_effects.Count > 0)
             {
                 foreach (CW_StatusEffectData status_effect in ((CW_Actor)pAttacker).status_effects.Values)
                 {   
