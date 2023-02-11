@@ -9,7 +9,7 @@ namespace Cultivation_Way.Others
         public const string mod_name = "启源核心";
         public const string mod_id = "inmny.cw_core";
         public const float anim_dst_error = 0.5f;
-        public const float global_immortal_culti_velo = 0.2f;
+        public const float global_immortal_culti_velo = 0.13f;
         public const float battle_timer = 3f;
         public const int save_version = 1;
         public const bool force_load_units = true;
