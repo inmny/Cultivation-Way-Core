@@ -49,14 +49,17 @@ namespace Cultivation_Way.Content.Harmony
         [HarmonyPatch(typeof(Actor), "getHit")]
         public static bool actor_getHit(Actor __instance, ref float pDamage, ref bool pFlash, AttackType pType = AttackType.Other, BaseSimObject pAttacker = null, bool pSkipIfShake = true)
         {
+
             if(((CW_Actor)__instance).__get_hit(pDamage, (Others.CW_Enums.CW_AttackType)pType, pAttacker, pSkipIfShake))
             {
+                CW_Actor.get_hit_spell_recurse_times--;
                 __instance.base_data.health++;
                 pDamage = 0f;
                 return true;
             }
             else
             {
+                CW_Actor.get_hit_spell_recurse_times--;
                 if (pAttacker != __instance)
                 {
                     CW_Actor.set_attackedBy(__instance, pAttacker);
