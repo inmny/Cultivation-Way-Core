@@ -418,6 +418,7 @@ namespace Cultivation_Way.Content
             CW_Actor actor = (CW_Actor)_object;
 
             if (actor.stats.race != "yao") return;
+            CW_Actor.set_current_texture(actor, "");
             CW_Actor.func_loadTexture(actor);
         }
         private static void brutalization_on_update(CW_StatusEffectData status_effect, BaseSimObject _object)

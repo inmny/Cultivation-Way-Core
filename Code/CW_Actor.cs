@@ -49,6 +49,7 @@ namespace Cultivation_Way
         public static Func<Actor, bool> get_is_moving = CW_ReflectionHelper.create_getter<Actor, bool>("is_moving");
         #endregion
         #region Setter
+        internal static Action<Actor, string> set_current_texture = CW_ReflectionHelper.create_setter<Actor, string>("current_texture");
         internal static Action<Actor, BaseSimObject> set_beh_actor_target = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("beh_actor_target");
         internal static Action<Actor, float> set_timer_action = CW_ReflectionHelper.create_setter<Actor, float>("timer_action");
         internal static Action<Actor, bool> set_statsDirty = CW_ReflectionHelper.create_setter<Actor, bool>("statsDirty");

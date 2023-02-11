@@ -101,6 +101,7 @@ namespace Cultivation_Way.Content.Harmony
             if(cw_actor.fast_data.age > 8 && cw_actor.fast_data.profession == UnitProfession.Baby)
             {
                 cw_actor.fast_data.profession = UnitProfession.Unit;
+                CW_Actor.func_loadTexture(cw_actor);
             }
             return false;
         }
