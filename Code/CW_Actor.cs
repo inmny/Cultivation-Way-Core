@@ -266,7 +266,7 @@ namespace Cultivation_Way
                     
                     if (status_effect.finished)
                     {
-                        __status_effects_to_remove.Add(status_effect.status_asset.id);
+                        __status_effects_to_remove.Add(status_effect.id);
                         
                     }
                 }
