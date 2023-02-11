@@ -9,9 +9,12 @@
 ## 附属
 |附属|仓库/下载地址|
 |:----:|:----:|
-|无|无|
+|杀孽|[CW_Addon_Killer](https://github.com/inmny/CW_Addon_Killer)|
 
 [制作新的附属](https://github.com/inmny/CW_Addon_Template)
+
+自行联系启源添加至此
+
 ## TODO
 
 ·天榜（完成大体框架，该项内容较多
