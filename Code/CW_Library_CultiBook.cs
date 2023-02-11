@@ -141,6 +141,7 @@ namespace Cultivation_Way.Library
             description.Clear(); value.Clear();
             description.AppendLine("创始人");  value.AppendLine(get_author_name());
             description.AppendLine("品阶");   value.AppendLine(LocalizedTextManager.getText("cultibook_order_" + this.order) + Others.CW_Constants.num_to_cz[9 - level] + "品");
+            description.AppendLine("修炼速度加成");   value.AppendLine((int)(this.culti_promt * 100f) + "%");
             for (int i = 0; i < this.spells.Length; i++)
             {
                 if (this.spells[i] == null) break;
@@ -168,7 +169,7 @@ namespace Cultivation_Way.Library
             this.bonus_stats.mod_wakan_regen = __get_co() * author.cw_cur_stats.mod_wakan_regen;
             this.bonus_stats.vampire = __get_co() * author.cw_cur_stats.vampire;
 
-            this.culti_promt = Toolbox.randomFloat(((this.order -1)*10 + this.level), (this.order * 10 + this.level)) / 100f;
+            this.culti_promt = Toolbox.randomFloat(((this.order -1)*10 + this.level), (this.order * 10 + this.level)) / 10f;
             this.culti_promt *= this.culti_promt;
             //throw new NotImplementedException();
         }

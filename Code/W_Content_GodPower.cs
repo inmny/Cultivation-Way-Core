@@ -238,7 +238,7 @@ namespace Cultivation_Way.Content
                 {
                     for(int i = 1; i <= Others.CW_Constants.yao_transform_level; i++)
                     {
-                        actor.level_up_bonus(1, 1, i);
+                        actor.level_up_bonus(1, 0, i);
                     }
                     actor.cw_data.cultisys_level[0] = Others.CW_Constants.yao_transform_level;
                 }
@@ -246,7 +246,7 @@ namespace Cultivation_Way.Content
                 {
                     for(int i = 1; i <= Others.CW_Constants.yao_transform_level; i++)
                     {
-                        actor.level_up_bonus(2, has_immortal ? 1 : 2, has_immortal ? 7 : i);
+                        actor.level_up_bonus(2, has_immortal ? 0 : 1, has_immortal ? 7 : i);
                     }
                     actor.cw_data.cultisys_level[1] = Others.CW_Constants.yao_transform_level;
                 }
