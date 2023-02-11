@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Extensions;
+using ReflectionUtility;
 namespace Cultivation_Way.Content
 {
     internal static class W_Content_Drop
@@ -51,6 +52,15 @@ namespace Cultivation_Way.Content
             }
             //chunk.wakan = UnityEngine.Mathf.Max(1, chunk.wakan);
             chunk.update(true);
+            MapBox.instance.CallMethod("getObjectsInChunks", tile, 3, MapObjectType.Actor);
+            List<BaseSimObject> objects = W_Content_Helper.temp_map_objects;
+            for (int i = 0; i < objects.Count; i++)
+            {
+                CW_Actor actor = (CW_Actor)objects[i];
+
+                actor.regen_wakan(actor.cw_cur_stats.wakan, actor.cw_status.wakan_level);
+            }
+
             Harmony.W_Harmony_MapMode.force_update();
         }
         private static void wakan_decrease(WorldTile tile, string drop_id)

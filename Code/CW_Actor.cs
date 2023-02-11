@@ -302,6 +302,7 @@ namespace Cultivation_Way
         {
             func_getHit(this, damage, flash, (AttackType)type, attacker, skip_if_shake);
         }
+        private static int recurse_times = 0;
         internal bool __get_hit(float damage, Others.CW_Enums.CW_AttackType attack_type, BaseSimObject attacker, bool pSkipIfShake)
         {
             if ((pSkipIfShake && this.fast_shake_timer.isActive) || this.fast_data.health <= 0 || this.haveTrait("asylum") || this==attacker) return false;
@@ -312,11 +313,11 @@ namespace Cultivation_Way
             // 区分法抗和物抗作用
             if(attack_type == Others.CW_Enums.CW_AttackType.Spell || attack_type == Others.CW_Enums.CW_AttackType.Status_Spell)
             {
-                damage_reduce = this.cw_cur_stats.spell_armor / (100f + this.cw_cur_stats.spell_armor);
+                damage_reduce = this.cw_cur_stats.spell_armor / (50f + this.cw_cur_stats.spell_armor);
             }
             else if (attack_type != Others.CW_Enums.CW_AttackType.God && attack_type!= Others.CW_Enums.CW_AttackType.Status_God)
             {
-                damage_reduce = this.cw_cur_stats.base_stats.armor / (100f + this.cw_cur_stats.base_stats.armor);
+                damage_reduce = this.cw_cur_stats.base_stats.armor / (50f + this.cw_cur_stats.base_stats.armor);
             }
             if (damage_reduce < 0) damage_reduce = 0;
             damage *= 1 - damage_reduce;
@@ -331,13 +332,22 @@ namespace Cultivation_Way
                 }
             }
 
-            // 释放防御类法术
+            // 释放法术
             if (this.cur_spells.Count > 0 && attack_type != Others.CW_Enums.CW_AttackType.Status_God && attack_type != Others.CW_Enums.CW_AttackType.Status_Spell)
             {
                 CW_Asset_Spell spell = CW_Library_Manager.instance.spells.get(this.cur_spells.GetRandom());
                 if(spell.triger_type == CW_Spell_Triger_Type.DEFEND)
                 {// TODO: 可能需要增加对自身位置的参数选择
                     CW_Spell.cast(spell, this, attacker, attacker==null?null:attacker.currentTile);
+                }
+                else if(recurse_times<5&&spell.triger_type == CW_Spell_Triger_Type.ATTACK &&attacker!=null)
+                {
+                    recurse_times++;
+                    CW_Spell.cast(spell, this, attacker, attacker.currentTile);
+                }
+                else
+                {
+                    recurse_times = 0;
                 }
             }
             if(this.status_effects!=null && this.status_effects.Count > 0 && attack_type != Others.CW_Enums.CW_AttackType.Status_God && attack_type !=Others.CW_Enums.CW_AttackType.Status_Spell)
@@ -721,12 +731,14 @@ namespace Cultivation_Way
             float health_to_regen = Utils.CW_Utils_Others.transform_wakan(health, health_level, this.cw_status.health_level);
             this.fast_data.health += (int)health_to_regen;
             if (this.fast_data.health > this.cw_cur_stats.base_stats.health) this.fast_data.health = this.cw_cur_stats.base_stats.health;
+            check_level_up();
         }
         public void regen_wakan(float wakan, float wakan_level = 1)
         {
             float wakan_to_regen = Utils.CW_Utils_Others.transform_wakan(wakan, wakan_level, this.cw_status.wakan_level);
-            this.cw_status.wakan += (int)wakan_to_regen;
+            this.cw_status.wakan += wakan_to_regen;
             if (this.cw_status.wakan > this.cw_cur_stats.wakan) this.cw_status.wakan = this.cw_cur_stats.wakan;
+            check_level_up();
         }
         public CW_Asset_Item get_weapon_asset()
         {

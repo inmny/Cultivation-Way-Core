@@ -284,7 +284,7 @@ namespace Cultivation_Way.Content
         {
             if (center == null) return false;
             CW_MapChunk chunk = center.get_cw_chunk();
-            if (chunk.wakan <= 1) return true;
+            if (chunk.wakan <= 1 && chunk.wakan>=0) return true;
 
             if (chunk.wakan_level > 1.1f) chunk.wakan_level -= 0.001f;
             else
