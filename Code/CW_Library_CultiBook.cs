@@ -167,7 +167,8 @@ namespace Cultivation_Way.Library
             this.bonus_stats.mod_wakan = __get_co() * author.cw_cur_stats.mod_wakan;
             this.bonus_stats.mod_wakan_regen = __get_co() * author.cw_cur_stats.mod_wakan_regen;
             this.bonus_stats.vampire = __get_co() * author.cw_cur_stats.vampire;
-            this.culti_promt = __get_co()*5;
+
+            this.culti_promt = Toolbox.randomFloat(((this.order -1)*10 + this.level), (this.order * 10 + this.level)) / 100f;
             this.culti_promt *= this.culti_promt;
             //throw new NotImplementedException();
         }
