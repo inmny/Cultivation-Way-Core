@@ -286,7 +286,7 @@ namespace Cultivation_Way.Content
             CW_BaseStats bound_stats = new CW_BaseStats();
             bound_stats.base_stats.knockbackReduction = 100f;
             bound_stats.base_stats.speed = -100000f;
-            bound_stats.base_stats.attackSpeed = -100000f;
+            bound_stats.base_stats.attackSpeed = -1000f;
             CW_Asset_StatusEffect status_effect = new CW_Asset_StatusEffect(
                 id: "status_ice_bound",
                 anim_id: null,

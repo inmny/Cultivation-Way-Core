@@ -303,17 +303,13 @@ namespace Cultivation_Way
         {
             func_getHit(this, damage, flash, (AttackType)type, attacker, skip_if_shake);
         }
-        internal static int get_hit_spell_recurse_times = 0;
+        internal static int get_hit_spell_times = 0;
         
         internal bool __get_hit(float damage, Others.CW_Enums.CW_AttackType attack_type, BaseSimObject attacker, bool pSkipIfShake)
         {
             if ((pSkipIfShake && this.fast_shake_timer.isActive) || this.fast_data.health <= 0 || this.haveTrait("asylum") || this==attacker) return false;
 
-            if (get_hit_spell_recurse_times >= 2)
-            {
-                return false;
-            }
-            get_hit_spell_recurse_times++;
+            get_hit_spell_times++;
 
             this.__battle_timer = Others.CW_Constants.battle_timer;
 
@@ -341,14 +337,14 @@ namespace Cultivation_Way
             }
 
             // 释放法术
-            if (this.cur_spells.Count > 0&&attack_type != Others.CW_Enums.CW_AttackType.Status_God && attack_type != Others.CW_Enums.CW_AttackType.Status_Spell && Toolbox.randomChance(0.2f))
+            if (this.cur_spells.Count > 0&&attack_type != Others.CW_Enums.CW_AttackType.Status_God && attack_type != Others.CW_Enums.CW_AttackType.Status_Spell )
             {
                 CW_Asset_Spell spell = CW_Library_Manager.instance.spells.get(this.cur_spells.GetRandom());
                 if(spell.triger_type == CW_Spell_Triger_Type.DEFEND)
                 {// TODO: 可能需要增加对自身位置的参数选择
                     CW_Spell.cast(spell, this, attacker, attacker==null?null:attacker.currentTile);
                 }
-                else if(spell.triger_type == CW_Spell_Triger_Type.ATTACK &&attacker!=null)
+                else if(spell.triger_type == CW_Spell_Triger_Type.ATTACK &&attacker!=null && get_hit_spell_times%5<4     &&Toolbox.randomChance(0.2f))
                 {
                     CW_Spell.cast(spell, this, attacker, attacker.currentTile);
                 }
