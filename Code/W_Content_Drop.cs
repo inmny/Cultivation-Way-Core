@@ -63,6 +63,8 @@ namespace Cultivation_Way.Content
             {
                 chunk.wakan_level = 3;
             }
+            if (chunk.wakan < 0) chunk.wakan = 0;
+            if (chunk.wakan > 100000) chunk.wakan = 100000;
             //chunk.wakan = UnityEngine.Mathf.Max(1, chunk.wakan);
             chunk.update(true);
 
