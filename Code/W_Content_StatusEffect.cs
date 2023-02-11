@@ -36,6 +36,8 @@ namespace Cultivation_Way.Content
 
             add_brutalization_status_effect();
 
+            add_status_effect_for_custom();
+
             load_status_effects_anims();
         }
         // 兽化 TODO: 添加get action，人物贴图变化
