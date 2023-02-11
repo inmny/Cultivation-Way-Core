@@ -26,6 +26,7 @@ namespace Cultivation_Way
         internal float s_spell_seconds = 1f;
         internal float __battle_timer = 0f;
         private static List<string> __status_effects_to_remove = new List<string>();
+        private static List<CW_StatusEffectData> __status_effects_to_update = new List<CW_StatusEffectData>();
         private static List<City> __tmp_city_list = new List<City>();
         /// <summary>
         /// 仅提供高效访问，待权限开放后删除
@@ -256,10 +257,12 @@ namespace Cultivation_Way
         {
             if (this.status_effects == null || this.status_effects.Count==0) return;
             __status_effects_to_remove.Clear();
+            __status_effects_to_update.Clear();
             string last_effect_id = "null";
             try
             {
-                foreach (CW_StatusEffectData status_effect in this.status_effects.Values)
+                __status_effects_to_update.AddRange(this.status_effects.Values);
+                foreach (CW_StatusEffectData status_effect in __status_effects_to_update)
                 {
                     last_effect_id = status_effect.id;
                     status_effect.update(elapsed, this);
