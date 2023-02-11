@@ -12,7 +12,8 @@ namespace Cultivation_Way.Content
     internal enum CW_WorldLaw_Type
     {
         World_Option,
-        World_Setting
+        World_Setting,
+        Others
     }
     internal static class W_Content_WindowWorldLaw
     {
@@ -87,6 +88,11 @@ namespace Cultivation_Way.Content
             world_setting.Find("Title").GetComponent<LocalizedText>().key = "cw_world_setting";
             grids.Add(world_setting);
             world_setting.gameObject.SetActive(true);
+
+            Transform others = create_new_grid("others", content_transform).transform;
+            others.Find("Title").GetComponent<LocalizedText>().key = "others";
+            grids.Add(others);
+            others.gameObject.SetActive(true);
 
         }
         private static GameObject create_new_grid(string id, Transform content_transform)

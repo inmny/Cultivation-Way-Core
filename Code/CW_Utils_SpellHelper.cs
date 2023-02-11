@@ -188,12 +188,12 @@ namespace Cultivation_Way.Utils
             }
             return tiles;
         }
-        internal static CW_StatusEffectData add_status_to_target(BaseSimObject user, BaseSimObject target, string status_id, string as_id = null)
+        public static CW_StatusEffectData add_status_to_target(BaseSimObject user, BaseSimObject target, string status_id, string as_id = null)
         {
             if (target.objectType != MapObjectType.Actor) return null;
             return ((CW_Actor)target).add_status_effect(status_id, as_id, user);
         }
-        internal static bool cause_damage_to_target(BaseSimObject user, BaseSimObject target, float damage, Others.CW_Enums.CW_AttackType attack_type = Others.CW_Enums.CW_AttackType.Spell, bool ignore_user_alive = true)
+        public static bool cause_damage_to_target(BaseSimObject user, BaseSimObject target, float damage, Others.CW_Enums.CW_AttackType attack_type = Others.CW_Enums.CW_AttackType.Spell, bool ignore_user_alive = true)
         {
 			if (target == null || !target.base_data.alive || (!ignore_user_alive && (user == null || !user.base_data.alive))) return false;
 			if (target.objectType == MapObjectType.Actor)

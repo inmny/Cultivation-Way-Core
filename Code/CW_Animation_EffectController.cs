@@ -70,6 +70,7 @@ namespace Cultivation_Way.Animation
             this.anim = anim;
             cur_anim_nr = 0;
         }
+        public string get_id() { return id; }
         internal void update(float elapsed)
         {
             int i;

@@ -72,7 +72,11 @@ namespace Cultivation_Way
         public abstract void initialize();
         public void Log(string format, params object[] _objects)
         {
-            print(string.Format("[{0}]:{1}", name, string.Format(format, _objects)));
+            Debug.LogFormat("[{0}]:{1}", name, string.Format(format, _objects));
+        }
+        public void Error(string format, params object[] _objects)
+        {
+            Debug.LogErrorFormat("[{0}:{1}]", name, string.Format(format, _objects));
         }
     }
 }

@@ -43,7 +43,7 @@ namespace Cultivation_Way{
         public CW_MapChunk_Manager map_chunk_manager;
     }
     [ModEntry]
-    class Main : MonoBehaviour{
+    public class Main : MonoBehaviour{
         public static Main instance { get; private set; }
         public ModState mod_state;
         public World_Data world_data;
