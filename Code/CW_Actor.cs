@@ -166,7 +166,7 @@ namespace Cultivation_Way
         /// <returns></returns>
         public bool is_in_battle()
         {
-            return this.__battle_timer < 0;
+            return this.__battle_timer > 0;
         }
         // TODO: 等建筑拓展后适配建筑
         public bool is_in_default_attack_range(BaseSimObject target)
@@ -320,11 +320,11 @@ namespace Cultivation_Way
             // 区分法抗和物抗作用
             if(attack_type == Others.CW_Enums.CW_AttackType.Spell || attack_type == Others.CW_Enums.CW_AttackType.Status_Spell)
             {
-                damage_reduce = this.cw_cur_stats.spell_armor / (50f + this.cw_cur_stats.spell_armor);
+                damage_reduce = this.cw_cur_stats.spell_armor / (100f + this.cw_cur_stats.spell_armor);
             }
             else if (attack_type != Others.CW_Enums.CW_AttackType.God && attack_type!= Others.CW_Enums.CW_AttackType.Status_God)
             {
-                damage_reduce = this.cw_cur_stats.base_stats.armor / (50f + this.cw_cur_stats.base_stats.armor);
+                damage_reduce = this.cw_cur_stats.base_stats.armor / (100f + this.cw_cur_stats.base_stats.armor);
             }
             if (damage_reduce < 0) damage_reduce = 0;
             damage *= 1 - damage_reduce;
@@ -349,7 +349,7 @@ namespace Cultivation_Way
                 }
                 else if(spell.triger_type == CW_Spell_Triger_Type.ATTACK &&attacker!=null && get_hit_spell_times%5<4     &&Toolbox.randomChance(0.2f))
                 {
-                    CW_Spell.cast(spell, this, attacker, attacker.currentTile);
+                    //CW_Spell.cast(spell, this, attacker, attacker.currentTile);
                 }
             }
             if(this.status_effects!=null && this.status_effects.Count > 0 && attack_type != Others.CW_Enums.CW_AttackType.Status_God && attack_type !=Others.CW_Enums.CW_AttackType.Status_Spell)
