@@ -69,6 +69,8 @@
   "no_wakan_spread_description": "启用此项后，灵气将不会扩散",
   "enpowered_wakan_increase_title": "帝流浆增强",
   "enpowered_wakan_increase_description": "启用此项后，帝流浆将额外为生物恢复大量灵气",
+  "no_auto_save_title": "禁用自动保存",
+  "no_auto_save_description": "启用此项后，将不会自动保存，自行负责存档安全",
   "creature_data_gender": "性别",
   "creature_gender_female": "女",
   "creature_gender_male": "男",
