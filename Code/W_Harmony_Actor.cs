@@ -203,7 +203,7 @@ namespace Cultivation_Way.Content.Harmony
         [HarmonyPatch(typeof(Actor), "restoreHealth")]
         public static bool actor_restore_health(Actor __instance, int pVal)
         {
-            ((CW_Actor)__instance).regen_shield(pVal, Mathf.Max(1, ((CW_Actor)__instance).cw_status.wakan_level));
+            ((CW_Actor)__instance).regen_health(pVal, Mathf.Max(0.1f, ((CW_Actor)__instance).cw_status.wakan_level-0.9f));
             return false;
         }
         [HarmonyPrefix]
