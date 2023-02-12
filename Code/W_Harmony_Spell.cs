@@ -24,7 +24,6 @@ namespace Cultivation_Way.Content.Harmony
 
             if (cw_actor.default_spell_timer > 0) return;
 
-            cw_actor.default_spell_timer = cw_actor.s_spell_seconds;
             CW_Asset_Spell spell = CW_Library_Manager.instance.spells.get(cw_actor.cur_spells.GetRandom());
             
 
@@ -34,6 +33,7 @@ namespace Cultivation_Way.Content.Harmony
             
             if (ret)
             {
+                cw_actor.default_spell_timer = cw_actor.s_spell_seconds;
                 CW_Actor.func_punchTargetAnimation(cw_actor, pTarget.currentPosition, pTarget.currentTile, true, (spell.tags & (1ul << (int)CW_Spell_Tag.IMMORTAL)) > 0, 40f);
                 //CW_Actor.set_attackTimer(cw_actor, cw_actor.m_attackSpeed_seconds);
             }
