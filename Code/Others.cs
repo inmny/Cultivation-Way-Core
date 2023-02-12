@@ -39,7 +39,7 @@ namespace Cultivation_Way.Others
         public const uint cultisys_immortol_tag = 0x1;
         public const uint cultisys_bushido_tag = 0x2;
         public const float bushido_force_culti_chance = 2.5f;
-        public const float bushido_force_culti_co = 0.008f;
+        public const float bushido_force_culti_co = 0.05f;
         public const float bushido_spell_min_health = 0.15f;
         public const float seconds_per_month = 3f;
         public const int yao_transform_level = 7;
