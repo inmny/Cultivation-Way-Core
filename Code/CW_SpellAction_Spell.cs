@@ -18,7 +18,8 @@ namespace Cultivation_Way.Actions
             }
             else
             {
-                throw new NotImplementedException();
+
+                //throw new NotImplementedException();
             }
         }
     }
