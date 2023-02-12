@@ -15,6 +15,12 @@ namespace Cultivation_Way.Content.Harmony
     internal class W_Harmony_Save
     {
         [HarmonyPrefix]
+        [HarmonyPatch(typeof(AutoSaveManager), "autoSave")]
+        public static bool autoSave()
+        {
+            return !W_Content_WorldLaws.is_no_auto_save();
+        }
+        [HarmonyPrefix]
         [HarmonyPatch(typeof(SaveManager), "saveWorldToDirectory")]
         public static bool saveWorldToDirectory_Prefix(string pFolder, bool pCompress, bool pCheckFolder, ref SavedMap __result)
         {

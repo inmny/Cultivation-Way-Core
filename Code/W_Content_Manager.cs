@@ -42,6 +42,7 @@ namespace Cultivation_Way.Content
             W_Content_WindowWorldLaw.init();
             W_Content_WorldLaws.add_world_laws();
             W_Content_WorldLaws.add_world_settings();
+            W_Content_WorldLaws.add_others_settings();
             try
             {
                 Harmony.W_Harmony_WorldLaw.worldLaws_init(MapBox.instance.worldLaws);
