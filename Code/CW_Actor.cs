@@ -745,6 +745,13 @@ namespace Cultivation_Way
             if (this.cw_status.wakan > this.cw_cur_stats.wakan) this.cw_status.wakan = this.cw_cur_stats.wakan;
             check_level_up();
         }
+        public void regen_shield(float shield, float wakan_level = 1)
+        {
+            float shield_to_regen = Utils.CW_Utils_Others.transform_wakan(shield, wakan_level, this.cw_status.wakan_level);
+            this.cw_status.shield += shield_to_regen;
+            if (this.cw_status.shield > this.cw_cur_stats.shield) this.cw_status.shield = this.cw_cur_stats.shield;
+            check_level_up();
+        }
         public CW_Asset_Item get_weapon_asset()
         {
             if(this.stats.use_items && !this.equipment.weapon.isEmpty())
