@@ -14,12 +14,16 @@ namespace Cultivation_Way.Actions
         }
         public static void defualt_damage(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
-            float damage = cost * Others.CW_Constants.default_spell_damage_co * spell_asset.free_val;
+            float damage = cost * Others.CW_Constants.default_spell_damage_co;
             Others.CW_Enums.CW_AttackType attack_type = Others.CW_Enums.CW_AttackType.Other;
             if ((spell_asset.tags & (1ul << (int)CW_Spell_Tag.IMMORTAL)) > 0)
             {
                 damage *= cost;
                 attack_type = Others.CW_Enums.CW_AttackType.Spell;
+            }
+            else if((spell_asset.tags & (1ul << (int)CW_Spell_Tag.BUSHIDO)) > 0)
+            {
+                damage *= spell_asset.free_val;
             }
             switch (spell_asset.target_type)
             {
