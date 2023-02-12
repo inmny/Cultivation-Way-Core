@@ -64,9 +64,8 @@ namespace Cultivation_Way.Content.Harmony
                 {
                     CW_Actor.set_attackedBy(__instance, pAttacker);
                     ((CW_Actor)__instance).try_to_set_attack_target_by_attacked_by();
-                    //CW_Actor.set_attackTarget(__instance, pAttacker);
                 }
-                pFlash = false;
+                CW_Actor.set_timer_action(__instance, -1);
                 return false;
             }
         }
