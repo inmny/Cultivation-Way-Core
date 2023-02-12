@@ -44,7 +44,8 @@ namespace Cultivation_Way.Actions
                     }
                     else
                     {
-                        cost = -1;
+                        cw_actor.get_fixed_base_stats().age_bonus -= (int)(spell_asset.min_cost_val + (cw_actor.cw_data.cultisys_level[1] + 1))*2;
+                        cost = Utils.CW_Utils_Others.get_raw_wakan(spell_asset.min_cost_val * (cw_actor.cw_data.cultisys_level[1] + 1)*4, cw_actor.cw_status.health_level);
                     }
                 }
                 return cost;
