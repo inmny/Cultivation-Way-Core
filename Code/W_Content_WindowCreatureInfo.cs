@@ -150,7 +150,7 @@ namespace Cultivation_Way.Content
             // 初始化原始窗口
             //GameObject cw_inspect_unit_gameobject = UnityEngine.Object.Instantiate(origin_inspect_unit_gameobject);
 
-            origin_inspect_unit_gameobject.name = "cw_inspect_unit";
+            //origin_inspect_unit_gameobject.name = "cw_inspect_unit";
 			NCMS.Utils.Windows.AllWindows.Add(origin_inspect_unit_gameobject.name, origin_inspect_unit_gameobject.GetComponent<ScrollWindow>());
 
             //ScrollWindow cw_window = cw_inspect_unit_gameobject.GetComponent<ScrollWindow>();

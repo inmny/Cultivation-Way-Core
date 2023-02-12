@@ -16,7 +16,7 @@ namespace Cultivation_Way.Content.Harmony
             {
 				case "inspect_unit":
 					if(!W_Content_WindowCreatureInfo.initialized) W_Content_WindowCreatureInfo.create_window_gameobject();
-					pWindowID = "cw_inspect_unit";
+					//pWindowID = "cw_inspect_unit";
 					break;
 				case "cw_window_top":
 					if (!W_Content_WindowTop.initialized) W_Content_WindowTop.create_window_gameobject();
