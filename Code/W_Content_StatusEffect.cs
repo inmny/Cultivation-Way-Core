@@ -73,7 +73,7 @@ namespace Cultivation_Way.Content
                 anim_id: "status_loltus_fire_anim",//"burning_anim",
                 bonus_stats: null,
                 effect_val: 5,
-                effect_time: 6f,
+                effect_time: 5f,
                 action_on_update: loltus_fire_on_update
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
@@ -86,7 +86,7 @@ namespace Cultivation_Way.Content
                 anim_id: "status_fen_fire_anim",//"burning_anim",
                 bonus_stats: null,
                 effect_val: 5,
-                effect_time: 60f,
+                effect_time: 5f,
                 action_on_update: fen_fire_on_update
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
@@ -99,7 +99,7 @@ namespace Cultivation_Way.Content
                 anim_id: "status_samadhi_fire_anim",
                 bonus_stats: null,
                 effect_val: 5,
-                effect_time: 60f,
+                effect_time: 5f,
                 action_on_update: samadhi_fire_on_update
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
@@ -130,7 +130,7 @@ namespace Cultivation_Way.Content
                 anim_id: null,
                 anim_scale_co: 0.5f,
                 bonus_stats: base_bonus_stats,
-                effect_time: 60f
+                effect_time: 10f
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
@@ -143,7 +143,7 @@ namespace Cultivation_Way.Content
                 anim_id: "basalt_armor_anim",
                 anim_scale_co: 0.5f,
                 bonus_stats: base_bonus_stats,
-                effect_time: 60f
+                effect_time: 10f
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
@@ -156,7 +156,7 @@ namespace Cultivation_Way.Content
                 anim_id: "gdragon_scale_anim",
                 anim_scale_co: 0.5f,
                 bonus_stats: base_bonus_stats,
-                effect_time: 60f
+                effect_time: 10f
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
@@ -169,7 +169,7 @@ namespace Cultivation_Way.Content
                 anim_id: "rosefinch_feather_anim",
                 anim_scale_co: 0.5f,
                 bonus_stats: base_bonus_stats,
-                effect_time: 60f,
+                effect_time: 10f,
                 action_on_attack: rosefinch_feather_on_attack
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
@@ -183,7 +183,7 @@ namespace Cultivation_Way.Content
                 anim_id: "unicorn_horn_anim",
                 anim_scale_co: 0.5f,
                 bonus_stats: base_bonus_stats,
-                effect_time: 60f
+                effect_time: 10f
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
@@ -196,7 +196,7 @@ namespace Cultivation_Way.Content
                 anim_id: "wtiger_tooth_anim",
                 anim_scale_co: 0.5f,
                 bonus_stats: base_bonus_stats,
-                effect_time: 60f
+                effect_time: 10f
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
@@ -208,7 +208,7 @@ namespace Cultivation_Way.Content
                 id: "status_armor_expose",
                 anim_id: null,//"armor_expose_anim",
                 bonus_stats: base_bonus_stats,
-                effect_time: 60f
+                effect_time: 5f
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
@@ -220,7 +220,7 @@ namespace Cultivation_Way.Content
                 id: "status_corrode",
                 anim_id: null,//"corrode_anim",
                 bonus_stats: base_bonus_stats,
-                effect_time: 60f
+                effect_time: 5f
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
@@ -232,7 +232,7 @@ namespace Cultivation_Way.Content
                 id: "status_curse",
                 anim_id: null,//"curse_anim",
                 bonus_stats: base_bonus_stats,
-                effect_time: 60f
+                effect_time: 5f
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
@@ -243,7 +243,7 @@ namespace Cultivation_Way.Content
                 id: "status_burning",
                 anim_id: null,//"burning_anim",
                 bonus_stats: null,
-                effect_time: 60f
+                effect_time: 5f
                 );
             CW_Library_Manager.instance.status_effects.add(status_effect);
         }
@@ -305,7 +305,7 @@ namespace Cultivation_Way.Content
                 id: "status_gold_shield",
                 anim_id: "gold_shield_anim",
                 bonus_stats: base_bonus_stats,
-                effect_time: 60f,
+                effect_time: 10f,
                 action_on_get: copy_bonus_stats_on_get,
                 action_on_hit: gold_shield_on_hit
                 );
@@ -319,7 +319,7 @@ namespace Cultivation_Way.Content
                 id: "status_water_shield",
                 anim_id: "water_shield_anim",
                 bonus_stats: base_bonus_stats,
-                effect_time: 60f,
+                effect_time: 10f,
                 action_on_get: water_shield_on_get,
                 action_on_hit: water_shield_on_hit
                 );
