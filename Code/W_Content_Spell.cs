@@ -1479,7 +1479,8 @@ namespace Cultivation_Way.Content
             CW_StatusEffectData status = ((CW_Actor)pUser).add_status_effect("status_" + spell_asset.id);
             if(status == null) return;
             //CW_EffectManager.instance.spawn_anim(spell_asset.anim_id, pUser.currentPosition, pUser.currentPosition, pUser, pUser, pUser.objectType == MapObjectType.Actor ? ((CW_Actor)pUser).cw_cur_stats.base_stats.scale : 1f);
-            status.bonus_stats.base_stats.armor += (int)cost;
+            status.bonus_stats.base_stats.armor += (int)Mathf.Sqrt(cost);
+            status.bonus_stats.spell_armor += status.bonus_stats.base_stats.armor/2;
         }
         private static void on_user_auto_scale(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
