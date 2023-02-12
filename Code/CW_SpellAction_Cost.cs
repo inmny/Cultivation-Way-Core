@@ -36,8 +36,8 @@ namespace Cultivation_Way.Actions
 
                 else if ((spell_asset.tags & (1ul << (int)CW_Spell_Tag.BUSHIDO)) > 0)
                 {
-                    float health_cost = (cw_actor.fast_data.health - 10) * spell_asset.cost;
-                    if (health_cost >= spell_asset.min_cost_val)
+                    float health_cost = cw_actor.fast_data.health* spell_asset.cost;
+                    if (health_cost >= spell_asset.min_cost_val && cw_actor.fast_data.health > cw_actor.cw_cur_stats.base_stats.health*Others.CW_Constants.bushido_spell_min_health)
                     {
                         cw_actor.fast_data.health -= (int)health_cost;
                         cost = Utils.CW_Utils_Others.get_raw_wakan(health_cost, cw_actor.cw_status.health_level);
@@ -45,7 +45,7 @@ namespace Cultivation_Way.Actions
                     else
                     {
                         cw_actor.get_fixed_base_stats().age_bonus -= (int)(spell_asset.min_cost_val + (cw_actor.cw_data.cultisys_level[1] + 1))*2;
-                        cost = Utils.CW_Utils_Others.get_raw_wakan(spell_asset.min_cost_val * (cw_actor.cw_data.cultisys_level[1] + 1)*4, cw_actor.cw_status.health_level);
+                        cost = Utils.CW_Utils_Others.get_raw_wakan(spell_asset.min_cost_val * (cw_actor.cw_data.cultisys_level[1] + 1)*10, cw_actor.cw_status.health_level);
                     }
                 }
                 return cost;
