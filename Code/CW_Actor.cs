@@ -234,6 +234,9 @@ namespace Cultivation_Way
             if (status_effects == null) status_effects = new Dictionary<string, CW_StatusEffectData>();
             as_id = string.IsNullOrEmpty(as_id) ? status_effect_id : as_id;
             if (status_effects.ContainsKey(as_id)) return status_effects[as_id];
+
+            if (this.haveTrait("asylum") && CW_Library_Manager.instance.status_effects.get(status_effect_id).tags.Contains(CW_StatusEffect_Tag.BOUND)) return null;
+
             foreach(CW_StatusEffectData status_effect in status_effects.Values)
             {
                 if (status_effect.status_asset.opposite_status != null && status_effect.status_asset.opposite_status.Contains(as_id)) return null;
