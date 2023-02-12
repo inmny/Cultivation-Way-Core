@@ -3366,6 +3366,7 @@
     <Content Include="GameResources\ui\cw_window\sim_info_bg.png" />
     <Content Include="GameResources\ui\cw_window\windowInnerSliced.png" />
     <Content Include="GameResources\ui\cw_window\windowNamePlate.png" />
+    <Content Include="GameResources\ui\Icons\iconNo_Auto_Save.png" />
     <Content Include="GameResources\ui\Icons\iconBee.png" />
     <Content Include="GameResources\ui\Icons\iconKnockback_Reduction.png" />
     <Content Include="GameResources\ui\Icons\iconSoul.png" />
