@@ -66,6 +66,7 @@ namespace Cultivation_Way.Content.Harmony
                     ((CW_Actor)__instance).try_to_set_attack_target_by_attacked_by();
                 }
                 CW_Actor.set_timer_action(__instance, -1);
+                __instance.startColorEffect("white");
                 return false;
             }
         }
