@@ -109,7 +109,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "五步拳", anim_id: null,
                 element: new CW_Element(new int[] { 20,20,20,20,20}, comp_type:false), element_type_limit: "none",
-                rarity: 4, free_val: 0.1f, cost: 0.05f, min_cost: 5,
+                rarity: 4, free_val: 0.1f, cost: 0.1f, min_cost: 10,
                 target_type: CW_Spell_Target_Type.TILE,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -130,6 +130,8 @@ namespace Cultivation_Way.Content
             spell = clone("一十二路入室拳", "五步拳");
             spell.rarity = 8;
             spell.free_val = 0.78f;
+            spell.cost = 0.1f;
+            spell.min_cost_val = 15;
             clone("太祖长拳", "一十二路入室拳");
             clone("弈天剑", "一十二路入室拳").free_val = 0.65f;
             clone("随波天殇剑", "一十二路入室拳").free_val = 0.68f;
@@ -141,6 +143,8 @@ namespace Cultivation_Way.Content
             spell = clone("五岳剑法", "五步拳");
             spell.rarity = 12;
             spell.free_val = 1.04f;
+            spell.cost = 0.1f;
+            spell.min_cost_val = 20;
             clone("奔雷刀法", "五岳剑法").free_val = 9.80f;
             clone("六合大枪", "五岳剑法").free_val = 1.20f;
             clone("半月斩", "五岳剑法").free_val = 1.10f;
@@ -148,6 +152,8 @@ namespace Cultivation_Way.Content
             spell = clone("虎鹤双形", "五步拳");
             spell.rarity = 16;
             spell.free_val = 2.0f;
+            spell.cost = 0.1f;
+            spell.min_cost_val = 25;
             clone("伏魔剑", "虎鹤双形").free_val = 2.0f;
             clone("昆仑十三剑", "虎鹤双形").free_val = 1.66f;
             clone("铁屏枪", "虎鹤双形").free_val = 1.5f;
@@ -156,14 +162,20 @@ namespace Cultivation_Way.Content
             spell = clone("凤舞飘香手", "五步拳");
             spell.rarity = 25;
             spell.free_val = 3.6f;
+            spell.cost = 0.1f;
+            spell.min_cost_val = 30;
             clone("太乙冲霄剑", "凤舞飘香手").free_val = 4.2f;
             spell = clone("龙爪手", "五步拳");
             spell.rarity = 36;
             spell.free_val = 5f;
+            spell.cost = 0.1f;
+            spell.min_cost_val = 35;
             clone("八卦乾坤腿", "龙爪手").free_val = 5.5f;
             spell = clone("龙魂绝魄刀", "五步拳");
             spell.rarity = 49;
             spell.free_val = 8f;
+            spell.cost = 0.1f;
+            spell.min_cost_val = 40;
         }
         private static void load_other_anims()
         {
