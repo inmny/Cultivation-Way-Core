@@ -106,7 +106,7 @@ namespace Cultivation_Way.Content
                 bushido.bonus_stats[i].base_stats.damage = i * i * i /2+ 2 * i * i;
                 // 法抗
                 bushido.bonus_stats[i].spell_armor = (int)(bushido.bonus_stats[i].base_stats.armor/3 * Mathf.Sqrt(Mathf.Sqrt(i)));
-                bushido.bonus_stats[i].base_stats.armor *= (i + 1)/2+1;
+                bushido.bonus_stats[i].base_stats.armor *= (int)Mathf.Sqrt(i)+1;
                
                 // 抗击退
                 bushido.bonus_stats[i].base_stats.knockbackReduction = (i + 1) * 6f;
