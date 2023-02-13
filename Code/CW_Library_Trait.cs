@@ -19,7 +19,7 @@ namespace Cultivation_Way.Library
         {
             this.id = origin_trait.id;
             this.origin_asset = origin_trait;
-            this.addition_stats = new CW_BaseStats();
+            this.addition_stats = new CW_BaseStats(origin_trait.baseStats);
         }
     }
     public class CW_Library_Trait : AssetLibrary<CW_Asset_Trait>
