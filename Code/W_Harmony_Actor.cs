@@ -487,8 +487,7 @@ namespace Cultivation_Way.Content.Harmony
                 CW_Asset_Trait trait = CW_Library_Manager.instance.traits.get(cw_actor.fast_data.traits[i]);
                 if (trait != null)
                 {
-                    cw_actor.cw_cur_stats.addStats(trait.origin_asset.baseStats);
-                    cw_actor.cw_cur_stats.addStats(trait.addition_stats);
+                    cw_actor.cw_cur_stats.addStats(trait.cw_stats);
                 }
             }
             // 添加装备的属性影响
