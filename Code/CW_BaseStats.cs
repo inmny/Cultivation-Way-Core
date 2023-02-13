@@ -191,7 +191,7 @@ namespace Cultivation_Way
             this.wakan = 0;
             this.wakan_regen = 0;
         }
-        internal CW_BaseStats(BaseStats baseStats)
+        public CW_BaseStats(BaseStats baseStats)
         {
             //this.element = new CW_Element(random_generate: true, comp_type: false);
             #region Extend Stats
@@ -231,7 +231,7 @@ namespace Cultivation_Way
             #endregion
             this.base_stats = baseStats;
         }
-        internal CW_BaseStats(CW_BaseStats copy)
+        public CW_BaseStats(CW_BaseStats copy)
         {
             this.base_stats = new BaseStats();
             if(copy.element!=null) this.element = copy.element.deepcopy();
