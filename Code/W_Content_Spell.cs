@@ -728,9 +728,9 @@ namespace Cultivation_Way.Content
             anim_setting.loop_time_limit = 120f;
             anim_setting.layer_name = "EffectsBack";
             anim_setting.trace_type = AnimationTraceType.ATTACH;
-            CW_EffectManager.instance.load_as_controller("stxh_0", "effects/stxh_HWMT", controller_setting: anim_setting, base_scale: 0.08f);
-            CW_EffectManager.instance.load_as_controller("stxh_1", "effects/stxh_LXST", controller_setting: anim_setting, base_scale: 0.08f);
-            CW_EffectManager.instance.load_as_controller("stxh_2", "effects/stxh_XTDT", controller_setting: anim_setting, base_scale: 0.08f);
+            CW_EffectManager.instance.load_as_controller("stxh_0", "effects/stxh_HWMT", controller_setting: anim_setting, base_scale: 1);
+            CW_EffectManager.instance.load_as_controller("stxh_1", "effects/stxh_LXST", controller_setting: anim_setting, base_scale: 1);
+            CW_EffectManager.instance.load_as_controller("stxh_2", "effects/stxh_XTDT", controller_setting: anim_setting, base_scale: 1);
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "stxh", anim_id: "stxh_{0}",
                 new CW_Element(), element_type_limit: null,

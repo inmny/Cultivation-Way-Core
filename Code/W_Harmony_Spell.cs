@@ -76,5 +76,11 @@ namespace Cultivation_Way.Content.Harmony
             }
             return;
         }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(MapBox), "updateActors")]
+        public static void deal_spells_after_update_actors()
+        {
+            CW_Spell_Manager.instance.deal_all();
+        }
     }
 }

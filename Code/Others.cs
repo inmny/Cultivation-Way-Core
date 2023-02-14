@@ -46,6 +46,7 @@ namespace Cultivation_Way.Others
         public const int special_body_create_level = 19;
         public const float new_family_name_chance = 0.1f;
         public const float max_knockback_reduction = 93f;
+        public const int default_spell_container_size = 1024;
 
         internal static string[] num_to_cz = new string[10] { "〇", "一", "二", "三", "四", "五", "六", "七", "八", "九" };
     }

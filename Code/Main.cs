@@ -31,6 +31,7 @@ namespace Cultivation_Way{
         public string cur_language = "cz";
         public string map_mode = "";
         public NCMod mod_info;
+        internal CW_Spell_Manager spell_manager;
         public CW_EffectManager effect_manager;
         public CW_Library_Manager library_manager;
         public Destroy_Unit_Reason destroy_unit_reason = Destroy_Unit_Reason.KILL;
@@ -77,6 +78,8 @@ namespace Cultivation_Way{
                 {
                     if (ncmod.name == Others.CW_Constants.mod_name) { mod_state.mod_info = ncmod; break; }
                 }
+                mod_state.spell_manager = new CW_Spell_Manager();
+                CW_Spell_Manager.instance = mod_state.spell_manager;
                 mod_state.effect_manager = this.gameObject.AddComponent<CW_EffectManager>();
                 mod_state.library_manager = CW_Library_Manager.instance;
                 mod_state.library_manager.init();

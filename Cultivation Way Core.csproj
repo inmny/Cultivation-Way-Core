@@ -3639,6 +3639,7 @@
     <Compile Include="Code\CW_NameTemplateActions.cs" />
     <Compile Include="Code\CW_SavedGameData.cs" />
     <Compile Include="Code\CW_SaveManager.cs" />
+    <Compile Include="Code\CW_Spell_Manager.cs" />
     <Compile Include="Code\CW_StatusEffectData.cs" />
     <Compile Include="Code\CW_Tester_Animation.cs" />
     <Compile Include="Code\CW_Building.cs" />

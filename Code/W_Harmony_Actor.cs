@@ -52,14 +52,12 @@ namespace Cultivation_Way.Content.Harmony
 
             if(((CW_Actor)__instance).__get_hit(pDamage, (Others.CW_Enums.CW_AttackType)pType, pAttacker, pSkipIfShake))
             {
-                CW_Actor.get_hit_spell_times--;
                 __instance.base_data.health++;
                 pDamage = 0f;
                 return true;
             }
             else
             {
-                CW_Actor.get_hit_spell_times--;
                 if (pAttacker != __instance)
                 {
                     CW_Actor.set_attackedBy(__instance, pAttacker);
@@ -409,6 +407,7 @@ namespace Cultivation_Way.Content.Harmony
             if (Others.CW_Constants.is_debugging && (cw_actor.cw_cur_stats.base_stats != CW_Actor.get_curstats(actor))) throw new Exception("Actor curStats reference error in cw_cur_stats");
 
             int i, len; uint tmp1;
+            cw_actor.can_act = true;
             cw_actor.cur_spells.Clear();
             cw_actor.cw_cur_stats.clear();
             cw_actor.cw_status.culti_velo = 0;

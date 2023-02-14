@@ -87,6 +87,8 @@ namespace Cultivation_Way
             #region 按照原版动作加载地图
             SmoothLoader.add(delegate
             {
+                Animation.CW_EffectManager.instance.clear();
+                CW_Spell_Manager.instance.clear();
                 MapBox.instance.clearWorld();
                 MapBox.instance.setMapSize(origin_save.width, origin_save.height);
                 MapBox.instance.mapStats = origin_save.mapStats;
@@ -220,6 +222,8 @@ namespace Cultivation_Way
             #region 按照原版动作加载地图
             SmoothLoader.add(delegate
             {
+                Animation.CW_EffectManager.instance.clear();
+                CW_Spell_Manager.instance.clear();
                 MapBox.instance.clearWorld();
                 MapBox.instance.setMapSize(cw_save.world_width, cw_save.world_height);
                 MapBox.instance.mapStats = cw_save.map_stats;

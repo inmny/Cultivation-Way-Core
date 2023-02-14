@@ -128,5 +128,9 @@ namespace Cultivation_Way.Animation
             throw new System.Exception("No found animations controller for id:" + id);
             return null;
         }
+        public void clear()
+        {
+
+        }
     }
 }
