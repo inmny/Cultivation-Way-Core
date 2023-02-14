@@ -104,6 +104,7 @@ namespace Cultivation_Way{
                 {
                     mod_state.registered = true;
                     mod_state.library_manager.register();
+                    W_Content_Tab.apply_buttons();
                 }
             }
             if (last_month!=MapBox.instance.mapStats.month)

@@ -239,7 +239,7 @@ namespace Cultivation_Way.Content
                 );
             #endregion
         }
-        internal static PowerButton create_button(string id, string sprite_path, UnityAction action, ButtonType button_type = ButtonType.Click)
+        public static PowerButton create_button(string id, string sprite_path, UnityAction action, ButtonType button_type = ButtonType.Click)
         {
             return PowerButtons.CreateButton(id, Resources.Load<Sprite>(sprite_path), LocalizedTextManager.stringExists(id+"_title")?LocalizedTextManager.getText(id + "_title"):id, LocalizedTextManager.stringExists(id + "_description") ? LocalizedTextManager.getText(id + "_description") : "", Vector2.zero, button_type, cw_tab.transform, action);
         }
