@@ -3401,6 +3401,7 @@
     <Content Include="GameResources\ui\Icons\iconWiki.png" />
     <Content Include="GameResources\effects\water_escape\940.png" />
     <Content Include="GameResources\ui\Icons\iconWakan_Decrease.png" />
+    <Content Include="GameResources\ui\Icons\iconEmpty_Cultibook.png" />
     <Content Include="GameResources\ui\Icons\icon_oldage.png" />
     <Content Include="icon.png" />
     <Content Include="Includes\0Harmony.dll" />

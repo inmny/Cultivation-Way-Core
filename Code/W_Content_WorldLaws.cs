@@ -25,6 +25,7 @@ namespace Cultivation_Way.Content
         internal static void add_world_settings()
         {
             add_cultisys_name_setting();
+            add_cultisys_stats_setting();
         }
         internal static void add_others_settings()
         {
@@ -41,6 +42,13 @@ namespace Cultivation_Way.Content
             W_Content_WindowWorldLaw.add_world_setting("cultisys_setting", "iconCultiSys", new UnityEngine.Vector3(0.6f, 0.75f), CW_WorldLaw_Type.World_Setting, delegate
             {
                 ScrollWindow.showWindow("cultisys_setting");
+            });
+        }
+        private static void add_cultisys_stats_setting()
+        {
+            W_Content_WindowWorldLaw.add_world_setting("cultisys_stats_setting", "iconEmpty_Cultibook", new UnityEngine.Vector3(0.6f, 0.75f), CW_WorldLaw_Type.World_Setting, delegate
+            {
+                ScrollWindow.showWindow("cultisys_stats_setting");
             });
         }
         private static void add_enpowered_wakan_increase()

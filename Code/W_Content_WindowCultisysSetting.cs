@@ -268,7 +268,7 @@ namespace Cultivation_Way.Content
                 level_settings[i].level_name.text = LocalizedTextManager.getText("cultisys_" + cur_cultisys + "_" + i);
                 level_settings[i].stats.onClick.AddListener(new UnityEngine.Events.UnityAction(() =>
                 {
-                    Window_Cultisys_Stats_Setting.instance.set_cultisys(cur_cultisys, i);
+                    Window_Cultisys_Stats_Setting.instance.set_cultisys(cur_cultisys);
                     ScrollWindow.showWindow("cultisys_stats_setting");
                 }));
                 level_settings[i].input_field.text = level_settings[i].level_name.text;
@@ -493,6 +493,7 @@ namespace Cultivation_Way.Content
         }
         private void postfix_init()
         {
+            set_cultisys("immortal");
             int length = cultisys_to_change.bonus_stats.Length;
             int i;
             cultisys_levels = new Cultisys_Level_Element[Others.CW_Constants.max_cultisys_level];
@@ -512,6 +513,30 @@ namespace Cultivation_Way.Content
                     this.set_val(text, cur_level);
                 }));
                 level_setting.gameObject.SetActive(true);
+
+            }
+            List<CW_Asset_CultiSys> cultisyses = CW_Library_Manager.instance.cultisys.list;
+            for (i = 0; i < cultisyses.Count; i++)
+            {
+
+                GameObject cultisys_switch = new GameObject("switch_to_" + cultisyses[i].id);
+                GameObject button = new GameObject("Button", typeof(Image), typeof(Button), typeof(TipButton));
+                cultisys_switch.transform.SetParent(this.transform.Find("Background"));
+                button.transform.SetParent(cultisys_switch.transform);
+
+                cultisys_switch.transform.localPosition = new Vector3(150, 100 - i * 40);
+                button.transform.localScale = new Vector3(1, 1);
+
+                button.GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/" + cultisyses[i].sprite_name);
+
+                string cultisys_id = cultisyses[i].id;
+                button.GetComponent<TipButton>().textOnClick = LocalizedTextManager.getText("cultisys_name_setting").Replace("$cultisys_name$", LocalizedTextManager.getText("CW_cultisys_" + cultisys_id));
+
+                Button button_button = button.GetComponent<Button>();
+                button_button.onClick.AddListener(new UnityEngine.Events.UnityAction(() =>
+                {
+                    this.set_cultisys(cultisys_id);
+                }));
             }
             resize();
         }
@@ -561,23 +586,23 @@ namespace Cultivation_Way.Content
             cur_y += 80;
             this.content_transform.Find("name_setting").localPosition = new Vector3(130, cur_y);
         }
-        public void set_cultisys(string cultisys, int level)
+        public void set_cultisys(string cultisys)
         {
             cultisys_to_change = CW_Library_Manager.instance.cultisys.get(cultisys);
             switch_to_stats(cur_stats_idx);
+            // 设置体系名字
+            cultisys_name.text = LocalizedTextManager.getText("CW_cultisys_" + cultisys_to_change.id);
         }
         void OnEnable()
         {
             if (!initialized) return;
-            enable = true;
             if (first_open)
             {
-                postfix_init();
                 first_open = false;
+                postfix_init();
             }
-            
-            // 设置体系名字
-            cultisys_name.text = LocalizedTextManager.getText("CW_cultisys_"+cultisys_to_change.id);
+            enable = true;
+
             // 展示各个境界的数值
             show_stats();
         }
