@@ -31,8 +31,10 @@ namespace Cultivation_Way.Content
             //origin_stats.nameTemplate = "deer_name";  //TODO
             origin_stats.nameLocale = "Deers";
             origin_stats.diet_meat = false;
-            origin_stats.diet_grass = true;
-            origin_stats.diet_berries = true;
+            origin_stats.diet_vegetation = true;
+            origin_stats.diet_flowers = true;
+            origin_stats.diet_crops = true;
+            origin_stats.diet_meat_insect = true;
             origin_stats.job = "animal";
             origin_stats.race = "deer";
             origin_stats.icon = "iconDeer";
