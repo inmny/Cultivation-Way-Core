@@ -609,7 +609,18 @@ namespace Cultivation_Way.Content
         void OnDisable()
         {
             enable = false;
+            apply_changes_to_units_immediately();
         }
+
+        private void apply_changes_to_units_immediately()
+        {
+            List<Actor> units = MapBox.instance.units.getSimpleList();
+            foreach(Actor unit in units)
+            {
+                unit.setStatsDirty();
+            }
+        }
+
         private void set_val(string val_str, int level)
         {
             if (string.IsNullOrEmpty(val_str)) return;
