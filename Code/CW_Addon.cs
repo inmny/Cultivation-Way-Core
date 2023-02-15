@@ -46,10 +46,19 @@ namespace Cultivation_Way
         internal void load_localized_text(string language)
         {
             if (language != "cz") language = "en";
-            string file_str = File.ReadAllText(string.Format("{0}/Locales/{1}{2}", this_mod.Info.Path, language, ".json"));
+
+            string path = string.Format("{0}/Locales/{1}{2}", this_mod.Info.Path, language, ".json");
+
+            if (!File.Exists(path)) return;
+
+            string file_str = File.ReadAllText(path);
+            
             Dictionary<string, object> textDic = Json.Deserialize(file_str) as Dictionary<string, object>;
 
+            if (textDic == null) return;
+
             Dictionary<string, string> localizedText = Reflection.GetField(typeof(LocalizedTextManager), LocalizedTextManager.instance, "localizedText") as Dictionary<string, string>;
+            if (localizedText == null) return;
             foreach (string key in textDic.Keys)
             {
                 localizedText[key] = textDic[key] as string;
