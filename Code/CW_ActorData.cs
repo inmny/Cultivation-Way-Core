@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cultivation_Way.Library;
+using Newtonsoft.Json;
+
 namespace Cultivation_Way
 {
     [Serializable]
@@ -22,10 +24,19 @@ namespace Cultivation_Way
         public string family_name;
         public string pope_id;
         public int cultisys_to_save;
+        public Dictionary<string, object> extended_data = new Dictionary<string, object>();
         //public List<Library.CW_Family_Member_Info> children_info;
         ~CW_ActorData()
         {
             WorldBoxConsole.Console.print("Destruct CW_ActorData");
+        }
+        public T get_extended_data<T>(string data_id)
+        {
+            object ret;
+
+            if (extended_data.TryGetValue(data_id, out ret)) return (T)ret;
+
+            return default(T);
         }
         internal void pre_learn_cultibook(CW_Asset_CultiBook cultibook)
         {
@@ -73,6 +84,7 @@ namespace Cultivation_Way
                     cw_actor_data.compose_objects_id.Add(compose_objects_id[i]);
                 }
             }
+            cw_actor_data.extended_data = JsonConvert.DeserializeObject<Dictionary<string, object>>(JsonConvert.SerializeObject(extended_data));
             cw_actor_data.family_id = family_id;
             cw_actor_data.cultibook_id = cultibook_id;
             cw_actor_data.special_body_id = special_body_id;
