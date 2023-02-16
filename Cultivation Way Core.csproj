@@ -3631,8 +3631,10 @@
     <Compile Include="Code\CW_ActorStatus.cs" />
     <Compile Include="Code\CW_Addon.cs" />
     <Compile Include="Code\CW_BuildingStatus.cs" />
+    <Compile Include="Code\CW_Energy.cs" />
     <Compile Include="Code\CW_Extensions_ActorStatus.cs" />
     <Compile Include="Code\CW_Extensions_WorldTile.cs" />
+    <Compile Include="Code\CW_Library_Energy.cs" />
     <Compile Include="Code\CW_Library_Name.cs" />
     <Compile Include="Code\CW_Library_StatusEffect.cs" />
     <Compile Include="Code\CW_MapChunk_Manager.cs" />
