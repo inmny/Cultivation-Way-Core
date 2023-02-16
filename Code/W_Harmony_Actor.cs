@@ -322,6 +322,7 @@ namespace Cultivation_Way.Content.Harmony
                 CW_Actor.func_spawnOn(actor, pTile, pZHeight);
                 CW_Actor.func_create(actor);
                 actor.fast_targets_to_ignore = CW_Actor.get_targets_to_ignore(actor);
+                if(!string.IsNullOrEmpty(actor_stats.fixed_name)) actor.fast_data.setName(actor_stats.fixed_name);
             }
             else
             {
@@ -371,7 +372,7 @@ namespace Cultivation_Way.Content.Harmony
                         CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(actor.cw_data.cultibook_id);
                         if (cultibook != null) actor.learn_spells(cultibook.spells);
                     }
-                    
+                    if (!string.IsNullOrEmpty(actor_stats.fixed_name)) actor.fast_data.setName(actor_stats.fixed_name);
                 }
             }
             if (actor.new_creature) CW_Library_Manager.instance.cultisys.set_cultisys(actor);
