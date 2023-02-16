@@ -551,7 +551,14 @@ namespace Cultivation_Way.Content
         {
             if (!System.IO.File.Exists(path_to_save)) return;
 
-            cultisys_changed = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CW_Asset_CultiSys>>(System.IO.File.ReadAllText(path_to_save));
+            try
+            {
+                cultisys_changed = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CW_Asset_CultiSys>>(System.IO.File.ReadAllText(path_to_save));
+            }
+            catch(Exception e)
+            {
+                cultisys_changed = new List<CW_Asset_CultiSys>();
+            }
 
             if (cultisys_changed == null) cultisys_changed=new List<CW_Asset_CultiSys>();
 
