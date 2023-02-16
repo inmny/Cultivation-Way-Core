@@ -329,6 +329,17 @@ namespace Cultivation_Way
             if (damage_reduce < 0) damage_reduce = 0;
             damage *= 1 - damage_reduce;
 
+            CW_Asset_Spell back_spell = null;
+            // 反击法术
+            if (this.cur_spells.Count > 0 && attack_type != Others.CW_Enums.CW_AttackType.Status_God && attack_type != Others.CW_Enums.CW_AttackType.Status_Spell)
+            {
+                back_spell = CW_Library_Manager.instance.spells.get(this.cur_spells.GetRandom());
+                if (back_spell.triger_type == CW_Spell_Triger_Type.ATTACK && attacker != null && Toolbox.randomChance(0.4f))
+                {
+                    CW_Spell.cast(back_spell, this, attacker, attacker.currentTile);
+                }
+            }
+
             if ((int)damage <= 0) return false; 
             // 反伤
             if(damage > 0 && attack_type != Others.CW_Enums.CW_AttackType.Spell && attack_type != Others.CW_Enums.CW_AttackType.God && attack_type != Others.CW_Enums.CW_AttackType.Status_God)
@@ -339,19 +350,12 @@ namespace Cultivation_Way
                 }
             }
 
-            // 释放法术
-            if (this.cur_spells.Count > 0&&attack_type != Others.CW_Enums.CW_AttackType.Status_God && attack_type != Others.CW_Enums.CW_AttackType.Status_Spell )
-            {
-                CW_Asset_Spell spell = CW_Library_Manager.instance.spells.get(this.cur_spells.GetRandom());
-                if(spell.triger_type == CW_Spell_Triger_Type.DEFEND)
-                {// TODO: 可能需要增加对自身位置的参数选择
-                    CW_Spell.cast(spell, this, attacker, attacker==null?null:attacker.currentTile);
-                }
-                else if(spell.triger_type == CW_Spell_Triger_Type.ATTACK &&attacker!=null && Toolbox.randomChance(0.2f))
-                {
-                    CW_Spell.cast(spell, this, attacker, attacker.currentTile);
-                }
+            // 防御法术
+            if (back_spell!=null&& back_spell.triger_type == CW_Spell_Triger_Type.DEFEND)
+            {// TODO: 可能需要增加对自身位置的参数选择
+                CW_Spell.cast(back_spell, this, attacker, attacker==null?null:attacker.currentTile);
             }
+
             if(this.status_effects!=null && this.status_effects.Count > 0 && attack_type != Others.CW_Enums.CW_AttackType.Status_God && attack_type !=Others.CW_Enums.CW_AttackType.Status_Spell)
             {
                 foreach(CW_StatusEffectData status_effect in this.status_effects.Values)
