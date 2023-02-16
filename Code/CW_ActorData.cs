@@ -30,6 +30,10 @@ namespace Cultivation_Way
         {
             WorldBoxConsole.Console.print("Destruct CW_ActorData");
         }
+        public void set_extended_data<T>(string data_id, T val)
+        {
+            extended_data[data_id] = val;
+        }
         public T get_extended_data<T>(string data_id)
         {
             object ret;
@@ -37,6 +41,10 @@ namespace Cultivation_Way
             if (extended_data.TryGetValue(data_id, out ret)) return (T)ret;
 
             return default(T);
+        }
+        public bool has_extended_data(string data_id)
+        {
+            return extended_data.ContainsKey(data_id);
         }
         internal void pre_learn_cultibook(CW_Asset_CultiBook cultibook)
         {
