@@ -701,16 +701,18 @@ namespace Cultivation_Way
             {
                 if (culti_book.spells[i] == null) { len_2 = i; break; }
             }
+            int search_times = (int)Mathf.Sqrt((culti_book.order + 1) * 10 + culti_book.level);
             for (i = 0; i < len_1; i++)
             {
                 for (j = 0; j < len_2; j++)
                 {
                     if (this.cw_data.spells[i] == culti_book.spells[j]) break;
                 }
-                if (j == len_2)
+                if (j == len_2&&(culti_book.spells[j]==null || CW_Library_Manager.instance.spells.get(culti_book.spells[j]).rarity< CW_Library_Manager.instance.spells.get(cw_data.spells[i]).rarity))
                 {
                     culti_book.spells[j] = this.cw_data.spells[i];
-                    break;
+                    search_times--;
+                    if(search_times<=0) break;
                 }
             }
         }
