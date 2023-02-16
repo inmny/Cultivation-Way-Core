@@ -59,6 +59,7 @@ namespace Cultivation_Way.Library
         public CW_Library_CultiBook cultibooks;
         public CW_Library_CultiSys cultisys;
         public CW_Library_Element elements;
+        public CW_Library_Energy energy_types;
         internal CW_Library_Family families;
         public CW_Library_Item items;
         public CW_Library_ItemAccessoryMaterial item_accessory_materials;
@@ -89,6 +90,7 @@ namespace Cultivation_Way.Library
             cultibooks = new CW_Library_CultiBook();
             cultisys = new CW_Library_CultiSys();
             elements = new CW_Library_Element();
+            energy_types = new CW_Library_Energy();
             families = new CW_Library_Family();
             items = new CW_Library_Item();
             item_accessory_materials = new CW_Library_ItemAccessoryMaterial();
@@ -109,6 +111,7 @@ namespace Cultivation_Way.Library
             cultibooks.init();
             cultisys.init();
             elements.init();
+            energy_types.init();
             families.init();
             items.init();
             item_accessory_materials.init();
@@ -143,6 +146,7 @@ namespace Cultivation_Way.Library
         {
             cultisys.register();
             elements.register();
+            energy_types.register();
             name_generators.register();
             spells.register();
             /**
