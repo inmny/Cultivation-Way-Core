@@ -56,6 +56,7 @@ namespace Cultivation_Way.Content
         private static void others_init()
         {
             W_Content_SpectateUnit.init();
+
             Window_Cultisys_Name_Setting.init();
             Window_Cultisys_Stats_Setting.init();
         }
