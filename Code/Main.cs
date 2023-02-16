@@ -72,12 +72,13 @@ namespace Cultivation_Way{
                 CW_Library_Manager.create();
                 world_data = new World_Data();
                 world_config = new CW_WorldConfig();
-                
-                World_Data.instance = world_data;
+
                 foreach (NCMod ncmod in NCMS.ModLoader.Mods)
                 {
                     if (ncmod.name == Others.CW_Constants.mod_name) { mod_state.mod_info = ncmod; break; }
                 }
+
+                World_Data.instance = world_data;
                 mod_state.spell_manager = new CW_Spell_Manager();
                 CW_Spell_Manager.instance = mod_state.spell_manager;
                 mod_state.effect_manager = this.gameObject.AddComponent<CW_EffectManager>();

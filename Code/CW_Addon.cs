@@ -25,6 +25,8 @@ namespace Cultivation_Way
         internal bool initialized = false;
         public string name { get; private set; }
         public __Mod this_mod { get; private set; }
+        internal string core_version = "";
+        internal bool adapt_to_core_version = false;
         private void __finish_init()
         {
             this.initialized = true;
@@ -37,9 +39,23 @@ namespace Cultivation_Way
         {
             if (!initialized && Main.instance.initialized)
             {
-                load_localized_text(ModState.instance.cur_language);
-                initialize();
-                __finish_init();
+                try
+                {
+                    adapt_to_core_version = core_version == ModState.instance.mod_info.version;
+                    if (!adapt_to_core_version)
+                    {
+                        Warn("适配核心版本为{0}，当前核心版本为{1}", core_version, ModState.instance.mod_info.version);
+                    }
+                    load_localized_text(ModState.instance.cur_language);
+                    initialize();
+                    __finish_init();
+                }
+                catch(Exception e)
+                {
+                    if(!adapt_to_core_version) Error("核心版本不匹配");
+                    Error(e.Message);
+                    Error(e.StackTrace);
+                }
             }
 
         }
@@ -64,7 +80,7 @@ namespace Cultivation_Way
                 localizedText[key] = textDic[key] as string;
             }
         }
-        protected void load_mod_info(Type this_mod_type)
+        protected void load_mod_info(Type this_mod_type, string core_version = "1.0.4")
         {
             if (this_mod_type == null) throw new Exception("DO NOT CHANGE THE FIRST LINE IN AWAKE");
             if (this_mod_type.Name != "Mod") throw new Exception("DO NOT CHANGE THE FIRST LINE IN AWAKE");
@@ -76,6 +92,8 @@ namespace Cultivation_Way
             int name_begin_idx = this_mod.Info.Name.LastIndexOf('.');
             name = this_mod.Info.Name.Substring(name_begin_idx + 1);
             print(string.Format("[CW Addon]:'{0}' Awake", name));
+            this.core_version = core_version;
+            
         }
         public abstract void awake();
         public abstract void initialize();
@@ -83,9 +101,13 @@ namespace Cultivation_Way
         {
             Debug.LogFormat("[{0}]:{1}", name, string.Format(format, _objects));
         }
+        public void Warn(string format, params object[] _objects)
+        {
+            Debug.LogWarningFormat("[{0}]:{1}", name, string.Format(format, _objects));
+        }
         public void Error(string format, params object[] _objects)
         {
-            Debug.LogErrorFormat("[{0}:{1}]", name, string.Format(format, _objects));
+            Debug.LogErrorFormat("[{0}]:{1}", name, string.Format(format, _objects));
         }
     }
 }
