@@ -961,6 +961,10 @@
     <Content Include="GameResources\actors\yaos\t_crocodile_yao\unit_warrior_1\walk_3_item.png" />
     <Content Include="GameResources\actors\yaos\t_deer_yao\3.png" />
     <Content Include="GameResources\actors\yaos\t_deer_yao\4.png" />
+    <Content Include="GameResources\actors\yaos\t_deer_yao\swim_0.png" />
+    <Content Include="GameResources\actors\yaos\t_deer_yao\swim_1.png" />
+    <Content Include="GameResources\actors\yaos\t_deer_yao\swim_2.png" />
+    <Content Include="GameResources\actors\yaos\t_deer_yao\swim_3.png" />
     <Content Include="GameResources\actors\yaos\t_deer_yao\unit_child\swim_0.png" />
     <Content Include="GameResources\actors\yaos\t_deer_yao\unit_child\swim_1.png" />
     <Content Include="GameResources\actors\yaos\t_deer_yao\unit_child\swim_2.png" />
@@ -1053,6 +1057,10 @@
     <Content Include="GameResources\actors\yaos\t_deer_yao\unit_warrior_1\walk_3.png" />
     <Content Include="GameResources\actors\yaos\t_deer_yao\unit_warrior_1\walk_3_head.png" />
     <Content Include="GameResources\actors\yaos\t_deer_yao\unit_warrior_1\walk_3_item.png" />
+    <Content Include="GameResources\actors\yaos\t_deer_yao\walk_0.png" />
+    <Content Include="GameResources\actors\yaos\t_deer_yao\walk_1.png" />
+    <Content Include="GameResources\actors\yaos\t_deer_yao\walk_2.png" />
+    <Content Include="GameResources\actors\yaos\t_deer_yao\walk_3.png" />
     <Content Include="GameResources\actors\yaos\t_dog_yao\5.png" />
     <Content Include="GameResources\actors\yaos\t_dog_yao\6.png" />
     <Content Include="GameResources\actors\yaos\t_dog_yao\t_dog.png" />

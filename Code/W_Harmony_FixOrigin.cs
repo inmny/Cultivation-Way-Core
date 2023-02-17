@@ -30,5 +30,11 @@ namespace Cultivation_Way.Content.Harmony
             actor_sprite_anim.resetAnim(0);
             return false;
         }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(ActorBase), "loadTexture")]
+        public static bool cancel_load_boat_texture_by_default_actor_loadTexture(ActorBase __instance)
+        {
+            return !__instance.stats.isBoat;
+        }
     }
 }
