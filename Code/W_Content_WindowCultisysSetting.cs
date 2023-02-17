@@ -343,7 +343,7 @@ namespace Cultivation_Way.Content
             NCMS.Utils.Windows.AllWindows[scroll_window.name] = scroll_window;
 
             instance = scroll_window.gameObject.AddComponent<Window_Cultisys_Stats_Setting>();
-            instance.load_from_file();
+            //instance.load_from_file();
             instance.transform.Find("Background/Scroll View").gameObject.SetActive(true);
             instance.content_transform = instance.transform.Find("Background/Scroll View/Viewport/Content");
             instance.gameObject.SetActive(false);
@@ -547,7 +547,7 @@ namespace Cultivation_Way.Content
             stats_is_on[cur_stats_idx].enabled = true;
             if(enable) show_stats();
         }
-        private void load_from_file()
+        internal void load_from_file()
         {
             if (!System.IO.File.Exists(path_to_save)) return;
 
