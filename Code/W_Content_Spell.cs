@@ -1088,7 +1088,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "loltus_fire", anim_id: "loltus_fire_anim",
                 new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
-                rarity: 50, free_val: 1, cost: 0.08f, learn_level: 1, cast_level: 1,
+                rarity: 95, free_val: 1, cost: 0.08f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,
@@ -1118,7 +1118,7 @@ namespace Cultivation_Way.Content
             CW_Asset_Spell spell = new CW_Asset_Spell(
                 id: "fen_fire", anim_id: "fen_fire_anim",
                 new CW_Element(new int[] { 0, 100, 0, 0, 0 }),
-                rarity: 50, free_val: 1, cost: 0.08f, learn_level: 1, cast_level: 1,
+                rarity: 95, free_val: 1, cost: 0.08f, learn_level: 1, cast_level: 1,
                 target_type: CW_Spell_Target_Type.ACTOR,
                 target_camp: CW_Spell_Target_Camp.ENEMY,
                 triger_type: CW_Spell_Triger_Type.ATTACK,

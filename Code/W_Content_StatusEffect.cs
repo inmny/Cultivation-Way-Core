@@ -377,7 +377,7 @@ namespace Cultivation_Way.Content
         {
             if (_object.objectType != MapObjectType.Actor) return;
             if (((CW_Actor)_object).fast_data.kills == 0) status_effect.force_finish();
-            Utils.CW_SpellHelper.cause_damage_to_target(status_effect.user, _object, ((CW_Actor)_object).fast_data.kills * status_effect.effect_val, Others.CW_Enums.CW_AttackType.Status_Spell);
+            Utils.CW_SpellHelper.cause_damage_to_target(status_effect.user, _object, ((CW_Actor)_object).fast_data.kills * status_effect.effect_val, Others.CW_Enums.CW_AttackType.Status_God);
         }
         private static void fen_fire_on_update(CW_StatusEffectData status_effect, BaseSimObject _object)
         {
