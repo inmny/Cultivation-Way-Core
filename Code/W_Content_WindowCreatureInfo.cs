@@ -450,7 +450,7 @@ namespace Cultivation_Way.Content
             soul.setValue(cw_actor.cw_cur_stats.soul);
             spell_armor.setValue(cw_actor.cw_cur_stats.spell_armor);
             crit_damage_mod.setValue(cw_actor.cw_cur_stats.base_stats.damageCritMod, "%");
-            anti_injuries.setValue(cw_actor.cw_cur_stats.anti_injury, "%");
+            anti_injuries.setValue(cw_actor.cw_cur_stats.anti_injury*100, "%");
             knockback_reduction.setValue(cw_actor.cw_cur_stats.base_stats.knockbackReduction, "%");
             health_regen.setValue(cw_actor.cw_cur_stats.health_regen);
             shield_regen.setValue(cw_actor.cw_cur_stats.shield_regen);

@@ -111,7 +111,7 @@ namespace Cultivation_Way.Content
                 // 抗击退
                 bushido.bonus_stats[i].base_stats.knockbackReduction = (i + 1) * 6f;
                 // 反伤
-                bushido.bonus_stats[i].anti_injury = i;
+                bushido.bonus_stats[i].anti_injury = i/100f;
             }
             // 攻速
             for (i = 0; i < 10; i++)
