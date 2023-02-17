@@ -550,24 +550,26 @@ namespace Cultivation_Way.Content
         private void load_from_file()
         {
             if (!System.IO.File.Exists(path_to_save)) return;
-
+            List<CW_Asset_CultiSys> temp_list = null;
             try
             {
-                cultisys_changed = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CW_Asset_CultiSys>>(System.IO.File.ReadAllText(path_to_save));
+                temp_list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<CW_Asset_CultiSys>>(System.IO.File.ReadAllText(path_to_save));
             }
             catch(Exception e)
             {
-                cultisys_changed = new List<CW_Asset_CultiSys>();
+                temp_list = new List<CW_Asset_CultiSys>();
                 Debug.LogError(e.Message);
             }
 
-            if (cultisys_changed == null) cultisys_changed=new List<CW_Asset_CultiSys>();
-            foreach(CW_Asset_CultiSys cultisys in cultisys_changed)
+            if (temp_list == null) temp_list = new List<CW_Asset_CultiSys>();
+
+            foreach(CW_Asset_CultiSys cultisys in temp_list)
             {
                 if (!CW_Library_Manager.instance.cultisys.dict.ContainsKey(cultisys.id)) continue;
                 CW_Asset_CultiSys cultisys_to_be_overlayed = CW_Library_Manager.instance.cultisys.get(cultisys.id);
                 cultisys_to_be_overlayed.power_level = cultisys.power_level;
                 cultisys_to_be_overlayed.bonus_stats = cultisys.bonus_stats;
+                cultisys_changed.Add(cultisys_to_be_overlayed);
             }
         }
         internal static void save_to_file()
