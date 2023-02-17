@@ -31,8 +31,11 @@ namespace Cultivation_Way.Library
         public bool races_black_or_white;
         public List<string> units_list;
         public List<string> races_list;
+        [NonSerialized]
         public Others.CW_Delegates.CW_Cultisys_Stats stats;
+        [NonSerialized]
         public Others.CW_Delegates.CW_Cultisys_Judge judge;
+        [NonSerialized]
         public Others.CW_Delegates.CW_Cultisys_Level_Judge level_judge;
         public CW_Asset_CultiSys()
         {

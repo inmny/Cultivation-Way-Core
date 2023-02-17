@@ -65,7 +65,7 @@ namespace Cultivation_Way.Content
             NCMS.Utils.Windows.AllWindows[scroll_window.name] = scroll_window;
 
             wcs = scroll_window.gameObject.AddComponent<Window_Cultisys_Name_Setting>();
-            //wcs.load_from_file();
+            wcs.load_from_file();
             wcs.transform.Find("Background/Scroll View").gameObject.SetActive(true);
             wcs.content_transform = wcs.transform.Find("Background/Scroll View/Viewport/Content");
             wcs.gameObject.SetActive(false);
@@ -293,7 +293,7 @@ namespace Cultivation_Way.Content
             NCMS.Utils.Localization.Set(key, text);
             wcs.changed_name[key] = text;
         }
-        internal void load_from_file()
+        private void load_from_file()
         {
             if (!System.IO.File.Exists(path_to_save)) return;
             wcs.changed_name = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string,string>>(System.IO.File.ReadAllText(path_to_save));
@@ -343,7 +343,7 @@ namespace Cultivation_Way.Content
             NCMS.Utils.Windows.AllWindows[scroll_window.name] = scroll_window;
 
             instance = scroll_window.gameObject.AddComponent<Window_Cultisys_Stats_Setting>();
-            //instance.load_from_file();
+            instance.load_from_file();
             instance.transform.Find("Background/Scroll View").gameObject.SetActive(true);
             instance.content_transform = instance.transform.Find("Background/Scroll View/Viewport/Content");
             instance.gameObject.SetActive(false);
@@ -547,7 +547,7 @@ namespace Cultivation_Way.Content
             stats_is_on[cur_stats_idx].enabled = true;
             if(enable) show_stats();
         }
-        internal void load_from_file()
+        private void load_from_file()
         {
             if (!System.IO.File.Exists(path_to_save)) return;
 
@@ -558,10 +558,10 @@ namespace Cultivation_Way.Content
             catch(Exception e)
             {
                 cultisys_changed = new List<CW_Asset_CultiSys>();
+                Debug.LogError(e.Message);
             }
 
             if (cultisys_changed == null) cultisys_changed=new List<CW_Asset_CultiSys>();
-
             foreach(CW_Asset_CultiSys cultisys in cultisys_changed)
             {
                 if (!CW_Library_Manager.instance.cultisys.dict.ContainsKey(cultisys.id)) continue;
