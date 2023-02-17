@@ -344,7 +344,7 @@ namespace Cultivation_Way
             if (this.cur_spells.Count > 0 && attack_type != Others.CW_Enums.CW_AttackType.Status_God && attack_type != Others.CW_Enums.CW_AttackType.Status_Spell)
             {
                 back_spell = CW_Library_Manager.instance.spells.get(this.cur_spells.GetRandom());
-                if (back_spell.triger_type == CW_Spell_Triger_Type.ATTACK && attacker != null && Toolbox.randomChance(0.4f))
+                if (back_spell.triger_type == CW_Spell_Triger_Type.ATTACK && attacker != null && attacker.base_data.alive&&Toolbox.randomChance(0.4f))
                 {
                     CW_Spell.cast(back_spell, this, attacker, attacker.currentTile);
                 }
@@ -353,7 +353,7 @@ namespace Cultivation_Way
             if ((int)damage <= 0) return false;
 
             // 防御法术
-            if (back_spell!=null&& back_spell.triger_type == CW_Spell_Triger_Type.DEFEND)
+            if (back_spell!=null&& attacker!=null&&attacker.base_data.alive && back_spell.triger_type == CW_Spell_Triger_Type.DEFEND)
             {// TODO: 可能需要增加对自身位置的参数选择
                 CW_Spell.cast(back_spell, this, attacker, attacker==null?null:attacker.currentTile);
             }
