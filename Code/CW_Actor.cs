@@ -48,6 +48,7 @@ namespace Cultivation_Way
         internal static Func<Actor, WorldTimer> get_shake_timer = CW_ReflectionHelper.create_getter<Actor, WorldTimer>("shakeTimer");
         internal static Func<Actor, BaseSimObject> get_beh_actor_target = CW_ReflectionHelper.create_getter<Actor, BaseSimObject>("beh_actor_target");
         public static Func<Actor, bool> get_is_moving = CW_ReflectionHelper.create_getter<Actor, bool>("is_moving");
+        internal static Func<Actor, SpriteAnimation> get_spriteAnimation = CW_ReflectionHelper.create_getter<Actor, SpriteAnimation>("spriteAnimation");
         #endregion
         #region Setter
         internal static Action<Actor, string> set_current_texture = CW_ReflectionHelper.create_setter<Actor, string>("current_texture");
@@ -329,6 +330,15 @@ namespace Cultivation_Way
             if (damage_reduce < 0) damage_reduce = 0;
             damage *= 1 - damage_reduce;
 
+            // 反伤
+            if(damage > 0 && attack_type != Others.CW_Enums.CW_AttackType.Spell && attack_type != Others.CW_Enums.CW_AttackType.God && attack_type != Others.CW_Enums.CW_AttackType.Status_God)
+            {
+                if(damage * this.cw_cur_stats.anti_injury > 1f && attacker!=null && attacker!=this)
+                {
+                    Utils.CW_SpellHelper.cause_damage_to_target(this, attacker, damage * this.cw_cur_stats.anti_injury);
+                }
+            }
+
             CW_Asset_Spell back_spell = null;
             // 反击法术
             if (this.cur_spells.Count > 0 && attack_type != Others.CW_Enums.CW_AttackType.Status_God && attack_type != Others.CW_Enums.CW_AttackType.Status_Spell)
@@ -340,15 +350,7 @@ namespace Cultivation_Way
                 }
             }
 
-            if ((int)damage <= 0) return false; 
-            // 反伤
-            if(damage > 0 && attack_type != Others.CW_Enums.CW_AttackType.Spell && attack_type != Others.CW_Enums.CW_AttackType.God && attack_type != Others.CW_Enums.CW_AttackType.Status_God)
-            {
-                if(damage * this.cw_cur_stats.anti_injury > 1f && attacker!=null && attacker!=this)
-                {
-                    Utils.CW_SpellHelper.cause_damage_to_target(this, attacker, damage * this.cw_cur_stats.anti_injury);
-                }
-            }
+            if ((int)damage <= 0) return false;
 
             // 防御法术
             if (back_spell!=null&& back_spell.triger_type == CW_Spell_Triger_Type.DEFEND)
