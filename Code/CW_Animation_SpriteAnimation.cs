@@ -82,7 +82,7 @@ namespace Cultivation_Way.Animation
                 if (dst_object == null)
                 {
                     isOn = false;
-                    if (Others.CW_Constants.is_debugging) throw new Exception("Null dst_object");
+                    if (Others.CW_Constants.is_debugging) throw new Exception(String.Format("Null dst_object on anim {0}", this.sprites[0].name));
                     return;
                 }
                 this.dst_vec = dst_object.currentPosition;
