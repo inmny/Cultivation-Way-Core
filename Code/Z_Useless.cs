@@ -82,106 +82,106 @@ internal bool checkTilesForUpgrade(WorldTile pTile, BuildingAsset pTemplate)
 */
 /** 嵌入桌面
 [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-        public static extern IntPtr GetForegroundWindow();
-        [DllImport("user32.dll")]
-        public static extern IntPtr FindWindow(string className, string winName);
+public static extern IntPtr GetForegroundWindow();
+[DllImport("user32.dll")]
+public static extern IntPtr FindWindow(string className, string winName);
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr SendMessageTimeout(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam, uint fuFlage, uint timeout, IntPtr result);
+[DllImport("user32.dll")]
+public static extern IntPtr SendMessageTimeout(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam, uint fuFlage, uint timeout, IntPtr result);
 
-        //查找窗口的委托 查找逻辑
-        public delegate bool EnumWindowsProc(IntPtr hwnd, IntPtr lParam);
-        [DllImport("user32.dll")]
-        public static extern bool EnumWindows(EnumWindowsProc proc, IntPtr lParam);
+//查找窗口的委托 查找逻辑
+public delegate bool EnumWindowsProc(IntPtr hwnd, IntPtr lParam);
+[DllImport("user32.dll")]
+public static extern bool EnumWindows(EnumWindowsProc proc, IntPtr lParam);
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string className, string winName);
+[DllImport("user32.dll")]
+public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string className, string winName);
 
-        [DllImport("user32.dll")]
-        public static extern bool ShowWindow(IntPtr hwnd, int nCmdShow);
+[DllImport("user32.dll")]
+public static extern bool ShowWindow(IntPtr hwnd, int nCmdShow);
 
-        [DllImport("user32.dll")]
-        public static extern IntPtr SetParent(IntPtr hwnd, IntPtr parentHwnd);
-        /// <summary>
-        /// 检索有关指定窗口的信息。该函数还将以指定的偏移量将值检索到额外的窗口内存中。
-        /// </summary>
-        /// <param name="hWnd"></param>
-        /// <param name="nIndex"></param>
-        /// <returns></returns>
-        public static IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex)
-        {
-            if (IntPtr.Size == 8)
-                return GetWindowLongPtr64(hWnd, nIndex);
-            else
-                return GetWindowLongPtr32(hWnd, nIndex);
-        }
-        [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
-        private static extern IntPtr GetWindowLongPtr32(IntPtr hWnd, int nIndex);
+[DllImport("user32.dll")]
+public static extern IntPtr SetParent(IntPtr hwnd, IntPtr parentHwnd);
+/// <summary>
+/// 检索有关指定窗口的信息。该函数还将以指定的偏移量将值检索到额外的窗口内存中。
+/// </summary>
+/// <param name="hWnd"></param>
+/// <param name="nIndex"></param>
+/// <returns></returns>
+public static IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex)
+{
+    if (IntPtr.Size == 8)
+        return GetWindowLongPtr64(hWnd, nIndex);
+    else
+        return GetWindowLongPtr32(hWnd, nIndex);
+}
+[DllImport("user32.dll", EntryPoint = "GetWindowLong")]
+private static extern IntPtr GetWindowLongPtr32(IntPtr hWnd, int nIndex);
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
-        private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
+[DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
+private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
 
-        /// <summary>
-        /// 这种静态方法是必需的，因为早期操作系统不支持
-        /// </summary>
-        /// <param name="hWnd"></param>
-        /// <param name="nIndex"></param>
-        /// <param name="dwNewLong"></param>
-        /// <returns></returns>
-        public static IntPtr SetWindowLongPtr(HandleRef hWnd, int nIndex, IntPtr dwNewLong)
-        {
-            if (IntPtr.Size == 8)
-                return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
-            else
-                return new IntPtr(SetWindowLong32(hWnd, nIndex, dwNewLong.ToInt32()));
-        }
+/// <summary>
+/// 这种静态方法是必需的，因为早期操作系统不支持
+/// </summary>
+/// <param name="hWnd"></param>
+/// <param name="nIndex"></param>
+/// <param name="dwNewLong"></param>
+/// <returns></returns>
+public static IntPtr SetWindowLongPtr(HandleRef hWnd, int nIndex, IntPtr dwNewLong)
+{
+    if (IntPtr.Size == 8)
+        return SetWindowLongPtr64(hWnd, nIndex, dwNewLong);
+    else
+        return new IntPtr(SetWindowLong32(hWnd, nIndex, dwNewLong.ToInt32()));
+}
 
-        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
-        private static extern int SetWindowLong32(HandleRef hWnd, int nIndex, int dwNewLong);
+[DllImport("user32.dll", EntryPoint = "SetWindowLong")]
+private static extern int SetWindowLong32(HandleRef hWnd, int nIndex, int dwNewLong);
 
-        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
-        private static extern IntPtr SetWindowLongPtr64(HandleRef hWnd, int nIndex, IntPtr dwNewLong);
-        [DllImport("Shell32.dll")]
-        static extern int SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
+[DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
+private static extern IntPtr SetWindowLongPtr64(HandleRef hWnd, int nIndex, IntPtr dwNewLong);
+[DllImport("Shell32.dll")]
+static extern int SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbFileInfo, uint uFlags);
 
-        struct SHFILEINFO
-        {
-            public IntPtr hIcon;
-            public int iIcon;
-            public uint dwAttributes;
-            public char szDisplayName;
-            public char szTypeName;
-        }
+struct SHFILEINFO
+{
+    public IntPtr hIcon;
+    public int iIcon;
+    public uint dwAttributes;
+    public char szDisplayName;
+    public char szTypeName;
+}
 
-        /// <summary>
-        /// 从文件扩展名得到文件关联图标
-        /// </summary>
-        /// <param name="fileName">文件名或文件扩展名</param>
-        /// <param name="smallIcon">是否是获取小图标，否则是大图标</param>
-        /// <returns>图标</returns>
-        static public Icon GetFileIcon(string fileName, bool smallIcon)
-        {
-            //也可用自带的
-            //Icon icon = Icon.ExtractAssociatedIcon(fileName);
-            SHFILEINFO fi = new SHFILEINFO();
-            Icon ic = null;
-            //SHGFI_ICON + SHGFI_USEFILEATTRIBUTES + SmallIcon   
-            int iTotal = (int)SHGetFileInfo(fileName, 100, ref fi, 0, (uint)(smallIcon ? 273 : 272));
-            if (iTotal > 0)
-            {
-                ic = Icon.FromHandle(fi.hIcon);
-            }
-            return ic;
-        }
-        /// <summary>
-        /// 设置一个新的窗口样式
-        /// </summary>
-        public const int GWL_STYLE = -16;
+/// <summary>
+/// 从文件扩展名得到文件关联图标
+/// </summary>
+/// <param name="fileName">文件名或文件扩展名</param>
+/// <param name="smallIcon">是否是获取小图标，否则是大图标</param>
+/// <returns>图标</returns>
+static public Icon GetFileIcon(string fileName, bool smallIcon)
+{
+    //也可用自带的
+    //Icon icon = Icon.ExtractAssociatedIcon(fileName);
+    SHFILEINFO fi = new SHFILEINFO();
+    Icon ic = null;
+    //SHGFI_ICON + SHGFI_USEFILEATTRIBUTES + SmallIcon   
+    int iTotal = (int)SHGetFileInfo(fileName, 100, ref fi, 0, (uint)(smallIcon ? 273 : 272));
+    if (iTotal > 0)
+    {
+        ic = Icon.FromHandle(fi.hIcon);
+    }
+    return ic;
+}
+/// <summary>
+/// 设置一个新的窗口样式
+/// </summary>
+public const int GWL_STYLE = -16;
 
-        /// <summary>
-        /// 标题
-        /// </summary>
-        public const uint WS_CAPTION = 0x00C00000;     // WS_BORDER | WS_DLGFRAME
+/// <summary>
+/// 标题
+/// </summary>
+public const uint WS_CAPTION = 0x00C00000;     // WS_BORDER | WS_DLGFRAME
 
 /// <summary>
 /// 系统菜单
