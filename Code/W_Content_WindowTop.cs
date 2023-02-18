@@ -699,6 +699,7 @@ namespace Cultivation_Way.Content
             cur_top_type = Top_Type.CREATURE;
             List<CW_Actor> list = W_Content_WindowTop_Helper.sort_creatures_by_cultivelo(sort_setting.top_k);
             foreach (CW_Actor actor in list) add_creature_info(actor);
+            foreach (CW_Sim_Creature_Info_Elm actor in elements) actor.text_level.text = (((int)(actor.actor.cw_status.culti_velo*10))/10f).ToString();
             scroll_resize();
             update_window_type();
         }
@@ -712,6 +713,7 @@ namespace Cultivation_Way.Content
             cur_top_type = Top_Type.CREATURE;
             List<CW_Actor> list = W_Content_WindowTop_Helper.sort_by_cultisys_level(sort_setting.top_k, tag);
             foreach (CW_Actor actor in list) add_creature_info(actor);
+            foreach (CW_Sim_Creature_Info_Elm actor in elements) actor.text_level.text = actor.actor.cw_data.cultisys_level[tag].ToString();
             scroll_resize();
             update_window_type();
         }
