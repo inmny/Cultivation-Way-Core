@@ -168,13 +168,6 @@ namespace Cultivation_Way.Content
                 );
             add_button(
                 create_button(
-                    "CW_DecreaseWakan_a", "ui/Icons/iconWakan_Decrease",
-                    Main.instance.hide_window, ButtonType.Click
-                ),
-                CW_Tab_Button_Type.TOOL
-                );
-            add_button(
-                create_button(
                     "spawnEastern_Human", "ui/Icons/iconEastern_Humans",
                     null, ButtonType.GodPower
                 ),
