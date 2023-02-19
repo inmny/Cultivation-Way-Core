@@ -55,6 +55,10 @@ namespace Cultivation_Way
             }
             //wakan_tide.action(wakan_tide);
         }
+        public void force_update_mapmode()
+        {
+            Content.Harmony.W_Harmony_MapMode.force_update();
+        }
         private float __comp_delta_wakan(float wakan_1, float wakan_2)
         {
             if (Content.W_Content_WorldLaws.is_no_wakan_spread_working()) return 0;

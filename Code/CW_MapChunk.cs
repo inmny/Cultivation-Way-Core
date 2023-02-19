@@ -36,7 +36,7 @@ namespace Cultivation_Way
             this.wakan_level = Toolbox.randomFloat(1, 2);
             update(true);
         }
-        internal void update(bool force = false)
+        public void update(bool force = false)
         {
             if (force) tmp_wakan = wakan * Mathf.Pow(Others.CW_Constants.wakan_level_co, wakan_level - 1);
             total_wakan = tmp_wakan;

@@ -19,13 +19,13 @@ namespace Cultivation_Way.Actions
                     cost = cw_actor.cw_status.wakan * spell_asset.cost;
                     if(cost >= spell_asset.min_cost_val)
                     {
-                        cw_actor.cw_status.wakan -= (int)cost;
+                        cw_actor.cw_status.wakan -= cost;
                         cost = Utils.CW_Utils_Others.get_raw_wakan(cost, cw_actor.cw_status.wakan_level);
                     }
                     else if(cw_actor.cw_status.wakan >= spell_asset.min_cost_val)
                     {
                         cost = spell_asset.min_cost_val;
-                        cw_actor.cw_status.wakan -= (int)cost;
+                        cw_actor.cw_status.wakan -= cost;
                         cost = Utils.CW_Utils_Others.get_raw_wakan(cost, cw_actor.cw_status.wakan_level);
                     }
                     else

@@ -1753,7 +1753,7 @@ namespace Cultivation_Way.Content
                 if (!enemy.base_data.alive)
                 {
                     // 夺取灵气
-                    ((CW_Actor)anim.src_object).cw_status.wakan += (int)Utils.CW_Utils_Others.transform_wakan(((CW_Actor)enemy).cw_status.wakan, ((CW_Actor)enemy).cw_status.wakan_level, ((CW_Actor)anim.src_object).cw_status.wakan_level);
+                    ((CW_Actor)anim.src_object).cw_status.wakan += Utils.CW_Utils_Others.transform_wakan(((CW_Actor)enemy).cw_status.wakan, ((CW_Actor)enemy).cw_status.wakan_level, ((CW_Actor)anim.src_object).cw_status.wakan_level);
                     ((CW_Actor)enemy).cw_status.wakan = 0;
                     ((CW_Actor)anim.src_object).check_level_up();
                 }

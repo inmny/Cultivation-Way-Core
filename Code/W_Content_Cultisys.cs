@@ -172,11 +172,11 @@ namespace Cultivation_Way.Content
             }
             if (cw_actor.cw_status.wakan_level < cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1])
             {
-                cw_actor.cw_status.wakan = (int)Utils.CW_Utils_Others.get_raw_wakan(cw_actor.cw_status.wakan, cw_actor.cw_status.wakan_level);
+                cw_actor.cw_status.wakan = Utils.CW_Utils_Others.get_raw_wakan(cw_actor.cw_status.wakan, cw_actor.cw_status.wakan_level);
 
                 cw_actor.cw_status.wakan_level = cultisys.power_level[cw_actor.cw_data.cultisys_level[cultisys.tag] + 1];
 
-                cw_actor.cw_status.wakan = (int)Utils.CW_Utils_Others.compress_raw_wakan(cw_actor.cw_status.wakan, cw_actor.cw_status.wakan_level);
+                cw_actor.cw_status.wakan = Utils.CW_Utils_Others.compress_raw_wakan(cw_actor.cw_status.wakan, cw_actor.cw_status.wakan_level);
             }
 
             if (cw_actor.cw_data.cultisys_level[cultisys.tag] == 6 && W_Content_Helper.yaos.Contains(cw_actor.stats.id)) cw_actor.transform_to_yao();

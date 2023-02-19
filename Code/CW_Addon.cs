@@ -57,7 +57,10 @@ namespace Cultivation_Way
                     Error(e.StackTrace);
                 }
             }
-
+            if (initialized)
+            {
+                update(Time.deltaTime);
+            }
         }
         internal void load_localized_text(string language)
         {
@@ -97,6 +100,7 @@ namespace Cultivation_Way
         }
         public abstract void awake();
         public abstract void initialize();
+        public virtual void update(float elapsed) { return; }
         public void Log(string format, params object[] _objects)
         {
             Debug.LogFormat("[{0}]:{1}", name, string.Format(format, _objects));

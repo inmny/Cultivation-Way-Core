@@ -12,7 +12,7 @@ namespace Cultivation_Way.Tester
     internal static class CW_Anim_Tester
     {
         private static Func<StackEffects, Vector3, Vector3, string, float, Projectile> s_p = (Func<StackEffects, Vector3, Vector3, string, float, Projectile>)CW_ReflectionHelper.get_method<StackEffects>("startProjectile");
-        private static bool force_spell(string spell_id, string src_id, string dst_id, int dst_x, int dst_y)
+        private static bool force_spell(string spell_id, string src_id, string dst_id, int dst_x, int dst_y, float cost)
         {
             CW_Asset_Spell spell_asset = CW_Library_Manager.instance.spells.get(spell_id);
             Actor src_actor = MapBox.instance.getActorByID(src_id);
@@ -27,23 +27,23 @@ namespace Cultivation_Way.Tester
             }
             else
             {
-                spell_asset.spell_action(spell_asset, src_actor, dst_actor, tile, 10);
+                spell_asset.spell_action(spell_asset, src_actor, dst_actor, tile, cost);
             }
             return true;
         }
         private static void spawn_gold_blade()
         {
-            spawn_anim("gold_blade_anim", "u_0", "u_1", 0, 0, 0, 0, 1f);
+            spawn_anim("gold_blade_anim", "u_0", "u_1", 0, 0, 0, 0, 1f,0);
         }
         private static void spawn_gold_escape()
         {
-            spawn_anim("gold_escape_anim", "u_0", "u_1", 0, 0, 0, 0, 0.1f);
+            spawn_anim("gold_escape_anim", "u_0", "u_1", 0, 0, 0, 0, 0.1f,0);
         }
         private static void spawn_gold_swords(int amount)
         {
             for(int i = 0; i < amount; i++)
             {
-                spawn_anim("single_gold_sword_anim", "u_0", "u_1", 0, 0, 0, 0, 1f);
+                spawn_anim("single_gold_sword_anim", "u_0", "u_1", 0, 0, 0, 0, 1f,0);
             }
         }
         private static void spawn_arrows(int amount, string src_id, string dst_id)
@@ -68,9 +68,9 @@ namespace Cultivation_Way.Tester
         }
         private static void spawn_anim_on_specific_units(string anim_id)
         {
-            spawn_anim(anim_id, "u_0", "u_1", 0, 0, 0, 0, 1f);
+            spawn_anim(anim_id, "u_0", "u_1", 0, 0, 0, 0, 1f, 0);
         }
-        private static bool spawn_anim(string anim_id, string src_id, string dst_id, int src_x, int src_y, int dst_x, int dst_y, float scale)
+        private static bool spawn_anim(string anim_id, string src_id, string dst_id, int src_x, int src_y, int dst_x, int dst_y, float scale, float cost)
         {
             WorldBoxConsole.Console.print("Test anim:" + anim_id + ", scale:" + scale);
             Actor src_actor = MapBox.instance.getActorByID(src_id);
@@ -83,7 +83,9 @@ namespace Cultivation_Way.Tester
             WorldBoxConsole.Console.print(string.Format("src_vec:{0}, dst_vec:{1}", src_vec, dst_vec));
 
 
-            ModState.instance.effect_manager.spawn_anim(anim_id, src_vec, dst_vec, src_actor, dst_actor, scale);
+            Animation.CW_SpriteAnimation anim = ModState.instance.effect_manager.spawn_anim(anim_id, src_vec, dst_vec, src_actor, dst_actor, scale);
+            if (anim == null) return false;
+            anim.cost_for_spell = cost;
             return true;
         }
     }
