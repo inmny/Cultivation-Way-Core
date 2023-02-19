@@ -54,5 +54,13 @@ namespace Cultivation_Way.Library
             if (!AssetManager.buildings.list.Contains(origin_asset)) AssetManager.buildings.add(origin_asset);
             return building;
         }
+        public override CW_Asset_Building get(string pID)
+        {
+            CW_Asset_Building ret;
+            if (this.dict.TryGetValue(pID, out ret)) return ret;
+            BuildingAsset origin_stats = AssetManager.buildings.get(pID);
+            if (origin_stats == null) return base.get(pID);
+            return add(origin_stats);
+        }
     }
 }

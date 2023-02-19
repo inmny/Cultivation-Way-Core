@@ -107,5 +107,13 @@ namespace Cultivation_Way.Library
             this.dict.Add(stats.id, cw_actor_stats);
             return cw_actor_stats;
         }
+        public override CW_ActorStats get(string pID)
+        {
+            CW_ActorStats ret;
+            if (this.dict.TryGetValue(pID, out ret)) return ret;
+            ActorStats origin_stats = AssetManager.unitStats.get(pID);
+            if (origin_stats == null) return base.get(pID);
+            return this.__add(origin_stats, origin_stats.unit ? 0.8f : Mathf.Max(0.03f * (int)origin_stats.actorSize, 0.3f), new int[] { 20, 20, 20, 20, 20 }, 0f, new List<string>(), false, null, new CW_BaseStats());
+        }
     }
 }
