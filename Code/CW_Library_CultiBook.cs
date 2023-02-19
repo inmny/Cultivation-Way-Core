@@ -85,12 +85,6 @@ namespace Cultivation_Way.Library
         {
             if (string.IsNullOrEmpty(content))
             {
-                this.content = "生成中，请稍后访问";
-                Task new_task = new Task(delegate
-                {
-                    this.content = CW_OpenAIWrapper.OpenAI.instance.GenerateText("介绍功法:" + get_name()).Result;
-                });
-                new_task.Start();
             }
             return content;
         }
