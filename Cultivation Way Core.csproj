@@ -87,6 +87,7 @@
     <Reference Include="System.Drawing.Common">
       <HintPath>Assemblies\System.Drawing.Common.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -3670,6 +3671,7 @@
     <Compile Include="Code\CW_Utils_ActorTools.cs" />
     <Compile Include="Code\CW_Utils_Others.cs" />
     <Compile Include="Code\CW_Utils_SpellHelper.cs" />
+    <Compile Include="Code\OpenAIWrapper.cs" />
     <Compile Include="Code\W_Content_Actor.cs" />
     <Compile Include="Code\W_Content_ActorJob.cs" />
     <Compile Include="Code\W_Content_ActorTask.cs" />

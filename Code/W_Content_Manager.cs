@@ -152,7 +152,7 @@ namespace Cultivation_Way.Content
         }
         private static void add_harmony()
         {
-            //HarmonyLib.Harmony harmony = new HarmonyLib.Harmony(Others.CW_Constants.mod_id);
+            HarmonyLib.Harmony harmony = new HarmonyLib.Harmony(Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Actor), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Banner), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_Building), Others.CW_Constants.mod_id);
@@ -168,6 +168,18 @@ namespace Cultivation_Way.Content
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_ChunkInfo), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_WorldLaw), Others.CW_Constants.mod_id);
             HarmonyLib.Harmony.CreateAndPatchAll(typeof(Harmony.W_Harmony_FixOrigin), Others.CW_Constants.mod_id);
+            /**
+            Type NCMS_AllModsWindow = HarmonyLib.AccessTools.TypeByName("AllModsWindow");
+            harmony.Patch(
+                NCMS_AllModsWindow.GetMethod("setName", 
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static
+                ), 
+                new HarmonyLib.HarmonyMethod(typeof(Harmony.W_Harmony_Others)
+                .GetMethod(nameof(Harmony.W_Harmony_Others.allmodswindow_setName), 
+                System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.Public)
+                )
+            );
+            */
             WorldBoxConsole.Console.print("Finish Harmony");
         }
     }

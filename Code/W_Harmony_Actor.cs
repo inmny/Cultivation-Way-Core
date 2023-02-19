@@ -161,29 +161,36 @@ namespace Cultivation_Way.Content.Harmony
             if (pActor.object_destroyed) { return true; }
 
             CW_Actor cw_actor = (CW_Actor)pActor;
-            // 回收功法
-            CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id);
-            if (cultibook != null)
+            try
             {
-                cultibook.cur_culti_nr--;
-                if (cultibook.cur_culti_nr <= 0) cultibook.try_deprecate();
-                else if(cw_actor.fast_data.actorID == cultibook.author_id)
+                // 回收功法
+                CW_Asset_CultiBook cultibook = CW_Library_Manager.instance.cultibooks.get(cw_actor.cw_data.cultibook_id);
+                if (cultibook != null)
                 {
-                    if (string.IsNullOrEmpty(cultibook.author_name)) cultibook.get_author_name(cw_actor);
-                    if (string.IsNullOrEmpty(cultibook.name)) cultibook.get_name(cw_actor);
+                    cultibook.cur_culti_nr--;
+                    if (cultibook.cur_culti_nr <= 0) cultibook.try_deprecate();
+                    else if (cw_actor.fast_data.actorID == cultibook.author_id)
+                    {
+                        if (string.IsNullOrEmpty(cultibook.author_name)) cultibook.get_author_name(cw_actor);
+                        if (string.IsNullOrEmpty(cultibook.name)) cultibook.get_name(cw_actor);
+                    }
+                }
+                // 回收体质
+                CW_Asset_SpecialBody body = CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id);
+                if (body != null)
+                {
+                    body.cur_own_nr--;
+                    if (body.cur_own_nr <= 0) body.try_deprecate();
+                    else if (cw_actor.fast_data.actorID == body.author_id)
+                    {
+                        if (string.IsNullOrEmpty(body.author_name)) body.get_author_name(cw_actor);
+                        if (string.IsNullOrEmpty(body.name)) body.get_name(cw_actor);
+                    }
                 }
             }
-            // 回收体质
-            CW_Asset_SpecialBody body = CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id);
-            if (body != null)
+            catch(KeyNotFoundException e)
             {
-                body.cur_own_nr--;
-                if (body.cur_own_nr <= 0) body.try_deprecate();
-                else if (cw_actor.fast_data.actorID == body.author_id)
-                {
-                    if(string.IsNullOrEmpty(body.author_name))body.get_author_name(cw_actor);
-                    if (string.IsNullOrEmpty(body.name)) body.get_name(cw_actor);
-                }
+                Debug.LogWarningFormat("Missing data actor '{0}'({3}), cultibook '{1}', body '{2}'", cw_actor.fast_data.actorID, cw_actor.cw_data.cultibook_id, cw_actor.cw_data.special_body_id, cw_actor.stats.id);
             }
             // 灵气归还
             if (cw_actor.cw_status.wakan > 0 && ModState.instance.destroy_unit_reason == Destroy_Unit_Reason.KILL)
@@ -210,7 +217,7 @@ namespace Cultivation_Way.Content.Harmony
         [HarmonyPatch(typeof(Actor), "restoreHealth")]
         public static bool actor_restore_health(Actor __instance, int pVal)
         {
-            ((CW_Actor)__instance).regen_health(pVal, Mathf.Max(0.1f, ((CW_Actor)__instance).cw_status.wakan_level-0.9f));
+            ((CW_Actor)__instance).regen_health(pVal, Mathf.Max(0.2f, ((CW_Actor)__instance).cw_status.health_level-0.8f));
             return false;
         }
         [HarmonyPrefix]

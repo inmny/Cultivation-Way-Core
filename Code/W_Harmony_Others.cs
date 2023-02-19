@@ -9,6 +9,7 @@ using UnityEngine.Purchasing.MiniJSON;
 using ReflectionUtility;
 using System.Reflection.Emit;
 using System.Reflection;
+using NCMS;
 
 namespace Cultivation_Way.Content.Harmony
 {
@@ -86,13 +87,8 @@ namespace Cultivation_Way.Content.Harmony
             }
             return false;
         }
-        //[HarmonyPrefix]
-        //[HarmonyPatch(typeof(ActorAnimationLoader), "loadAnimationBoat")]
-        public static bool loadAnimationBoat_Prefix(ref string pTexturePath)
-        {
-            pTexturePath = pTexturePath.Replace("eastern_human", "human");
-            return true;
-        }
+        
+        
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ActorBase), "getName")]
         public static bool actor_getName(ActorBase __instance, ref string __result)
@@ -105,6 +101,24 @@ namespace Cultivation_Way.Content.Harmony
             __result = actor.fast_data.firstName;
             return false;
         }
+        /**
+        public static bool allmodswindow_setName(NCMod mod, GameObject modBackgound)
+        {
+            string text = "modName";
+            Vector3 vector = new Vector3(25f, -17.5f, 0f);
+            int num = 18;
+            Color color = new Color(0.11f, 0.94f, 1f, 1f);
+            HorizontalWrapMode horizontalWrapMode = HorizontalWrapMode.Overflow;
+
+            Type type_of_AllModsWindow = AccessTools.TypeByName("AllModsWindow");
+
+            string text2 = AccessTools.Method(type_of_AllModsWindow, "cutText").Invoke(null, new object[] { mod.name.Replace("postload.", "").Replace("preload.", ""), 20, true }) + " <color=\"#DBDB00\">" + AccessTools.Method(type_of_AllModsWindow, "cutText").Invoke(null, new object[] { mod.version, 10, false }) + "</color>";
+
+            Vector2 vector2 = new Vector2(100f, 100f);
+            AccessTools.Method(type_of_AllModsWindow, "setText").Invoke(null, new object[] { text, vector, num, color, horizontalWrapMode, text2, vector2, modBackgound });
+            return false;
+        }
+        */
         [HarmonyPrefix]
         [HarmonyPatch(typeof(NameGenerator), "getName")]
         public static bool generateName_Prefix(string pAssetID, ref string __result)

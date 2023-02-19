@@ -145,7 +145,7 @@ namespace Cultivation_Way.Content
             spell.free_val = 1.04f;
             spell.cost = 0.1f;
             spell.min_cost_val = 20;
-            clone("奔雷刀法", "五岳剑法").free_val = 9.80f;
+            clone("奔雷刀法", "五岳剑法").free_val = 0.98f;
             clone("六合大枪", "五岳剑法").free_val = 1.20f;
             clone("半月斩", "五岳剑法").free_val = 1.10f;
             clone("一十二路谭腿", "五岳剑法").free_val = 1.10f;

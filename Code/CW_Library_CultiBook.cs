@@ -81,6 +81,19 @@ namespace Cultivation_Way.Library
             if (string.IsNullOrEmpty(name)) name = CW_NameGenerator.gen_name("cultibook_name", author==null?((CW_Actor)MapBox.instance.getActorByID(author_id)):author);
             return name;
         }
+        public string get_content()
+        {
+            if (string.IsNullOrEmpty(content))
+            {
+                this.content = "生成中，请稍后访问";
+                Task new_task = new Task(delegate
+                {
+                    this.content = CW_OpenAIWrapper.OpenAI.instance.GenerateText("介绍功法:" + get_name()).Result;
+                });
+                new_task.Start();
+            }
+            return content;
+        }
         internal void re_author(CW_Actor author)
         {
             this.id =author.fast_data.actorID + "_" + order;
@@ -148,6 +161,7 @@ namespace Cultivation_Way.Library
                 description.AppendLine(String.Format("法术[{0}]", i));
                 value.AppendLine(LocalizedTextManager.getText("spell_" + this.spells[i]));
             }
+            //description.AppendLine(get_content());
         }
         internal void gen_bonus_stats(CW_Actor author)
         {
