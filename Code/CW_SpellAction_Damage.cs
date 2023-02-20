@@ -18,7 +18,7 @@ namespace Cultivation_Way.Actions
             Others.CW_Enums.CW_AttackType attack_type = Others.CW_Enums.CW_AttackType.Other;
             if ((spell_asset.tags & (1ul << (int)CW_Spell_Tag.IMMORTAL)) > 0)
             {
-                damage *= cost;
+                //damage *= Others.CW_Constants.default_spell_damage_co;
                 attack_type = Others.CW_Enums.CW_AttackType.Spell;
             }
             else if((spell_asset.tags & (1ul << (int)CW_Spell_Tag.BUSHIDO)) > 0)
