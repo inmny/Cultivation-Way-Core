@@ -1416,7 +1416,7 @@ namespace Cultivation_Way.Content
         }
         private static void stxh_spell_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
-            if (pUser.objectType != MapObjectType.Actor) return;
+            if (pUser.objectType != MapObjectType.Actor || !pUser.base_data.alive||pUser.object_destroyed) return;
             CW_Actor cw_actor = (CW_Actor)pUser;
             CW_Asset_SpecialBody body = CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id);
 

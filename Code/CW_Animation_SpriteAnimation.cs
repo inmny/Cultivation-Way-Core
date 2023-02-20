@@ -52,6 +52,8 @@ namespace Cultivation_Way.Animation
         public Vector2 dst_vec;
         public BaseSimObject src_object;
         public BaseSimObject dst_object;
+        public float free_val;
+        public string free_str;
         /// <summary>
         /// 动画设置
         /// </summary>
@@ -85,8 +87,10 @@ namespace Cultivation_Way.Animation
                 }
             }
             //WorldBoxConsole.Console.print("Is renderer null?>" + (renderer == null)+"\nIs setting null?>"+(setting==null));
-            this.renderer.sortingLayerName = setting.layer_name;
+            renderer.sortingLayerName = setting.layer_name;
+
             gameObject.transform.localPosition = this.src_vec;
+
             if(setting.point_to_dst) gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, Toolbox.getAngle(gameObject.transform.position.x, gameObject.transform.position.y, this.dst_vec.x, this.dst_vec.y) * 57.29578f));
         }
         internal void set(CW_AnimationSetting setting, Sprite[] sprites, GameObject prefab, Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_object, BaseSimObject dst_object)
@@ -99,10 +103,44 @@ namespace Cultivation_Way.Animation
             this.gameObject.transform.localScale = prefab.transform.localScale;
 
             this.apply_setting(src_vec, dst_vec, src_object, dst_object);
+
+            //this.gameObject.SetActive(true);
+            show();
         }
         internal void clear()
         {
-            this.gameObject.SetActive(false);
+            //this.gameObject.transform.localPosition = new Vector3(9999999, 999999);
+            hide();
+            //this.gameObject.SetActive(false);
+            this.cost_for_spell = 0;
+            this.cur_frame_idx = 0;
+            this.dst_object = null;
+            this.dst_vec.x = 0;
+            this.dst_vec.y = 0;
+            this.end_froze_time = -1;
+            this.has_end = false;
+            this.loop_nr = 0;
+            this.next_frame_time = 0;
+            this.play_time = 0;
+            this.src_object = null;
+            this.src_vec.x = 0;
+            this.src_vec.y = 0;
+            this.trace_length = 0;
+            this.free_val = 0;
+            this.free_str = "";
+        }
+        private void hide()
+        {
+            //this.gameObject.layer
+            renderer.enabled = false;
+            //renderer.sprite = null;
+            this.gameObject.layer = 1<<3;
+        }
+        private void show()
+        {
+            this.gameObject.layer = 0;
+            renderer.enabled = true;
+            //renderer.sprite = sprites[cur_frame_idx];
         }
         internal void update(float elapsed)
         {
@@ -110,10 +148,10 @@ namespace Cultivation_Way.Animation
             {
                 return;
             }
-            if (!CW_EffectManager.instance.low_res && renderer.sprite == null)
-            {
-                renderer.sprite = sprites[cur_frame_idx];
-            }
+            if (CW_EffectManager.instance.low_res) hide();
+            else if (!renderer.enabled) show();
+
+            if (!CW_EffectManager.instance.low_res && renderer.sprite == null) renderer.sprite = sprites[cur_frame_idx];
             play_time += elapsed;
             if ( play_time > Others.CW_Constants.max_anim_time)
             {

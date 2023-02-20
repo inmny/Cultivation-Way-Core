@@ -47,7 +47,7 @@ namespace Cultivation_Way.Animation
         /// <summary>
         /// 终点停滞
         /// </summary>
-        public float froze_time_after_end = 0f;
+        public float froze_time_after_end = -1f;
         /// <summary>
         /// 自由变量
         /// </summary>

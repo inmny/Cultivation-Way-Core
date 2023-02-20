@@ -130,7 +130,18 @@ namespace Cultivation_Way.Animation
         }
         public void clear()
         {
-
+            foreach(CW_EffectController controller in this.controllers)
+            {
+                controller.clear();
+            }
+            int idx = this.single_anims.Count-1;
+            while(idx >= 0)
+            {
+                CW_SpriteAnimation anim = this.single_anims[idx];
+                this.single_anims[idx] = null;
+                anim.kill();
+                idx--;
+            }
         }
     }
 }

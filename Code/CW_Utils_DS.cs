@@ -88,7 +88,7 @@ namespace Cultivation_Way.Utils
         {
             if (Current == null) return false;
             Current = Current.Next;
-            return true;
+            return Current!=null;
         }
     }
 }

@@ -55,16 +55,40 @@ namespace Cultivation_Way.Animation
             active_anims.SetToFirst();
 
             CW_SpriteAnimation anim = active_anims.GetCurrent();
-            while(anim != null)
+            CW_SpriteAnimation _anim_to_clear;
+            //int count = 0;
+            while (anim != null)
             {
-                if(anim.isOn) anim.update(elapsed);
+                anim.update(elapsed);
 
                 if (!anim.isOn)
                 {
-                    CW_SpriteAnimation _anim_to_clear = active_anims.RemoveCurrent();
+                    //count++;
+                    _anim_to_clear = active_anims.RemoveCurrent();
                     _anim_to_clear.clear();
                     inactive_anims.Push(_anim_to_clear);
                 }
+
+                active_anims.MoveNext();
+
+                anim = active_anims.GetCurrent();
+            }
+            //if(count>0)Debug.LogFormat("Inactivate {0}/{1}", count, active_anims.Count);
+        }
+        public void clear()
+        {
+            active_anims.SetToFirst();
+
+            CW_SpriteAnimation anim = active_anims.GetCurrent();
+            CW_SpriteAnimation _anim_to_clear;
+            //int count = 0;
+            while (anim != null)
+            {
+                anim.force_stop(false);
+                //count++;
+                _anim_to_clear = active_anims.RemoveCurrent();
+                _anim_to_clear.clear();
+                inactive_anims.Push(_anim_to_clear);
 
                 active_anims.MoveNext();
 
