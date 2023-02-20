@@ -492,6 +492,11 @@ namespace Cultivation_Way.Content.Harmony
             len = cw_actor.fast_data.traits.Count;
             for (i = 0; i < len; i++)
             {
+                if (!CW_Library_Manager.instance.traits.dict.ContainsKey(cw_actor.fast_data.traits[i]))
+                {
+                    cw_actor.fast_data.traits.RemoveAt(i);
+                    i--;
+                }
                 CW_Asset_Trait trait = CW_Library_Manager.instance.traits.get(cw_actor.fast_data.traits[i]);
                 if (trait != null)
                 {
