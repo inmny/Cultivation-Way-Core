@@ -51,6 +51,7 @@ namespace Cultivation_Way
         internal static Func<Actor, SpriteAnimation> get_spriteAnimation = CW_ReflectionHelper.create_getter<Actor, SpriteAnimation>("spriteAnimation");
         #endregion
         #region Setter
+        internal static Action<Actor, Race> set_race = CW_ReflectionHelper.create_setter<Actor, Race>("race");
         internal static Action<Actor, string> set_current_texture = CW_ReflectionHelper.create_setter<Actor, string>("current_texture");
         internal static Action<Actor, BaseSimObject> set_beh_actor_target = CW_ReflectionHelper.create_setter<Actor, BaseSimObject>("beh_actor_target");
         internal static Action<Actor, float> set_timer_action = CW_ReflectionHelper.create_setter<Actor, float>("timer_action");

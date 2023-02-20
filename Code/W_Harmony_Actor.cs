@@ -345,6 +345,7 @@ namespace Cultivation_Way.Content.Harmony
                         actor.new_creature = true;
                         actor.CW_newCreature();
                         //CW_Actor.func_newCreature(actor, (int)(W_Content_Helper.game_stats_data.gameTime + (double)MapBox.instance.units.Count));
+                        CW_Actor.set_race(actor, AssetManager.raceLibrary.get(actor.stats.race));
                         Debug.Log("Force Load Unit:" + pData.status.actorID);
                     }
                 }
@@ -356,7 +357,16 @@ namespace Cultivation_Way.Content.Harmony
 
                 actor.transform.position = pTile.posV3;
                 CW_Actor.func_spawnOn(actor, pTile, pZHeight);
-                CW_Actor.func_create(actor);
+                try
+                {
+                    CW_Actor.func_create(actor);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogErrorFormat("Error in Actor.create:'{0}';'{1}'", actor.fast_data.actorID, actor.stats.id);
+                    Debug.LogError(e.Message);
+                    Debug.LogError(e.StackTrace);
+                }
                 actor.fast_targets_to_ignore = CW_Actor.get_targets_to_ignore(actor);
 
                 __actor_updateStats(actor);
@@ -402,6 +412,7 @@ namespace Cultivation_Way.Content.Harmony
         }
         internal static void __actor_updateStats(ActorBase actor_base)
         {
+            
             Actor actor = (Actor)actor_base;
             CW_Actor cw_actor = (CW_Actor)actor;
             
@@ -413,8 +424,17 @@ namespace Cultivation_Way.Content.Harmony
             // 若皮肤不存在，则随机选择
             if (cw_actor.stats.useSkinColors && cw_actor.fast_data.skin == -1) cw_actor.fast_data.skin = Toolbox.randomInt(0, cw_actor.stats.color_sets[cw_actor.fast_data.skin_set].colors.Count);
             // 安全检查，只抛出不捕获
-            if (Others.CW_Constants.is_debugging && (cw_actor.cw_cur_stats.base_stats != CW_Actor.get_curstats(actor))) throw new Exception("Actor curStats reference error in cw_cur_stats");
+            if (Others.CW_Constants.is_debugging && (cw_actor.cw_cur_stats.base_stats != CW_Actor.get_curstats(actor)))
+            {
+                //cw_actor.cw_cur_stats.base_stats = CW_Actor.get_curstats(actor);
+                throw new Exception("Actor curStats reference error in cw_cur_stats");
+            }
+            else if (!Others.CW_Constants.is_debugging&& (cw_actor.cw_cur_stats.base_stats != CW_Actor.get_curstats(actor)))
+            {
+                cw_actor.cw_cur_stats.base_stats = CW_Actor.get_curstats(actor);
+            }
 
+            
             int i, len; uint tmp1;
             cw_actor.can_act = true;
             cw_actor.cur_spells.Clear();
@@ -444,6 +464,7 @@ namespace Cultivation_Way.Content.Harmony
                 cw_actor.cur_spells.Add("stxh");
             }
 
+            
             // 添加修炼产生的属性增幅
             if (cw_actor.cw_status.can_culti)
             {
@@ -466,10 +487,12 @@ namespace Cultivation_Way.Content.Harmony
                     cw_actor.cw_status.culti_velo *= (1 + culti_book.culti_promt);
                 }
             }
+            
             // 添加心情的属性影响
             if (string.IsNullOrEmpty(cw_actor.fast_data.mood)) cw_actor.fast_data.mood = "normal";
             MoodAsset moodAsset = AssetManager.moods.get(cw_actor.fast_data.mood);
             if(moodAsset!=null) cw_actor.cw_cur_stats.addStats(moodAsset.baseStats);
+            
             // 添加状态的属性影响
             Dictionary<string, StatusEffectData> activeStatus_dict = CW_Actor.get_activeStatus_dict(actor);
             if (activeStatus_dict != null)
@@ -488,6 +511,7 @@ namespace Cultivation_Way.Content.Harmony
                     if (cw_actor.can_act && status_effect.status_asset.has_tag(CW_StatusEffect_Tag.BOUND)) cw_actor.can_act = false;
                 }
             }
+            
             // 添加特质的属性影响
             len = cw_actor.fast_data.traits.Count;
             for (i = 0; i < len; i++)
@@ -496,6 +520,8 @@ namespace Cultivation_Way.Content.Harmony
                 {
                     cw_actor.fast_data.traits.RemoveAt(i);
                     i--;
+                    len--;
+                    continue;
                 }
                 CW_Asset_Trait trait = CW_Library_Manager.instance.traits.get(cw_actor.fast_data.traits[i]);
                 if (trait != null)
@@ -503,6 +529,7 @@ namespace Cultivation_Way.Content.Harmony
                     cw_actor.cw_cur_stats.addStats(trait.cw_stats);
                 }
             }
+            
             // 添加装备的属性影响
             CW_Asset_Item default_attack = CW_Library_Manager.instance.items.get(cw_actor.stats.defaultAttack);
             if (default_attack != null) cw_actor.cw_cur_stats.addStats(default_attack.cw_base_stats);
@@ -528,6 +555,7 @@ namespace Cultivation_Way.Content.Harmony
                     }
                 }
             }
+            
             // 添加性格的属性影响
             if (cw_actor.stats.unit)
             {
@@ -555,6 +583,7 @@ namespace Cultivation_Way.Content.Harmony
                     cw_actor.cw_cur_stats.addStats(personality_asset.baseStats);
                 }
             }
+            
             // 首次属性总结
             cw_actor.cw_cur_stats.normalize();
             cw_actor.cw_cur_stats.apply_mod();
@@ -563,6 +592,7 @@ namespace Cultivation_Way.Content.Harmony
                 CW_Actor.set_event_full_heal(actor, false);
                 cw_actor.cw_status.shield = cw_actor.cw_cur_stats.shield;
             }
+            
             // 添加文化的属性影响
             Culture culture = cw_actor.getCulture();
             if(culture != null)
@@ -570,6 +600,7 @@ namespace Cultivation_Way.Content.Harmony
                 cw_actor.cw_cur_stats.base_stats.damage = (int)(cw_actor.cw_cur_stats.base_stats.damage + cw_actor.cw_cur_stats.base_stats.damage * culture.stats.bonus_damage.value);
                 cw_actor.cw_cur_stats.base_stats.armor = (int)(cw_actor.cw_cur_stats.base_stats.armor + cw_actor.cw_cur_stats.base_stats.armor * culture.stats.bonus_armor.value);
             }
+            
             // 最后属性总结
             cw_actor.cw_cur_stats.no_zero_for_actor();
             cw_actor.cw_cur_stats.apply_others();
@@ -577,12 +608,15 @@ namespace Cultivation_Way.Content.Harmony
             cw_actor.cw_status.wakan = Mathf.Min(cw_actor.cw_status.wakan, cw_actor.cw_cur_stats.wakan);
             cw_actor.fast_data.health = Mathf.Min(cw_actor.fast_data.health, cw_actor.cw_cur_stats.base_stats.health);
             cw_actor.cw_status.max_age = (int)((cw_actor.cw_stats.origin_stats.maxAge+ cw_actor.cw_cur_stats.age_bonus) * (1f + cw_actor.cw_cur_stats.mod_age/100f));
+            
             // 修炼速度
             cw_actor.cw_status.culti_velo *= 1 + cw_actor.cw_cur_stats.mod_cultivation / 100f;
+            
             // 攻速以及法术释放速度
             cw_actor.m_attackSpeed_seconds = (300f - cw_actor.cw_cur_stats.base_stats.attackSpeed) / (100f + cw_actor.cw_cur_stats.base_stats.attackSpeed);
             cw_actor.s_spell_seconds = cw_actor.m_attackSpeed_seconds;
             CW_Actor.set_s_attackSpeed_seconds(actor, cw_actor.m_attackSpeed_seconds);
+            
             // 设置攻击样式以及武器贴图
             CW_Asset_Item weapon_asset = cw_actor.get_weapon_asset();
             if(weapon_asset.origin_asset.attackType == WeaponType.Range && string.IsNullOrEmpty(weapon_asset.origin_asset.projectile))
@@ -593,8 +627,10 @@ namespace Cultivation_Way.Content.Harmony
             CW_Actor.set_s_slashType(actor, weapon_asset.origin_asset.slash);
             CW_Actor.set_item_sprite_dirty(actor, true);
             CW_Actor.set_s_weapon_texture(actor, (cw_actor.stats.use_items && !cw_actor.equipment.weapon.isEmpty())?cw_actor.getWeaponId():String.Empty);
+            
             // 设置头部贴图
             CW_Actor.func_findHeadSprite(actor);
+            
             // 特质更新
             bool has_madness_before = cw_actor.haveTrait("madness");
             HashSet<string> s_traits_ids = CW_ActorStatus.get_s_traits_ids(cw_actor.fast_data);
@@ -621,6 +657,7 @@ namespace Cultivation_Way.Content.Harmony
             CW_Actor.set_trait_peaceful(actor, cw_actor.haveTrait("peaceful"));
             CW_Actor.set_trait_fire_resistant(actor, cw_actor.haveTrait("fire_proof"));
             CW_Actor.set_status_frozen(actor, CW_Actor.func_haveStatus(actor, "frozen"));
+            
             // 收尾
             CW_Actor.set_attackTimer(actor, 0f);
             cw_actor.default_spell_timer = 0;
