@@ -3131,6 +3131,7 @@
     <Content Include="GameResources\effects\default_lightning\default_lightning_3.png" />
     <Content Include="GameResources\effects\default_lightning\default_lightning_4.png" />
     <Content Include="GameResources\effects\default_lightning\default_lightning_5.png" />
+    <Content Include="GameResources\effects\empty_anim\single_transparent_pixel.png" />
     <Content Include="GameResources\effects\example\fx_example_t_0.png" />
     <Content Include="GameResources\effects\example\fx_example_t_1.png" />
     <Content Include="GameResources\effects\example\fx_example_t_2.png" />

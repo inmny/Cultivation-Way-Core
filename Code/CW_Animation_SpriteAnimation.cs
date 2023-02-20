@@ -79,13 +79,10 @@ namespace Cultivation_Way.Animation
             this.dst_object = dst_object;
             if (setting.trace_type==AnimationTraceType.TRACK)
             {
-                if (dst_object == null)
+                if (dst_object != null)
                 {
-                    isOn = false;
-                    if (Others.CW_Constants.is_debugging) throw new Exception(String.Format("Null dst_object on anim {0}", this.sprites[0].name));
-                    return;
+                    this.dst_vec = dst_object.currentPosition;
                 }
-                this.dst_vec = dst_object.currentPosition;
             }
             //WorldBoxConsole.Console.print("Is renderer null?>" + (renderer == null)+"\nIs setting null?>"+(setting==null));
             this.renderer.sortingLayerName = setting.layer_name;
@@ -163,9 +160,12 @@ namespace Cultivation_Way.Animation
 
                 if (setting.trace_type == AnimationTraceType.TRACK)
                 {
-                    dst_vec = dst_object.currentPosition;
                     Vector2 tmp_src_vec = new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-                    setting.trace_updater(ref tmp_src_vec, ref dst_object.currentPosition, this, ref delta_x, ref delta_y);
+                    if (dst_object != null)
+                    {
+                        dst_vec = dst_object.currentPosition;
+                    }
+                    setting.trace_updater(ref tmp_src_vec, ref dst_vec, this, ref delta_x, ref delta_y);
                 }
                 else if (setting.trace_type == AnimationTraceType.ATTACH)
                 {
