@@ -306,7 +306,7 @@ namespace Cultivation_Way
             //this.cw_data.children_info.Add(new CW_Family_Member_Info(orgin_status));
             this.fast_data.children++;
         }
-        public void get_hit(float damage, bool flash = true, Others.CW_Enums.CW_AttackType type = Others.CW_Enums.CW_AttackType.Other, BaseSimObject attacker = null, bool skip_if_shake = true)
+        public void get_hit(float damage, bool flash = true, Others.CW_Enums.CW_AttackType type = Others.CW_Enums.CW_AttackType.Other, BaseSimObject attacker = null, bool skip_if_shake = false)
         {
             func_getHit(this, damage, flash, (AttackType)type, attacker, skip_if_shake);
         }
@@ -329,7 +329,6 @@ namespace Cultivation_Way
             }
             if (damage_reduce < 0) damage_reduce = 0;
             damage *= 1 - damage_reduce;
-
             // 反伤
             if(damage > 0 && attack_type != Others.CW_Enums.CW_AttackType.Spell && attack_type != Others.CW_Enums.CW_AttackType.God && attack_type != Others.CW_Enums.CW_AttackType.Status_God)
             {
@@ -350,7 +349,7 @@ namespace Cultivation_Way
                 }
             }
 
-            if ((int)damage <= 0) return false;
+            if (damage < 1) return false;
 
             // 防御法术
             if (back_spell!=null&& attacker!=null&&attacker.base_data.alive && back_spell.triger_type == CW_Spell_Triger_Type.DEFEND)
@@ -497,6 +496,7 @@ namespace Cultivation_Way
         /// </summary>
         public void check_level_up()
         {
+            if (!this.fast_data.alive) return;
             uint cultisys = this.cw_data.cultisys;
             int cultisys_tag = 0;
             int max_cultisys_tag = -1;
@@ -526,6 +526,7 @@ namespace Cultivation_Way
         /// <param name="cultisys"></param>
         public void check_level_up(uint cultisys)
         {
+            if (!this.fast_data.alive || ((this.cw_data.cultisys&cultisys) == 0)) return;
             int cultisys_tag = 0;
             int max_cultisys_tag = -1;
             int max_level = -1;
