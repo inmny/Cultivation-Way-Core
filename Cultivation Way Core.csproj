@@ -3670,6 +3670,7 @@
     <Compile Include="Code\CW_SpellAction_Cost.cs" />
     <Compile Include="Code\CW_Tester_Spell.cs" />
     <Compile Include="Code\CW_Utils_ActorTools.cs" />
+    <Compile Include="Code\CW_Utils_DS.cs" />
     <Compile Include="Code\CW_Utils_Others.cs" />
     <Compile Include="Code\CW_Utils_SpellHelper.cs" />
     <Compile Include="Code\OpenAIWrapper.cs" />

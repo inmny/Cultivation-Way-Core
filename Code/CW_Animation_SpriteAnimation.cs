@@ -89,6 +89,21 @@ namespace Cultivation_Way.Animation
             gameObject.transform.localPosition = this.src_vec;
             if(setting.point_to_dst) gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, Toolbox.getAngle(gameObject.transform.position.x, gameObject.transform.position.y, this.dst_vec.x, this.dst_vec.y) * 57.29578f));
         }
+        internal void set(CW_AnimationSetting setting, Sprite[] sprites, GameObject prefab, Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_object, BaseSimObject dst_object)
+        {
+            isOn = true; is_default_sprites = true;
+            this.setting = setting;
+
+            this.sprites = sprites;
+
+            this.gameObject.transform.localScale = prefab.transform.localScale;
+
+            this.apply_setting(src_vec, dst_vec, src_object, dst_object);
+        }
+        internal void clear()
+        {
+            this.gameObject.SetActive(false);
+        }
         internal void update(float elapsed)
         {
             if (!isOn)
