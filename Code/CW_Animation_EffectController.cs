@@ -12,6 +12,7 @@ namespace Cultivation_Way.Animation
 
         internal GameObject prefab;
         internal CW_SpriteAnimation[] animations;
+        internal LinkedList<CW_SpriteAnimation> active_anims;
         /// <summary>
         /// 缩放
         /// </summary>
@@ -19,7 +20,7 @@ namespace Cultivation_Way.Animation
         /// <summary>
         /// 动图
         /// </summary>
-        public Sprite[] anim;
+        public Sprite[] sprites;
         /// <summary>
         /// 图像基础偏移
         /// </summary>
@@ -47,7 +48,7 @@ namespace Cultivation_Way.Animation
             }
             default_setting = setting.__deepcopy();
             default_setting.possible_associated = true;
-            this.anim = anim;
+            this.sprites = anim;
             cur_anim_nr = 0;
         }
         internal CW_EffectController(string id, int anim_limit, CW_AnimationSetting setting, Sprite[] anim, GameObject default_prefab, float base_scale, Vector2 base_offset)
@@ -67,7 +68,7 @@ namespace Cultivation_Way.Animation
             }
             default_setting = setting.__deepcopy();
             default_setting.possible_associated = true;
-            this.anim = anim;
+            this.sprites = anim;
             cur_anim_nr = 0;
         }
         public string get_id() { return id; }
@@ -99,7 +100,7 @@ namespace Cultivation_Way.Animation
 
         internal CW_SpriteAnimation spawn_on(Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_obj, BaseSimObject dst_obj, float scale)
         {
-            CW_SpriteAnimation new_anim = new CW_SpriteAnimation(default_setting, anim, prefab, src_vec, dst_vec, src_obj, dst_obj);
+            CW_SpriteAnimation new_anim = new CW_SpriteAnimation(default_setting, sprites, prefab, src_vec, dst_vec, src_obj, dst_obj);
             if (!new_anim.isOn) return null;
             if (cur_anim_nr == animations.Length - 2) { new_anim.kill(); return null; }
             animations[cur_anim_nr++] = new_anim;
@@ -108,7 +109,7 @@ namespace Cultivation_Way.Animation
         }
         internal CW_SpriteAnimation spawn_on(Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_obj, BaseSimObject dst_obj, float scale, Vector2 offset)
         {
-            CW_SpriteAnimation new_anim = new CW_SpriteAnimation(default_setting, anim, prefab, src_vec, dst_vec, src_obj, dst_obj);
+            CW_SpriteAnimation new_anim = new CW_SpriteAnimation(default_setting, sprites, prefab, src_vec, dst_vec, src_obj, dst_obj);
             if (!new_anim.isOn) return null;
             if (cur_anim_nr == animations.Length - 2) { new_anim.kill(); return null; }
             animations[cur_anim_nr++] = new_anim;

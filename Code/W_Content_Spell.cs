@@ -1527,9 +1527,9 @@ namespace Cultivation_Way.Content
                 }
                 if (target != null) 
                 { 
-                    //((CW_Actor)anim.src_object).cancelAllBeh(null);
-                    //CW_Actor.set_attackedBy((Actor)anim.src_object, null);
-                    //CW_Actor.set_attackTarget((Actor)anim.src_object, null);
+                    //((CW_Actor)sprites.src_object).cancelAllBeh(null);
+                    //CW_Actor.set_attackedBy((Actor)sprites.src_object, null);
+                    //CW_Actor.set_attackTarget((Actor)sprites.src_object, null);
                     CW_Actor.func_spawnOn((CW_Actor)anim.src_object, target, 0f);
                     ((CW_Actor)anim.src_object).updatePos();
                     anim.set_position(anim.src_object.currentPosition); 
@@ -1775,7 +1775,7 @@ namespace Cultivation_Way.Content
             if (center == null) return;
             List<BaseSimObject> enemies = Utils.CW_SpellHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 5);
             float force = 5f;
-            //CW_EffectManager.instance.spawn_anim("bushido_base_anim", dst_vec, dst_vec, anim.src_object, null, 1f);
+            //CW_EffectManager.instance.spawn_anim("bushido_base_anim", dst_vec, dst_vec, sprites.src_object, null, 1f);
             foreach (BaseSimObject actor in enemies)
             {
                 Utils.CW_SpellHelper.cause_damage_to_target(anim.src_object, actor, anim.cost_for_spell);

@@ -145,12 +145,13 @@ namespace Cultivation_Way.Animation
                 gameObject.transform.Rotate(setting.always_roll_axis * elapsed * setting.roll_angle_per_frame);
             }
             // 检测到目标不存在后停止
+            /**
             if (setting.trace_type == AnimationTraceType.TRACK && dst_object == null)
             {
                 isOn = false;
                 return;
             }
-            
+            */
             // 轨迹更新
             if (setting.trace_type != AnimationTraceType.NONE)
             {

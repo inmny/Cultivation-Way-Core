@@ -276,7 +276,7 @@ namespace Cultivation_Way.Content
                 total_level += tile.get_cw_chunk().wakan_level;
             }
             anim.set_alpha(Mathf.Max(0.8f,Mathf.Min(Mathf.Sqrt((total_level / Config.currentBrushData.pos.Count - 1)*5), anim.renderer.color.a)));
-            //anim.force_update(Time.deltaTime);
+            //sprites.force_update(Time.deltaTime);
             MapBox.instance.loopWithBrush(center, Config.currentBrushData, AssetManager.powers.get(id).click_action, id);
             return true;
         }

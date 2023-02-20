@@ -20,6 +20,12 @@ namespace Cultivation_Way.Animation
         {
             float dist = Toolbox.DistVec2Float(src_vec, dst_vec);
 
+            if (dist < Others.CW_Constants.anim_dst_error)
+            {
+                delta_x = 0; delta_y = 0;
+                return;
+            }
+
             delta_x = (dst_vec.x - src_vec.x) * anim.setting.trace_grad / dist;
             delta_y = (dst_vec.y - src_vec.y) * anim.setting.trace_grad / dist;
         }

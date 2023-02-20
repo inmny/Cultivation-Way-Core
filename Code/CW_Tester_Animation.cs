@@ -72,7 +72,7 @@ namespace Cultivation_Way.Tester
         }
         private static bool spawn_anim(string anim_id, string src_id, string dst_id, int src_x, int src_y, int dst_x, int dst_y, float scale, float cost)
         {
-            WorldBoxConsole.Console.print("Test anim:" + anim_id + ", scale:" + scale);
+            WorldBoxConsole.Console.print("Test sprites:" + anim_id + ", scale:" + scale);
             Actor src_actor = MapBox.instance.getActorByID(src_id);
             Actor dst_actor = MapBox.instance.getActorByID(dst_id);
             Vector2 src_vec = (src_actor == null ? new Vector2(src_x, src_y) : src_actor.currentPosition);
