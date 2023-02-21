@@ -184,7 +184,7 @@ namespace Cultivation_Way.Library
         }
         internal bool judge_can_get(CW_Actor actor)
         {
-            return Toolbox.randomChance(this.random_learn_chance * CW_Element.get_similarity(actor.cw_data.element, this.element) * Mathf.Sqrt(actor.fast_data.intelligence+1));
+            return Utils.CW_Utils_Others.max_of(actor.cw_data.cultisys_level)>=this.learn_level && Toolbox.randomChance(this.random_learn_chance * CW_Element.get_similarity(actor.cw_data.element, this.element) * Mathf.Sqrt(actor.fast_data.intelligence+1));
         }
         public void add_tag(CW_Spell_Tag tag)
         {
