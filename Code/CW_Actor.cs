@@ -318,7 +318,8 @@ namespace Cultivation_Way
         
         internal bool __get_hit(float damage, Others.CW_Enums.CW_AttackType attack_type, BaseSimObject attacker, bool pSkipIfShake)
         {
-            if ((pSkipIfShake && this.fast_shake_timer.isActive) || this.fast_data.health <= 0 || this.haveTrait("asylum") || this==attacker) return false;
+            if (this.fast_data.health <= -65535) this.fast_data.health = this.cw_cur_stats.base_stats.health; 
+            if ((pSkipIfShake && this.fast_shake_timer.isActive) || this.fast_data.health <= 0||this.haveTrait("asylum") || this==attacker) return false;
 
             this.__battle_timer = Others.CW_Constants.battle_timer;
 
