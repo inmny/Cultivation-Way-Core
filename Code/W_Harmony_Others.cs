@@ -35,6 +35,23 @@ namespace Cultivation_Way.Content.Harmony
             {
                 addon.load_localized_text(pLanguage);
             }
+
+            if(pLanguage == "en")
+            {
+                textDic = Json.Deserialize(
+                Utils.CW_ResourceHelper.load_json_once("cw_locales/" + "cz")
+                ) as Dictionary<string, object>;
+
+                localizedText = Reflection.GetField(typeof(LocalizedTextManager), LocalizedTextManager.instance, "localizedText") as Dictionary<string, string>;
+                foreach (string key in textDic.Keys)
+                {
+                    if (!localizedText.ContainsKey(key)) localizedText[key] = key.Replace("_", " ").Replace(" title", "").Replace(" description", "");
+                }
+                foreach (CW_Addon addon in ModState.instance.addons)
+                {
+                    addon.load_localized_text(pLanguage);
+                }
+            }
         }
         [HarmonyPrefix]
         [HarmonyPatch(typeof(MapBox), "setMapSize")]

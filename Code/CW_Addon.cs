@@ -82,6 +82,28 @@ namespace Cultivation_Way
             {
                 localizedText[key] = textDic[key] as string;
             }
+
+            if (language == "en")
+            {
+                path = string.Format("{0}/Locales/{1}{2}", this_mod.Info.Path, "cz", ".json");
+
+                if (!File.Exists(path)) return;
+
+                file_str = File.ReadAllText(path);
+
+                textDic = Json.Deserialize(file_str) as Dictionary<string, object>;
+
+                if (textDic == null) return;
+
+                localizedText = Reflection.GetField(typeof(LocalizedTextManager), LocalizedTextManager.instance, "localizedText") as Dictionary<string, string>;
+
+                if (localizedText == null) return;
+
+                foreach (string key in textDic.Keys)
+                {
+                    if (!localizedText.ContainsKey(key)) localizedText[key] = key.Replace("_", " ").Replace(" title","").Replace(" description","");
+                }
+            }
         }
         protected void load_mod_info(Type this_mod_type, string core_version = "1.0.4")
         {

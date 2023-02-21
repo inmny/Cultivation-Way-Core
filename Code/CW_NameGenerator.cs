@@ -20,7 +20,7 @@ namespace Cultivation_Way
         {
             if (ModState.instance.cur_language != "cz")
             {
-                return "";
+                //return "";
             }
             CW_Asset_NameGenerator name_generator;
             if(CW_Library_Manager.instance.name_generators.dict.TryGetValue(template_id, out name_generator))
