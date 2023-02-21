@@ -58,9 +58,9 @@ namespace Cultivation_Way.Content
         internal static void init()
         {
             ScrollWindow scroll_window = GameObject.Instantiate(Resources.Load<ScrollWindow>("windows/empty"), CanvasMain.instance.transformWindows);
-            scroll_window.titleText.GetComponent<LocalizedText>().key = "cultisys_setting_title";
-            scroll_window.screen_id = "cultisys_setting";
-            scroll_window.name = "cultisys_setting";
+            scroll_window.titleText.GetComponent<LocalizedText>().key = "cultisys_name_setting_title";
+            scroll_window.screen_id = "cultisys_name_setting";
+            scroll_window.name = "cultisys_name_setting";
             scroll_window.CallMethod("create", false);
             NCMS.Utils.Windows.AllWindows[scroll_window.name] = scroll_window;
 

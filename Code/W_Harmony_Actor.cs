@@ -217,8 +217,9 @@ namespace Cultivation_Way.Content.Harmony
         [HarmonyPatch(typeof(Actor), "restoreHealth")]
         public static bool actor_restore_health(Actor __instance, int pVal)
         {
-            ((CW_Actor)__instance).regen_health(pVal, Mathf.Max(0.2f, ((CW_Actor)__instance).cw_status.health_level-0.8f));
-            ((CW_Actor)__instance).regen_shield(pVal, Mathf.Max(0.8f, ((CW_Actor)__instance).cw_status.wakan_level - 0.2f));
+            CW_Actor actor = (CW_Actor)__instance;
+            actor.regen_health(pVal, Mathf.Max(0.2f, actor.cw_status.health_level-(((actor.cw_data.cultisys&0b10)>0)? 0.8f:0)));
+            actor.regen_shield(pVal, Mathf.Max(0.8f, actor.cw_status.wakan_level - 0.2f));
             return false;
         }
         [HarmonyPrefix]

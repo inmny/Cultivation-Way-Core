@@ -39,9 +39,9 @@ namespace Cultivation_Way.Content
 
         private static void add_cultisys_name_setting()
         {
-            W_Content_WindowWorldLaw.add_world_setting("cultisys_setting", "iconCultiSys", new UnityEngine.Vector3(0.6f, 0.75f), CW_WorldLaw_Type.World_Setting, delegate
+            W_Content_WindowWorldLaw.add_world_setting("cultisys_name_setting", "iconCultiSys", new UnityEngine.Vector3(0.6f, 0.75f), CW_WorldLaw_Type.World_Setting, delegate
             {
-                ScrollWindow.showWindow("cultisys_setting");
+                ScrollWindow.showWindow("cultisys_name_setting");
             });
         }
         private static void add_cultisys_stats_setting()

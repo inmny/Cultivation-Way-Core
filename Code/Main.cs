@@ -109,6 +109,9 @@ namespace Cultivation_Way{
                     mod_state.registered = true;
                     mod_state.library_manager.register();
                     W_Content_Tab.apply_buttons();
+
+                    Window_Cultisys_Name_Setting.init();
+                    Window_Cultisys_Stats_Setting.init();
                 }
             }
             if (last_month!=MapBox.instance.mapStats.month)
