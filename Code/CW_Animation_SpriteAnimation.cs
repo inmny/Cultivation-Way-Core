@@ -54,6 +54,7 @@ namespace Cultivation_Way.Animation
         public BaseSimObject dst_object;
         public float free_val;
         public string free_str;
+        public float cur_elapsed;
         /// <summary>
         /// 动画设置
         /// </summary>
@@ -68,6 +69,7 @@ namespace Cultivation_Way.Animation
             this.sprites = sprites;
 
             gameObject = UnityEngine.Object.Instantiate(prefab, CW_EffectManager.instance.transform);
+            gameObject.layer = 0;
             renderer = gameObject.GetComponent<SpriteRenderer>();
 
             this.apply_setting(src_vec, dst_vec, src_object, dst_object);
@@ -148,11 +150,13 @@ namespace Cultivation_Way.Animation
             {
                 return;
             }
-            if (CW_EffectManager.instance.low_res) hide();
+
+            if (renderer.enabled&&!setting.visible_in_low_res&&CW_EffectManager.instance.low_res) hide();
             else if (!renderer.enabled) show();
 
-            if (!CW_EffectManager.instance.low_res && renderer.sprite == null) renderer.sprite = sprites[cur_frame_idx];
+            //if (!CW_EffectManager.instance.low_res && renderer.sprite == null) renderer.sprite = sprites[cur_frame_idx];
             play_time += elapsed;
+            cur_elapsed = elapsed;
             if ( play_time > Others.CW_Constants.max_anim_time)
             {
                 isOn = false;
@@ -245,7 +249,7 @@ namespace Cultivation_Way.Animation
                 {
                     gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, Toolbox.getAngle(gameObject.transform.position.x, gameObject.transform.position.y, dst_vec.x, dst_vec.y) * 57.29578f));
                 }
-                gameObject.transform.position = new Vector3(next_x, next_y);
+                gameObject.transform.position = new Vector3(next_x, next_y, next_y);
             }
             // 路径行为
             if (setting.frame_action != null) setting.frame_action(cur_frame_idx, ref src_vec, ref dst_vec, this);
