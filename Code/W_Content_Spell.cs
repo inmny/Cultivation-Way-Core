@@ -1412,7 +1412,7 @@ namespace Cultivation_Way.Content
         {
             if (pUser.objectType != MapObjectType.Actor) return;
             CW_Actor cw_actor = (CW_Actor)pUser;
-            cw_actor.regen_health(cw_actor.cw_cur_stats.base_stats.health*spell_asset.free_val, cw_actor.cw_status.wakan_level);
+            cw_actor.regen_health(Mathf.Sqrt(cost)* spell_asset.free_val, cw_actor.cw_status.wakan_level);
         }
         /// <summary>
         /// 圣体显化，未实装
