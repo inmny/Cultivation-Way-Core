@@ -1,8 +1,8 @@
 {
   "name": "启源核心",
   "author": "启源",
-  "version": "1.0.5(preview)",
+  "version": "1.0.5",
   "description": "提供核心内容以及附属运行环境",
-  "targetGameBuild": 472,
+  "targetGameBuild": 476,
   "iconPath": "icon.png"
 }
