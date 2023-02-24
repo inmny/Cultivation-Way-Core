@@ -717,7 +717,8 @@ namespace Cultivation_Way
                 {
                     if (this.cw_data.spells[i] == culti_book.spells[j]) break;
                 }
-                if (j == len_2&&(culti_book.spells[j]==null || CW_Library_Manager.instance.spells.get(culti_book.spells[j]).rarity< CW_Library_Manager.instance.spells.get(cw_data.spells[i]).rarity))
+                CW_Asset_Spell new_spell = CW_Library_Manager.instance.spells.get(cw_data.spells[i]);
+                if (j == len_2&&new_spell.can_store_in_book&&(culti_book.spells[j]==null || CW_Library_Manager.instance.spells.get(culti_book.spells[j]).rarity< new_spell.rarity))
                 {
                     culti_book.spells[j] = this.cw_data.spells[i];
                     search_times--;

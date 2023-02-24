@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Cultivation_Way.Content
 {
-    internal enum CW_WorldLaw_Type
+    public enum CW_WorldLaw_Type
     {
         World_Option,
         World_Setting,

@@ -79,6 +79,7 @@ namespace Cultivation_Way.Library
         /// </summary>
         public int cast_level;
         public bool can_get_by_random;
+        public bool can_store_in_book;
         internal uint allowed_cultisys;
         internal ulong tags;
         internal bool[] base_elements_contained;
@@ -100,7 +101,7 @@ namespace Cultivation_Way.Library
         public CW_Asset_Spell(
             string id, string anim_id, 
             CW_Element element, string element_type_limit = null, 
-            int rarity = 3, float free_val = 1, float cost = 0.01f, int min_cost = 5, int learn_level = 1, int cast_level = 1, bool can_get_by_random = true,
+            int rarity = 3, float free_val = 1, float cost = 0.01f, int min_cost = 5, int learn_level = 1, int cast_level = 1, bool can_get_by_random = true, bool can_store_in_book = true,
             bool cultisys_black_or_white_list = true, List<string> cultisys_list = null, List<string> banned_races = null, 
             CW_Spell_Target_Type target_type = CW_Spell_Target_Type.ACTOR, 
             CW_Spell_Target_Camp target_camp = CW_Spell_Target_Camp.ENEMY, 
@@ -124,6 +125,7 @@ namespace Cultivation_Way.Library
             this.learn_level = learn_level;
             this.cast_level = cast_level;
             this.can_get_by_random = can_get_by_random;
+            this.can_store_in_book = can_store_in_book;
             this.cultisys_black_or_white_list = cultisys_black_or_white_list;
             this.cultisys_list = cultisys_list == null ? new List<string>() : cultisys_list;
             this.banned_races = banned_races == null ? new List<string>() : banned_races;
