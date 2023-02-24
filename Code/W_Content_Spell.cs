@@ -1414,9 +1414,18 @@ namespace Cultivation_Way.Content
             CW_Actor cw_actor = (CW_Actor)pUser;
             cw_actor.regen_health(cw_actor.cw_cur_stats.base_stats.health*spell_asset.free_val, cw_actor.cw_status.wakan_level);
         }
+        /// <summary>
+        /// 圣体显化，未实装
+        /// </summary>
+        /// <param name="spell_asset"></param>
+        /// <param name="pUser"></param>
+        /// <param name="pTarget"></param>
+        /// <param name="pTargetTile"></param>
+        /// <param name="cost"></param>
         private static void stxh_spell_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
         {
             if (pUser.objectType != MapObjectType.Actor || !pUser.base_data.alive||pUser.object_destroyed) return;
+            return;
             CW_Actor cw_actor = (CW_Actor)pUser;
             CW_Asset_SpecialBody body = CW_Library_Manager.instance.special_bodies.get(cw_actor.cw_data.special_body_id);
 

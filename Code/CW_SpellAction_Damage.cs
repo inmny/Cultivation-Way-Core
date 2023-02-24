@@ -32,14 +32,15 @@ namespace Cultivation_Way.Actions
                     foreach (CW_Actor target in targets_on_tile)
                     {
                         if(Utils.CW_SpellHelper.is_enemy(pUser, target))
-                            target.get_hit(damage, true, attack_type, pUser, true);
+                            Utils.CW_SpellHelper.cause_damage_to_target(pUser, target, damage, attack_type, true);
                     }
                     Building target_building = pTargetTile.building;
-                    if (target_building != null && Utils.CW_SpellHelper.is_enemy(pUser, target_building))
-                        CW_Building.func_getHit(target_building, damage, true, (AttackType)attack_type, pUser, true);
+                    if (Utils.CW_SpellHelper.is_enemy(pUser, target_building))
+                        Utils.CW_SpellHelper.cause_damage_to_target(pUser, target_building, damage, attack_type, true);
                     break;
+
                 case CW_Spell_Target_Type.CHUNK:
-                    Utils.CW_SpellHelper.__find_kingdom_enemies_in_chunk(pTargetTile.chunk, pUser.kingdom);
+                    Utils.CW_SpellHelper.__find_kingdom_enemies_in_chunk(pTargetTile.chunk, pUser==null?null:pUser.kingdom);
                     foreach(List<BaseSimObject> list in Utils.CW_SpellHelper.temp_list_objects_enemies)
                     {
                         for(int i = 0; i < list.Count; i++)

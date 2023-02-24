@@ -22,7 +22,7 @@ namespace Cultivation_Way.Animation
 
             if (dist < Others.CW_Constants.anim_dst_error)
             {
-                delta_x = 0; delta_y = 0;
+                delta_x = dst_vec.x - src_vec.x; delta_y = dst_vec.y - src_vec.y;
                 return;
             }
 

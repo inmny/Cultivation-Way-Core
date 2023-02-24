@@ -104,12 +104,24 @@ namespace Cultivation_Way
             zones = cw_data.zones;
             storage = new CityStorage_For_Save();
             storage.savedResources = cw_data.storage.savedResources;
-            foreach (CW_ItemData weapon in cw_data.storage.items_weapons) storage.items_weapons.Add(weapon);
-            foreach (CW_ItemData armor in cw_data.storage.items_armor) storage.items_armor.Add(armor);
-            foreach (CW_ItemData amulet in cw_data.storage.items_amulets) storage.items_amulets.Add(amulet);
-            foreach (CW_ItemData ring in cw_data.storage.items_rings) storage.items_rings.Add(ring);
-            foreach (CW_ItemData boot in cw_data.storage.items_boots) storage.items_boots.Add(boot);
-            foreach (CW_ItemData helmet in cw_data.storage.items_helmets) storage.items_helmets.Add(helmet);
+            try
+            {
+                foreach (CW_ItemData weapon in cw_data.storage.items_weapons) storage.items_weapons.Add(weapon);
+                foreach (CW_ItemData armor in cw_data.storage.items_armor) storage.items_armor.Add(armor);
+                foreach (CW_ItemData amulet in cw_data.storage.items_amulets) storage.items_amulets.Add(amulet);
+                foreach (CW_ItemData ring in cw_data.storage.items_rings) storage.items_rings.Add(ring);
+                foreach (CW_ItemData boot in cw_data.storage.items_boots) storage.items_boots.Add(boot);
+                foreach (CW_ItemData helmet in cw_data.storage.items_helmets) storage.items_helmets.Add(helmet);
+            }
+            catch (InvalidCastException)
+            {
+                foreach (ItemData weapon in cw_data.storage.items_weapons) storage.items_weapons.Add(new CW_ItemData(weapon));
+                foreach (ItemData armor in cw_data.storage.items_armor) storage.items_armor.Add(new CW_ItemData(armor));
+                foreach (ItemData amulet in cw_data.storage.items_amulets) storage.items_amulets.Add(new CW_ItemData(amulet));
+                foreach (ItemData ring in cw_data.storage.items_rings) storage.items_rings.Add(new CW_ItemData(ring));
+                foreach (ItemData boot in cw_data.storage.items_boots) storage.items_boots.Add(new CW_ItemData(boot));
+                foreach (ItemData helmet in cw_data.storage.items_helmets) storage.items_helmets.Add(new CW_ItemData(helmet));
+            }
         }
         public CW_CityData get_cw_data_for_load()
         {
