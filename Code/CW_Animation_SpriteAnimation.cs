@@ -111,8 +111,8 @@ namespace Cultivation_Way.Animation
         }
         internal void clear()
         {
-            //this.gameObject.transform.localPosition = new Vector3(9999999, 999999);
             hide();
+            this.gameObject.transform.localPosition = new Vector3(-9999999, -999999,-9999);
             //this.gameObject.SetActive(false);
             this.cost_for_spell = 0;
             this.cur_frame_idx = 0;
@@ -136,7 +136,8 @@ namespace Cultivation_Way.Animation
             //this.gameObject.layer
             renderer.enabled = false;
             //renderer.sprite = null;
-            this.gameObject.layer = 1<<3;
+            this.gameObject.layer = 3;
+            //this.gameObject.transform.localPosition = new Vector3(-100000, -10000, -10000);
         }
         private void show()
         {
