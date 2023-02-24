@@ -56,7 +56,9 @@ namespace Cultivation_Way.Library
         {
             CW_Asset_Trait ret;
             if (dict.TryGetValue(pID, out ret)) return ret;
+            UnityEngine.Debug.Log($"Try to get '{pID}'");
             ret = new CW_Asset_Trait(AssetManager.traits.get(pID));
+            
             if (ret == null) return null;
             this.__add(ret);
             return ret;
