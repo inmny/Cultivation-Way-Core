@@ -1864,12 +1864,14 @@ namespace Cultivation_Way.Content
         {
             if (anim.dst_object == null || !anim.dst_object.base_data.alive) return;
             CW_StatusEffectData status_effect = Utils.CW_SpellHelper.add_status_to_target(anim.src_object, anim.dst_object, "status_samadhi_fire");
+            if (status_effect == null) return;
             status_effect.effect_val += Mathf.Sqrt(((CW_Actor)anim.src_object).cw_cur_stats.soul_regen);
         }
         private static void loltus_fire_end_action(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, CW_SpriteAnimation anim)
         {
             if (anim.dst_object == null || !anim.dst_object.base_data.alive || anim.src_object == null || !anim.src_object.base_data.alive) return;
             CW_StatusEffectData status_effect = Utils.CW_SpellHelper.add_status_to_target(anim.src_object, anim.dst_object, "status_loltus_fire");
+            if (status_effect == null) return;
             status_effect.left_time = (1 + ((CW_Actor)anim.dst_object).fast_data.kills / 10f) * status_effect.status_asset.effect_time;
             status_effect.effect_val = Utils.CW_Utils_Others.get_raw_wakan(status_effect.status_asset.effect_val, ((CW_Actor)anim.src_object).cw_status.wakan_level)* ((CW_Actor)anim.dst_object).fast_data.kills;
         }
@@ -1877,6 +1879,7 @@ namespace Cultivation_Way.Content
         {
             if (anim.dst_object == null || !anim.dst_object.base_data.alive) return;
             CW_StatusEffectData status_effect = Utils.CW_SpellHelper.add_status_to_target(anim.src_object, anim.dst_object, "status_fen_fire");
+            if(status_effect == null) return;
             status_effect.effect_val = ((CW_Actor)anim.src_object).cw_cur_stats.soul_regen;
         }
         private static void bushido_base_damage_action(CW_Asset_Spell spell_asset, BaseSimObject pUser, BaseSimObject pTarget, WorldTile pTargetTile, float cost)
