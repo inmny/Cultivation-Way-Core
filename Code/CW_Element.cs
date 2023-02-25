@@ -296,10 +296,10 @@ namespace Cultivation_Way
             if (delta_abs == 0) return;
             for (j = 0; j < Others.CW_Constants.base_element_types; j++)
             {
-                Debug.Log($"Begin:[{j}]:{this.base_elements[j]},delta_val:{delta_vals[j]},scale:{scale},delta_abs:{delta_abs}");
+                //Debug.Log($"Begin:[{j}]:{this.base_elements[j]},delta_val:{delta_vals[j]},scale:{scale},delta_abs:{delta_abs}");
                 //this.base_elements[j] += (int)(Math.Sign(delta_vals[j]) * delta_vals[j] * delta_vals[j] * scale / delta_abs);
                 this.base_elements[j] += (int)(delta_vals[j] * scale);
-                Debug.Log($"Then:[{j}]:{this.base_elements[j]}");
+                //Debug.Log($"Then:[{j}]:{this.base_elements[j]}");
             }
             this.__normalize(origin_total_val);
         }
