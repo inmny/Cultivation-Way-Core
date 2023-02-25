@@ -177,6 +177,10 @@ namespace Cultivation_Way
 
             return combine_bonus;
         }
+        public void prefer_to(int[] prefer_elements, float scale)
+        {
+            __prefer_to(prefer_elements, scale);
+        }
         /**
         private void __comp_type()
         {
@@ -253,7 +257,7 @@ namespace Cultivation_Way
             co = normalize_ceil / co;
             for (i = 0; i < Others.CW_Constants.base_element_types; i++)
             {
-                this.base_elements[i] = (int)(this.base_elements[i] * co);
+                this.base_elements[i] = (int)(this.base_elements[i] * co+0.5f);
                 normalize_ceil -= this.base_elements[i];
             }
             if(normalize_ceil > 0)
@@ -279,7 +283,25 @@ namespace Cultivation_Way
         }
         private void __prefer_to(int[] prefer_elements, float scale)
         {
-            throw new NotImplementedException();
+            int j;
+            int delta_abs = 0;
+            int origin_total_val = 0;
+            int[] delta_vals = new int[Others.CW_Constants.base_element_types];
+            for (j = 0; j < Others.CW_Constants.base_element_types; j++)
+            {
+                delta_vals[j] = prefer_elements[j] - this.base_elements[j];
+                delta_abs += Math.Abs(delta_vals[j]);
+                origin_total_val += this.base_elements[j];
+            }
+            if (delta_abs == 0) return;
+            for (j = 0; j < Others.CW_Constants.base_element_types; j++)
+            {
+                Debug.Log($"Begin:[{j}]:{this.base_elements[j]},delta_val:{delta_vals[j]},scale:{scale},delta_abs:{delta_abs}");
+                //this.base_elements[j] += (int)(Math.Sign(delta_vals[j]) * delta_vals[j] * delta_vals[j] * scale / delta_abs);
+                this.base_elements[j] += (int)(delta_vals[j] * scale);
+                Debug.Log($"Then:[{j}]:{this.base_elements[j]}");
+            }
+            this.__normalize(origin_total_val);
         }
         private const int stats_length = 15;
         internal string __to_string()
