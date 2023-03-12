@@ -613,10 +613,11 @@ namespace Cultivation_Way
             for (i = 0; i < actors.Count; i++)
             {
                 CW_Actor actor = (CW_Actor)actors[i];
+                if (actor == null) Debug.Log("QNMD");
                 if (actor.stats.skipSave) continue;
                 if (!actor.fast_data.alive)
                 {
-                    MapBox.instance.destroyActor(actors[i]);
+                    MapBox.instance.destroyActor(actor);
                     continue;
                 }
                 actor.prepare_cw_data_for_save();
