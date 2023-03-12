@@ -114,10 +114,10 @@ namespace Cultivation_Way{
                     Window_Cultisys_Stats_Setting.init();
                 }
             }
-            if (last_month!=MapBox.instance.mapStats.month)
+            if (last_month!=MapBox.instance.mapStats.getCurrentMonth())
             {
                 world_data.map_chunk_manager.update();
-                last_month = MapBox.instance.mapStats.month;
+                last_month = MapBox.instance.mapStats.getCurrentMonth();
             }
             
         }
