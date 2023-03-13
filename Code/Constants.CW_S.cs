@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cultivation_Way.Constants
 {
-    public class CW_S
+    public static class CW_S
     {
         public const string shield = "shield";
         public const string mod_shield = "mod_shield";

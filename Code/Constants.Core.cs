@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Cultivation_Way.Constants
 {
-    public static class Others
+    public static class Core
     {
-        public const string harmony_id = "harmony.cw.inmny";
+        public readonly static string[] element_str = { "cw_water", "cw_fire", "cw_wood", "cw_iron", "cw_ground" };
     }
 }

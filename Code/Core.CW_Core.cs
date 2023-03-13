@@ -36,6 +36,7 @@ namespace Cultivation_Way.Core
             {
                 state.initialized = true;
                 this.initialize();
+                
             }
         }
 

@@ -3643,6 +3643,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Code\Constants.Core.cs" />
     <Compile Include="Code\Constants.CW_S.cs" />
     <Compile Include="Code\Constants.Others.cs" />
     <Compile Include="Code\Core.CW_Actor.cs" />

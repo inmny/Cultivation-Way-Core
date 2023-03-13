@@ -8,5 +8,6 @@ namespace Cultivation_Way.Core
 {
     public class CW_Element
     {
+        private static string[] element_str = {"cw_gold"}
     }
 }

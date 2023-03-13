@@ -25,7 +25,7 @@ namespace Cultivation_Way.HarmonySpace
         }
         private static void cw_updateStats(Actor actor)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         #endregion
         #region 人物转换
@@ -48,8 +48,12 @@ namespace Cultivation_Way.HarmonySpace
         {
             ActorAsset asset = AssetManager.actor_library.get(pData.asset_id);
             Core.CW_Actor prefab = Others.FastVisit.get_actor_prefab("actors/" + asset.prefab).GetComponent<Core.CW_Actor>();
-            Actor actor = instance.loadObject(pData, prefab);
+            Core.CW_Actor actor = (Core.CW_Actor)instance.loadObject(pData, prefab);
             actor.setData(pData);
+
+            actor.fast_data = pData;
+            actor.fast_stats = actor.get_stats();
+
             instance.finalizeActor(asset.id, actor, pTile, 0f);
             pCity.addNewUnit(actor, true);
             return actor;
@@ -65,6 +69,10 @@ namespace Cultivation_Way.HarmonySpace
             Core.CW_Actor prefab = Others.FastVisit.get_actor_prefab("actors/" + asset.prefab).GetComponent<Core.CW_Actor>();
             Core.CW_Actor actor = (Core.CW_Actor)instance.newObject(prefab);
             actor.setData((ActorData)actor.base_data);
+
+            actor.fast_data = (ActorData)actor.base_data;
+            actor.fast_stats = actor.get_stats();
+
             instance.finalizeActor(asset_id, actor, tile, z_height);
             actor.newCreature();
             actor.cw_newCreature();
