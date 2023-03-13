@@ -3643,13 +3643,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Code\Constants.CW_S.cs" />
+    <Compile Include="Code\Constants.Others.cs" />
+    <Compile Include="Code\Core.CW_Actor.cs" />
+    <Compile Include="Code\Core.CW_Core.cs" />
+    <Compile Include="Code\Core.CW_StatusEffectData.cs" />
+    <Compile Include="Code\Core.CW_Element.cs" />
+    <Compile Include="Code\Extension.ActorManagerTools.cs" />
+    <Compile Include="Code\Extension.ActorTools.cs" />
+    <Compile Include="Code\HarmonySpace.H_Actor.cs" />
+    <Compile Include="Code\HarmonySpace.Manager.cs" />
+    <Compile Include="Code\Library.CW_BaseStats.cs" />
+    <Compile Include="Code\Library.Manager.cs" />
+    <Compile Include="Code\Others.FastVisit.cs" />
+    <Compile Include="Code\Utils.ReflectionHelper.cs" />
     <Content Include="GameResources\cw_words_libraries\kingdoms\kingdom_mottos.txt" />
     <Content Include="GameResources\cw_words_libraries\cultibooks\cultibook_postfix_name.txt" />
     <Content Include="GameResources\cw_words_libraries\cultibooks\cultibook_random_main_name.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assemblies\" />
-    <Folder Include="Code\" />
     <Folder Include="GameResources\actors\yaos\t_crocodile_yao\unit_special\" />
     <Folder Include="GameResources\cw_words_libraries\tiles\" />
   </ItemGroup>
