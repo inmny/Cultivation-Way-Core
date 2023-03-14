@@ -18,8 +18,6 @@ namespace Cultivation_Way.Others
         public static void init()
         {
             get_actor_prefabs();
-            transformUnits = ReflectionUtility.Reflection.GetField(typeof(MapBox), World.world, "transformUnits") as Transform;
-            transformCreatures = ReflectionUtility.Reflection.GetField(typeof(MapBox), World.world, "transformCreatures") as Transform;
         }
         public static GameObject get_actor_prefab(string path)
         {

@@ -20,5 +20,6 @@ namespace Cultivation_Way.Constants
         public const string mod_spell_armor = "mod_spell_armor";
         public const string health_regen = "health_regen";
         public const string mod_health_regen = "mod_health_regen";
+        public const string mod_cultivelo = "mod_cultivelo";
     }
 }

@@ -7,6 +7,7 @@
     <NoStandardLibraries>false</NoStandardLibraries>
     <AssemblyName>CW_Core</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>latest</LangVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -221,6 +222,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assemblies\Assembly-CSharp.dll" />
     <Content Include="GameResources\actors\boats\boat_trading_yao\-135%400.png" />
     <Content Include="GameResources\actors\boats\boat_trading_yao\-135%401.png" />
     <Content Include="GameResources\actors\boats\boat_trading_yao\-45%400.png" />
@@ -3474,6 +3476,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Compile Include="Code\Constants.DataS.cs" />
+    <Compile Include="Code\Factories.cs" />
+    <Compile Include="Code\Factory.Factory.cs" />
+    <Compile Include="Code\Library.CultisysLibrary.cs" />
+    <Compile Include="Code\Library.CW_ActorAsset.cs" />
+    <Compile Include="Code\Library.CW_Library.cs" />
+    <Compile Include="Code\Library.ElementLibrary.cs" />
     <None Include="docs\index.md" />
     <None Include="GameResources\actors\races\eastern_human\unit_female_1\sprites.json" />
     <None Include="GameResources\actors\races\eastern_human\unit_king\sprites.json" />
@@ -3651,7 +3660,7 @@
     <Compile Include="Code\Core.CW_StatusEffectData.cs" />
     <Compile Include="Code\Core.CW_Element.cs" />
     <Compile Include="Code\Extension.ActorManagerTools.cs" />
-    <Compile Include="Code\Extension.ActorTools.cs" />
+    <Compile Include="Code\Extension.ActorDataTools.cs" />
     <Compile Include="Code\HarmonySpace.H_Actor.cs" />
     <Compile Include="Code\HarmonySpace.Manager.cs" />
     <Compile Include="Code\Library.CW_BaseStats.cs" />
@@ -3663,7 +3672,6 @@
     <Content Include="GameResources\cw_words_libraries\cultibooks\cultibook_random_main_name.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assemblies\" />
     <Folder Include="GameResources\actors\yaos\t_crocodile_yao\unit_special\" />
     <Folder Include="GameResources\cw_words_libraries\tiles\" />
   </ItemGroup>

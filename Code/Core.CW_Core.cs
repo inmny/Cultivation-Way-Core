@@ -11,6 +11,7 @@ namespace Cultivation_Way.Core
     public class ModState
     {
         public bool initialized { get; internal set; }
+        public long update_nr { get; internal set; }
     }
     public class ModData
     {
@@ -27,6 +28,7 @@ namespace Cultivation_Way.Core
             instance = this;
             state = new ModState();
             data = new ModData();
+            Factories.init();
         }
         void OnEnable() { }
         void Start() { }
@@ -35,8 +37,16 @@ namespace Cultivation_Way.Core
             if (!state.initialized)
             {
                 state.initialized = true;
+                state.update_nr = 0;
                 this.initialize();
-                
+            }
+            if(state.update_nr % 1 == 0)
+            {
+                Factories.recycle_items();
+                if(state.update_nr % 100 == 0)
+                {
+                    Factories.recycle_memory();
+                }
             }
         }
 

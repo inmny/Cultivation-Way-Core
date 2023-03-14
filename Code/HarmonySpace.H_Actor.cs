@@ -6,7 +6,6 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using HarmonyLib;
-using Cultivation_Way.Extension;
 using UnityEngine;
 
 namespace Cultivation_Way.HarmonySpace
@@ -25,7 +24,7 @@ namespace Cultivation_Way.HarmonySpace
         }
         private static void cw_updateStats(Actor actor)
         {
-            //throw new NotImplementedException();
+            
         }
         #endregion
         #region 人物转换
@@ -51,8 +50,7 @@ namespace Cultivation_Way.HarmonySpace
             Core.CW_Actor actor = (Core.CW_Actor)instance.loadObject(pData, prefab);
             actor.setData(pData);
 
-            actor.fast_data = pData;
-            actor.fast_stats = actor.get_stats();
+            actor.cw_asset = Library.Manager.actors.get(pData.asset_id);
 
             instance.finalizeActor(asset.id, actor, pTile, 0f);
             pCity.addNewUnit(actor, true);
@@ -70,8 +68,7 @@ namespace Cultivation_Way.HarmonySpace
             Core.CW_Actor actor = (Core.CW_Actor)instance.newObject(prefab);
             actor.setData((ActorData)actor.base_data);
 
-            actor.fast_data = (ActorData)actor.base_data;
-            actor.fast_stats = actor.get_stats();
+            actor.cw_asset = Library.Manager.actors.get(asset_id);
 
             instance.finalizeActor(asset_id, actor, tile, z_height);
             actor.newCreature();
