@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Constants;
@@ -10,42 +11,42 @@ namespace Cultivation_Way.Library
     {
         public static void init()
         {
-            add(new BaseStatAsset
+            foreach(FieldInfo field in typeof(CW_S).GetFields())
             {
-                hidden = true,
-                icon = String.Empty,
-                id = CW_S.mod_age,
-                ignore = false,
-                main_stat_to_mod = S.max_age,
-                mod = true,
-                normalize = true,
-                normalize_min = -90f,
-                normalize_max = 999,
-                used_only_for_civs = true
-            });
-            add(new BaseStatAsset
-            {
-                hidden = false,
-                icon = String.Empty,
-                id = CW_S.spell_armor,
-                ignore = false,
-                normalize = false,
-                used_only_for_civs = true
-            });
-            add(new BaseStatAsset
-            {
-                hidden = false,
-                icon = String.Empty,
-                id = CW_S.shield,
-                ignore = false,
-                normalize = false,
-                used_only_for_civs = true
-            });
+                if(field.FieldType == typeof(string))
+                {
+                    string stat_id = (string)field.GetValue(null);
+                    BaseStatAsset stat_asset = add(new BaseStatAsset
+                    {
+                        hidden = false,
+                        icon = String.Empty,
+                        id = stat_id,
+                        translation_key = Constants.Core.mod_prefix+stat_id,
+                        ignore = false,
+                        normalize = false,
+                        used_only_for_civs = true
+                    });
+                    if (stat_id.StartsWith("mod_"))
+                    {
+                        stat_asset.main_stat_to_mod = stat_id.Substring(4);
+                        stat_asset.mod = true;
+                    }
+                }
+            }
+
+            get(CW_S.mod_cultivelo).mod = false;
+        }
+        private static BaseStatAsset t;
+        private static BaseStatAsset get(string id)
+        {
+            t = AssetManager.base_stats_library.get(id);
+            return t;
         }
         private static BaseStatAsset add(BaseStatAsset new_stats)
         {
             BaseStatsLibrary library = AssetManager.base_stats_library;
-            return library.add(new_stats);
+            t = library.add(new_stats);
+            return t;
         }
     }
 }

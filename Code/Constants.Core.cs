@@ -8,7 +8,8 @@ namespace Cultivation_Way.Constants
 {
     public static class Core
     {
-        public const string uniform_type = "CW_uniform";
+        public const string uniform_type = "cw_uniform";
+        public const string mod_prefix = "cw_";
         public const int BASE_TYPE_WATER = 0;
         public const int BASE_TYPE_FIRE = 1;
         public const int BASE_TYPE_WOOD = 2;
