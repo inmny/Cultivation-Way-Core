@@ -3476,7 +3476,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Compile Include="Code\Animation.AnimationSetting.cs" />
+    <Compile Include="Code\Animation.AnimFunctions.cs" />
+    <Compile Include="Code\Animation.EffectController.cs" />
+    <Compile Include="Code\Animation.EffectManager.cs" />
+    <Compile Include="Code\Animation.SpriteAnimation.cs" />
     <Compile Include="Code\Constants.DataS.cs" />
+    <Compile Include="Code\Extension.BaseSystemData.cs" />
     <Compile Include="Code\Factories.cs" />
     <Compile Include="Code\Factory.Factory.cs" />
     <Compile Include="Code\Library.CultibookLibrary.cs" />
@@ -3667,6 +3673,8 @@
     <Compile Include="Code\HarmonySpace.Manager.cs" />
     <Compile Include="Code\Library.CW_BaseStats.cs" />
     <Compile Include="Code\Library.Manager.cs" />
+    <Compile Include="Code\Main.cs" />
+    <Compile Include="Code\Others.DataStructs.cs" />
     <Compile Include="Code\Others.Delegates.cs" />
     <Compile Include="Code\Others.FastVisit.cs" />
     <Compile Include="Code\Utils.ReflectionHelper.cs" />

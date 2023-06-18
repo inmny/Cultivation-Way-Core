@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Core;
 using Cultivation_Way.Library;
+using Cultivation_Way.Animation;
+using UnityEngine;
 
 namespace Cultivation_Way.Others
 {
@@ -15,4 +17,8 @@ namespace Cultivation_Way.Others
     /// </list>
     /// </summary>
     public delegate bool CultisysJudge(CW_Actor actor, CultisysAsset cultisys);
+
+    public delegate void AnimEndAction(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim);
+    public delegate void AnimFrameAction(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim);
+    public delegate void AnimTraceUpdate(ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim, ref float delta_x, ref float delta_y);
 }
