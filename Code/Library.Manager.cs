@@ -10,6 +10,7 @@ namespace Cultivation_Way.Library
     {
         public static Manager instance;
         public static CW_ActorAssetLibrary actors = new CW_ActorAssetLibrary();
+        public static CultibookLibrary cultibooks = new CultibookLibrary();
         public static CultisysLibrary cultisys = new CultisysLibrary();
         public static ElementLibrary elements = new ElementLibrary();
         public static Dictionary<string, BaseAssetLibrary> libraries = new Dictionary<string, BaseAssetLibrary>();
@@ -17,9 +18,14 @@ namespace Cultivation_Way.Library
         {
             instance = this;
             add(actors, "actors");
+            add(cultibooks, "cultibooks");
             add(cultisys, "cultisys");
             add(elements, "elements");
             CW_BaseStatsLibrary.init();
+        }
+        public void update_per_while()
+        {
+            cultibooks.update();
         }
         public void post_init()
         {

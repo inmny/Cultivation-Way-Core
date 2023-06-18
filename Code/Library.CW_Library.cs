@@ -19,9 +19,23 @@ namespace Cultivation_Way.Library
             return ret;
         }
     }
+    /// <summary>
+    /// 动态库, 每隔一段时间(不确定长度)调用一次
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class CW_DynamicLibrary<T> : CW_Library<T> where T : Asset
     {
+        /// <summary>
+        /// 静态列表
+        /// </summary>
         public List<T> static_list = new();
+        /// <summary>
+        /// 每隔一段时间(不确定长度)调用一次
+        /// </summary>
+        public virtual void update()
+        {
+
+        }
         public virtual void reset()
         {
             this.list.Clear();
