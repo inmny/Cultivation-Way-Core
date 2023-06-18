@@ -26,7 +26,7 @@ namespace Cultivation_Way.Extension
         }
         public static int[] get_cultisys_level(this ActorData data)
         {
-            int[] result = new int[Library.Manager.cultisys.size()];
+            int[] result = new int[Library.Manager.cultisys.size];
             for(int i=0; i < result.Length; i++)
             {
                 data.get(Library.Manager.cultisys.list[i].id, out result[i], -1);
