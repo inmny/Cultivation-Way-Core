@@ -40,7 +40,7 @@ namespace Cultivation_Way.Library
                 if (base_elements[i] < 0 || base_elements[i] > 100) throw new Exception(String.Format("Error Base Elements at {0}, value {1}", i, base_elements[i]));
             }
             this.id = id;
-            this.base_stats = (base_stats == null ? new BaseStats() : base_stats);
+            this.base_stats = base_stats ?? new BaseStats();
         }
         internal ElementAsset(string id, int water, int fire, int wood, int iron, int ground, float promot = 1.0f, float rarity = 1.0f, BaseStats base_stats = null, float mod_culti_velo = 0)
         {
@@ -53,7 +53,7 @@ namespace Cultivation_Way.Library
                 if (base_elements[i] < 0 || base_elements[i] > 100) throw new Exception(String.Format("Error Base Elements at {0}, value {1}", i, base_elements[i]));
             }
             this.id = id;
-            this.base_stats = (base_stats == null ? new BaseStats() : base_stats);
+            this.base_stats = base_stats ?? new BaseStats();
             this.base_stats[Constants.CW_S.mod_cultivelo] = mod_culti_velo;
         }
     }
