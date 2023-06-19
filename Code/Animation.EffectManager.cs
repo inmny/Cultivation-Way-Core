@@ -14,11 +14,10 @@ namespace Cultivation_Way.Animation
         internal bool low_res;
         internal static QualityChanger quality_changer;
         private bool initialized = false;
-        private GameObject default_prefab = new GameObject();
-        private AnimationSetting default_setting = new AnimationSetting();
-        private List<SpriteAnimation> single_anims = new List<SpriteAnimation>();
-        private List<EffectController> controllers = new List<EffectController>();
-        private Dictionary<string, EffectController> controllers_dict = new Dictionary<string, EffectController>();
+        private readonly GameObject default_prefab = new();
+        private readonly List<SpriteAnimation> single_anims = new();
+        private readonly List<EffectController> controllers = new();
+        private readonly Dictionary<string, EffectController> controllers_dict = new();
         private float timer = 0;
 
         private void Awake()
@@ -83,8 +82,8 @@ namespace Cultivation_Way.Animation
                 return null;
             }
             Sprite[] sprites = Resources.LoadAll<Sprite>(path_to_anim);
-            if (sprites == null || sprites.Length == 0) { throw new System.Exception("No found sprites under:" + path_to_anim); return null; }
-            EffectController controller = new EffectController(id, anim_limit, controller_setting == null ? new AnimationSetting() : controller_setting, sprites, default_prefab, base_scale, base_offset);
+            if (sprites == null || sprites.Length == 0) throw new System.Exception("No found sprites under:" + path_to_anim); 
+            EffectController controller = new(id, anim_limit, controller_setting == null ? new AnimationSetting() : controller_setting, sprites, default_prefab, base_scale, base_offset);
             this.controllers.Add(controller);
             this.controllers_dict.Add(id, controller);
             return controller;
@@ -107,7 +106,6 @@ namespace Cultivation_Way.Animation
                 return controller.spawn_on(src_tile.pos, dst_tile == null ? src_tile.pos : dst_tile.pos, src_obj, dst_obj, scale);
             }
             throw new System.Exception("No found animations controller for id:" + id);
-            return null;
         }
         public SpriteAnimation spawn_anim(string id, Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_obj = null, BaseSimObject dst_obj = null, float scale = 1.0f)
         {
@@ -117,7 +115,6 @@ namespace Cultivation_Way.Animation
                 return controller.spawn_on(src_vec, dst_vec, src_obj, dst_obj, scale);
             }
             throw new System.Exception("No found animations controller for id:" + id);
-            return null;
         }
         public void clear()
         {
@@ -129,7 +126,7 @@ namespace Cultivation_Way.Animation
             while (idx >= 0)
             {
                 SpriteAnimation anim = this.single_anims[idx];
-                this.single_anims[idx] = null;
+                single_anims[idx] = null;
                 anim.kill();
                 idx--;
             }
