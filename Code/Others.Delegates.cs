@@ -18,7 +18,21 @@ namespace Cultivation_Way.Others
     /// </summary>
     public delegate bool CultisysJudge(CW_Actor actor, CultisysAsset cultisys);
 
+    /// <summary>
+    /// 动画结束时的委托
+    /// </summary>
     public delegate void AnimEndAction(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim);
+    /// <summary>
+    /// 动画帧更新时的委托
+    /// </summary>
     public delegate void AnimFrameAction(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim);
+    /// <summary>
+    /// 动画的轨迹更新函数
+    /// </summary>
     public delegate void AnimTraceUpdate(ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim, ref float delta_x, ref float delta_y);
+
+    /// <summary>
+    /// 法术相关行为
+    /// </summary>
+    public delegate void SpellAction(CW_SpellAsset spell_asset, BaseSimObject user, BaseSimObject target, WorldTile target_tile, float cost);
 }

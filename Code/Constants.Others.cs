@@ -130,4 +130,26 @@ namespace Cultivation_Way.Constants
         /// </summary>
         BUILDING
     }
+    /// <summary>
+    /// 法术目标阵营
+    /// </summary>
+    public enum SpellTargetCamp
+    {
+        /// <summary>
+        /// 不作用于单位
+        /// </summary>
+        NONE,
+        /// <summary>
+        /// 仅作用于友方单位
+        /// </summary>
+        ALIAS,
+        /// <summary>
+        /// 仅作用于敌方单位
+        /// </summary>
+        ENEMY,
+        /// <summary>
+        /// 作用于所有单位
+        /// </summary>
+        BOTH
+    }
 }
