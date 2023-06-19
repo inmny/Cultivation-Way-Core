@@ -42,10 +42,92 @@ namespace Cultivation_Way.Constants
         /// </summary>
         public const string default_anim_layer_name = "EffectsTop";
     }
+    /// <summary>
+    /// 修炼体系类型
+    /// </summary>
     public enum CultisysType
     {
+        /// <summary>
+        /// 肉身
+        /// </summary>
         BODY,
+        /// <summary>
+        /// 元神
+        /// </summary>
         SOUL,
+        /// <summary>
+        /// 灵气等外物
+        /// </summary>
         OUTWARD
+    }
+    /// <summary>
+    /// 法术动画类型
+    /// </summary>
+    public enum SpellAnimType
+    {
+        /// <summary>
+        /// 作用于使用单位/点
+        /// </summary>
+        ON_USER,
+        /// <summary>
+        /// 作用于目标单位/点
+        /// </summary>
+        ON_TARGET,
+        /// <summary>
+        /// 从使用单位移动到目标单位/点
+        /// </summary>
+        USER_TO_TARGET,
+        /// <summary>
+        /// 从目标单位/点移动到使用单位/点
+        /// </summary>
+        TARGET_TO_USER,
+        /// <summary>
+        /// 自定义
+        /// </summary>
+        CUSTOM
+    }
+    /// <summary>
+    /// 法术触发标签, 决定法术是否可以在某些情况下触发
+    /// </summary>
+    public enum SpellTriggerTag
+    {
+        /// <summary>
+        /// 主动进行攻击
+        /// </summary>
+        ATTACK = 1,
+        /// <summary>
+        /// 受到可见单位的攻击
+        /// </summary>
+        NAMED_DEFEND = 2,
+        /// <summary>
+        /// 受到规则/不可见单位的攻击
+        /// </summary>
+        UNNAMED_DEFEND = 4,
+        /// <summary>
+        /// 在移动时
+        /// </summary>
+        MOVE = 8,
+        /// <summary>
+        /// 时常触发
+        /// </summary>
+        REGULAR = 16
+    }
+    /// <summary>
+    /// 法术目标类型, TILE为地块, 大于TILE的为单位/建筑
+    /// </summary>
+    public enum SpellTargetType
+    {
+        /// <summary>
+        /// 法术作用的中心地块
+        /// </summary>
+        TILE,
+        /// <summary>
+        /// 法术作用的中心单位
+        /// </summary>
+        ACTOR,
+        /// <summary>
+        /// 法术作用的中心建筑
+        /// </summary>
+        BUILDING
     }
 }
