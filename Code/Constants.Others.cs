@@ -50,15 +50,27 @@ namespace Cultivation_Way.Constants
         /// <summary>
         /// 肉身
         /// </summary>
-        BODY,
+        BODY = 1,
         /// <summary>
         /// 元神
         /// </summary>
-        SOUL,
+        SOUL = 2,
         /// <summary>
         /// 灵气等外物
         /// </summary>
-        OUTWARD
+        OUTWARD = 4,
+        /// <summary>
+        /// 血脉
+        /// </summary>
+        BLOOD = 8,
+        /// <summary>
+        /// 隐藏, 不推荐使用
+        /// </summary>
+        HIDDEN = 16,
+        /// <summary>
+        /// 用作限制表示非任意一种体系, 不推荐为CultisysAsset的type使用
+        /// </summary>
+        LIMIT = 32
     }
     /// <summary>
     /// 法术动画类型

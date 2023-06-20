@@ -35,4 +35,8 @@ namespace Cultivation_Way.Others
     /// 法术相关行为
     /// </summary>
     public delegate void SpellAction(CW_SpellAsset spell_asset, BaseSimObject user, BaseSimObject target, WorldTile target_tile, float cost);
+    /// <summary>
+    /// 法术消耗和修习相关检查, 一般返回负数表示false
+    /// </summary>
+    public delegate float SpellCheck(CW_SpellAsset spell_asset, BaseSimObject user);
 }
