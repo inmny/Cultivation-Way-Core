@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
+using Cultivation_Way.Extension;
 using Cultivation_Way.Others;
 
 namespace Cultivation_Way.Library
@@ -73,7 +74,7 @@ namespace Cultivation_Way.Library
         /// <para>采用 CultisysType.LIMIT 作为无法习得标记</para>
         /// <para>为安全起见, 该字段在<see cref="spell_learn_check"/>之外生效</para>
         /// </summary>
-        public uint cultisys_require;
+        private uint cultisys_require;
         /// <summary>
         /// 法术稀有度, 用于法术习得概率计算, 值越大越稀有
         /// <para>取值范围:[0,\infty)</para>
@@ -89,6 +90,54 @@ namespace Cultivation_Way.Library
         /// </summary>
         /// <returns>(-\infty, 1]</returns>
         public SpellCheck spell_learn_check;
+
+
+        /// <summary>
+        /// 添加法术触发标签
+        /// </summary>
+        /// <param name="tag">添加的标签</param>
+        public void add_trigger_tag(SpellTriggerTag tag)
+        {
+            trigger_tags |= (uint)tag;
+        }
+        /// <summary>
+        /// 添加修炼体系要求
+        /// </summary>
+        /// <param name="type">添加的修炼类型</param>
+        public void add_cultisys_require(CultisysType type)
+        {
+            cultisys_require |= (uint)type;
+        }
+        /// <summary>
+        /// 检查能否修习该法术, 以及修习概率
+        /// </summary>
+        /// <param name="actor">检查目标</param>
+        public float learn_check(CW_Actor actor)
+        {
+            int[] cultisys_level = actor.data.get_cultisys_level();
+
+            uint check_result = cultisys_require;
+            CultisysAsset cultisys;
+            for(int i=0; i< Manager.cultisys.size; i++)
+            {
+                if (cultisys_level[i] == -1) continue;
+
+                cultisys = Manager.cultisys.list[i];
+                
+                if ((check_result | (uint)cultisys.type) == (uint)cultisys.type) check_result -= (uint)cultisys.type;
+            }
+            if (check_result > 0) return -1;
+
+            return spell_learn_check(this, actor);
+        }
+        /// <summary>
+        /// 能否在指定情况下触发
+        /// </summary>
+        /// <param name="tag">指定的触发情况</param>
+        public bool can_trigger(SpellTriggerTag tag)
+        {
+            return (trigger_tags & (uint)tag) > 0;
+        }
     }
     public class CW_SpellLibrary: CW_Library<CW_SpellAsset>
     {
