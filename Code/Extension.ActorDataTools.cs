@@ -64,7 +64,30 @@ namespace Cultivation_Way.Extension
             foreach (string key in old_blood_nodes.Keys)
             {
                 Library.Manager.bloods.get(key).decrease();
-            }   
+            }
+            /* 删除低占比血脉, 并normalize至其和为1 */
+            float sum_at_first = 0;
+            foreach (string key in blood_nodes.Keys)
+            {
+                sum_at_first += blood_nodes[key];
+            }
+            float curr_sum = sum_at_first;
+
+            List<string> keys = blood_nodes.Keys.ToList();
+
+            foreach (string key in keys)
+            {
+                if (blood_nodes[key] / sum_at_first >= Constants.Others.blood_ignore_line) continue;
+
+                curr_sum -= blood_nodes[key];
+                blood_nodes.Remove(key);
+            }
+            foreach(string key in blood_nodes.Keys)
+            {
+                blood_nodes[key] /= curr_sum;
+            }
+
+
             foreach (string key in blood_nodes.Keys)
             {
                 Library.Manager.bloods.get(key).increase();

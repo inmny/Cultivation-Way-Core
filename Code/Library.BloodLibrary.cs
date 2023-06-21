@@ -10,10 +10,20 @@ using System.Threading.Tasks;
 namespace Cultivation_Way.Library
 {
     /// <summary>
-    /// 血脉, id表示
+    /// 血脉, id为先祖id
     /// </summary>
     public class BloodNodeAsset : Asset
     {
+        /// <summary>
+        /// 先祖数据
+        /// <para>在先祖存活时与其同步, 在先祖死亡时通过patch进行拷贝保存</para>
+        /// </summary>
+        public ActorData ancestor_data;
+        /// <summary>
+        /// 祖先自身属性, 包括自身,心情,功法,修炼体系,以及血脉的影响下的属性, 应当是一个拷贝.
+        /// <para>在先祖存活时与其同步, 在先祖死亡后不做修改</para>
+        /// </summary>
+        public readonly BaseStats ancestor_stats = new();
         /// <summary>
         /// 存活后代数量
         /// </summary>

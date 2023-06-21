@@ -22,6 +22,10 @@ namespace Cultivation_Way.Constants
         /// </summary>
         public const int blood_node_lock_line = 1000;
         /// <summary>
+        /// 血脉忽略线
+        /// </summary>
+        public const float blood_ignore_line = 0.05f;
+        /// <summary>
         /// 动画对象回收间隔
         /// </summary>
         public const float anim_recycle_interval = 60f;
