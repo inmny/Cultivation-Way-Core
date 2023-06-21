@@ -22,7 +22,7 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 属性加成
         /// </summary>
-        public BaseStats bonus_stats;
+        public BaseStats bonus_stats = new();
         /// <summary>
         /// 自带法术
         /// </summary>

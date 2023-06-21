@@ -3,6 +3,11 @@ using Cultivation_Way.Extension;
 using System.Collections.Generic;
 namespace Cultivation_Way.Core
 {
+    /// <summary>
+    /// 拓展后的Actor, 用于添加新的功能
+    /// <para>在没有模组冲突的情况下, 运行过程中所有Actor均能强制转换成CW_Actor</para>
+    /// <para>由Actor转CW_Actor见<see cref="Cultivation_Way.HarmonySpace.H_Actor"/></para>
+    /// </summary>
     public class CW_Actor : Actor
     {
         public Library.CW_ActorAsset cw_asset;

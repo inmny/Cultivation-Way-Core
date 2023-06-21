@@ -1,5 +1,6 @@
 ﻿using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
+using Cultivation_Way.Library;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,6 +28,24 @@ namespace Cultivation_Way.Extension
             CW_Element element = Factories.element_factory.get_item_to_fill();
             element.set(data);
             return Factories.element_factory.get_next(element);
+        }
+        /// <summary>
+        /// 读取修炼功法
+        /// </summary>
+        public static Cultibook get_cultibook(this ActorData data)
+        {
+            data.get(DataS.cultibook_id, out string cultibook_id, "");
+            return Library.Manager.cultibooks.get(cultibook_id);
+        }
+        /// <summary>
+        /// 设置修炼功法
+        /// </summary>
+        public static void set_cultibook(this ActorData data, Cultibook cultibook)
+        {
+            Cultibook old_cultibook = data.get_cultibook();
+            old_cultibook?.decrease();
+            cultibook.increase();
+            data.set(DataS.cultibook_id, cultibook.id);
         }
         /// <summary>
         /// 读取所有修炼体系的等级
@@ -98,6 +117,13 @@ namespace Cultivation_Way.Extension
         {
             data.get(DataS.main_blood_id, out string result, "");
             return result;
+        }
+        /// <summary>
+        /// 读取占优血脉节点
+        /// </summary>
+        public static BloodNodeAsset get_main_blood(this ActorData data)
+        {
+            return Library.Manager.bloods.get(data.get_main_blood_id());
         }
     }
 }

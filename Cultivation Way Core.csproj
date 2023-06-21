@@ -3486,7 +3486,8 @@
     <Compile Include="Code\Animation.SpriteAnimation.cs" />
     <Compile Include="Code\Constants.DataS.cs" />
     <Compile Include="Code\Core.CW_MapChunkManager.cs" />
-    <Compile Include="Code\Extension.BaseSystemData.cs" />
+    <Compile Include="Code\Extension.BaseStatsTools.cs" />
+    <Compile Include="Code\Extension.BaseSystemDataTools.cs" />
     <Compile Include="Code\Factories.cs" />
     <Compile Include="Code\Factory.Factory.cs" />
     <Compile Include="Code\Library.BloodLibrary.cs" />

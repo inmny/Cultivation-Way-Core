@@ -1,4 +1,5 @@
 ﻿using Cultivation_Way.Constants;
+using Cultivation_Way.Core;
 using Cultivation_Way.Others;
 using System;
 namespace Cultivation_Way.Library
@@ -42,6 +43,11 @@ namespace Cultivation_Way.Library
         /// </summary>
         [NonSerialized]
         public CultisysJudge level_up;
+        /// <summary>
+        /// 获取额外的属性加成数据
+        /// </summary>
+        [NonSerialized]
+        public CultisysStats stats_action;
         public CultisysAsset(string id, CultisysType type, int max_level)
         {
             this.id = id;
@@ -49,6 +55,19 @@ namespace Cultivation_Way.Library
             this.max_level = max_level;
             power_level = new float[max_level];
             bonus_stats = new BaseStats[max_level];
+        }
+        /// <summary>
+        /// 获取修炼等级对应的力量
+        /// </summary>
+        public BaseStats get_bonus_stats(CW_Actor actor, int level)
+        {
+            if(stats_action != null)
+            {
+                BaseStats ret = stats_action(actor, this);
+                ret.mergeStats(bonus_stats[level]);
+                return ret;
+            }
+            return bonus_stats[level];
         }
     }
     public class CultisysLibrary : CW_Library<CultisysAsset>

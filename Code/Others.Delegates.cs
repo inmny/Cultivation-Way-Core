@@ -11,6 +11,10 @@ namespace Cultivation_Way.Others
     /// </list>
     /// </summary>
     public delegate bool CultisysJudge(CW_Actor actor, CultisysAsset cultisys);
+    /// <summary>
+    /// 获取修炼体系的属性加成
+    /// </summary>
+    public delegate BaseStats CultisysStats(CW_Actor actor, CultisysAsset cultisys);
 
     /// <summary>
     /// 动画结束时的委托
