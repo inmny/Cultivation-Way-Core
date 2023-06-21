@@ -7,10 +7,13 @@ using Cultivation_Way.Others;
 using Cultivation_Way.Constants;
 namespace Cultivation_Way.Library
 {
+    /// <summary>
+    /// 修炼体系
+    /// </summary>
     public class CultisysAsset : Asset
     {
         /// <summary>
-        /// 体系类型(内体/内神/外修)
+        /// 体系类型
         /// </summary>
         public CultisysType type { get; internal set; }
         /// <summary>

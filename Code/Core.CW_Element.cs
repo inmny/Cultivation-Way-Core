@@ -69,7 +69,7 @@ namespace Cultivation_Way.Core
         {
             CW_Element tmp_elm_for_set_data = Factories.element_factory.get_item_to_fill();
             tmp_elm_for_set_data.re_random(true, 100, true, prefer_elements, prefer_scale);
-            return Factories.element_factory.create_item(tmp_elm_for_set_data);
+            return Factories.element_factory.get_next(tmp_elm_for_set_data);
         }
         /// <summary>
         /// 获取A与B的平均

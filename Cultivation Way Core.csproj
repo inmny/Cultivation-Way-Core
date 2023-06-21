@@ -69,6 +69,9 @@
     <Reference Include="DOTween">
       <HintPath>Includes\DOTween.dll</HintPath>
     </Reference>
+    <Reference Include="fastJSON, Version=2.4.0.0, Culture=neutral, PublicKeyToken=6b75a806b86095cd, processorArchitecture=MSIL">
+      <HintPath>packages\fastJSON.2.4.0.4\lib\net40\fastJSON.dll</HintPath>
+    </Reference>
     <Reference Include="Ionic.Zlib.CF">
       <HintPath>Includes\Ionic.Zlib.CF.dll</HintPath>
     </Reference>
@@ -3485,6 +3488,7 @@
     <Compile Include="Code\Extension.BaseSystemData.cs" />
     <Compile Include="Code\Factories.cs" />
     <Compile Include="Code\Factory.Factory.cs" />
+    <Compile Include="Code\Library.BloodLibrary.cs" />
     <Compile Include="Code\Library.CultibookLibrary.cs" />
     <Compile Include="Code\Library.CultisysLibrary.cs" />
     <Compile Include="Code\Library.CW_ActorAsset.cs" />

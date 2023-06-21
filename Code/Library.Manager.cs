@@ -9,11 +9,11 @@ namespace Cultivation_Way.Library
     public class Manager
     {
         public static Manager instance;
-        public static CW_ActorAssetLibrary actors = new CW_ActorAssetLibrary();
-        public static CultibookLibrary cultibooks = new CultibookLibrary();
-        public static CultisysLibrary cultisys = new CultisysLibrary();
-        public static ElementLibrary elements = new ElementLibrary();
-        public static Dictionary<string, BaseAssetLibrary> libraries = new Dictionary<string, BaseAssetLibrary>();
+        public readonly static CW_ActorAssetLibrary actors = new();
+        public readonly static CultibookLibrary cultibooks = new();
+        public readonly static CultisysLibrary cultisys = new();
+        public readonly static ElementLibrary elements = new();
+        public readonly static Dictionary<string, BaseAssetLibrary> libraries = new();
         public void init()
         {
             instance = this;

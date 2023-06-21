@@ -137,7 +137,7 @@ namespace Cultivation_Way.Animation
         public bool always_point_to_dst = false;
         internal AnimationSetting __deepcopy()
         {
-            AnimationSetting copy = new AnimationSetting();
+            AnimationSetting copy = new();
             copy.visible_in_low_res = visible_in_low_res;
             copy.froze_time_after_end = froze_time_after_end;
             copy.free_val = free_val;

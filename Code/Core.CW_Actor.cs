@@ -13,8 +13,8 @@ namespace Cultivation_Way.Core
         public List<string> cur_spells;
         internal Dictionary<string, CW_StatusEffectData> statuses;
 
-        private static List<string> __status_effects_to_remove = new List<string>();
-        private static List<CW_StatusEffectData> __status_effects_to_update = new List<CW_StatusEffectData>();
+        private readonly static List<string> __status_effects_to_remove = new();
+        private readonly static List<CW_StatusEffectData> __status_effects_to_update = new();
 
         internal void cw_newCreature()
         {
