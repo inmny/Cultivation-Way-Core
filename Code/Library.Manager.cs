@@ -10,6 +10,7 @@ namespace Cultivation_Way.Library
         public readonly static CultibookLibrary cultibooks = new();
         public readonly static CultisysLibrary cultisys = new();
         public readonly static ElementLibrary elements = new();
+        public readonly static EnergyLibrary energies = new();
         public readonly static Dictionary<string, BaseAssetLibrary> libraries = new();
         public void init()
         {
@@ -19,6 +20,7 @@ namespace Cultivation_Way.Library
             add(cultibooks, "cultibooks");
             add(cultisys, "cultisys");
             add(elements, "elements");
+            add(energies, "energies");
             CW_BaseStatsLibrary.init();
         }
         public void update_per_while()
