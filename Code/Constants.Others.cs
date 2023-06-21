@@ -18,6 +18,10 @@ namespace Cultivation_Way.Constants
         /// </summary>
         public const int cultibook_lock_line = 10000;
         /// <summary>
+        /// 血脉锁定线(历史最大人数)
+        /// </summary>
+        public const int blood_node_lock_line = 1000;
+        /// <summary>
         /// 动画对象回收间隔
         /// </summary>
         public const float anim_recycle_interval = 60f;

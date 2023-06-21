@@ -44,7 +44,7 @@ namespace Cultivation_Way.Library
         /// 减少使用人数
         /// </summary>
         /// <exception cref="Exception">使用人数为负数</exception>
-        public void decrease_users()
+        public void decrease()
         {
             cur_users--;
             if (cur_users < 0 && Constants.Others.strict_mode)
@@ -56,7 +56,7 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 增加使用人数
         /// </summary>
-        public void increase_users()
+        public void increase()
         {
             cur_users++;
             if (cur_users > max_users)

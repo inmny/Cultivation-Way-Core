@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Cultivation_Way.Utils;
 using Cultivation_Way.Core;
 using Cultivation_Way.Constants;
+using UnityEngine.Rendering.PostProcessing;
+
 namespace Cultivation_Way.Extension
 {
     public static class ActorDataTools
@@ -22,7 +24,7 @@ namespace Cultivation_Way.Extension
             data.set(DataS.element_type_id, element.comp_type());
         }
         /// <summary>
-        /// 获取灵根
+        /// 读取灵根
         /// </summary>
         /// <returns>灵根的拷贝</returns>
         public static CW_Element get_element(this ActorData data)
@@ -32,7 +34,7 @@ namespace Cultivation_Way.Extension
             return Factories.element_factory.get_next(element);
         }
         /// <summary>
-        /// 获取所有修炼体系的等级
+        /// 读取所有修炼体系的等级
         /// </summary>
         /// <returns>所有修炼体系等级的数组的拷贝</returns>
         public static int[] get_cultisys_level(this ActorData data)
@@ -44,13 +46,40 @@ namespace Cultivation_Way.Extension
             }
             return result;
         }
+        /// <summary>
+        /// 读取所有血脉节点
+        /// </summary>
+        /// <returns>血脉节点词典拷贝</returns>
         public static Dictionary<string, float> get_blood_nodes(this ActorData data)
         {
             return data.read_obj<Dictionary<string, float>>(DataS.blood_nodes);
         }
+        /// <summary>
+        /// 设置所有血脉节点, 并设置占优血脉
+        /// </summary>
         public static void set_blood_nodes(this ActorData data, Dictionary<string, float> blood_nodes)
         {
+            Dictionary<string, float> old_blood_nodes = data.get_blood_nodes();
+
+            foreach (string key in old_blood_nodes.Keys)
+            {
+                Library.Manager.bloods.get(key).decrease();
+            }   
+            foreach (string key in blood_nodes.Keys)
+            {
+                Library.Manager.bloods.get(key).increase();
+            }
+
             data.write_obj(DataS.blood_nodes, blood_nodes);
+            data.set(DataS.main_blood_id, blood_nodes.Aggregate((max, cur) => max.Value > cur.Value ? max : cur).Key);
+        }
+        /// <summary>
+        /// 读取占优血脉节点id
+        /// </summary>
+        public static string get_main_blood_id(this ActorData data)
+        {
+            data.get(DataS.main_blood_id, out string result, "");
+            return result;
         }
     }
 }

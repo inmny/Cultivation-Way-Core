@@ -10,6 +10,7 @@ namespace Cultivation_Way.Library
     {
         public static Manager instance;
         public readonly static CW_ActorAssetLibrary actors = new();
+        public readonly static BloodNodeLibrary bloods = new();
         public readonly static CultibookLibrary cultibooks = new();
         public readonly static CultisysLibrary cultisys = new();
         public readonly static ElementLibrary elements = new();
@@ -18,6 +19,7 @@ namespace Cultivation_Way.Library
         {
             instance = this;
             add(actors, "actors");
+            add(bloods, "bloods");
             add(cultibooks, "cultibooks");
             add(cultisys, "cultisys");
             add(elements, "elements");
@@ -25,6 +27,7 @@ namespace Cultivation_Way.Library
         }
         public void update_per_while()
         {
+            bloods.update();
             cultibooks.update();
         }
         public void post_init()
