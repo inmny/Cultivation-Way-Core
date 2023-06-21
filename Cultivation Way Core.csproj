@@ -3494,6 +3494,7 @@
     <Compile Include="Code\Library.CW_ActorAsset.cs" />
     <Compile Include="Code\Library.CW_Library.cs" />
     <Compile Include="Code\Library.CW_SpellLibrary.cs" />
+    <Compile Include="Code\Library.CW_StatusEffectLibrary.cs" />
     <Compile Include="Code\Library.ElementLibrary.cs" />
     <None Include="docs\index.md" />
     <None Include="GameResources\actors\races\eastern_human\unit_female_1\sprites.json" />
