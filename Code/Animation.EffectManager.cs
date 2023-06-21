@@ -1,9 +1,5 @@
-﻿using ReflectionUtility;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cultivation_Way.Animation
@@ -61,10 +57,10 @@ namespace Cultivation_Way.Animation
                 Debug.LogError(e.Message);
                 Debug.LogError(e.StackTrace);
             }
-            if(timer > 0)
+            if (timer > 0)
             {
                 timer -= Time.deltaTime;
-                if(timer <= 0)
+                if (timer <= 0)
                 {
                     timer = Constants.Others.anim_recycle_interval;
                     for (i = 0; i < controllers.Count; i++)
@@ -82,7 +78,7 @@ namespace Cultivation_Way.Animation
                 return null;
             }
             Sprite[] sprites = Resources.LoadAll<Sprite>(path_to_anim);
-            if (sprites == null || sprites.Length == 0) throw new System.Exception("No found sprites under:" + path_to_anim); 
+            if (sprites == null || sprites.Length == 0) throw new System.Exception("No found sprites under:" + path_to_anim);
             EffectController controller = new(id, anim_limit, controller_setting == null ? new AnimationSetting() : controller_setting, sprites, default_prefab, base_scale, base_offset);
             this.controllers.Add(controller);
             this.controllers_dict.Add(id, controller);

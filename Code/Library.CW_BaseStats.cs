@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Cultivation_Way.Constants;
+using System;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Cultivation_Way.Constants;
 namespace Cultivation_Way.Library
 {
     internal static class CW_BaseStatsLibrary
     {
         public static void init()
         {
-            foreach(FieldInfo field in typeof(CW_S).GetFields())
+            foreach (FieldInfo field in typeof(CW_S).GetFields())
             {
-                if(field.FieldType == typeof(string))
+                if (field.FieldType == typeof(string))
                 {
                     string stat_id = (string)field.GetValue(null);
                     BaseStatAsset stat_asset = add(new BaseStatAsset
@@ -21,7 +17,7 @@ namespace Cultivation_Way.Library
                         hidden = false,
                         icon = String.Empty,
                         id = stat_id,
-                        translation_key = Constants.Core.mod_prefix+stat_id,
+                        translation_key = Constants.Core.mod_prefix + stat_id,
                         ignore = false,
                         normalize = false,
                         used_only_for_civs = true

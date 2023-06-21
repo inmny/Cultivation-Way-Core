@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cultivation_Way.Library
 {
@@ -57,7 +53,7 @@ namespace Cultivation_Way.Library
             this.base_stats[Constants.CW_S.mod_cultivelo] = mod_culti_velo;
         }
     }
-    public class ElementLibrary:CW_Library<ElementAsset>
+    public class ElementLibrary : CW_Library<ElementAsset>
     {
         public override void init()
         {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Cultivation_Way.Factory
 {
@@ -11,7 +7,8 @@ namespace Cultivation_Way.Factory
         public abstract void set(T item);
         public abstract void clear();
     }
-    public abstract class BaseFactory {
+    public abstract class BaseFactory
+    {
         public abstract int size();
         internal abstract void recycle_items();
         internal abstract void recycle_memory(int target_count);
@@ -26,7 +23,7 @@ namespace Cultivation_Way.Factory
         }
         public T get_next()
         {
-            if(empty_items.Count > 0)
+            if (empty_items.Count > 0)
             {
                 return empty_items.Pop();
             }
@@ -107,7 +104,7 @@ namespace Cultivation_Way.Factory
         }
         internal override void recycle_items()
         {
-            while(items.Count > 0)
+            while (items.Count > 0)
             {
                 empty_items.Push(items.Pop());
                 empty_items.Peek().clear();
@@ -115,7 +112,7 @@ namespace Cultivation_Way.Factory
         }
         internal override void recycle_memory(int target_count = 4)
         {
-            while(empty_items.Count > target_count)
+            while (empty_items.Count > target_count)
             {
                 empty_items.Pop();
             }

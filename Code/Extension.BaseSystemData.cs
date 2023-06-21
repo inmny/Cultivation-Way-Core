@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cultivation_Way.Extension
+﻿namespace Cultivation_Way.Extension
 {
     public static class BaseSystemDataTools
     {
@@ -34,7 +25,7 @@ namespace Cultivation_Way.Extension
             data.get(key, out string obj_str);
 
             if (string.IsNullOrEmpty(obj_str)) return default;
-            
+
             return fastJSON.JSON.ToObject<T>(obj_str);
         }
     }

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cultivation_Way.Library
 {
@@ -40,7 +33,7 @@ namespace Cultivation_Way.Library
         public void decrease()
         {
             alive_descendants_count--;
-            if(alive_descendants_count < 0 && Constants.Others.strict_mode)
+            if (alive_descendants_count < 0 && Constants.Others.strict_mode)
             {
                 max_descendants_count = Constants.Others.blood_node_lock_line;
                 throw new Exception($"Error current users {alive_descendants_count} for BloodNode {id}. Set its max_users up to remove line");
@@ -52,7 +45,7 @@ namespace Cultivation_Way.Library
         public void increase()
         {
             alive_descendants_count++;
-            if(alive_descendants_count > max_descendants_count)
+            if (alive_descendants_count > max_descendants_count)
             {
                 max_descendants_count = alive_descendants_count;
             }
@@ -66,7 +59,7 @@ namespace Cultivation_Way.Library
         public override void update()
         {
             base.update();
-            for(int i = 0; i < list.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].alive_descendants_count <= 0 && list[i].max_descendants_count < Constants.Others.blood_node_lock_line)
                 {

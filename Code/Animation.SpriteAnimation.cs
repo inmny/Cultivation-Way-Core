@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Cultivation_Way.Extension;
+using System;
 using UnityEngine;
-using Cultivation_Way.Extension;
 namespace Cultivation_Way.Animation
 {
     public class SpriteAnimation

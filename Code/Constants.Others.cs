@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cultivation_Way.Constants
+﻿namespace Cultivation_Way.Constants
 {
     public static class Others
     {
@@ -180,22 +174,22 @@ namespace Cultivation_Way.Constants
         /// <summary>
         /// 正面
         /// </summary>
-        POSITIVE=1,
+        POSITIVE = 1,
         /// <summary>
         /// 负面
         /// </summary>
-        NEGATIVE=2,
+        NEGATIVE = 2,
         /// <summary>
         /// 束缚
         /// </summary>
-        FETTER=4,
+        FETTER = 4,
         /// <summary>
         /// 强化
         /// </summary>
-        REINFORCE=8,
+        REINFORCE = 8,
         /// <summary>
         /// 弱化
         /// </summary>
-        WEAKEN=16,
+        WEAKEN = 16,
     }
 }

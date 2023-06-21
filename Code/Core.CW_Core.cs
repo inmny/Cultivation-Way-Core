@@ -1,9 +1,4 @@
 ﻿using NCMS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cultivation_Way.Core
@@ -23,7 +18,7 @@ namespace Cultivation_Way.Core
         public static CW_Core instance;
         public ModState state;
         public ModData data;
-        void Awake() 
+        void Awake()
         {
             instance = this;
             state = new ModState();
@@ -32,7 +27,7 @@ namespace Cultivation_Way.Core
         }
         void OnEnable() { }
         void Start() { }
-        void Update() 
+        void Update()
         {
             if (!state.initialized)
             {
@@ -40,10 +35,10 @@ namespace Cultivation_Way.Core
                 state.update_nr = 0;
                 this.initialize();
             }
-            if(state.update_nr % 1 == 0)
+            if (state.update_nr % 1 == 0)
             {
                 Factories.recycle_items();
-                if(state.update_nr % 100 == 0)
+                if (state.update_nr % 100 == 0)
                 {
                     Factories.recycle_memory();
                 }

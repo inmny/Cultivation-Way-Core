@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cultivation_Way.Constants;
+﻿using System.Collections.Generic;
 namespace Cultivation_Way.Library
 {
     public class CW_Library<T> : AssetLibrary<T> where T : Asset
@@ -13,7 +8,7 @@ namespace Cultivation_Way.Library
         {
             T ret = base.get(pID);
 
-            if (ret == null && Constants.Others.strict_mode) 
+            if (ret == null && Constants.Others.strict_mode)
                 throw new KeyNotFoundException($"Not found {pID} in {this.id}");
 
             return ret;
@@ -40,7 +35,7 @@ namespace Cultivation_Way.Library
         {
             this.list.Clear();
             this.dict.Clear();
-            foreach(T asset in static_list)
+            foreach (T asset in static_list)
             {
                 this.add(asset);
             }

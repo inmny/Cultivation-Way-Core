@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cultivation_Way.Utils;
-using Cultivation_Way.Library;
-using Cultivation_Way.Constants;
+﻿using Cultivation_Way.Constants;
 using Cultivation_Way.Factory;
+using Cultivation_Way.Library;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Cultivation_Way.Core
 {
@@ -315,7 +312,7 @@ namespace Cultivation_Way.Core
         }
         public void set(CW_Element item)
         {
-            for(int i = 0; i < Constants.Core.element_type_nr; i++)
+            for (int i = 0; i < Constants.Core.element_type_nr; i++)
             {
                 base_elements[i] = item.base_elements[i];
             }
@@ -324,7 +321,7 @@ namespace Cultivation_Way.Core
         public void set(ActorData data)
         {
             int data_receiver;
-            for(int i = 0; i < Constants.Core.element_type_nr; i++)
+            for (int i = 0; i < Constants.Core.element_type_nr; i++)
             {
                 data.get(Constants.DataS.element_list[i], out data_receiver, -1);
                 this.base_elements[i] = data_receiver;

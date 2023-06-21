@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cultivation_Way
 {
@@ -23,14 +19,14 @@ namespace Cultivation_Way
         }
         internal static void recycle_items()
         {
-            foreach(Factory.BaseFactory fact in factories)
+            foreach (Factory.BaseFactory fact in factories)
             {
                 fact.recycle_items();
             }
         }
         internal static void recycle_memory()
         {
-            foreach(Factory.BaseFactory fact in factories)
+            foreach (Factory.BaseFactory fact in factories)
             {
                 fact.recycle_memory(12 * fact.size() / 16);
             }

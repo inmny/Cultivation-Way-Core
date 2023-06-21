@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cultivation_Way.Constants;
+﻿using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Others;
@@ -118,12 +113,12 @@ namespace Cultivation_Way.Library
 
             uint check_result = cultisys_require;
             CultisysAsset cultisys;
-            for(int i=0; i< Manager.cultisys.size; i++)
+            for (int i = 0; i < Manager.cultisys.size; i++)
             {
                 if (cultisys_level[i] == -1) continue;
 
                 cultisys = Manager.cultisys.list[i];
-                
+
                 if ((check_result | (uint)cultisys.type) == (uint)cultisys.type) check_result -= (uint)cultisys.type;
             }
             if (check_result > 0) return -1;
@@ -139,7 +134,7 @@ namespace Cultivation_Way.Library
             return (trigger_tags & (uint)tag) > 0;
         }
     }
-    public class CW_SpellLibrary: CW_Library<CW_SpellAsset>
+    public class CW_SpellLibrary : CW_Library<CW_SpellAsset>
     {
 
     }

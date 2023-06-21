@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Cultivation_Way.Constants;
 using Cultivation_Way.Others;
-using Cultivation_Way.Constants;
+using System;
 namespace Cultivation_Way.Library
 {
     /// <summary>
@@ -63,7 +59,7 @@ namespace Cultivation_Way.Library
         public override void post_init()
         {
             base.post_init();
-            foreach(CultisysAsset cultisys in this.list)
+            foreach (CultisysAsset cultisys in this.list)
             {
                 cultisys.allow ??= (actor, culti) => false;
                 cultisys.level_up ??= (actor, culti) => false;

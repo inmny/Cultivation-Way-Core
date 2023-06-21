@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cultivation_Way.Constants;
+﻿using Cultivation_Way.Constants;
 using Cultivation_Way.Others;
+using System.Collections.Generic;
 
 namespace Cultivation_Way.Library
 {

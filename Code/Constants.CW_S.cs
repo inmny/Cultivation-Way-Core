@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Cultivation_Way.Constants
+﻿namespace Cultivation_Way.Constants
 {
     public static class CW_S
     {

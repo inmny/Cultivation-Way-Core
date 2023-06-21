@@ -1,12 +1,7 @@
-﻿using System;
+﻿using Cultivation_Way.Constants;
+using Cultivation_Way.Core;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cultivation_Way.Utils;
-using Cultivation_Way.Core;
-using Cultivation_Way.Constants;
-using UnityEngine.Rendering.PostProcessing;
 
 namespace Cultivation_Way.Extension
 {
@@ -17,7 +12,7 @@ namespace Cultivation_Way.Extension
         /// </summary>
         public static void set_element(this ActorData data, CW_Element element)
         {
-            for(int i = 0; i < Constants.Core.element_type_nr; i++)
+            for (int i = 0; i < Constants.Core.element_type_nr; i++)
             {
                 data.set(Constants.Core.element_str[i], element.base_elements[i]);
             }
@@ -40,7 +35,7 @@ namespace Cultivation_Way.Extension
         public static int[] get_cultisys_level(this ActorData data)
         {
             int[] result = new int[Library.Manager.cultisys.size];
-            for(int i=0; i < result.Length; i++)
+            for (int i = 0; i < result.Length; i++)
             {
                 data.get(Library.Manager.cultisys.list[i].id, out result[i], -1);
             }
@@ -82,7 +77,7 @@ namespace Cultivation_Way.Extension
                 curr_sum -= blood_nodes[key];
                 blood_nodes.Remove(key);
             }
-            foreach(string key in blood_nodes.Keys)
+            foreach (string key in blood_nodes.Keys)
             {
                 blood_nodes[key] /= curr_sum;
             }

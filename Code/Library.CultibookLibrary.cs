@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cultivation_Way.Constants;
 namespace Cultivation_Way.Library
 {
     public class Cultibook : Asset
@@ -73,9 +68,9 @@ namespace Cultivation_Way.Library
         public override void update()
         {
             base.update();
-            for(int i = 0; i < list.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
-                if (list[i].cur_users<=0 && list[i].max_users < Constants.Others.cultibook_lock_line)
+                if (list[i].cur_users <= 0 && list[i].max_users < Constants.Others.cultibook_lock_line)
                 {
                     dict.Remove(list[i].id);
                     list.RemoveAt(i);

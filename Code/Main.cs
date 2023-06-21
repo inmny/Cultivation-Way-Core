@@ -1,10 +1,4 @@
 ﻿using NCMS;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Cultivation_Way
@@ -31,7 +25,7 @@ namespace Cultivation_Way
         }
         void Update()
         {
-            if(!state.initialized)
+            if (!state.initialized)
             {
                 state.initialized = true;
                 this.initialize();

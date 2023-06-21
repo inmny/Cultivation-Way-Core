@@ -1,10 +1,6 @@
-﻿using System;
+﻿using Cultivation_Way.Others.DataStructs;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using Cultivation_Way.Others.DataStructs;
 namespace Cultivation_Way.Animation
 {
     public class EffectController
@@ -54,7 +50,7 @@ namespace Cultivation_Way.Animation
         internal void recycle_memory()
         {
             int target_num = anim_limit * 3 / 4;
-            while(inactive_anims.Count > target_num)
+            while (inactive_anims.Count > target_num)
             {
                 SpriteAnimation anim = inactive_anims.Pop();
                 anim.kill();

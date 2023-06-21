@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cultivation_Way.Core;
+﻿using Cultivation_Way.Core;
 using Cultivation_Way.Library;
-using Cultivation_Way.Animation;
 using UnityEngine;
 
 namespace Cultivation_Way.Others

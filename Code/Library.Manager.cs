@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Cultivation_Way.Library
 {
@@ -32,7 +28,7 @@ namespace Cultivation_Way.Library
         }
         public void post_init()
         {
-            foreach(BaseAssetLibrary library in libraries.Values)
+            foreach (BaseAssetLibrary library in libraries.Values)
             {
                 library.post_init();
             }
