@@ -18,8 +18,8 @@ namespace Cultivation_Way.HarmonySpace
         public static IEnumerable<CodeInstruction> updateStats_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> codes = instructions.ToList();
-            codes.Insert(75, new CodeInstruction(OpCodes.Ldarg_0));
-            codes.Insert(76, new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(H_Actor), nameof(cw_updateStats))));
+            codes.Insert(111, new CodeInstruction(OpCodes.Ldarg_0));
+            codes.Insert(112, new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(H_Actor), nameof(cw_updateStats))));
             return codes;
         }
         private static void cw_updateStats(Actor actor)
