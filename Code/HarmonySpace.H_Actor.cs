@@ -49,7 +49,8 @@ namespace Cultivation_Way.HarmonySpace
                 actor.stats.mergeStats(cultisys.get_bonus_stats((CW_Actor)actor, cultisys_levels[i]));
             }
             // 载入功法的加成
-            actor.stats.mergeStats(actor.data.get_cultibook()?.bonus_stats);
+            Cultibook cultibook = actor.data.get_cultibook();
+            if(cultibook!=null) actor.stats.mergeStats(cultibook.bonus_stats);
             // 载入灵根的加成
             actor.stats.mergeStats(actor.data.get_element().comp_bonus_stats());
             // 载入血脉的加成
@@ -77,6 +78,7 @@ namespace Cultivation_Way.HarmonySpace
          * 1. <see cref="ActorManager.createNewUnit(string, WorldTile, float)"/>
          * 2. <see cref="ActorManager.spawnPopPoint(ActorData, WorldTile, City)"/>
          * 此处将两个函数均拦截, 操作与原版操作一致，但将Actor替换成经复制得到的CW_Actor
+         * 以外，调用了cw_newCreature函数，用于初始化修炼相关的数据
          */
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ActorManager), "createNewUnit")]
@@ -88,6 +90,7 @@ namespace Cultivation_Way.HarmonySpace
                 __result = null;
                 return false;
             }
+            //Logger.Log($"createNewUnit: {pStatsID} with prefab {asset.prefab}");
             Core.CW_Actor prefab = Others.FastVisit.get_actor_prefab("actors/" + asset.prefab).GetComponent<Core.CW_Actor>();
             Core.CW_Actor actor = (Core.CW_Actor)__instance.newObject(prefab);
             actor.setData((ActorData)actor.base_data);

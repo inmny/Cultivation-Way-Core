@@ -15,13 +15,13 @@ namespace Cultivation_Way.Library
         public void init()
         {
             instance = this;
+            CW_BaseStatsLibrary.init();
             add(actors, "actors");
             add(bloods, "bloods");
             add(cultibooks, "cultibooks");
             add(cultisys, "cultisys");
             add(elements, "elements");
             add(energies, "energies");
-            CW_BaseStatsLibrary.init();
         }
         public void update_per_while()
         {

@@ -52,12 +52,12 @@ namespace Cultivation_Way.Factory
             }
         }
     }
-    public class Factory<T> : BaseFactory where T : FactoryItem<T>
+    public class Factory<T> : BaseFactory where T : FactoryItem<T>, new()
     {
         private readonly Stack<T> empty_items = new(4);
         private readonly Stack<T> items = new(4);
 
-        private readonly T tmp_item_to_fill = default;
+        private readonly T tmp_item_to_fill = new();
         public override int size()
         {
             return items.Count + empty_items.Count;
@@ -76,7 +76,7 @@ namespace Cultivation_Way.Factory
             }
             else
             {
-                item_created = default(T);
+                item_created = new();
                 item_created.clear();
             }
             item_created.set(filled_item);
@@ -94,7 +94,7 @@ namespace Cultivation_Way.Factory
             }
             else
             {
-                item_created = default(T);
+                item_created = new();
                 item_created.clear();
             }
 

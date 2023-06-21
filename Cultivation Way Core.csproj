@@ -3479,6 +3479,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Compile Include="Code\Addon.CW_Addon.cs" />
     <Compile Include="Code\Animation.AnimationSetting.cs" />
     <Compile Include="Code\Animation.AnimFunctions.cs" />
     <Compile Include="Code\Animation.EffectController.cs" />
@@ -3670,7 +3671,6 @@
     <Compile Include="Code\Constants.CW_S.cs" />
     <Compile Include="Code\Constants.Others.cs" />
     <Compile Include="Code\Core.CW_Actor.cs" />
-    <Compile Include="Code\Core.CW_Core.cs" />
     <Compile Include="Code\Core.CW_StatusEffectData.cs" />
     <Compile Include="Code\Core.CW_Element.cs" />
     <Compile Include="Code\Extension.ActorManagerTools.cs" />
@@ -3680,7 +3680,8 @@
     <Compile Include="Code\Library.CW_BaseStats.cs" />
     <Compile Include="Code\Library.EnergyLibrary.cs" />
     <Compile Include="Code\Library.Manager.cs" />
-    <Compile Include="Code\Main.cs" />
+    <Compile Include="Code\Logger.cs" />
+    <Compile Include="Code\CW_Core.cs" />
     <Compile Include="Code\Others.DataStructs.cs" />
     <Compile Include="Code\Others.Delegates.cs" />
     <Compile Include="Code\Others.FastVisit.cs" />

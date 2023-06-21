@@ -11,9 +11,12 @@ namespace Cultivation_Way.Core
     {
         public int[] base_elements = new int[Constants.Core.element_type_nr];
         private string type_id;
-        private static BaseStats tmp_stats;
-        private CW_Element()
+        private readonly static BaseStats tmp_stats = new();
+        public CW_Element()
         {
+            base_elements = new int[Constants.Core.element_str.Length];
+            __uniform_generate(100);
+            type_id = Constants.Core.uniform_type;
         }
         /// <summary>
         /// 创建CW_Element对象

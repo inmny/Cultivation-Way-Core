@@ -40,9 +40,25 @@ namespace Cultivation_Way.Library
         /// 强制的修炼体系，或关系
         /// </summary>
         internal uint force_cultisys = 0;
+        internal CW_ActorAsset(ActorAsset vanllia_asset)
+        {
+            this.id = vanllia_asset.id;
+            this.vanllia_asset = vanllia_asset;
+            prefer_element = new int[5] { 20, 20, 20, 20, 20 };
+            prefer_element_scale = 0f;
+            born_spells = new();
+        }
     }
     public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
     {
-        internal List<string> added_actors = new List<string>();
+        internal List<string> added_actors = new();
+        public override void init()
+        {
+            base.init();
+            foreach(ActorAsset vanllia_asset in AssetManager.actor_library.list)
+            {
+                add(new CW_ActorAsset(vanllia_asset));
+            }
+        }
     }
 }

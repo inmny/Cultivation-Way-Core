@@ -30,7 +30,7 @@ namespace Cultivation_Way.Animation
         internal EffectController(string id, int anim_limit, AnimationSetting setting, Sprite[] anim, GameObject default_prefab, float base_scale, Vector2 base_offset)
         {
             this.base_offset = base_offset;
-            prefab = UnityEngine.Object.Instantiate(default_prefab, Main.instance.transform);
+            prefab = UnityEngine.Object.Instantiate(default_prefab, CW_Core.instance.transform);
             prefab.name = "prefab_" + id;
             this.id = id;
             prefab.transform.localScale = new Vector3(base_scale, base_scale, prefab.transform.localScale.z);
