@@ -26,13 +26,14 @@ namespace Cultivation_Way.Others
             for (int i = 0; i < actor_prefab_paths.Length; i++)
             {
                 GameObject old_prefab = Resources.Load<GameObject>(actor_prefab_paths[i]);
+
                 if (old_prefab == null) { Logger.Warn($"Empty prefab {actor_prefab_paths[i]}"); continue; }
+
                 GameObject new_prefab = UnityEngine.Object.Instantiate<GameObject>(old_prefab, CW_Core.instance.transform);
                 new_prefab.SetActive(false);
                 UnityEngine.Object.Destroy(new_prefab.GetComponent<Actor>());
                 new_prefab.AddComponent<Core.CW_Actor>();
                 actor_prefabs[actor_prefab_paths[i]] = new_prefab;
-                new_prefab.SetActive(true);
             }
         }
     }

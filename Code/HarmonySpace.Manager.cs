@@ -6,8 +6,10 @@ namespace Cultivation_Way.HarmonySpace
     {
         public static void init()
         {
-            Harmony harmony = new Harmony(Constants.Others.harmony_id);
+            _ = new Harmony(Constants.Others.harmony_id);
             Harmony.CreateAndPatchAll(typeof(H_Actor), Constants.Others.harmony_id);
+            Harmony.CreateAndPatchAll(typeof(H_ScrollWindows), Constants.Others.harmony_id);
+            Harmony.CreateAndPatchAll(typeof(H_WindowCreatureInfo), Constants.Others.harmony_id);
         }
     }
 }

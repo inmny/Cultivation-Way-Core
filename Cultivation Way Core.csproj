@@ -3491,6 +3491,8 @@
     <Compile Include="Code\Extension.BaseSystemDataTools.cs" />
     <Compile Include="Code\Factories.cs" />
     <Compile Include="Code\Factory.Factory.cs" />
+    <Compile Include="Code\HarmonySpace.H_ScrollWindows.cs" />
+    <Compile Include="Code\HarmonySpace.H_WindowCreatureInfo.cs" />
     <Compile Include="Code\Library.BloodLibrary.cs" />
     <Compile Include="Code\Library.CultibookLibrary.cs" />
     <Compile Include="Code\Library.CultisysLibrary.cs" />
@@ -3685,6 +3687,7 @@
     <Compile Include="Code\Others.DataStructs.cs" />
     <Compile Include="Code\Others.Delegates.cs" />
     <Compile Include="Code\Others.FastVisit.cs" />
+    <Compile Include="Code\UI.WindowCreatureInfoHelper.cs" />
     <Compile Include="Code\Utils.ReflectionHelper.cs" />
     <Content Include="GameResources\cw_words_libraries\kingdoms\kingdom_mottos.txt" />
     <Content Include="GameResources\cw_words_libraries\cultibooks\cultibook_postfix_name.txt" />

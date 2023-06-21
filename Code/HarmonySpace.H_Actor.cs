@@ -101,6 +101,7 @@ namespace Cultivation_Way.HarmonySpace
             actor.newCreature();
             actor.cw_newCreature();
 
+            actor.m_gameObject.SetActive(true);
             __result = actor;
             return false;
         }
