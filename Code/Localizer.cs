@@ -25,9 +25,9 @@ namespace Cultivation_Way
         public static void load_json(string path, string language)
         {
             string json = System.IO.File.ReadAllText(path);
-
-            Dictionary<string, string> key_text = fastJSON.JSON.ToObject<Dictionary<string, string>>(json);
-            //Dictionary<string, string> key_text = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            //Logger.Log(json);
+            //Dictionary<string, string> key_text = fastJSON.JSON.ToObject<Dictionary<string, string>>(json);
+            Dictionary<string, string> key_text = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
             if (!languages_key_text.ContainsKey(language)) languages_key_text[language] = key_text;
             else
             {

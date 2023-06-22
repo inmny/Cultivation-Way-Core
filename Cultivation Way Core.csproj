@@ -69,9 +69,6 @@
     <Reference Include="DOTween">
       <HintPath>Includes\DOTween.dll</HintPath>
     </Reference>
-    <Reference Include="fastJSON, Version=2.4.0.0, Culture=neutral, PublicKeyToken=6b75a806b86095cd, processorArchitecture=MSIL">
-      <HintPath>packages\fastJSON.2.4.0.4\lib\net40\fastJSON.dll</HintPath>
-    </Reference>
     <Reference Include="Ionic.Zlib.CF">
       <HintPath>Includes\Ionic.Zlib.CF.dll</HintPath>
     </Reference>
@@ -3692,6 +3689,7 @@
     <Compile Include="Code\Others.FastVisit.cs" />
     <Compile Include="Code\UI.Prefabs.cs" />
     <Compile Include="Code\UI.WindowCreatureInfoHelper.cs" />
+    <Compile Include="Code\Utils.GeneralHelper.cs" />
     <Compile Include="Code\Utils.ReflectionHelper.cs" />
     <Content Include="GameResources\cw_words_libraries\kingdoms\kingdom_mottos.txt" />
     <Content Include="GameResources\cw_words_libraries\cultibooks\cultibook_postfix_name.txt" />
