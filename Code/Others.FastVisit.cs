@@ -9,8 +9,6 @@ namespace Cultivation_Way.Others
         private readonly static Dictionary<string, GameObject> actor_prefabs = new();
         internal static Font font_STLiti = Font.CreateDynamicFontFromOSFont("STLiti", 18);
         internal static Font font_STKaiti = Font.CreateDynamicFontFromOSFont("STKaiti", 18);
-        internal static Transform transformUnits;
-        internal static Transform transformCreatures;
         public static void init()
         {
             get_actor_prefabs();
@@ -19,8 +17,15 @@ namespace Cultivation_Way.Others
         {
             return actor_prefabs.ContainsKey(path) ? actor_prefabs[path] : null;
         }
-
-
+        private static Sprite square_frame;
+        public static Sprite get_square_frame()
+        {
+            if (square_frame != null) return square_frame;
+            Sprite _orig = SpriteTextureLoader.getSprite("ui/cw_window/square_frame");
+            square_frame = Sprite.Create(_orig.texture, _orig.rect, new Vector2(24, 24f), _orig.pixelsPerUnit, 0, SpriteMeshType.Tight, new Vector4(7, 7, 7, 7));
+            square_frame.name = "square_frame";
+            return square_frame;
+        }
         private static void get_actor_prefabs()
         {
             for (int i = 0; i < actor_prefab_paths.Length; i++)

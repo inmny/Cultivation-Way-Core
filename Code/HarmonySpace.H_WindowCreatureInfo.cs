@@ -18,9 +18,11 @@ namespace Cultivation_Way.HarmonySpace
         {
             UI.WindowCreatureInfoHelper.OnEnable_postfix(__instance);
         }
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(WindowCreatureInfo), nameof(WindowCreatureInfo.Update))]
         public static void after_WindowCreatureInfo_Update(WindowCreatureInfo __instance)
         {
-            UI.WindowCreatureInfoHelper.Update_postfix();
+            UI.WindowCreatureInfoHelper.Update_postfix(__instance);
         }
     }
 }

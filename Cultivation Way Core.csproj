@@ -3384,6 +3384,7 @@
     <Content Include="GameResources\ui\cw_window\buttonToggleIndicator_1.png" />
     <Content Include="GameResources\ui\cw_window\city_info_bg.png" />
     <Content Include="GameResources\ui\cw_window\red_button.png" />
+    <Content Include="GameResources\ui\cw_window\square_frame.png" />
     <Content Include="GameResources\ui\cw_window\windowNameEdit.png" />
     <Content Include="GameResources\ui\cw_window\sim_info_bg.png" />
     <Content Include="GameResources\ui\cw_window\windowInnerSliced.png" />
@@ -3491,6 +3492,7 @@
     <Compile Include="Code\Extension.BaseSystemDataTools.cs" />
     <Compile Include="Code\Factories.cs" />
     <Compile Include="Code\Factory.Factory.cs" />
+    <Compile Include="Code\HarmonySpace.H_LocalizationManager.cs" />
     <Compile Include="Code\HarmonySpace.H_ScrollWindows.cs" />
     <Compile Include="Code\HarmonySpace.H_WindowCreatureInfo.cs" />
     <Compile Include="Code\Library.BloodLibrary.cs" />
@@ -3682,11 +3684,13 @@
     <Compile Include="Code\Library.CW_BaseStats.cs" />
     <Compile Include="Code\Library.EnergyLibrary.cs" />
     <Compile Include="Code\Library.Manager.cs" />
+    <Compile Include="Code\Localizer.cs" />
     <Compile Include="Code\Logger.cs" />
     <Compile Include="Code\CW_Core.cs" />
     <Compile Include="Code\Others.DataStructs.cs" />
     <Compile Include="Code\Others.Delegates.cs" />
     <Compile Include="Code\Others.FastVisit.cs" />
+    <Compile Include="Code\UI.Prefabs.cs" />
     <Compile Include="Code\UI.WindowCreatureInfoHelper.cs" />
     <Compile Include="Code\Utils.ReflectionHelper.cs" />
     <Content Include="GameResources\cw_words_libraries\kingdoms\kingdom_mottos.txt" />
