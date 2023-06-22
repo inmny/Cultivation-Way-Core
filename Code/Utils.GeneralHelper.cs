@@ -12,12 +12,14 @@ namespace Cultivation_Way.Utils
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string to_json(object obj)
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+            return System.Text.Json.JsonSerializer.Serialize(obj);
+            //return Newtonsoft.Json.JsonConvert.SerializeObject(obj);
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T from_json<T>(string json)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+            return System.Text.Json.JsonSerializer.Deserialize<T>(json);
+            //return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
         }
     }
 }

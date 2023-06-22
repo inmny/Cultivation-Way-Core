@@ -126,7 +126,7 @@ namespace Cultivation_Way
 
         void configure()
         {
-            fastJSON.JSON.Parameters.UseExtensions = false;
+            //fastJSON.JSON.Parameters.UseExtensions = false;
 
             if(Environment.UserName == "Inmny")
             {
