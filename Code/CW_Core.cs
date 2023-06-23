@@ -85,10 +85,10 @@ namespace Cultivation_Way
             }
 
             state.update_nr++;
-            if (state.update_nr % 4 == 0)
+            if (state.update_nr % 1024 == 0)
             {
                 Factories.recycle_items();
-                if (state.update_nr % 1024 == 0)
+                if (state.update_nr % (1024 * 1024) == 0)
                 {
                     Factories.recycle_memory();
                     state.library_manager.update_per_while();
