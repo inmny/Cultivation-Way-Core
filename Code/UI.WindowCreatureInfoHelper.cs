@@ -276,7 +276,7 @@ namespace Cultivation_Way.UI
 
             tooltip.addDescription(str_builder.ToString());
 
-            if (CW_Core.instance.state.editor_inmny)
+            if (CW_Core.mod_state.editor_inmny)
             {
                 tooltip.showBaseStats(cultisys_asset.get_bonus_stats(actor, level));
             }

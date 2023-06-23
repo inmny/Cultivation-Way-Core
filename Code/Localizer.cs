@@ -18,9 +18,9 @@ namespace Cultivation_Way
 
         public static void init()
         {
-            load_json(System.IO.Path.Combine(CW_Core.instance.state.mod_info.Path, "GameResources/cw_locales/cz.json"), "cz");
-            load_json(System.IO.Path.Combine(CW_Core.instance.state.mod_info.Path, "GameResources/cw_locales/tc.json"), "tc");
-            load_json(System.IO.Path.Combine(CW_Core.instance.state.mod_info.Path, "GameResources/cw_locales/en.json"), "en");
+            load_json(System.IO.Path.Combine(CW_Core.mod_state.mod_info.Path, "GameResources/cw_locales/cz.json"), "cz");
+            load_json(System.IO.Path.Combine(CW_Core.mod_state.mod_info.Path, "GameResources/cw_locales/tc.json"), "tc");
+            load_json(System.IO.Path.Combine(CW_Core.mod_state.mod_info.Path, "GameResources/cw_locales/en.json"), "en");
         }
         public static void load_json(string path, string language)
         {
@@ -42,10 +42,10 @@ namespace Cultivation_Way
         {
             if(language!="cz" && language!="tc" && language != "en")
             {
-                load_json(System.IO.Path.Combine(CW_Core.instance.state.mod_info.Path, "GameResources/cw_locales/en.json"), language);
+                load_json(System.IO.Path.Combine(CW_Core.mod_state.mod_info.Path, "GameResources/cw_locales/en.json"), language);
             }
 
-            foreach(Addon.CW_Addon addon in CW_Core.instance.state.addons)
+            foreach(Addon.CW_Addon addon in CW_Core.mod_state.addons)
             {
                 string locale_dir = System.IO.Path.Combine(addon.mod_info.Path, "Locales");
 

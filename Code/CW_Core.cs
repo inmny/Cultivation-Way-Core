@@ -23,6 +23,7 @@ namespace Cultivation_Way
             public CW_MapChunkManager map_chunk_manager;
         };
         public static CW_Core instance;
+        public static ModState mod_state;
         public static Transform prefab_library;
 
         public ModState state = new()
@@ -41,6 +42,7 @@ namespace Cultivation_Way
         void Awake()
         {
             instance = this;
+            mod_state = state;
         }
         void Update()
         {
