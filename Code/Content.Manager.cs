@@ -11,6 +11,7 @@ namespace Cultivation_Way.Content
         public static void init()
         {
             Cultisys.init();
+            Element.init();
         }
     }
 }

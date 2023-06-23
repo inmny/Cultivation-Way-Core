@@ -3518,6 +3518,7 @@
     <Compile Include="Code\Animation.SpriteAnimation.cs" />
     <Compile Include="Code\Constants.DataS.cs" />
     <Compile Include="Code\Content.Cultisys.cs" />
+    <Compile Include="Code\Content.Element.cs" />
     <Compile Include="Code\Content.Manager.cs" />
     <Compile Include="Code\Core.CW_MapChunkManager.cs" />
     <Compile Include="Code\Extension.BaseStatsTools.cs" />
