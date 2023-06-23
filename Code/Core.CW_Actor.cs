@@ -29,6 +29,133 @@ namespace Cultivation_Way.Core
         private readonly static List<string> __status_effects_to_remove = new();
         private readonly static List<CW_StatusEffectData> __status_effects_to_update = new();
         /// <summary>
+        /// 重写getHit, 并应用属性
+        /// </summary>
+        public override void getHit(float pDamage, bool pFlash = true, AttackType pAttackType = AttackType.Other, BaseSimObject pAttacker = null, bool pSkipIfShake = true, bool pMetallicWeapon = false)
+        {
+            attackedBy = null;
+            CW_AttackType attack_type = (CW_AttackType)pAttackType;
+            
+            if ((pSkipIfShake && shake_active) || data.health <=0 || hasStatus("invincible")) return;
+            #region 攻击音效
+            if (attack_type == CW_AttackType.Weapon)
+            {
+                if (pMetallicWeapon && haveMetallicWeapon())
+                {
+                    MusicBox.playSound("event:/SFX/HIT/HitSwordSword", currentTile, false, true);
+                }
+                else if (!string.IsNullOrEmpty(asset.sound_hit))
+                {
+                    MusicBox.playSound(asset.sound_hit, currentTile, false, true);
+                }
+            }
+            #endregion
+
+            #region 伤害计算
+            float num = 1f;
+            if (attack_type == CW_AttackType.Other || attack_type == CW_AttackType.Weapon)
+            {
+                num = 1f - stats[S.armor] / (stats[S.armor] + 100);
+            }
+            else if(attack_type == CW_AttackType.Spell)
+            {
+                num = 1f - stats[CW_S.spell_armor] / (stats[CW_S.spell_armor] + 100);
+            }
+
+            pDamage *= num;
+            #endregion
+
+            #region 攻击应激
+            if (pAttacker != this) attackedBy = pAttacker;
+            if (!has_attack_target && attackedBy != null && !shouldIgnoreTarget(attackedBy) && base.canAttackTarget(attackedBy))
+            {
+                setAttackTarget(attackedBy);
+            }
+            foreach (string text in data.s_traits_ids)
+            {
+                GetHitAction action_get_hit = AssetManager.traits.get(text).action_get_hit;
+                if (action_get_hit != null)
+                {
+                    _ = action_get_hit(this, pAttacker, currentTile);
+                }
+            }
+            if (activeStatus_dict != null)
+            {
+                foreach (StatusEffectData statusEffectData in activeStatus_dict.Values)
+                {
+                    GetHitAction action_get_hit2 = statusEffectData.asset.action_get_hit;
+                    if (action_get_hit2 != null)
+                    {
+                        action_get_hit2(this, pAttacker, currentTile);
+                    }
+                }
+            }
+            GetHitAction action_get_hit3 = asset.action_get_hit;
+            if (action_get_hit3 == null)
+            {
+                return;
+            }
+            action_get_hit3(this, pAttacker, currentTile);
+            #endregion
+
+            if (pDamage < 1)
+            {
+                return;
+            }
+
+            data.health -= (int)pDamage;
+
+            #region 攻击额外效果
+            timer_action = 0.002f;
+            if (pFlash) startColorEffect(ActorColorEffect.Red);
+            if (data.health <= 0)
+            {
+                Kingdom kingdom = this.kingdom;
+                if (pAttacker != null && pAttacker != this && pAttacker.isActor() && pAttacker.isAlive())
+                {
+                    BattleKeeperManager.unitKilled(this);
+                    pAttacker.a.newKillAction(this, kingdom);
+                    if (pAttacker.city != null)
+                    {
+                        if (asset.animal)
+                        {
+                            pAttacker.city.data.storage.change("meat", 1);
+                        }
+                        if (asset.animal || (asset.unit && pAttacker.a.hasTrait("savage")))
+                        {
+                            if (Toolbox.randomChance(0.5f))
+                            {
+                                pAttacker.city.data.storage.change(SR.bones, 1);
+                            }
+                            else if (Toolbox.randomChance(0.5f))
+                            {
+                                pAttacker.city.data.storage.change(SR.leather, 1);
+                            }
+                            else if (Toolbox.randomChance(0.5f))
+                            {
+                                pAttacker.city.data.storage.change(SR.meat, 1);
+                            }
+                        }
+                    }
+                }
+                killHimself(false, pAttackType, true, true, true);
+                return;
+            }
+            if (attack_type == CW_AttackType.Weapon && !asset.immune_to_injuries && !hasStatus("shield"))
+            {
+                if (Toolbox.randomChance(0.02f))
+                {
+                    addTrait("crippled", false);
+                }
+                if (Toolbox.randomChance(0.02f))
+                {
+                    addTrait("eyepatch", false);
+                }
+            }
+            startShake(0.3f, 0.1f, true, true);
+            #endregion
+        }
+        /// <summary>
         /// 创建/改良血脉
         /// </summary>
         public void create_blood()

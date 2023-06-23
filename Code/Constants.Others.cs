@@ -210,4 +210,30 @@ namespace Cultivation_Way.Constants
         /// </summary>
         WEAKEN = 16,
     }
+    /// <summary>
+    /// 拓展后的攻击类型
+    /// </summary>
+    public enum CW_AttackType
+    {
+        Acid,
+        Fire,
+        Plague,
+        Infection,
+        Tumor,
+        Other,
+        AshFever,
+        Transformation,
+        Hunger,
+        Eaten,
+        Age,
+        Weapon,
+        None,
+        Poison,
+        Block,
+        Spell,
+        RealSpell,
+        RealWeapon,
+        God
+    }
+
 }
