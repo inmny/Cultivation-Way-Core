@@ -351,6 +351,10 @@ namespace Cultivation_Way.UI
             culti_velo_co.setValue((1+actor.stats[CW_S.mod_cultivelo]) * actor.cw_asset.culti_velo, "", "", false);
 
             #endregion
+            element.gameObject.SetActive(false);
+            cultibook.gameObject.SetActive(false);
+            blood.gameObject.SetActive(false);
+
 
             if (actor.data.get_element() != null) load_element(actor);
 

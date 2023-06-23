@@ -122,6 +122,25 @@ namespace Cultivation_Way.HarmonySpace
             Core.CW_Actor actor = ActorManager_base_loadObject(__instance, pData, prefab);
             actor.setData(pData);
 
+            // 修正血脉，移除不存在的血脉, 由City produce new unit产生.
+            Dictionary<string, float> blood_nodes = actor.data.get_blood_nodes();
+            actor.data.set(Constants.DataS.blood_nodes, "");
+            if (blood_nodes != null)
+            {
+                List<string> keys = blood_nodes.Keys.ToList();
+                foreach (string blood_node_id in keys)
+                {
+                    BloodNodeAsset blood_node = Library.Manager.bloods.get(blood_node_id);
+                    if (blood_node == null)
+                    {
+                        blood_nodes.Remove(blood_node_id);
+                    }
+                }
+                actor.data.set_blood_nodes(blood_nodes);
+            }
+            
+
+
             actor.cw_asset = Library.Manager.actors.get(pData.asset_id);
 
             __instance.finalizeActor(asset.id, actor, pTile, 0f);

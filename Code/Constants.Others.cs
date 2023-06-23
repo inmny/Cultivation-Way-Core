@@ -10,6 +10,10 @@ namespace Cultivation_Way.Constants
         /// </summary>
         public const bool strict_mode = false;
         /// <summary>
+        /// 继承父母灵根时随机灵根的概率
+        /// </summary>
+        public const float random_element_when_inherit_chance = 0.3f;
+        /// <summary>
         /// 调用newCreature创建的生物是否自动创建血脉
         /// </summary>
         public const bool new_creature_create_blood = false;

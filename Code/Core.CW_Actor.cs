@@ -51,6 +51,7 @@ namespace Cultivation_Way.Core
                 old_cultibook.spells.CopyTo(new_cultibook.spells, 0);
 
                 new_cultibook.editor_name = getName();
+
                 new_cultibook.level++;
             }
             else
