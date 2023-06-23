@@ -29,6 +29,26 @@ namespace Cultivation_Way.Core
         private readonly static List<string> __status_effects_to_remove = new();
         private readonly static List<CW_StatusEffectData> __status_effects_to_update = new();
         /// <summary>
+        /// 每月更新，用于生命恢复等
+        /// </summary>
+        internal void update_month()
+        {
+            // 生命恢复
+            data.health += (int)stats[CW_S.health_regen];
+            if(data.health >= stats[S.health])
+            {
+                data.health = (int)stats[S.health];
+            }
+            // 修炼体系的月度更新
+            foreach (var cultisys in Library.Manager.cultisys.list)
+            {
+                if (cultisys.monthly_update_action == null) continue;
+                data.get(cultisys.id, out int level, -1);
+                if (level < 0) continue;
+                cultisys.monthly_update_action(this, cultisys, level);
+            }
+        }
+        /// <summary>
         /// 重写getHit, 并应用属性
         /// </summary>
         public override void getHit(float pDamage, bool pFlash = true, AttackType pAttackType = AttackType.Other, BaseSimObject pAttacker = null, bool pSkipIfShake = true, bool pMetallicWeapon = false)
@@ -162,6 +182,8 @@ namespace Cultivation_Way.Core
         {
             Dictionary<string, float> curr_bloods = data.get_blood_nodes();
             BloodNodeAsset main_blood = data.get_main_blood();
+
+            setStatsDirty();
         }
         /// <summary>
         /// 创建/改良功法
@@ -196,6 +218,8 @@ namespace Cultivation_Way.Core
 
             Library.Manager.cultibooks.add(new_cultibook);
             data.set_cultibook(new_cultibook);
+
+            setStatsDirty();
         }
         /// <summary>
         /// 学会法术
@@ -255,6 +279,8 @@ namespace Cultivation_Way.Core
             if (__can_create_blood_on_levelup(cultisys, curr_level)) create_blood();
             if (__can_create_cultibook_on_levelup(cultisys, curr_level)) create_cultibook();
             if (cultisys.external_levelup_bonus != null) _ = cultisys.external_levelup_bonus(this, cultisys, curr_level);
+
+            setStatsDirty();
         }
         /// <summary>
         /// 能否在本次升级时创建/改良血脉

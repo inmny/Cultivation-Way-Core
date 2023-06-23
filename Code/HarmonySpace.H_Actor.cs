@@ -169,5 +169,12 @@ namespace Cultivation_Way.HarmonySpace
             return;
         }
         #endregion
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(BatchActors), nameof(BatchActors.createJobs))]
+        public static void createJobs_patch(BatchActors __instance)
+        {
+            JobManagerTools.add_actor_update_month_job(__instance);
+        }
     }
 }

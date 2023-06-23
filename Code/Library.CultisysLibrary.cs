@@ -63,6 +63,11 @@ namespace Cultivation_Way.Library
         /// </summary>
         [NonSerialized]
         public CultisysCheck external_levelup_bonus;
+        /// <summary>
+        /// [选填]月度更新
+        /// </summary>
+        [NonSerialized]
+        public CultisysCheck monthly_update_action;
         public CultisysAsset(string id, CultisysType type, int max_level)
         {
             this.id = id;

@@ -3532,6 +3532,7 @@
     <Compile Include="Code\HarmonySpace.H_LocalizationManager.cs" />
     <Compile Include="Code\HarmonySpace.H_ScrollWindows.cs" />
     <Compile Include="Code\HarmonySpace.H_WindowCreatureInfo.cs" />
+    <Compile Include="Code\JobManagerTools.cs" />
     <Compile Include="Code\Library.BloodLibrary.cs" />
     <Compile Include="Code\Library.CultibookLibrary.cs" />
     <Compile Include="Code\Library.CultisysLibrary.cs" />
@@ -3714,7 +3715,6 @@
     <Compile Include="Code\Core.CW_Actor.cs" />
     <Compile Include="Code\Core.CW_StatusEffectData.cs" />
     <Compile Include="Code\Core.CW_Element.cs" />
-    <Compile Include="Code\Extension.ActorManagerTools.cs" />
     <Compile Include="Code\Extension.ActorDataTools.cs" />
     <Compile Include="Code\HarmonySpace.H_Actor.cs" />
     <Compile Include="Code\HarmonySpace.Manager.cs" />

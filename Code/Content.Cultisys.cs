@@ -31,13 +31,32 @@ namespace Cultivation_Way.Content
                 can_levelup = (actor, culti) =>
                 {
                     return immortal.curr_progress(actor, immortal, 0) >= immortal.max_progress(actor, immortal, 0);
+                },
+                monthly_update_action = (actor, culti, level) =>
+                {
+                    float regen_wakan_line = actor.stats[Constants.CW_S.wakan] * Content_Constants.immortal_max_wakan_regen;
+                    actor.data.get(Constants.DataS.wakan, out float wakan, 0);
+
+                    if (wakan >= regen_wakan_line) return 0;
+
+
+                    if (regen_wakan_line - wakan > actor.stats[Constants.CW_S.wakan_regen])
+                    {
+                        wakan += actor.stats[Constants.CW_S.wakan_regen];
+                    }
+                    else
+                    {
+                        wakan = regen_wakan_line;
+                    }
+                    actor.data.set(Constants.DataS.wakan, wakan);
+                    return 0;
                 }
             };
             for(int i=0; i< Content_Constants.immortal_max_level; i++)
             {
                 cultisys.power_level[i] = 1+i*0.1f;
                 cultisys.bonus_stats[i][Constants.CW_S.wakan] = 1 + i * 99;
-                cultisys.bonus_stats[i][Constants.CW_S.wakan_regen] = i;
+                cultisys.bonus_stats[i][Constants.CW_S.wakan_regen] = i*0.1f;
                 cultisys.bonus_stats[i][S.health] = i * 99;
                 cultisys.bonus_stats[i][S.damage] = i * 9;
             }

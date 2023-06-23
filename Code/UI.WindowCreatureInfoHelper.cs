@@ -40,6 +40,7 @@ namespace Cultivation_Way.UI
         public void clear()
         {
             mask.sizeDelta = new(mask.sizeDelta.x, 0.1f);
+            tip_button.gameObject.SetActive(false);
         }
         void Update()
         {

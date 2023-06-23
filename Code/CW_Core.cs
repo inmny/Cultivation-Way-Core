@@ -10,7 +10,7 @@ namespace Cultivation_Way
     [ModEntry]
     public class CW_Core : MonoBehaviour
     {
-        public struct ModState
+        public class ModState
         {
             public bool core_initialized;
             public bool addons_initialized;
@@ -120,6 +120,7 @@ namespace Cultivation_Way
             prefab_library_obj.transform.SetParent(this.transform);
 
             configure();
+
             Factories.init();
             Localizer.init();
             UI.Prefabs.init();
