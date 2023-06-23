@@ -265,8 +265,16 @@ namespace Cultivation_Way.UI
         private static void show_cultisys(Tooltip tooltip, string type, TooltipData data = default)
         {
             CW_Actor actor = (CW_Actor)data.actor;
-            
+            CultisysAsset cultisys_asset = Library.Manager.cultisys.get(data.tip_name);
+            actor.data.get(cultisys_asset.id, out int level, -1);
+
             tooltip.name.text = LocalizedTextManager.getText(data.tip_name, null);
+
+            StringBuilder str_builder = new();
+            str_builder.AppendLine($"{LocalizedTextManager.getText($"{cultisys_asset.id}_{level}")}({level + 1}境)");
+            str_builder.AppendLine($"{cultisys_asset.curr_progress(actor, cultisys_asset, level)}/{cultisys_asset.max_progress(actor, cultisys_asset, level)}");
+
+            tooltip.addDescription(str_builder.ToString());
         }
 
         private static void show_element(Tooltip tooltip, string type, TooltipData data = default)
