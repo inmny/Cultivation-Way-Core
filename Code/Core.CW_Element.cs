@@ -158,25 +158,25 @@ namespace Cultivation_Way.Core
             float real_content;
             // 火
             real_content = base_elements[Constants.Core.BASE_TYPE_FIRE] + base_elements[Constants.Core.BASE_TYPE_WOOD] - base_elements[Constants.Core.BASE_TYPE_WATER];
-            combine_bonus[S.critical_chance] += real_content * 0.2f * promot;
-            combine_bonus[S.mod_crit] += real_content * promot;
-            combine_bonus[S.critical_damage_multiplier] += real_content * 1.5f * promot;
+            combine_bonus[S.critical_chance] += real_content * 0.2f * promot / 100;
+            combine_bonus[S.mod_crit] += real_content * promot / 100;
+            combine_bonus[S.critical_damage_multiplier] += real_content * 1.5f * promot / 100;
             // 土
             real_content = base_elements[Constants.Core.BASE_TYPE_GROUND] + base_elements[Constants.Core.BASE_TYPE_FIRE] - base_elements[Constants.Core.BASE_TYPE_WOOD];
-            combine_bonus[S.mod_armor] += real_content * promot;
-            combine_bonus[CW_S.mod_spell_armor] += real_content * promot;
+            combine_bonus[S.mod_armor] += real_content * promot / 100 ;
+            combine_bonus[CW_S.mod_spell_armor] += real_content * promot / 100;
             // 金
             real_content = base_elements[Constants.Core.BASE_TYPE_IRON] + base_elements[Constants.Core.BASE_TYPE_GROUND] - base_elements[Constants.Core.BASE_TYPE_FIRE];
-            combine_bonus[S.mod_damage] += real_content * 2 * promot;
+            combine_bonus[S.mod_damage] += real_content * 2 * promot / 100;
             // 水
             real_content = base_elements[Constants.Core.BASE_TYPE_WATER] + base_elements[Constants.Core.BASE_TYPE_IRON] - base_elements[Constants.Core.BASE_TYPE_GROUND];
-            combine_bonus[CW_S.mod_shield] += real_content * 2f * promot;
-            combine_bonus[CW_S.mod_shield_regen] += real_content * promot;
-            combine_bonus[S.knockback_reduction] += real_content * promot;
+            combine_bonus[CW_S.mod_shield] += real_content * 2f * promot / 100;
+            combine_bonus[CW_S.mod_shield_regen] += real_content * promot / 100;
+            combine_bonus[S.knockback_reduction] += real_content * promot / 100;
             // 木
             real_content = base_elements[Constants.Core.BASE_TYPE_WOOD] + base_elements[Constants.Core.BASE_TYPE_WATER] - base_elements[Constants.Core.BASE_TYPE_IRON];
-            combine_bonus[S.mod_health] += real_content * promot;
-            combine_bonus[CW_S.mod_health_regen] += real_content * 1.5f * promot;
+            combine_bonus[S.mod_health] += real_content * promot / 100;
+            combine_bonus[CW_S.mod_health_regen] += real_content * 1.5f * promot / 100;
 
             return combine_bonus;
         }
