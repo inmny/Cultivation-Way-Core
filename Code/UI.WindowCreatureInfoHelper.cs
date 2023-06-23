@@ -275,6 +275,11 @@ namespace Cultivation_Way.UI
             str_builder.AppendLine($"{cultisys_asset.curr_progress(actor, cultisys_asset, level)}/{cultisys_asset.max_progress(actor, cultisys_asset, level)}");
 
             tooltip.addDescription(str_builder.ToString());
+
+            if (CW_Core.instance.state.editor_inmny)
+            {
+                tooltip.showBaseStats(cultisys_asset.get_bonus_stats(actor, level));
+            }
         }
 
         private static void show_element(Tooltip tooltip, string type, TooltipData data = default)
