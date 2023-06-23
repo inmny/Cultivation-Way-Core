@@ -276,34 +276,6 @@ namespace Cultivation_Way.Core
             }
             this.__normalize(origin_total_val);
         }
-        private const int stats_length = 15;
-        internal string __to_string()
-        {
-            StringBuilder string_builder = new StringBuilder();
-            int i = 0; int j;
-            for (i = 0; i < base_elements.Length; i++)
-            {
-                string description = LocalizedTextManager.getText("$base_element_" + i + "$");
-                string value = base_elements[i] + "%\n";
-                j = stats_length - description.Length - value.Length * 2;
-                string_builder.Append(description);
-                for (; j > 0; j--)
-                {
-                    string_builder.Append(" ");
-                }
-                string_builder.Append(value);
-            }
-            return string_builder.ToString();
-        }
-        internal void fill_string_builder(StringBuilder description, StringBuilder value)
-        {
-            description.Clear(); value.Clear();
-            for (int i = 0; i < Constants.Core.element_type_nr; i++)
-            {
-                description.AppendLine(LocalizedTextManager.getText("$base_element_" + i + "$"));
-                value.AppendLine(base_elements[i] + "%");
-            }
-        }
         public void set(int[] base_elements, bool normalize = false, int normalize_ceil = 100, bool comp_type = true)
         {
             for (int i = 0; i < Constants.Core.element_type_nr; i++)

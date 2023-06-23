@@ -3517,8 +3517,11 @@
     <Compile Include="Code\Animation.EffectManager.cs" />
     <Compile Include="Code\Animation.SpriteAnimation.cs" />
     <Compile Include="Code\Constants.DataS.cs" />
+    <Compile Include="Code\Content.Constants.cs" />
     <Compile Include="Code\Content.Cultisys.cs" />
     <Compile Include="Code\Content.Element.cs" />
+    <Compile Include="Code\Content.HarmonySpace.H_Actor.cs" />
+    <Compile Include="Code\Content.HarmonySpace.Manager.cs" />
     <Compile Include="Code\Content.Manager.cs" />
     <Compile Include="Code\Core.CW_MapChunkManager.cs" />
     <Compile Include="Code\Extension.BaseStatsTools.cs" />

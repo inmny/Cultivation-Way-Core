@@ -2,7 +2,6 @@
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace Cultivation_Way.Core
 {
@@ -67,6 +66,7 @@ namespace Cultivation_Way.Core
             new_cultibook.id = $"{new_cultibook.level}_{data.id}";
             new_cultibook.bonus_stats.mergeStats(data.get_element().comp_bonus_stats(), new_cultibook.level * 0.3f);
 
+            Library.Manager.cultibooks.add(new_cultibook);
             data.set_cultibook(new_cultibook);
         }
         /// <summary>

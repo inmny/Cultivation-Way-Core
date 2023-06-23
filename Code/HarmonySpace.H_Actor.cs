@@ -6,6 +6,8 @@ using System.Reflection.Emit;
 using UnityEngine.Tilemaps;
 using Cultivation_Way.Library;
 using Cultivation_Way.Core;
+using UnityEngine;
+using Cultivation_Way.UI;
 
 namespace Cultivation_Way.HarmonySpace
 {
@@ -74,14 +76,15 @@ namespace Cultivation_Way.HarmonySpace
         #region 人物转换 目的在于将游戏使用的所有Actor转换为CW_Actor
 
         /**游戏中Actor均由ActorManager创建，
-         * Actor的GameObject存在两个创建的函数
-         * 1. <see cref="ActorManager.createNewUnit(string, WorldTile, float)"/>
-         * 2. <see cref="ActorManager.spawnPopPoint(ActorData, WorldTile, City)"/>
+         * Actor的GameObject存在数个创建的函数
+         * 1. <see cref="ActorManager.createNewUnit(string, WorldTile, float)"/> 一般创建
+         * 2. <see cref="ActorManager.spawnPopPoint(ActorData, WorldTile, City)"/> 城市人口出生
+         * 3. <see cref="ActorManager.loadObject(ActorData, Actor)"/> 读档
          * 此处将两个函数均拦截, 操作与原版操作一致，但将Actor替换成经复制得到的CW_Actor
          * 以外，调用了cw_newCreature函数，用于初始化修炼相关的数据
          */
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(ActorManager), "createNewUnit")]
+        [HarmonyPatch(typeof(ActorManager), nameof(ActorManager.createNewUnit))]
         public static bool createNewUnit_patch(ActorManager __instance, string pStatsID, WorldTile pTile, float pZHeight, ref Actor __result)
         {
             ActorAsset asset = AssetManager.actor_library.get(pStatsID);
@@ -106,21 +109,45 @@ namespace Cultivation_Way.HarmonySpace
             return false;
         }
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(ActorManager), "spawnPopPoint")]
+        [HarmonyPatch(typeof(ActorManager), nameof(ActorManager.spawnPopPoint))]
         public static bool spawnPopPoint_patch(ActorManager __instance, ActorData pData, WorldTile pTile, City pCity, ref Actor __result)
         {
             ActorAsset asset = AssetManager.actor_library.get(pData.asset_id);
+            if (asset == null)
+            {
+                __result = null;
+                return false;
+            }
             Core.CW_Actor prefab = Others.FastVisit.get_actor_prefab("actors/" + asset.prefab).GetComponent<Core.CW_Actor>();
-            Core.CW_Actor actor = (Core.CW_Actor)__instance.loadObject(pData, prefab);
+            Core.CW_Actor actor = ActorManager_base_loadObject(__instance, pData, prefab);
             actor.setData(pData);
 
             actor.cw_asset = Library.Manager.actors.get(pData.asset_id);
 
             __instance.finalizeActor(asset.id, actor, pTile, 0f);
             pCity.addNewUnit(actor, true);
+            actor.gameObject.SetActive(true);
             __result = actor;
 
             return false;
+        }
+        private static CW_Actor ActorManager_base_loadObject(ActorManager instance, ActorData data, CW_Actor prefab)
+        {
+            CW_Actor tobject = Object.Instantiate<CW_Actor>(prefab);
+            BaseSimObject baseSimObject = tobject;
+            int latest_hash = instance._latest_hash;
+            instance._latest_hash = latest_hash + 1;
+            baseSimObject.setHash(latest_hash);
+            tobject.loadData(data);
+            instance.addObject(tobject);
+            return tobject;
+        }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(ActorManager), nameof(ActorManager.loadObject))]
+        public static void loadObject_patch(ActorManager __instance, ActorData pData, Actor pPrefab)
+        {
+            // TODO:
+            return;
         }
         #endregion
     }

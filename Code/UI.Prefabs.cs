@@ -58,6 +58,7 @@ namespace Cultivation_Way.UI
             add_tooltip_element_prefab();
             add_tooltip_cultibook_prefab();
             add_tooltip_blood_nodes_prefab();
+            add_tooltip_cultisys_prefab();
         }
 
         private static void add_tooltip_element_prefab()
@@ -78,6 +79,13 @@ namespace Cultivation_Way.UI
         {
             Tooltip tooltip = UnityEngine.Object.Instantiate(Resources.Load<Tooltip>("tooltips/tooltip_normal"), CW_Core.prefab_library);
             tooltip.gameObject.name = Constants.Core.mod_prefix + "blood_nodes";
+
+            resources_dict["tooltips/tooltip_" + tooltip.gameObject.name] = tooltip;
+        }
+        private static void add_tooltip_cultisys_prefab()
+        {
+            Tooltip tooltip = UnityEngine.Object.Instantiate(Resources.Load<Tooltip>("tooltips/tooltip_normal"), CW_Core.prefab_library);
+            tooltip.gameObject.name = Constants.Core.mod_prefix + "cultisys";
 
             resources_dict["tooltips/tooltip_" + tooltip.gameObject.name] = tooltip;
         }

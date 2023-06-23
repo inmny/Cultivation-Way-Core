@@ -291,6 +291,16 @@ namespace Cultivation_Way.UI
             CW_Actor actor = (CW_Actor)data.actor;
             // 可以确定actor的cultibook不为空
             Cultibook cultibook = actor.data.get_cultibook();
+
+            tooltip.name.text = cultibook.name;
+            StringBuilder str_builder = new();
+            str_builder.AppendLine($"{cultibook.author_name} 著");
+            str_builder.AppendLine($"{cultibook.editor_name} 编");
+            str_builder.AppendLine(cultibook.description);
+            tooltip.addDescription(str_builder.ToString());
+           
+
+            tooltip.showBaseStats(cultibook.bonus_stats);
         }
         private static void show_blood_nodes(Tooltip tooltip, string type, TooltipData data = default)
         {
@@ -330,7 +340,7 @@ namespace Cultivation_Way.UI
             health_regen.setValue(actor.stats[CW_S.health_regen], "", "", false);
             shield_regen.setValue(actor.stats[CW_S.shield_regen], "", "", false);
             wakan_regen.setValue(0, "", "", false);
-            culti_velo_co.setValue(actor.stats[CW_S.mod_cultivelo], "", "", false);
+            culti_velo_co.setValue((1+actor.stats[CW_S.mod_cultivelo]) * actor.cw_asset.culti_velo, "", "", false);
 
             #endregion
 

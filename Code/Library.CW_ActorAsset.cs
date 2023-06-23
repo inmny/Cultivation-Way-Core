@@ -47,6 +47,7 @@ namespace Cultivation_Way.Library
             prefer_element = new int[5] { 20, 20, 20, 20, 20 };
             prefer_element_scale = 0f;
             born_spells = new();
+            culti_velo = 1;
         }
     }
     public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>

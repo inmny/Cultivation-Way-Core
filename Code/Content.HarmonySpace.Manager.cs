@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace Cultivation_Way.Content
+using HarmonyLib;
+namespace Cultivation_Way.Content.HarmonySpace
 {
     internal static class Manager
     {
         public static void init()
         {
-            Cultisys.init();
-            Element.init();
-            HarmonySpace.Manager.init();
+            _ = new Harmony(Constants.Others.harmony_id+".Content");
+            Harmony.CreateAndPatchAll(typeof(H_Actor));
         }
     }
 }
