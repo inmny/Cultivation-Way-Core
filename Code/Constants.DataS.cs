@@ -9,6 +9,8 @@
         public const string element_type_id = "element_type_id";
         public const string can_culti = "can_culti";
         public const string shield = Core.mod_prefix + "shield";
+        public const string wakan = Core.mod_prefix + "wakan";
+        public const string soul = Core.mod_prefix + "soul";
         public readonly static string[] element_list = Core.element_str;
     }
 }

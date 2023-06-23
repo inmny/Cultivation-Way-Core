@@ -26,6 +26,33 @@ namespace Cultivation_Way.Others
             square_frame.name = "square_frame";
             return square_frame;
         }
+        private static Sprite square_frame_only;
+        public static Sprite get_square_frame_only()
+        {
+            if (square_frame_only != null) return square_frame_only;
+            Sprite _orig = SpriteTextureLoader.getSprite("ui/cw_window/square_frame_only");
+            square_frame_only = Sprite.Create(_orig.texture, _orig.rect, new Vector2(24, 24f), _orig.pixelsPerUnit, 0, SpriteMeshType.Tight, new Vector4(7, 7, 7, 7));
+            square_frame_only.name = "square_frame_only";
+            return square_frame_only;
+        }
+        private static Sprite window_bar;
+        public static Sprite get_window_bar()
+        {
+            if (window_bar != null) return window_bar;
+            Sprite _orig = SpriteTextureLoader.getSprite("ui/cw_window/windowBar");
+            window_bar = Sprite.Create(_orig.texture, _orig.rect, new Vector2(0, 0), _orig.pixelsPerUnit, 0, SpriteMeshType.Tight, new Vector4(5, 6, 5, 6));
+            window_bar.name = "window_bar";
+            return window_bar;
+        }
+        private static Sprite window_bar_90;
+        public static Sprite get_window_bar_90()
+        {
+            if (window_bar_90 != null) return window_bar_90;
+            Sprite _orig = SpriteTextureLoader.getSprite("ui/cw_window/windowBar_90");
+            window_bar_90 = Sprite.Create(_orig.texture, _orig.rect, new Vector2(0, 0), _orig.pixelsPerUnit, 0, SpriteMeshType.Tight, new Vector4(6, 5, 6, 5));
+            window_bar_90.name = "window_bar_90";
+            return window_bar_90;
+        }
         private static void get_actor_prefabs()
         {
             for (int i = 0; i < actor_prefab_paths.Length; i++)

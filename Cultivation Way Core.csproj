@@ -3412,6 +3412,9 @@
     <Content Include="GameResources\ui\cw_window\city_info_bg.png" />
     <Content Include="GameResources\ui\cw_window\red_button.png" />
     <Content Include="GameResources\ui\cw_window\square_frame.png" />
+    <Content Include="GameResources\ui\cw_window\square_frame_only.png" />
+    <Content Include="GameResources\ui\cw_window\windowBar_90.png" />
+    <Content Include="GameResources\ui\cw_window\windowBar.png" />
     <Content Include="GameResources\ui\cw_window\windowNameEdit.png" />
     <Content Include="GameResources\ui\cw_window\sim_info_bg.png" />
     <Content Include="GameResources\ui\cw_window\windowInnerSliced.png" />
@@ -3514,6 +3517,8 @@
     <Compile Include="Code\Animation.EffectManager.cs" />
     <Compile Include="Code\Animation.SpriteAnimation.cs" />
     <Compile Include="Code\Constants.DataS.cs" />
+    <Compile Include="Code\Content.Cultisys.cs" />
+    <Compile Include="Code\Content.Manager.cs" />
     <Compile Include="Code\Core.CW_MapChunkManager.cs" />
     <Compile Include="Code\Extension.BaseStatsTools.cs" />
     <Compile Include="Code\Extension.BaseSystemDataTools.cs" />

@@ -15,6 +15,10 @@ namespace Cultivation_Way.Others
     /// 获取修炼体系的属性加成
     /// </summary>
     public delegate BaseStats CultisysStats(CW_Actor actor, CultisysAsset cultisys);
+    /// <summary>
+    /// 检查actor在cultisys上的相关信息
+    /// </summary>
+    public delegate float CultisysCheck(CW_Actor actor, CultisysAsset cultisys, int cultisys_level);
 
     /// <summary>
     /// 动画结束时的委托

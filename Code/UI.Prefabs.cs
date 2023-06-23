@@ -40,6 +40,8 @@ namespace Cultivation_Way.UI
         }
         public void load(string icon, Action<GameObject> show_tooltip)
         {
+            this.button = GetComponent<Button>();
+            this.image = GetComponent<Image>();
             this.tooltip_action = show_tooltip;
             this.image.sprite = Resources.Load<Sprite>("ui/Icons/" + icon);
         }

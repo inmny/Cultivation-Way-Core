@@ -1,4 +1,6 @@
-﻿namespace Cultivation_Way.Constants
+﻿using System.CodeDom;
+
+namespace Cultivation_Way.Constants
 {
     public static class Others
     {
@@ -60,7 +62,7 @@
         /// <summary>
         /// 灵气等外物
         /// </summary>
-        OUTWARD = 4,
+        WAKAN = 4,
         /// <summary>
         /// 血脉
         /// </summary>

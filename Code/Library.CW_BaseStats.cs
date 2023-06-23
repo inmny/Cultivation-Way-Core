@@ -17,7 +17,7 @@ namespace Cultivation_Way.Library
                         hidden = false,
                         icon = String.Empty,
                         id = stat_id,
-                        translation_key = Constants.Core.mod_prefix + stat_id,
+                        translation_key = "stat_"+Constants.Core.mod_prefix + stat_id,
                         ignore = false,
                         normalize = false,
                         used_only_for_civs = true
@@ -26,6 +26,7 @@ namespace Cultivation_Way.Library
                     {
                         stat_asset.main_stat_to_mod = stat_id.Substring(4);
                         stat_asset.mod = true;
+                        stat_asset.show_as_percents = true;
                     }
                 }
             }

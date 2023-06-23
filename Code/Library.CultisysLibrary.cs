@@ -48,6 +48,16 @@ namespace Cultivation_Way.Library
         /// </summary>
         [NonSerialized]
         public CultisysStats stats_action;
+        /// <summary>
+        /// 当前修炼进度
+        /// </summary>
+        [NonSerialized]
+        public CultisysCheck curr_progress;
+        /// <summary>
+        /// 当前境界最大修炼进度
+        /// </summary>
+        [NonSerialized]
+        public CultisysCheck max_progress;
         public CultisysAsset(string id, CultisysType type, int max_level)
         {
             this.id = id;
@@ -55,6 +65,11 @@ namespace Cultivation_Way.Library
             this.max_level = max_level;
             power_level = new float[max_level];
             bonus_stats = new BaseStats[max_level];
+            for(int i = 0; i < max_level; i++)
+            {
+                bonus_stats[i] = new();
+                power_level[i] = 1;
+            }
         }
         /// <summary>
         /// 获取修炼等级对应的力量
@@ -73,6 +88,18 @@ namespace Cultivation_Way.Library
     public class CultisysLibrary : CW_Library<CultisysAsset>
     {
         /// <summary>
+        /// 添加必填项警告
+        /// </summary>
+        public override CultisysAsset add(CultisysAsset pAsset)
+        {
+            if (pAsset.allow == null) Logger.Warn($"Cultisys Asset {pAsset.id}: allow is null");
+            if (pAsset.level_up == null) Logger.Warn($"Cultisys Asset {pAsset.id}: level_up is null");
+            if (pAsset.curr_progress == null) Logger.Warn($"Cultisys Asset {pAsset.id}: curr_progress is null");
+            if (pAsset.max_progress == null) Logger.Warn($"Cultisys Asset {pAsset.id}: max_progress is null");
+            if (pAsset.sprite_path == null) Logger.Warn($"Cultisys Asset {pAsset.id}: sprite_path is null");
+            return base.add(pAsset);
+        }
+        /// <summary>
         /// 默认allow和level_up返回false, 默认图标为"ui/Icons/iconCultiBook_immortal"
         /// </summary>
         public override void post_init()
@@ -82,7 +109,9 @@ namespace Cultivation_Way.Library
             {
                 cultisys.allow ??= (actor, culti) => false;
                 cultisys.level_up ??= (actor, culti) => false;
-                cultisys.sprite_path ??= "ui/Icons/iconCultiBook_immortal";
+                cultisys.curr_progress ??= (actor, culti, level) => 0;
+                cultisys.max_progress ??= (actor, culti, level) => 1;
+                cultisys.sprite_path ??= "ui/Icons/iconCultiSys";
             }
         }
     }

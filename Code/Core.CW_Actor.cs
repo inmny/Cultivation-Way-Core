@@ -23,6 +23,7 @@ namespace Cultivation_Way.Core
             this.data.set(DataS.shield, 0f);
             CW_Element element = CW_Element.get_element_for_set_data(cw_asset.prefer_element, cw_asset.prefer_element_scale);
             this.data.set_element(element);
+            this.data.set("cw_cultisys_immortal", 0);
         }
     }
 }

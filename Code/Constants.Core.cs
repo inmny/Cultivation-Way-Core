@@ -11,6 +11,6 @@
         public const int BASE_TYPE_IRON = 3;
         public const int BASE_TYPE_GROUND = 4;
         public const int element_type_nr = 5;
-        public readonly static string[] element_str = new string[element_type_nr] { mod_prefix+"water", mod_prefix + "fire", mod_prefix + "wood", mod_prefix + "iron", mod_prefix + "ground" };
+        public readonly static string[] element_str = new string[element_type_nr] { mod_prefix+"water_element", mod_prefix + "fire_element", mod_prefix + "wood_element", mod_prefix + "iron_element", mod_prefix + "ground_element" };
     }
 }

@@ -50,6 +50,7 @@ namespace Cultivation_Way
                 { // 初始化核心
                     state.core_initialized = true;
                     this.initialize();
+                    Content.Manager.init();
                 }
                 else
                 { // 等待附属初始化
@@ -75,7 +76,8 @@ namespace Cultivation_Way
                         // 在所有附属初始化完毕后, 进行后续处理
                         state.library_manager.post_init();
                         state.map_chunk_manager.init(World.world.mapChunkManager.amountX, World.world.mapChunkManager.amountY);
-
+                        
+                        Localizer.apply_localization(LocalizedTextManager.instance.localizedText, LocalizedTextManager.instance.language);
 
                         state.all_initialized = true;
                     }

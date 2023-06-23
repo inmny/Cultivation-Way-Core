@@ -14,7 +14,7 @@ namespace Cultivation_Way.Core
         private readonly static BaseStats tmp_stats = new();
         public CW_Element()
         {
-            base_elements = new int[Constants.Core.element_str.Length];
+            base_elements = new int[Constants.Core.element_type_nr];
             __uniform_generate(100);
             type_id = Constants.Core.uniform_type;
         }
@@ -27,7 +27,7 @@ namespace Cultivation_Way.Core
         /// <param name="comp_type">是否即时确定元素类型</param>
         private CW_Element(int[] base_elements, bool normalize = false, int normalize_ceil = 100, bool comp_type = true)
         {
-            for (int i = 0; i < Constants.Core.element_str.Length; i++)
+            for (int i = 0; i < Constants.Core.element_type_nr; i++)
             {
                 this.base_elements[i] = base_elements[i];
             }
@@ -45,7 +45,7 @@ namespace Cultivation_Way.Core
         /// <param name="prefer_scale">偏好系数</param>
         internal CW_Element(bool random_generate = true, bool normalize = true, int normalize_ceil = 100, bool comp_type = true, int[] prefer_elements = null, float prefer_scale = 0f)
         {
-            base_elements = new int[Constants.Core.element_str.Length];
+            base_elements = new int[Constants.Core.element_type_nr];
             if (random_generate)
             {
                 __random_generate(normalize_ceil);
@@ -206,7 +206,7 @@ namespace Cultivation_Way.Core
         private static float __get_similarity(int[] e1, int[] e2)
         {
             int mul_result = 0; int modulus_1 = 0; int modulus_2 = 0;
-            for (int j = 0; j < Constants.Core.element_str.Length; j++)
+            for (int j = 0; j < Constants.Core.element_type_nr; j++)
             {
                 mul_result += e1[j] * e2[j];
                 modulus_1 += e1[j] * e1[j];
@@ -223,33 +223,33 @@ namespace Cultivation_Way.Core
         {
             float co = 0f;
             int i;
-            for (i = 0; i < Constants.Core.element_str.Length; i++)
+            for (i = 0; i < Constants.Core.element_type_nr; i++)
             {
                 co += this.base_elements[i];
             }
             co = normalize_ceil / co;
-            for (i = 0; i < Constants.Core.element_str.Length; i++)
+            for (i = 0; i < Constants.Core.element_type_nr; i++)
             {
                 this.base_elements[i] = (int)(this.base_elements[i] * co + 0.5f);
                 normalize_ceil -= this.base_elements[i];
             }
             if (normalize_ceil > 0)
             {
-                i = Toolbox.randomInt(0, Constants.Core.element_str.Length);
+                i = Toolbox.randomInt(0, Constants.Core.element_type_nr);
                 this.base_elements[i] += normalize_ceil;
             }
         }
         private void __random_generate(int ceil = 100)
         {
-            for (int i = 0; i < Constants.Core.element_str.Length; i++)
+            for (int i = 0; i < Constants.Core.element_type_nr; i++)
             {
                 base_elements[i] = Toolbox.randomInt(0, ceil + 1);
             }
         }
         private void __uniform_generate(int sum = 100)
         {
-            int uniform_val = sum / Constants.Core.element_str.Length;
-            for (int i = 0; i < Constants.Core.element_str.Length; i++)
+            int uniform_val = sum / Constants.Core.element_type_nr;
+            for (int i = 0; i < Constants.Core.element_type_nr; i++)
             {
                 base_elements[i] = uniform_val;
             }
@@ -259,15 +259,15 @@ namespace Cultivation_Way.Core
             int j;
             int delta_abs = 0;
             int origin_total_val = 0;
-            int[] delta_vals = new int[Constants.Core.element_str.Length];
-            for (j = 0; j < Constants.Core.element_str.Length; j++)
+            int[] delta_vals = new int[Constants.Core.element_type_nr];
+            for (j = 0; j < Constants.Core.element_type_nr; j++)
             {
                 delta_vals[j] = prefer_elements[j] - this.base_elements[j];
                 delta_abs += Math.Abs(delta_vals[j]);
                 origin_total_val += this.base_elements[j];
             }
             if (delta_abs == 0) return;
-            for (j = 0; j < Constants.Core.element_str.Length; j++)
+            for (j = 0; j < Constants.Core.element_type_nr; j++)
             {
                 //Debug.Log($"Begin:[{j}]:{this.base_elements[j]},delta_val:{delta_vals[j]},scale:{scale},delta_abs:{delta_abs}");
                 //this.base_elements[j] += (int)(Math.Sign(delta_vals[j]) * delta_vals[j] * delta_vals[j] * scale / delta_abs);
@@ -298,7 +298,7 @@ namespace Cultivation_Way.Core
         internal void fill_string_builder(StringBuilder description, StringBuilder value)
         {
             description.Clear(); value.Clear();
-            for (int i = 0; i < Constants.Core.element_str.Length; i++)
+            for (int i = 0; i < Constants.Core.element_type_nr; i++)
             {
                 description.AppendLine(LocalizedTextManager.getText("$base_element_" + i + "$"));
                 value.AppendLine(base_elements[i] + "%");
@@ -306,7 +306,7 @@ namespace Cultivation_Way.Core
         }
         public void set(int[] base_elements, bool normalize = false, int normalize_ceil = 100, bool comp_type = true)
         {
-            for (int i = 0; i < Constants.Core.element_str.Length; i++)
+            for (int i = 0; i < Constants.Core.element_type_nr; i++)
             {
                 this.base_elements[i] = base_elements[i];
             }
