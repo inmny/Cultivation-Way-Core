@@ -10,6 +10,18 @@ namespace Cultivation_Way.Constants
         /// </summary>
         public const bool strict_mode = false;
         /// <summary>
+        /// 调用newCreature创建的生物是否自动创建血脉
+        /// </summary>
+        public const bool new_creature_create_blood = false;
+        /// <summary>
+        /// 功法改良时增加新法术槽的概率
+        /// </summary>
+        public const float new_spell_slot_for_cultibook = 0.2f;
+        /// <summary>
+        /// 创造/改良功法要求的等级
+        /// </summary>
+        public const int create_cultibook_every_level = 5;
+        /// <summary>
         /// 功法锁定线(历史最大人数)
         /// </summary>
         public const int cultibook_lock_line = 10000;

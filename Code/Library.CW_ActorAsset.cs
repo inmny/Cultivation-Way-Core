@@ -35,11 +35,11 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 允许的修炼体系
         /// </summary>
-        internal uint allow_cultisys = 0;
+        internal List<CultisysAsset> allowed_cultisys = new();
         /// <summary>
         /// 强制的修炼体系，或关系
         /// </summary>
-        internal uint force_cultisys = 0;
+        internal List<CultisysAsset> force_cultisys = new();
         internal CW_ActorAsset(ActorAsset vanllia_asset)
         {
             this.id = vanllia_asset.id;

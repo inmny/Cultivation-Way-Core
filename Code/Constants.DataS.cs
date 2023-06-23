@@ -11,6 +11,7 @@
         public const string shield = Core.mod_prefix + "shield";
         public const string wakan = Core.mod_prefix + "wakan";
         public const string soul = Core.mod_prefix + "soul";
+        public const string spells = Core.mod_prefix + "spells";
         public readonly static string[] element_list = Core.element_str;
     }
 }

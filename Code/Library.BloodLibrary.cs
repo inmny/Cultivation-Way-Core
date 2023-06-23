@@ -69,5 +69,14 @@ namespace Cultivation_Way.Library
                 }
             }
         }
+        /// <summary>
+        /// 允许查询的id为null或空字符串
+        /// </summary>
+        public override BloodNodeAsset get(string pID)
+        {
+            if (string.IsNullOrEmpty(pID)) return null;
+
+            return base.get(pID);
+        }
     }
 }

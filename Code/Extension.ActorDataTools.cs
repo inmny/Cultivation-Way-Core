@@ -38,7 +38,7 @@ namespace Cultivation_Way.Extension
             return Library.Manager.cultibooks.get(cultibook_id);
         }
         /// <summary>
-        /// 设置修炼功法
+        /// 设置修炼功法, 自动增加/减少 新/旧修炼功法的引用计数
         /// </summary>
         public static void set_cultibook(this ActorData data, Cultibook cultibook)
         {
@@ -59,6 +59,30 @@ namespace Cultivation_Way.Extension
                 data.get(Library.Manager.cultisys.list[i].id, out result[i], -1);
             }
             return result;
+        }
+        /// <summary>
+        /// 读取所有法术
+        /// </summary>
+        /// <returns>读取所有法术的集合的拷贝</returns>
+        public static HashSet<string> get_spells(this ActorData data)
+        {
+            return data.read_obj<HashSet<string>>(DataS.spells);
+        }
+        /// <summary>
+        /// 写入一个法术集合
+        /// </summary>
+        public static void set_spells(this ActorData data, HashSet<string> spells)
+        {
+            data.write_obj(DataS.spells, spells);
+        }
+        /// <summary>
+        /// 添加一个法术
+        /// </summary>
+        public static void add_spell(this ActorData data, string spell)
+        {
+            HashSet<string> curr_spells = data.get_spells();
+            curr_spells.Add(spell);
+            data.write_obj(DataS.spells, curr_spells);
         }
         /// <summary>
         /// 读取所有血脉节点

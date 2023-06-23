@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Cultivation_Way.Core;
+using System;
+using System.Runtime.InteropServices.WindowsRuntime;
+
 namespace Cultivation_Way.Library
 {
     public class Cultibook : Asset
@@ -20,6 +23,10 @@ namespace Cultivation_Way.Library
         /// </summary>
         public string editor_name = "";
         /// <summary>
+        /// 功法等级
+        /// </summary>
+        public int level = 1;
+        /// <summary>
         /// 属性加成
         /// </summary>
         public BaseStats bonus_stats = new();
@@ -35,6 +42,23 @@ namespace Cultivation_Way.Library
         /// 历史最大使用人数
         /// </summary>
         public int max_users { get; internal set; }
+        /// <summary>
+        /// 从from深拷贝基础数据（除使用人数与id)
+        /// </summary>
+        public void copy_from(Cultibook from, bool with_spells = true)
+        {
+            name = from.name;
+            description = from.description;
+            author_name = from.author_name;
+            editor_name = from.editor_name;
+            level = from.level;
+            bonus_stats.mergeStats(from.bonus_stats);
+            if (with_spells)
+            {
+                spells = new string[from.spells.Length];
+                from.spells.CopyTo(spells, 0);
+            }
+        }
         /// <summary>
         /// 减少使用人数
         /// </summary>
@@ -81,6 +105,15 @@ namespace Cultivation_Way.Library
         public override void post_init()
         {
             base.post_init();
+        }
+        /// <summary>
+        /// 允许查询的id为null或空字符串
+        /// </summary>
+        public override Cultibook get(string pID)
+        {
+            if (string.IsNullOrEmpty(pID)) return null;
+
+            return base.get(pID);
         }
     }
 }

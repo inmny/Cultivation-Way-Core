@@ -42,7 +42,7 @@ namespace Cultivation_Way.Library
         /// 能否升级判定
         /// </summary>
         [NonSerialized]
-        public CultisysJudge level_up;
+        public CultisysJudge can_levelup;
         /// <summary>
         /// 获取额外的属性加成数据
         /// </summary>
@@ -58,6 +58,11 @@ namespace Cultivation_Way.Library
         /// </summary>
         [NonSerialized]
         public CultisysCheck max_progress;
+        /// <summary>
+        /// [选填]额外升级奖励/惩罚, 返回值无所谓, 参数level为升级后的等级
+        /// </summary>
+        [NonSerialized]
+        public CultisysCheck external_levelup_bonus;
         public CultisysAsset(string id, CultisysType type, int max_level)
         {
             this.id = id;
@@ -93,7 +98,7 @@ namespace Cultivation_Way.Library
         public override CultisysAsset add(CultisysAsset pAsset)
         {
             if (pAsset.allow == null) Logger.Warn($"Cultisys Asset {pAsset.id}: allow is null");
-            if (pAsset.level_up == null) Logger.Warn($"Cultisys Asset {pAsset.id}: level_up is null");
+            if (pAsset.can_levelup == null) Logger.Warn($"Cultisys Asset {pAsset.id}: level_up is null");
             if (pAsset.curr_progress == null) Logger.Warn($"Cultisys Asset {pAsset.id}: curr_progress is null");
             if (pAsset.max_progress == null) Logger.Warn($"Cultisys Asset {pAsset.id}: max_progress is null");
             if (pAsset.sprite_path == null) Logger.Warn($"Cultisys Asset {pAsset.id}: sprite_path is null");
@@ -108,7 +113,7 @@ namespace Cultivation_Way.Library
             foreach (CultisysAsset cultisys in this.list)
             {
                 cultisys.allow ??= (actor, culti) => false;
-                cultisys.level_up ??= (actor, culti) => false;
+                cultisys.can_levelup ??= (actor, culti) => false;
                 cultisys.curr_progress ??= (actor, culti, level) => 0;
                 cultisys.max_progress ??= (actor, culti, level) => 1;
                 cultisys.sprite_path ??= "ui/Icons/iconCultiSys";
