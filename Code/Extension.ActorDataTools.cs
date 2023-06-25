@@ -48,6 +48,15 @@ namespace Cultivation_Way.Extension
             data.set(DataS.cultibook_id, cultibook.id);
         }
         /// <summary>
+        /// 清除修炼功法, 自动减少旧修炼功法的引用计数
+        /// </summary>
+        public static void clear_cultibook(this ActorData data)
+        {
+            Cultibook old_cultibook = data.get_cultibook();
+            old_cultibook?.decrease();
+            data.removeString(DataS.cultibook_id);
+        }
+        /// <summary>
         /// 读取所有修炼体系的等级
         /// </summary>
         /// <returns>所有修炼体系等级的数组的拷贝</returns>
@@ -178,6 +187,21 @@ namespace Cultivation_Way.Extension
 
             data.write_obj(DataS.blood_nodes, blood_nodes);
             data.set(DataS.main_blood_id, blood_nodes.Aggregate((max, cur) => max.Value > cur.Value ? max : cur).Key);
+        }
+        /// <summary>
+        /// 清除所有血脉
+        /// </summary>
+        internal static void clear_blood_nodes(this ActorData data)
+        {
+            Dictionary<string, float> old_blood_nodes = data.get_blood_nodes();
+            if (old_blood_nodes == null || old_blood_nodes.Keys.Count == 0) return;
+
+            foreach(string key in old_blood_nodes.Keys)
+            {
+                Library.Manager.bloods.get(key).decrease();
+            }
+            data.removeString(DataS.blood_nodes);
+            data.removeString(DataS.main_blood_id);
         }
         /// <summary>
         /// 读取占优血脉节点id

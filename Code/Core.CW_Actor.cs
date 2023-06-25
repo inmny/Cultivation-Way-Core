@@ -41,6 +41,8 @@ namespace Cultivation_Way.Core
             {
                 blood.ancestor_data = Newtonsoft.Json.JsonConvert.DeserializeObject<ActorData>(Newtonsoft.Json.JsonConvert.SerializeObject(this.data));
             }
+            data.clear_blood_nodes();
+            data.clear_cultibook();
         }
         /// <summary>
         /// 添加状态并返回状态数据, 如果已经存在则返回存在的状态数据
