@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Cultivation_Way.Core;
+using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Cultivation_Way
@@ -7,11 +8,13 @@ namespace Cultivation_Way
     {
         public static Factory.Factory<Core.CW_Element> element_factory;
         public static Factory.NoClearFactory<BinaryFormatter> formatter_factory;
+        public static Factory.NoClearFactory<List<CW_StatusEffectData>> status_list_factory;
         private static readonly List<Factory.BaseFactory> factories = new();
         internal static void init()
         {
             add_factory(element_factory = new Factory.Factory<Core.CW_Element>());
             add_factory(formatter_factory = new Factory.NoClearFactory<BinaryFormatter>());
+            add_factory(status_list_factory = new Factory.NoClearFactory<List<CW_StatusEffectData>>());
         }
         public static void add_factory(Factory.BaseFactory factory)
         {

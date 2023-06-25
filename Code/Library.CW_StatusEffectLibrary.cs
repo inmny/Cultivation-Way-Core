@@ -7,7 +7,10 @@ namespace Cultivation_Way.Library
     public class CW_StatusEffect : Asset
     {
         /// <summary>
-        /// 动画id
+        /// 动画id, 生成动画时参数如下
+        /// <para>src_vec=from?.position, dst_vec=to.position</para>
+        /// <para>src_obj=from, dst_obj=to</para>
+        /// <para>scale=1</para>
         /// </summary>
         public string anim_id;
         /// <summary>

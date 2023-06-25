@@ -2,6 +2,8 @@
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Cultivation_Way.Core
 {
@@ -24,10 +26,105 @@ namespace Cultivation_Way.Core
         /// data中的法术的拷贝, 用于快速访问
         /// </summary>
         private HashSet<string> __data_spells = new();
+        /// <summary>
+        /// 状态数据
+        /// </summary>
         internal Dictionary<string, CW_StatusEffectData> statuses;
+        /// <summary>
+        /// 添加状态并返回状态数据, 如果已经存在则返回存在的状态数据
+        /// <para>仅作用于模组内状态效果</para>
+        /// </summary>
+        /// <param name="status_id">添加的状态Asset的id</param>
+        /// <param name="from">状态来源</param>
+        /// <param name="rewrite_effect_time">重写状态持续时间</param>
+        /// <param name="as_id">加入状态表的key</param>
+        /// <returns></returns>
+        public CW_StatusEffectData add_status(string status_id, BaseSimObject from = null, float rewrite_effect_time = -1, string as_id = null)
+        {
+            CW_StatusEffect status_asset = Library.Manager.statuses.get(status_id);
+            if (status_asset == null) return null;
+            if (status_asset.opposite_statuses.Any(lastX => has_status(lastX))) return null;
+            as_id ??= status_id;
+            statuses ??= new();
 
-        private readonly static List<string> __status_effects_to_remove = new();
-        private readonly static List<CW_StatusEffectData> __status_effects_to_update = new();
+            if (statuses.ContainsKey(as_id)) return statuses[as_id];
+            CW_StatusEffectData status = new(status_asset, from)
+            {
+                id = as_id
+            };
+            if (rewrite_effect_time > 0) status.left_time = rewrite_effect_time;
+
+            if (!string.IsNullOrEmpty(status_asset.anim_id))
+            {
+                status.anim = Animation.EffectManager.instance.spawn_anim(status_asset.anim_id, from == null ? Vector2.zero : from.currentPosition, currentPosition, from, this);
+            }
+
+            statuses.Add(as_id, status);
+            status_asset.action_on_get?.Invoke(status, from, this);
+
+            return status;
+        }
+        /// <summary>
+        /// 拓展后hasAnyStatusEffect, 直接调用
+        /// </summary>
+        public bool has_any_status_effect()
+        {
+            return (activeStatus_dict != null && activeStatus_dict.Count > 0) || (statuses != null && statuses.Count > 0);
+        }
+        /// <summary>
+        /// 拓展后的hasStatus, 直接调用
+        /// </summary>
+        public bool has_status(string id)
+        {
+            return has_any_status_effect() && (hasStatus(id) || statuses.ContainsKey(id));
+        }
+        /// <summary>
+        /// 对于模组内状态, 则跳转至模组内状态添加
+        /// </summary>
+        public override void addStatusEffect(string pID, float pOverrideTimer = -1)
+        {
+            if(Library.Manager.statuses.get(pID) == null)
+            {
+                base.addStatusEffect(pID, pOverrideTimer);
+                return;
+            }
+            add_status(pID, null, pOverrideTimer, null);
+        }
+        /// <summary>
+        /// 一同更新模组状态效果
+        /// </summary>
+        /// <param name="pElapsed"></param>
+        public override void updateStatusEffects(float pElapsed)
+        {
+            if (statuses == null || statuses.Count == 0)
+            {
+                base.updateStatusEffects(pElapsed);
+                return;
+            }
+            List<CW_StatusEffectData> list = Factories.status_list_factory.get_next();
+            list.AddRange(statuses.Values);
+            foreach(CW_StatusEffectData status in list)
+            {
+                if (status.finished) continue;
+                if (status.status_asset.action_on_update!=null && status._update_action_timer <= 0)
+                {
+                    status.status_asset.action_on_update(status, status.source, this);
+                    status._update_action_timer = status.status_asset.action_interval;
+                }
+                status.update_timer(pElapsed);
+            }
+            foreach(CW_StatusEffectData status in list)
+            {
+                if (status.finished)
+                {
+                    status.status_asset.action_on_end?.Invoke(status, status.source, this);
+                    statuses.Remove(status.id);
+                }
+            }
+            list.Clear();
+            base.updateStatusEffects(pElapsed);
+            return;
+        }
         /// <summary>
         /// 每月更新，用于生命恢复等
         /// </summary>
@@ -56,7 +153,7 @@ namespace Cultivation_Way.Core
             attackedBy = null;
             CW_AttackType attack_type = (CW_AttackType)pAttackType;
             
-            if ((pSkipIfShake && shake_active) || data.health <=0 || hasStatus("invincible")) return;
+            if ((pSkipIfShake && shake_active) || data.health <=0 || has_status("invincible")) return;
             #region 攻击音效
             if (attack_type == CW_AttackType.Weapon)
             {
@@ -93,22 +190,24 @@ namespace Cultivation_Way.Core
             }
             foreach (string text in data.s_traits_ids)
             {
-                GetHitAction action_get_hit = AssetManager.traits.get(text).action_get_hit;
-                if (action_get_hit != null)
-                {
-                    _ = action_get_hit(this, pAttacker, currentTile);
-                }
+                AssetManager.traits.get(text).action_get_hit ?.Invoke(this, pAttacker, currentTile);
             }
             if (activeStatus_dict != null)
             {
                 foreach (StatusEffectData statusEffectData in activeStatus_dict.Values)
                 {
-                    GetHitAction action_get_hit2 = statusEffectData.asset.action_get_hit;
-                    if (action_get_hit2 != null)
-                    {
-                        action_get_hit2(this, pAttacker, currentTile);
-                    }
+                    statusEffectData.asset.action_get_hit?.Invoke(this, pAttacker, currentTile);
                 }
+            }
+            if (statuses != null)
+            {
+                List<CW_StatusEffectData> statuses_list = Factories.status_list_factory.get_next();
+                statuses_list.AddRange(statuses.Values);
+                foreach (CW_StatusEffectData statusEffectData2 in statuses_list)
+                {
+                    statusEffectData2.status_asset.action_on_get_hit?.Invoke(statusEffectData2, pAttacker, this);
+                }
+                statuses_list.Clear();
             }
             GetHitAction action_get_hit3 = asset.action_get_hit;
             if (action_get_hit3 == null)

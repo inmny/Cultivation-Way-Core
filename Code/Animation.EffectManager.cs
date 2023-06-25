@@ -94,7 +94,7 @@ namespace Cultivation_Way.Animation
             if (controllers_dict.TryGetValue(id, out controller)) return controller;
             return null;
         }
-        public SpriteAnimation spawn_anim(string id, WorldTile src_tile, WorldTile dst_tile = null, BaseSimObject src_obj = null, BaseSimObject dst_obj = null, float scale = 1.0f)
+        public SpriteAnimation spawn_anim(string id, WorldTile src_tile, WorldTile dst_tile, BaseSimObject src_obj = null, BaseSimObject dst_obj = null, float scale = 1.0f)
         {
             EffectController controller;
             if (controllers_dict.TryGetValue(id, out controller))

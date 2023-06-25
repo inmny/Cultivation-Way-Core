@@ -34,22 +34,9 @@ namespace Cultivation_Way.Content.HarmonySpace
                 actor.check_level_up(Content_Constants.immortal_id);
                 return; 
             }
-            
-            float middle_wakan_line = max_wakan * Content_Constants.immortal_max_wakan_regen;
-            if(wakan < middle_wakan_line)
-            {
-                if(middle_wakan_line - wakan > actor.stats[Constants.CW_S.wakan_regen])
-                {
-                    wakan += actor.stats[Constants.CW_S.wakan_regen];
-                }
-                else
-                {
-                    wakan = middle_wakan_line;
-                }
-            }
 
             float culti_wakan = actor.cw_asset.culti_velo * (1+actor.stats[Constants.CW_S.mod_cultivelo]) * Content_Constants.immortal_base_cultivelo * actor.data.get_element().get_type().rarity;
-            if (wakan + culti_wakan > max_wakan)
+            if (wakan + culti_wakan >= max_wakan)
             {
                 wakan = max_wakan;
                 actor.check_level_up(Content_Constants.immortal_id);

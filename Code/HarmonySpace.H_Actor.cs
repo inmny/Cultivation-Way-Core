@@ -169,7 +169,22 @@ namespace Cultivation_Way.HarmonySpace
             return;
         }
         #endregion
-
+        #region 实现状态效果相关函数的替换跳转
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Actor), nameof(Actor.hasStatus))]
+        public static bool hasStatus_prefix(Actor __instance, string pID, ref bool __result)
+        {
+            __result = ((CW_Actor)__instance).has_status(pID);
+            return false;
+        }
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Actor), nameof(Actor.hasAnyStatusEffect))]
+        public static bool hasAnyStatusEffect_prefix(Actor __instance, ref bool __result)
+        {
+            __result = ((CW_Actor)__instance).has_any_status_effect();
+            return false;
+        }
+        #endregion
         [HarmonyPostfix]
         [HarmonyPatch(typeof(BatchActors), nameof(BatchActors.createJobs))]
         public static void createJobs_patch(BatchActors __instance)
