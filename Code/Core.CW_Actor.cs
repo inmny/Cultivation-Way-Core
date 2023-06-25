@@ -32,6 +32,17 @@ namespace Cultivation_Way.Core
         /// </summary>
         internal Dictionary<string, CW_StatusEffectData> statuses;
         /// <summary>
+        /// 死后保留需要保留的数据
+        /// </summary>
+        internal void leave_data()
+        {
+            BloodNodeAsset blood = data.get_main_blood();
+            if(blood != null && blood.id == this.data.id && blood.ancestor_data == this.data)
+            {
+                blood.ancestor_data = Newtonsoft.Json.JsonConvert.DeserializeObject<ActorData>(Newtonsoft.Json.JsonConvert.SerializeObject(this.data));
+            }
+        }
+        /// <summary>
         /// 添加状态并返回状态数据, 如果已经存在则返回存在的状态数据
         /// <para>仅作用于模组内状态效果</para>
         /// </summary>
@@ -356,7 +367,7 @@ namespace Cultivation_Way.Core
                     else return;
                 }
                 CultisysAsset cultisys = Library.Manager.cultisys.get(cultisys_id);
-                if(level >= cultisys.max_level) return;
+                if(level >= cultisys.max_level -1) return;
 
                 if (cultisys.can_levelup(this, cultisys)) __level_up_and_get_bonus(cultisys, level);
 
@@ -370,7 +381,7 @@ namespace Cultivation_Way.Core
                     if (cultisys_levels[i] < 0) continue;
                     CultisysAsset cultisys = Library.Manager.cultisys.list[i];
 
-                    if (cultisys_levels[i] >= cultisys.max_level) continue;
+                    if (cultisys_levels[i] >= cultisys.max_level -1) continue;
 
                     if (cultisys.can_levelup(this, cultisys)) __level_up_and_get_bonus(cultisys, cultisys_levels[i]);
                 }

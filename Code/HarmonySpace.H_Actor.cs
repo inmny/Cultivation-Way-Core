@@ -199,6 +199,14 @@ namespace Cultivation_Way.HarmonySpace
             return false;
         }
         #endregion
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Actor), nameof(Actor.killHimself))]
+        public static void killHimself_patch(Actor __instance)
+        {
+            ((CW_Actor)__instance).leave_data();
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(BatchActors), nameof(BatchActors.createJobs))]
         public static void createJobs_patch(BatchActors __instance)

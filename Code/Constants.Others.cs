@@ -16,7 +16,7 @@ namespace Cultivation_Way.Constants
         /// <summary>
         /// 调用newCreature创建的生物是否自动创建血脉
         /// </summary>
-        public const bool new_creature_create_blood = false;
+        public const bool new_creature_create_blood = true;
         /// <summary>
         /// 功法改良时增加新法术槽的概率
         /// </summary>

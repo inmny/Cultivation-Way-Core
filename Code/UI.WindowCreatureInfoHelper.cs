@@ -325,11 +325,20 @@ namespace Cultivation_Way.UI
 
             tooltip.name.text = "血脉";
             StringBuilder str_builder = new();
-            str_builder.AppendLine($"{main_blood.ancestor_data.name}({(int)(blood_nodes[main_blood.id]*100)}%)");
+            str_builder.AppendLine($"占优血脉\t {main_blood.ancestor_data.name}({(int)(blood_nodes[main_blood.id]*100)}%)");
             str_builder.AppendLine($"{main_blood.alive_descendants_count}/{main_blood.max_descendants_count}");
+            foreach(string blood_id in blood_nodes.Keys)
+            {
+                if (blood_id == main_blood.id) continue;
+                BloodNodeAsset blood = Library.Manager.bloods.get(blood_id);
+                str_builder.AppendLine($"{blood.ancestor_data.name}({(int)(blood_nodes[blood_id] * 100)}%)");
+            }
             tooltip.addDescription(str_builder.ToString());
 
-            tooltip.showBaseStats(main_blood.ancestor_stats);
+            if (CW_Core.mod_state.editor_inmny)
+            {
+                //tooltip.showBaseStats(main_blood.ancestor_stats);
+            }
         }
         public static void OnEnable_postfix(WindowCreatureInfo window_creature_info)
         {
