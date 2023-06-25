@@ -95,6 +95,7 @@ namespace Cultivation_Way
             if (state.update_nr % 256 == 0)
             {
                 Factories.recycle_items();
+                state.spell_manager.update_per_while();
                 state.library_manager.update_per_while();
                 if (state.update_nr % (256 * 1024) == 0)
                 {

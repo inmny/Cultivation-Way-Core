@@ -67,5 +67,16 @@ namespace Cultivation_Way
                 empty_args.Push(arg_to_deal);
             }
         }
+        /// <summary>
+        /// 内存回收
+        /// </summary>
+        public void update_per_while()
+        {
+            int target_size = empty_args.Count < 100 ? empty_args.Count : (empty_args.Count * 4 /5);
+            while(empty_args.Count > target_size)
+            {
+                empty_args.Pop();
+            }
+        }
     }
 }
