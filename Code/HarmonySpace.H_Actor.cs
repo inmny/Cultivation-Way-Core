@@ -8,6 +8,7 @@ using Cultivation_Way.Library;
 using Cultivation_Way.Core;
 using UnityEngine;
 using Cultivation_Way.UI;
+using Cultivation_Way.Constants;
 
 namespace Cultivation_Way.HarmonySpace
 {
@@ -80,7 +81,7 @@ namespace Cultivation_Way.HarmonySpace
          * 1. <see cref="ActorManager.createNewUnit(string, WorldTile, float)"/> 一般创建
          * 2. <see cref="ActorManager.spawnPopPoint(ActorData, WorldTile, City)"/> 城市人口出生
          * 3. <see cref="ActorManager.loadObject(ActorData, Actor)"/> 读档
-         * 此处将两个函数均拦截, 操作与原版操作一致，但将Actor替换成经复制得到的CW_Actor
+         * 此处将两个函数均拦截, 操作与原版操作基本一致，但将Actor替换成经复制得到的CW_Actor
          * 以外，调用了cw_newCreature函数，用于初始化修炼相关的数据
          */
         [HarmonyPrefix]
@@ -138,7 +139,19 @@ namespace Cultivation_Way.HarmonySpace
                 }
                 actor.data.set_blood_nodes(blood_nodes);
             }
-            
+            // 传承功法
+            actor.data.get(DataS.cultibook_id, out string cultibook_id, "");
+            if (!string.IsNullOrEmpty(cultibook_id))
+            {
+                if(Library.Manager.cultibooks.contains(cultibook_id))
+                {
+                    Library.Manager.cultibooks.get(cultibook_id).increase();
+                }
+                else
+                {
+                    actor.data.set(DataS.cultibook_id, "");
+                }
+            }
 
 
             actor.cw_asset = Library.Manager.actors.get(pData.asset_id);

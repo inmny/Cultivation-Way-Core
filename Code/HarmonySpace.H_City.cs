@@ -9,6 +9,7 @@ using ai;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
+using Cultivation_Way.Constants;
 
 namespace Cultivation_Way.HarmonySpace
 {
@@ -144,6 +145,21 @@ namespace Cultivation_Way.HarmonySpace
             else
             {
                 child_data.set_element(CW_Element.get_middle(parent_1.data.get_element(), parent_2.data.get_element()));
+            }
+            // 准备传承功法
+            Cultibook parent_1_cultibook = parent_1.data.get_cultibook();
+            Cultibook parent_2_cultibook = parent_2.data.get_cultibook();
+            if (parent_1_cultibook != null && parent_2_cultibook != null)
+            {
+                child_data.set(DataS.cultibook_id, parent_1_cultibook.level >= parent_2_cultibook.level ? parent_1_cultibook.id : parent_2_cultibook.id);
+            }
+            else if (parent_1_cultibook != null)
+            {
+                child_data.set(DataS.cultibook_id, parent_1_cultibook.id);
+            }
+            else if (parent_2_cultibook != null)
+            {
+                child_data.set(DataS.cultibook_id, parent_2_cultibook.id);
             }
 
             return asset;

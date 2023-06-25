@@ -13,6 +13,10 @@ namespace Cultivation_Way.Library
 
             return ret;
         }
+        public virtual bool contains(string pID)
+        {
+            return dict.ContainsKey(pID);
+        }
     }
     /// <summary>
     /// 动态库, 每隔一段时间(不确定长度)调用一次
