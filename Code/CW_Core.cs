@@ -19,6 +19,7 @@ namespace Cultivation_Way
             internal long update_nr;
             internal ModDeclaration.Info mod_info;
             internal List<Addon.CW_Addon> addons;
+            internal SpellManager spell_manager;
             public Library.Manager library_manager;
             public CW_MapChunkManager map_chunk_manager;
         };
@@ -35,6 +36,7 @@ namespace Cultivation_Way
             update_nr = 0,
             mod_info = null,
             addons = new(),
+            spell_manager = null,
             library_manager = null,
             map_chunk_manager = null
         };
@@ -89,6 +91,7 @@ namespace Cultivation_Way
             }
 
             state.update_nr++;
+            state.spell_manager.deal_all();
             if (state.update_nr % 256 == 0)
             {
                 Factories.recycle_items();
@@ -111,7 +114,7 @@ namespace Cultivation_Way
                 }
             }
 
-
+            state.spell_manager = new();
             state.library_manager = new();
             state.map_chunk_manager = new();
 

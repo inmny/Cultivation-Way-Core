@@ -44,6 +44,28 @@ namespace Cultivation_Way.Core
             data.clear_blood_nodes();
             data.clear_cultibook();
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool cast_spell(string spell_id, BaseSimObject target, WorldTile target_tile)
+        {
+            return cast_spell(Library.Manager.spells.get(spell_id), target, target_tile);
+        }
+        public bool cast_spell(CW_SpellAsset spell, BaseSimObject target, WorldTile target_tile)
+        {
+            if (spell.target_type == SpellTargetType.TILE && target_tile == null) return false;
+
+            if (spell.target_type == SpellTargetType.ACTOR && (target == null || target.objectType == MapObjectType.Building)) return false;
+            if (spell.target_type == SpellTargetType.BUILDING && (target == null || target.objectType == MapObjectType.Actor)) return false;
+
+            bool is_enemy = kingdom == null || kingdom.isEnemy(target.kingdom);
+
+            if ((spell.target_camp == SpellTargetCamp.ALIAS && is_enemy) || (spell.target_camp == SpellTargetCamp.ENEMY && !is_enemy)) return false;
+
+            float cost = spell.spell_cost_action(spell, this);
+            if (cost < 0) return false;
+
+            CW_Core.mod_state.spell_manager.enqueue_spell(spell, this, target, target_tile, cost);
+            return true;
+        }
         /// <summary>
         /// 添加状态并返回状态数据, 如果已经存在则返回存在的状态数据
         /// <para>仅作用于模组内状态效果</para>
@@ -230,13 +252,9 @@ namespace Cultivation_Way.Core
             if (__data_spells.Count > 0)
             {
                 CW_SpellAsset spell = Library.Manager.spells.get(__data_spells.GetRandom());
-                if(pAttacker!=null && spell.can_trigger(SpellTriggerTag.NAMED_DEFEND))
+                if((pAttacker!=null && spell.can_trigger(SpellTriggerTag.NAMED_DEFEND)) || (pAttacker == null && spell.can_trigger(SpellTriggerTag.UNNAMED_DEFEND)))
                 {
-                    // TODO 释放法术
-                }
-                else if(pAttacker == null && spell.can_trigger(SpellTriggerTag.UNNAMED_DEFEND))
-                {
-                    // TODO 释放法术
+                    cast_spell(spell, pAttacker, pAttacker?.currentTile);
                 }
             }
             asset.action_get_hit?.Invoke(this, pAttacker, currentTile);

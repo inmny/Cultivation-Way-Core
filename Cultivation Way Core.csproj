@@ -3734,6 +3734,7 @@
     <Compile Include="Code\Others.DataStructs.cs" />
     <Compile Include="Code\Others.Delegates.cs" />
     <Compile Include="Code\Others.FastVisit.cs" />
+    <Compile Include="Code\SpellManager.cs" />
     <Compile Include="Code\UI.Prefabs.cs" />
     <Compile Include="Code\UI.WindowCreatureInfoHelper.cs" />
     <Compile Include="Code\Utils.GeneralHelper.cs" />
