@@ -171,17 +171,31 @@ namespace Cultivation_Way.HarmonySpace
         #endregion
         #region 实现状态效果相关函数的替换跳转
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(Actor), nameof(Actor.hasStatus))]
-        public static bool hasStatus_prefix(Actor __instance, string pID, ref bool __result)
+        [HarmonyPatch(typeof(BaseSimObject), nameof(BaseSimObject.hasStatus))]
+        public static bool hasStatus_prefix(BaseSimObject __instance, string pID, ref bool __result)
         {
-            __result = ((CW_Actor)__instance).has_status(pID);
+            if(__instance.a != null)
+            {
+                __result = ((CW_Actor)__instance.a).has_status(pID);
+            }
+            else if(__instance.b != null)
+            {
+                return true;
+            }
             return false;
         }
         [HarmonyPrefix]
-        [HarmonyPatch(typeof(Actor), nameof(Actor.hasAnyStatusEffect))]
+        [HarmonyPatch(typeof(BaseSimObject), nameof(BaseSimObject.hasAnyStatusEffect))]
         public static bool hasAnyStatusEffect_prefix(Actor __instance, ref bool __result)
         {
-            __result = ((CW_Actor)__instance).has_any_status_effect();
+            if (__instance.a != null)
+            {
+                __result = ((CW_Actor)__instance.a).has_any_status_effect();
+            }
+            else if (__instance.b != null)
+            {
+                return true;
+            }
             return false;
         }
         #endregion

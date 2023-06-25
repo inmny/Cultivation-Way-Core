@@ -98,20 +98,23 @@ namespace Cultivation_Way.Extension
         public static void set_blood_nodes(this ActorData data, Dictionary<string, float> blood_nodes)
         {
             Dictionary<string, float> old_blood_nodes = data.get_blood_nodes();
-
-            foreach (string key in old_blood_nodes.Keys)
+            if (old_blood_nodes != null)
             {
-                Library.Manager.bloods.get(key).decrease();
+                foreach (string key in old_blood_nodes.Keys)
+                {
+                    Library.Manager.bloods.get(key).decrease();
+                }
             }
             /* 删除低占比血脉, 并normalize至其和为1 */
+            List<string> keys = blood_nodes.Keys.ToList();
+
             float sum_at_first = 0;
-            foreach (string key in blood_nodes.Keys)
+            foreach (string key in keys)
             {
                 sum_at_first += blood_nodes[key];
             }
             float curr_sum = sum_at_first;
 
-            List<string> keys = blood_nodes.Keys.ToList();
             
             foreach (string key in keys)
             {
@@ -120,17 +123,23 @@ namespace Cultivation_Way.Extension
                 curr_sum -= blood_nodes[key];
                 blood_nodes.Remove(key);
             }
-            foreach (string key in blood_nodes.Keys)
+            keys.Clear();
+            keys.AddRange(blood_nodes.Keys);
+            foreach (string key in keys)
             {
                 blood_nodes[key] /= curr_sum;
             }
 
 
-            foreach (string key in blood_nodes.Keys)
+            foreach (string key in keys)
             {
                 Library.Manager.bloods.get(key).increase();
             }
 
+            foreach (string key in keys)
+            {
+                Logger.Log($"{key}: {blood_nodes[key]}");
+            }
             data.write_obj(DataS.blood_nodes, blood_nodes);
             data.set(DataS.main_blood_id, blood_nodes.Aggregate((max, cur) => max.Value > cur.Value ? max : cur).Key);
         }
@@ -140,17 +149,18 @@ namespace Cultivation_Way.Extension
         internal static void set_blood_nodes_only_save(this ActorData data, Dictionary<string, float> blood_nodes)
         {
             Dictionary<string, float> old_blood_nodes = data.get_blood_nodes();
-            if (old_blood_nodes.Keys.Count > 0 && Constants.Others.strict_mode) throw new System.Exception("only_save should not be true when old blood nodes exist");
+            if (old_blood_nodes!=null && old_blood_nodes.Keys.Count > 0 && Constants.Others.strict_mode) throw new System.Exception("only_save should not be true when old blood nodes exist");
 
             /* 删除低占比血脉, 并normalize至其和为1 */
+
+            List<string> keys = blood_nodes.Keys.ToList();
+
             float sum_at_first = 0;
-            foreach (string key in blood_nodes.Keys)
+            foreach (string key in keys)
             {
                 sum_at_first += blood_nodes[key];
             }
             float curr_sum = sum_at_first;
-
-            List<string> keys = blood_nodes.Keys.ToList();
 
             foreach (string key in keys)
             {
@@ -159,7 +169,9 @@ namespace Cultivation_Way.Extension
                 curr_sum -= blood_nodes[key];
                 blood_nodes.Remove(key);
             }
-            foreach (string key in blood_nodes.Keys)
+            keys.Clear();
+            keys.AddRange(blood_nodes.Keys);
+            foreach (string key in keys)
             {
                 blood_nodes[key] /= curr_sum;
             }

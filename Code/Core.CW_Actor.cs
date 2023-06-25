@@ -3,6 +3,7 @@ using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace Cultivation_Way.Core
@@ -67,6 +68,7 @@ namespace Cultivation_Way.Core
         /// <summary>
         /// 拓展后hasAnyStatusEffect, 直接调用
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool has_any_status_effect()
         {
             return (activeStatus_dict != null && activeStatus_dict.Count > 0) || (statuses != null && statuses.Count > 0);
@@ -74,13 +76,15 @@ namespace Cultivation_Way.Core
         /// <summary>
         /// 拓展后的hasStatus, 直接调用
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool has_status(string id)
         {
-            return has_any_status_effect() && (hasStatus(id) || statuses.ContainsKey(id));
+            return (activeStatus_dict != null && activeStatus_dict.Count > 0 && activeStatus_dict.ContainsKey(id)) || (statuses != null && statuses.Count > 0 && statuses.ContainsKey(id));
         }
         /// <summary>
         /// 对于模组内状态, 则跳转至模组内状态添加
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void addStatusEffect(string pID, float pOverrideTimer = -1)
         {
             if(Library.Manager.statuses.get(pID) == null)
@@ -90,6 +94,7 @@ namespace Cultivation_Way.Core
             }
             add_status(pID, null, pOverrideTimer, null);
         }
+        
         /// <summary>
         /// 一同更新模组状态效果
         /// </summary>
@@ -209,12 +214,7 @@ namespace Cultivation_Way.Core
                 }
                 statuses_list.Clear();
             }
-            GetHitAction action_get_hit3 = asset.action_get_hit;
-            if (action_get_hit3 == null)
-            {
-                return;
-            }
-            action_get_hit3(this, pAttacker, currentTile);
+            asset.action_get_hit?.Invoke(this, pAttacker, currentTile);
             #endregion
 
             if (pDamage < 1)
@@ -279,8 +279,18 @@ namespace Cultivation_Way.Core
         /// </summary>
         public void create_blood()
         {
-            Dictionary<string, float> curr_bloods = data.get_blood_nodes();
-            BloodNodeAsset main_blood = data.get_main_blood();
+            if (data.get_main_blood_id() == data.id) return;
+
+            BloodNodeAsset blood_asset = new()
+            {
+                id = data.id,
+                ancestor_data = data
+            };
+            Library.Manager.bloods.add(blood_asset);
+            data.set_blood_nodes(new Dictionary<string, float>
+            {
+                { blood_asset.id, 1f }
+            });
 
             setStatsDirty();
         }
@@ -323,6 +333,7 @@ namespace Cultivation_Way.Core
         /// <summary>
         /// 学会法术
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void learn_spell(CW_SpellAsset spell)
         {
             if (__data_spells.Contains(spell.id)) return;
@@ -370,6 +381,7 @@ namespace Cultivation_Way.Core
         /// </summary>
         /// <param name="cultisys">升级的修炼体系</param>
         /// <param name="curr_level">升级前的等级</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void __level_up_and_get_bonus(CultisysAsset cultisys, int curr_level)
         {
             curr_level++;
@@ -387,9 +399,10 @@ namespace Cultivation_Way.Core
         /// <param name="cultisys">升级的修炼体系</param>
         /// <param name="curr_level">升级后的等级</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool __can_create_blood_on_levelup(CultisysAsset cultisys, int curr_level)
         {
-            return false;
+            return curr_level == cultisys.max_level;
         }
         /// <summary>
         /// 能否在本次升级时创建/改良功法
@@ -397,6 +410,7 @@ namespace Cultivation_Way.Core
         /// <param name="cultisys">升级的修炼体系</param>
         /// <param name="curr_level">升级后的等级</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool __can_create_cultibook_on_levelup(CultisysAsset cultisys, int curr_level)
         {
             return curr_level % 5 == 1;

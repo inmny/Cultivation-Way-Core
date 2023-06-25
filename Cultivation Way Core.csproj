@@ -251,8 +251,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assemblies\Assembly-CSharp.dll" />
+    <Content Include="Assemblies\Microsoft.Bcl.AsyncInterfaces.dll" />
+    <Content Include="Assemblies\System.Buffers.dll" />
     <Content Include="Assemblies\System.Memory.dll" />
+    <Content Include="Assemblies\System.Numerics.Vectors.dll" />
+    <Content Include="Assemblies\System.Runtime.CompilerServices.Unsafe.dll" />
+    <Content Include="Assemblies\System.Text.Encodings.Web.dll" />
     <Content Include="Assemblies\System.Text.Json.dll" />
+    <Content Include="Assemblies\System.Threading.Tasks.Extensions.dll" />
+    <Content Include="Assemblies\System.ValueTuple.dll" />
     <Content Include="GameResources\actors\boats\boat_trading_yao\-135%400.png" />
     <Content Include="GameResources\actors\boats\boat_trading_yao\-135%401.png" />
     <Content Include="GameResources\actors\boats\boat_trading_yao\-45%400.png" />

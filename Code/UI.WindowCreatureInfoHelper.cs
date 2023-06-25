@@ -321,6 +321,15 @@ namespace Cultivation_Way.UI
             CW_Actor actor = (CW_Actor)data.actor;
             // 可以确定actor的blood_nodes不为空
             Dictionary<string, float> blood_nodes = actor.data.get_blood_nodes();
+            BloodNodeAsset main_blood = actor.data.get_main_blood();
+
+            tooltip.name.text = "血脉";
+            StringBuilder str_builder = new();
+            str_builder.AppendLine($"{main_blood.ancestor_data.name}({(int)(blood_nodes[main_blood.id]*100)}%)");
+            str_builder.AppendLine($"{main_blood.alive_descendants_count}/{main_blood.max_descendants_count}");
+            tooltip.addDescription(str_builder.ToString());
+
+            tooltip.showBaseStats(main_blood.ancestor_stats);
         }
         public static void OnEnable_postfix(WindowCreatureInfo window_creature_info)
         {
@@ -430,7 +439,7 @@ namespace Cultivation_Way.UI
             blood.gameObject.SetActive(true);
             blood.load(actor.asset.icon, (GameObject obj) =>
             {
-                Tooltip.show(obj, Constants.Core.mod_prefix + "blood", new TooltipData
+                Tooltip.show(obj, Constants.Core.mod_prefix + "blood_nodes", new TooltipData
                 {
                     actor = actor
                 });
