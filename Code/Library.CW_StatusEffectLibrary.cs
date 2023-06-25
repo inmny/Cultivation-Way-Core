@@ -14,6 +14,14 @@ namespace Cultivation_Way.Library
         /// </summary>
         public string anim_id;
         /// <summary>
+        /// 状态图标路径, 从根目录开始
+        /// </summary>
+        public string path_icon = "ui/Icons/iconRage";
+        /// <summary>
+        /// 等级
+        /// </summary>
+        public StatusTier tier = StatusTier.None;
+        /// <summary>
         /// 状态标签, 以32位二进制表示, 具体参考 <see cref="StatusEffectTag"/>
         /// </summary>
         public uint tags;
@@ -76,6 +84,25 @@ namespace Cultivation_Way.Library
     }
     public class CW_StatusEffectLibrary : CW_Library<CW_StatusEffect>
     {
-
+        public override CW_StatusEffect add(CW_StatusEffect pAsset)
+        {
+            return base.add(pAsset);
+        }
+        /// <summary>
+        /// 伪装成原版状态效果
+        /// </summary>
+        public override void post_init()
+        {
+            base.post_init();
+            foreach(CW_StatusEffect status_asset in list)
+            {
+                AssetManager.status.add(new StatusEffect
+                {
+                    id = status_asset.id,
+                    tier = status_asset.tier,
+                    path_icon = status_asset.path_icon
+                });
+            }
+        }
     }
 }
