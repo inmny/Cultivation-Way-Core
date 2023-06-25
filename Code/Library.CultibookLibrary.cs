@@ -1,5 +1,6 @@
 ﻿using Cultivation_Way.Core;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace Cultivation_Way.Library
@@ -33,7 +34,11 @@ namespace Cultivation_Way.Library
         /// <summary>
         /// 自带法术
         /// </summary>
-        public string[] spells;
+        public List<string> spells = new();
+        /// <summary>
+        /// 最大可容纳法术数量
+        /// </summary>
+        public int max_spell_nr;
         /// <summary>
         /// 当前使用人数
         /// </summary>
@@ -55,8 +60,7 @@ namespace Cultivation_Way.Library
             bonus_stats.mergeStats(from.bonus_stats);
             if (with_spells)
             {
-                spells = new string[from.spells.Length];
-                from.spells.CopyTo(spells, 0);
+                spells.AddRange(from.spells);
             }
         }
         /// <summary>

@@ -12,6 +12,7 @@ namespace Cultivation_Way.Library
         public readonly static ElementLibrary elements = new();
         public readonly static EnergyLibrary energies = new();
         public readonly static CW_StatusEffectLibrary statuses = new();
+        public readonly static CW_SpellLibrary spells = new();
         public readonly static Dictionary<string, BaseAssetLibrary> libraries = new();
         public void init()
         {
@@ -24,6 +25,7 @@ namespace Cultivation_Way.Library
             add(elements, "elements");
             add(energies, "energies");
             add(statuses, "statuses");
+            add(spells, "spells");
         }
         public void update_per_while()
         {

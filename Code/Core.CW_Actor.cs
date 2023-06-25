@@ -227,6 +227,18 @@ namespace Cultivation_Way.Core
                 }
                 statuses_list.Clear();
             }
+            if (__data_spells.Count > 0)
+            {
+                CW_SpellAsset spell = Library.Manager.spells.get(__data_spells.GetRandom());
+                if(pAttacker!=null && spell.can_trigger(SpellTriggerTag.NAMED_DEFEND))
+                {
+                    // TODO 释放法术
+                }
+                else if(pAttacker == null && spell.can_trigger(SpellTriggerTag.UNNAMED_DEFEND))
+                {
+                    // TODO 释放法术
+                }
+            }
             asset.action_get_hit?.Invoke(this, pAttacker, currentTile);
             #endregion
 
@@ -316,10 +328,9 @@ namespace Cultivation_Way.Core
             Cultibook new_cultibook = new();
             if (old_cultibook != null)
             {
-                new_cultibook.copy_from(old_cultibook, false);
+                new_cultibook.copy_from(old_cultibook, true);
 
-                new_cultibook.spells = new string[old_cultibook.spells.Length + (Toolbox.randomChance(Constants.Others.new_spell_slot_for_cultibook) ? 1 : 0)];
-                old_cultibook.spells.CopyTo(new_cultibook.spells, 0);
+                new_cultibook.max_spell_nr = old_cultibook.max_spell_nr + (Toolbox.randomChance(Constants.Others.new_spell_slot_for_cultibook) ? 1 : 0);
 
                 new_cultibook.editor_name = getName();
 
@@ -332,8 +343,24 @@ namespace Cultivation_Way.Core
                 int max_spell_slot = 4;
                 while(max_spell_slot-->0 && Toolbox.randomChance(Constants.Others.new_spell_slot_for_cultibook)) spell_slot++;
 
-                new_cultibook.spells = new string[spell_slot];
+                new_cultibook.max_spell_nr = spell_slot;
             }
+            // 功法内法术更新
+            HashSet<string> can_be_add_spells = new();
+            can_be_add_spells.UnionWith(__data_spells);
+            can_be_add_spells.ExceptWith(new_cultibook.spells);
+
+            string spell_id = can_be_add_spells.GetRandom();
+            if (Library.Manager.spells.get(spell_id).learn_check(this) >= 0)
+            {
+                new_cultibook.spells.Append(spell_id);
+                if (new_cultibook.spells.Count > new_cultibook.max_spell_nr)
+                {
+                    new_cultibook.spells.RemoveAt(0);
+                }
+            }
+
+            
             new_cultibook.name = $"{new_cultibook.author_name}著,{new_cultibook.editor_name}改的功法";
             new_cultibook.id = $"{new_cultibook.level}_{data.id}";
             new_cultibook.bonus_stats.mergeStats(data.get_element().comp_bonus_stats(), new_cultibook.level * 0.3f);
@@ -400,12 +427,83 @@ namespace Cultivation_Way.Core
             curr_level++;
             data.set(cultisys.id, curr_level);
 
+            if (!__learn_spell_from_cultibook()) __learn_spell_generally();
             if (__can_create_blood_on_levelup(cultisys, curr_level)) create_blood();
             if (__can_create_cultibook_on_levelup(cultisys, curr_level)) create_cultibook();
             if (cultisys.external_levelup_bonus != null) _ = cultisys.external_levelup_bonus(this, cultisys, curr_level);
 
             setStatsDirty();
         }
+        /// <summary>
+        /// 从法术库中学习法术
+        /// </summary>
+        private void __learn_spell_generally()
+        {
+            int[] cultisys_levels = data.get_cultisys_level();
+            uint cultisys_types = 0;
+            for (int i = 0; i < Library.Manager.cultisys.size; i++)
+            {
+                if (cultisys_levels[i] < 0) continue;
+                cultisys_types |= (uint)Library.Manager.cultisys.list[i].type;
+            }
+            List<CW_SpellAsset> spells = Library.Manager.spells.get_spells_by_cultisys(cultisys_types);
+            if (spells.Count == 0) return;
+            // 按照学习概率排序
+            Dictionary<CW_SpellAsset, float> spell_float = new();
+            foreach(CW_SpellAsset spell in spells)
+            {
+                if (__data_spells.Contains(spell.id)) continue;
+                float chance = spell.learn_check(this);
+                if (chance < 0) continue;
+                spell_float.Add(spell, chance);
+            }
+            spell_float.OrderBy(x=> x.Value);
+            // 尝试学习
+            foreach(KeyValuePair<CW_SpellAsset, float> spell_chance in spell_float)
+            {
+                if (Toolbox.randomChance(spell_chance.Value))
+                {
+                    learn_spell(spell_chance.Key);
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 升级时从功法中学习法术, 返回是否成功学习
+        /// </summary>
+        private bool __learn_spell_from_cultibook()
+        {
+            Cultibook cultibook = data.get_cultibook();
+            if (cultibook == null) return false;
+
+            if (cultibook.spells.Count == 0) return false;
+
+            int[] cultisys_levels = data.get_cultisys_level();
+            uint cultisys_types = 0;
+            for(int i = 0; i < Library.Manager.cultisys.size; i++)
+            {
+                if (cultisys_levels[i] < 0) continue;
+                cultisys_types |= (uint)Library.Manager.cultisys.list[i].type;
+            }
+
+            for(int i= 0; i < cultibook.spells.Count; i++)
+            {
+                if (__data_spells.Contains(cultibook.spells[i])) continue;
+                CW_SpellAsset spell = Library.Manager.spells.get(cultibook.spells[i]);
+
+                float learn_chance = spell.learn_check(this, cultisys_types);
+
+                if (learn_chance < 0) continue;
+                if (Toolbox.randomChance(learn_chance))
+                {
+                    learn_spell(spell);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// 能否在本次升级时创建/改良血脉
         /// </summary>

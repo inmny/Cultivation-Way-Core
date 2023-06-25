@@ -2,6 +2,7 @@
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Others;
+using System.Collections.Generic;
 
 namespace Cultivation_Way.Library
 {
@@ -69,7 +70,7 @@ namespace Cultivation_Way.Library
         /// <para>采用 CultisysType.LIMIT 作为无法习得标记</para>
         /// <para>为安全起见, 该字段在<see cref="spell_learn_check"/>之外生效</para>
         /// </summary>
-        private uint cultisys_require;
+        internal uint cultisys_require;
         /// <summary>
         /// 法术稀有度, 用于法术习得概率计算, 值越大越稀有
         /// <para>取值范围:[0,\infty)</para>
@@ -104,24 +105,26 @@ namespace Cultivation_Way.Library
             cultisys_require |= (uint)type;
         }
         /// <summary>
-        /// 检查能否修习该法术, 以及修习概率
+        /// 检查能否修习该法术, 以及修习概率; 同时用于判断法术能否加入功法
         /// </summary>
         /// <param name="actor">检查目标</param>
-        public float learn_check(CW_Actor actor)
+        public float learn_check(CW_Actor actor, uint given_cultisys = 0)
         {
-            int[] cultisys_level = actor.data.get_cultisys_level();
-
-            uint check_result = cultisys_require;
-            CultisysAsset cultisys;
-            for (int i = 0; i < Manager.cultisys.size; i++)
+            if(given_cultisys == 0)
             {
-                if (cultisys_level[i] == -1) continue;
+                int[] cultisys_level = actor.data.get_cultisys_level();
+                for (int i = 0; i < Manager.cultisys.size; i++)
+                {
+                    if (cultisys_level[i] == -1) continue;
 
-                cultisys = Manager.cultisys.list[i];
-
-                if ((check_result | (uint)cultisys.type) == (uint)cultisys.type) check_result -= (uint)cultisys.type;
+                    given_cultisys |= (uint)Manager.cultisys.list[i].type;
+                }
             }
-            if (check_result > 0) return -1;
+            
+            if((given_cultisys| cultisys_require) != given_cultisys)
+            {
+                return -1;
+            }
 
             return spell_learn_check(this, actor);
         }
@@ -136,6 +139,38 @@ namespace Cultivation_Way.Library
     }
     public class CW_SpellLibrary : CW_Library<CW_SpellAsset>
     {
-
+        private readonly Dictionary<uint, List<CW_SpellAsset>> cultisys_spells = new();
+        /// <summary>
+        /// 将法术按照修炼体系分类
+        /// </summary>
+        public override void post_init()
+        {
+            base.post_init();
+            uint max_cultisys = 0;
+            foreach(CultisysType cultisys in System.Enum.GetValues(typeof(CultisysType)))
+            {
+                max_cultisys |= (uint)cultisys;
+            }
+            for(uint i = 0; i <= max_cultisys; i++)
+            {
+                cultisys_spells.Add(i, new());
+                for(int j = 0; j < size; j++)
+                {
+                    if ((list[j].cultisys_require|i) == i)
+                    {
+                        cultisys_spells[i].Add(list[j]);
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 按照修炼体系类别获取法术
+        /// </summary>
+        public List<CW_SpellAsset> get_spells_by_cultisys(uint cultisys)
+        {
+            List<CW_SpellAsset> ret = new();
+            ret.AddRange(cultisys_spells[cultisys]);
+            return ret;
+        }
     }
 }

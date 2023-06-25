@@ -119,7 +119,7 @@ namespace Cultivation_Way.Constants
         CUSTOM
     }
     /// <summary>
-    /// 法术触发标签, 决定法术是否可以在某些情况下触发
+    /// 法术触发标签, 决定法术是否可以在某些情况下触发, 每次到达该情况随机获取一个法术，检查是否可以触发，不可触发则跳过
     /// </summary>
     public enum SpellTriggerTag
     {
