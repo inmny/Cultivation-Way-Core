@@ -34,12 +34,18 @@ namespace Cultivation_Way
     {
         private readonly Queue<SpellArg> args_to_deal = new();
         private readonly Stack<SpellArg> empty_args = new();
+        /// <summary>
+        /// 添加新的法术到队列中
+        /// </summary>
         public void enqueue_spell(CW_SpellAsset spell, BaseSimObject user, BaseSimObject target, WorldTile target_tile, float cost)
         {
             SpellArg arg_to_enqueue = empty_args.Count > 0 ? empty_args.Pop() : new SpellArg();
             arg_to_enqueue.set(spell, user, target, target_tile, cost);
             args_to_deal.Enqueue(arg_to_enqueue);
         }
+        /// <summary>
+        /// 处理所有队列中的法术
+        /// </summary>
         public void deal_all()
         {
             int deal_count = args_to_deal.Count;
