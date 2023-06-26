@@ -3529,7 +3529,6 @@
     <Compile Include="Code\Factories.cs" />
     <Compile Include="Code\Factory.Factory.cs" />
     <Compile Include="Code\General.AboutSpell.AnimActions.cs" />
-    <Compile Include="Code\General.AboutSpell.FormatSpells.cs" />
     <Compile Include="Code\General.AboutSpell.SpellActions.cs" />
     <Compile Include="Code\HarmonySpace.H_City.cs" />
     <Compile Include="Code\HarmonySpace.H_LocalizationManager.cs" />
