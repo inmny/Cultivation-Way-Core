@@ -19,7 +19,7 @@ namespace Cultivation_Way.Content
         }
         private static void add_immortal()
         {
-            CultisysAsset cultisys = new("cw_cultisys_immortal", Constants.CultisysType.WAKAN, Content_Constants.immortal_max_level)
+            CultisysAsset cultisys = new("cw_cultisys_immortal", Content.Content_Constants.energy_wakan_id, Constants.CultisysType.WAKAN, Content_Constants.immortal_max_level)
             {
                 sprite_path = "ui/Icons/iconCultiBook_immortal",
                 curr_progress = (actor, culti, level) => {
@@ -67,7 +67,7 @@ namespace Cultivation_Way.Content
         }
         private static void add_bushido()
         {
-            CultisysAsset cultisys = new("cw_cultisys_bushido", Constants.CultisysType.BODY, Content_Constants.bushido_max_level)
+            CultisysAsset cultisys = new("cw_cultisys_bushido", Content_Constants.energy_bushido_id, Constants.CultisysType.BODY, Content_Constants.bushido_max_level)
             {
                 sprite_path = "ui/Icons/iconCultiBook_bushido"
             };
@@ -80,7 +80,7 @@ namespace Cultivation_Way.Content
         }
         private static void add_soul_cultisys()
         {
-            CultisysAsset cultisys = new("cw_cultisys_soul", Constants.CultisysType.SOUL, Content_Constants.soul_max_level)
+            CultisysAsset cultisys = new("cw_cultisys_soul", Content_Constants.energy_soul_id, Constants.CultisysType.SOUL, Content_Constants.soul_max_level)
             {
                 sprite_path = "ui/Icons/iconCultiBook_immortal"
             };

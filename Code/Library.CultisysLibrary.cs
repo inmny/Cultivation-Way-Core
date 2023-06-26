@@ -14,6 +14,14 @@ namespace Cultivation_Way.Library
         /// </summary>
         public CultisysType type { get; internal set; }
         /// <summary>
+        /// 修炼的能量
+        /// </summary>
+        public EnergyAsset culti_energy { get; internal set; }
+        /// <summary>
+        /// 临时存储的修炼能量ID
+        /// </summary>
+        internal string culti_energy_id { get; private set; }
+        /// <summary>
         /// 体系图标路径, 从根目录开始
         /// </summary>
         public string sprite_path;
@@ -68,11 +76,12 @@ namespace Cultivation_Way.Library
         /// </summary>
         [NonSerialized]
         public CultisysCheck monthly_update_action;
-        public CultisysAsset(string id, CultisysType type, int max_level)
+        public CultisysAsset(string id, string culti_energy_id, CultisysType type, int max_level)
         {
             this.id = id;
             this.type = type;
             this.max_level = max_level;
+            this.culti_energy_id = culti_energy_id;
             power_level = new float[max_level];
             bonus_stats = new BaseStats[max_level];
             for(int i = 0; i < max_level; i++)
@@ -122,6 +131,7 @@ namespace Cultivation_Way.Library
                 cultisys.curr_progress ??= (actor, culti, level) => 0;
                 cultisys.max_progress ??= (actor, culti, level) => 1;
                 cultisys.sprite_path ??= "ui/Icons/iconCultiSys";
+                cultisys.culti_energy = Library.Manager.energies.get(cultisys.culti_energy_id);
             }
         }
     }

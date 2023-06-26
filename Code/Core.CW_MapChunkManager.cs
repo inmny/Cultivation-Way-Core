@@ -69,7 +69,7 @@ namespace Cultivation_Way.Core
             this.width = width; this.height = height;
             foreach(EnergyAsset energy in Manager.energies.list)
             {
-                maps.Add(energy.id, new CW_EnergyMap(energy));
+                if (energy.is_dissociative) maps.Add(energy.id, new CW_EnergyMap(energy));
             }
             foreach(CW_EnergyMap map in maps.Values)
             {

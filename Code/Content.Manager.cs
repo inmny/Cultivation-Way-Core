@@ -12,6 +12,7 @@ namespace Cultivation_Way.Content
         {
             Cultisys.init();
             Element.init();
+            Energy.init();
             HarmonySpace.Manager.init();
         }
     }

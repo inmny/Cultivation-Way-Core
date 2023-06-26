@@ -31,7 +31,9 @@ namespace Cultivation_Way.UI
             bar_height = bar.sizeDelta.y;
             GetComponent<Button>().onClick.AddListener(new UnityEngine.Events.UnityAction(() =>
             {
-                clear(); mask.DOSizeDelta(new(mask.sizeDelta.x, set_height), set_height / bar_height, false);
+                clear(); 
+                mask.DOSizeDelta(new(mask.sizeDelta.x, set_height), set_height / bar_height, false);
+                tip_button.gameObject.SetActive(true);
             }));
             tip_button = transform.Find("Info").GetComponent<CW_TipButton>();
             tip_button.transform.localScale = new(1, 1);
@@ -57,6 +59,10 @@ namespace Cultivation_Way.UI
                 CultisysType.WAKAN => Color.blue,
                 _ => Color.white,
             };
+            if (cultisys.culti_energy != null)
+            {
+                bar_image.color = cultisys.culti_energy.get_color(curr, 0, cultisys.power_level[cultisys_level]);
+            }
             set_height = bar_height * curr / max;
             mask.DOSizeDelta(new(mask.sizeDelta.x, set_height), set_height / bar_height, false);
 

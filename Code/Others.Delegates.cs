@@ -21,6 +21,11 @@ namespace Cultivation_Way.Others
     public delegate float CultisysCheck(CW_Actor actor, CultisysAsset cultisys, int cultisys_level);
 
     /// <summary>
+    /// 能量的颜色计算
+    /// </summary>
+    public delegate Color EnergyColorCalc(EnergyAsset energy, float value, float density, float power_level);
+
+    /// <summary>
     /// 动画结束时的委托
     /// </summary>
     public delegate void AnimEndAction(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim);
