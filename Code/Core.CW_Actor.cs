@@ -44,17 +44,33 @@ namespace Cultivation_Way.Core
             data.clear_blood_nodes();
             data.clear_cultibook();
         }
+        /// <summary>
+        /// 申请释放法术
+        /// </summary>
+        /// <param name="spell_id">法术id</param>
+        /// <param name="target">法术目标, 可为null</param>
+        /// <param name="target_tile">法术目标区域, 可为null</param>
+        /// <returns>法术是否合法</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool cast_spell(string spell_id, BaseSimObject target, WorldTile target_tile)
         {
             return cast_spell(Library.Manager.spells.get(spell_id), target, target_tile);
         }
+        /// <summary>
+        /// 申请释放法术
+        /// </summary>
+        /// <param name="spell">法术asset</param>
+        /// <param name="target">法术目标, 可为null</param>
+        /// <param name="target_tile">法术目标区域, 可为null</param>
+        /// <returns>法术是否合法</returns>
         public bool cast_spell(CW_SpellAsset spell, BaseSimObject target, WorldTile target_tile)
         {
-            if (spell.target_type == SpellTargetType.TILE && target_tile == null) return false;
-
-            if (spell.target_type == SpellTargetType.ACTOR && (target == null || target.objectType == MapObjectType.Building)) return false;
-            if (spell.target_type == SpellTargetType.BUILDING && (target == null || target.objectType == MapObjectType.Actor)) return false;
+            if ((spell.target_type == SpellTargetType.TILE && target_tile == null) ||
+                (spell.target_type == SpellTargetType.ACTOR &&
+                 (target == null || target.objectType == MapObjectType.Building)) ||
+                (spell.target_type == SpellTargetType.BUILDING &&
+                 (target == null || target.objectType == MapObjectType.Actor)))
+                return false;
 
             bool is_enemy = kingdom == null || kingdom.isEnemy(target.kingdom);
 
