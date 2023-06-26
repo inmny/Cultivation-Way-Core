@@ -3522,11 +3522,14 @@
     <Compile Include="Code\Content.HarmonySpace.H_Actor.cs" />
     <Compile Include="Code\Content.HarmonySpace.Manager.cs" />
     <Compile Include="Code\Content.Manager.cs" />
+    <Compile Include="Code\Content.Spell.cs" />
     <Compile Include="Code\Core.CW_MapChunkManager.cs" />
     <Compile Include="Code\Extension.BaseStatsTools.cs" />
     <Compile Include="Code\Extension.BaseSystemDataTools.cs" />
     <Compile Include="Code\Factories.cs" />
     <Compile Include="Code\Factory.Factory.cs" />
+    <Compile Include="Code\General.AboutSpell.AnimActions.cs" />
+    <Compile Include="Code\General.AboutSpell.SpellActions.cs" />
     <Compile Include="Code\HarmonySpace.H_City.cs" />
     <Compile Include="Code\HarmonySpace.H_LocalizationManager.cs" />
     <Compile Include="Code\HarmonySpace.H_ScrollWindows.cs" />
