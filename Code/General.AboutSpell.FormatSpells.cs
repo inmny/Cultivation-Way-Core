@@ -43,12 +43,16 @@ namespace Cultivation_Way.General.AboutSpell
                 CultisysType[] cultisys_require = null, KeyValuePair<string, float>[] spell_cost_list = null
             )
         {
+            if(Library.Manager.spells.contains(id)) {
+                throw new Exception($"create_trace_projectile_spell: repeated spell id {id}");
+            }
             if(anim_type != SpellAnimType.USER_TO_TARGET || anim_type != SpellAnimType.TARGET_TO_USER) {
                 throw new Exception("create_trace_projectile_spell: anim_type must be USER_TO_TARGET or TARGET_TO_USER");
             }
             if(target_type != SpellTargetType.ACTOR) {
                 throw new Exception("create_trace_projectile_spell: target_type must be ACTOR");
             }
+            
             element_container ??= new int[] { 20, 20, 20, 20, 20 };
             trigger_tags ??= new SpellTriggerTag[] { SpellTriggerTag.ATTACK };
             cultisys_require ??= new CultisysType[] { CultisysType.WAKAN };
@@ -73,19 +77,28 @@ namespace Cultivation_Way.General.AboutSpell
             }
             if (spell_cost_list != null) spell_asset.spell_cost_action = CostChecks.generate_spell_cost_action(spell_cost_list);
 
-            AnimationSetting anim_setting = new()
+
+            if (CW_Core.mod_state.anim_manager.get_controller(anim_id) != null)
             {
-                point_to_dst = true,
-                always_point_to_dst = true,
-                loop_limit_type = AnimationLoopLimitType.DST_LIMIT,
-                end_action = anim_type == SpellAnimType.USER_TO_TARGET ? AboutAnim.EndActions.src_obj_damage_to_dst_obj : AboutAnim.EndActions.dst_obj_damage_to_src_obj
-            };
-            anim_setting.set_trace(AnimationTraceType.TRACK);
+                Logger.Warn($"create_trace_projectile_spell: There is already animation {anim_id}, it will not create a new one for spell {id}");
+            }
+            else
+            {
+                AnimationSetting anim_setting = new()
+                {
+                    point_to_dst = true,
+                    always_point_to_dst = true,
+                    loop_limit_type = AnimationLoopLimitType.DST_LIMIT,
+                    end_action = anim_type == SpellAnimType.USER_TO_TARGET ? AboutAnim.EndActions.src_obj_damage_to_dst_obj : AboutAnim.EndActions.dst_obj_damage_to_src_obj
+                };
+                anim_setting.set_trace(AnimationTraceType.TRACK);
 
-            CW_Core.mod_state.anim_manager.load_as_controller(
-                anim_id, anim_path, 100, 1, anim_setting
-            );
-
+                CW_Core.mod_state.anim_manager.load_as_controller(
+                    anim_id, anim_path, 100, 1, anim_setting
+                );
+            }
+            
+            Library.Manager.spells.add(spell_asset);
             return spell_asset;
         }
     }
