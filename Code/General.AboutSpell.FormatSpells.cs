@@ -15,6 +15,7 @@ namespace Cultivation_Way.General.AboutSpell
     /// </summary>
     public static class FormatSpells
     {
+        // ReSharper disable Unity.PerformanceAnalysis
         /// <summary>
         /// 创建并添加一个简单的追踪投射物法术, 并同时创建添加其动画控制器
         /// </summary>
@@ -31,7 +32,7 @@ namespace Cultivation_Way.General.AboutSpell
         /// <param name="cultisys_require">修习需要的修炼体系类型</param>
         /// <param name="spell_cost_list">法术消耗列表</param>
         /// 
-        /// <returns></returns>
+        /// <returns>新添加spell asset</returns>
         /// <exception cref="Exception"></exception>
         public static CW_SpellAsset create_track_projectile_spell(
                 string id,
@@ -43,10 +44,10 @@ namespace Cultivation_Way.General.AboutSpell
                 CultisysType[] cultisys_require = null, KeyValuePair<string, float>[] spell_cost_list = null
             )
         {
-            if(Library.Manager.spells.contains(id)) {
+            if(Manager.spells.contains(id)) {
                 throw new Exception($"create_trace_projectile_spell: repeated spell id {id}");
             }
-            if(anim_type != SpellAnimType.USER_TO_TARGET || anim_type != SpellAnimType.TARGET_TO_USER) {
+            if(anim_type != SpellAnimType.USER_TO_TARGET && anim_type != SpellAnimType.TARGET_TO_USER) {
                 throw new Exception("create_trace_projectile_spell: anim_type must be USER_TO_TARGET or TARGET_TO_USER");
             }
             if(target_type != SpellTargetType.ACTOR) {
@@ -75,7 +76,7 @@ namespace Cultivation_Way.General.AboutSpell
             {
                 spell_asset.add_cultisys_require(cultisys);
             }
-            if (spell_cost_list != null) spell_asset.spell_cost_action = CostChecks.generate_spell_cost_action(spell_cost_list);
+            spell_asset.spell_cost_action = CostChecks.generate_spell_cost_action(spell_cost_list);
 
 
             if (CW_Core.mod_state.anim_manager.get_controller(anim_id) != null)
