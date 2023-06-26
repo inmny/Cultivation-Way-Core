@@ -3527,6 +3527,7 @@
     <Compile Include="Code\Content.Constants.cs" />
     <Compile Include="Code\Content.Cultisys.cs" />
     <Compile Include="Code\Content.Element.cs" />
+    <Compile Include="Code\Content.Energy.cs" />
     <Compile Include="Code\Content.HarmonySpace.H_Actor.cs" />
     <Compile Include="Code\Content.HarmonySpace.Manager.cs" />
     <Compile Include="Code\Content.Manager.cs" />

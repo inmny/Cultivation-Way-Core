@@ -258,7 +258,7 @@ namespace Cultivation_Way.HarmonySpace
         {
             if (!__result) return;
             CW_Actor actor = (CW_Actor)__instance;
-            if (!actor.has_any_status_effect()) return;
+            if (actor.statuses == null || actor.statuses.Count == 0) return;
 
             List<CW_StatusEffectData> list = Factories.status_list_factory.get_next();
             list.AddRange(actor.statuses.Values);

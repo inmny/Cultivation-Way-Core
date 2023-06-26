@@ -364,19 +364,27 @@ namespace Cultivation_Way.Core
                 new_cultibook.max_spell_nr = spell_slot;
             }
             // 功法内法术更新
-            HashSet<string> can_be_add_spells = new();
-            can_be_add_spells.UnionWith(__data_spells);
-            can_be_add_spells.ExceptWith(new_cultibook.spells);
-
-            string spell_id = can_be_add_spells.GetRandom();
-            if (Library.Manager.spells.get(spell_id).learn_check(this) >= 0)
+            if (__data_spells.Count > 0)
             {
-                new_cultibook.spells.Append(spell_id);
-                if (new_cultibook.spells.Count > new_cultibook.max_spell_nr)
+                HashSet<string> can_be_add_spells = new();
+                can_be_add_spells.UnionWith(__data_spells);
+                can_be_add_spells.ExceptWith(new_cultibook.spells);
+
+                if(can_be_add_spells.Count > 0)
                 {
-                    new_cultibook.spells.RemoveAt(0);
+                    string spell_id = can_be_add_spells.GetRandom();
+
+                    if (Library.Manager.spells.get(spell_id).learn_check(this) >= 0)
+                    {
+                        new_cultibook.spells.Append(spell_id);
+                        if (new_cultibook.spells.Count > new_cultibook.max_spell_nr)
+                        {
+                            new_cultibook.spells.RemoveAt(0);
+                        }
+                    }
                 }
             }
+            
 
             
             new_cultibook.name = $"{new_cultibook.author_name}著,{new_cultibook.editor_name}改的功法";
