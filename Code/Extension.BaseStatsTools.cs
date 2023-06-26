@@ -11,11 +11,12 @@ namespace Cultivation_Way.Extension
         /// <summary>
         /// 按系数合并两个BaseStats
         /// </summary>
-        public static void mergeStats(this BaseStats this_stats, BaseStats another_stats, float co)
+        public static void merge_stats(this BaseStats this_stats, BaseStats another_stats, float co)
         {
-            for (int i = 0; i < another_stats.stats_list.Count; i++)
+            for (int i = 0; i < another_stats.stats_list.Count(); i++)
             {
-                BaseStatsContainer baseStatsContainer = another_stats.stats_list[i];
+                // 由于Assembly的公开，此处直接[]访问会导致歧义
+                BaseStatsContainer baseStatsContainer = another_stats.stats_list._items[i];
                 string id = baseStatsContainer.id;
                 this_stats[id] += baseStatsContainer.value * co;
             }
@@ -25,9 +26,10 @@ namespace Cultivation_Way.Extension
         /// </summary>
         public static void max(this BaseStats this_stats, BaseStats another_stats, float co = 1)
         {
-            for (int i = 0; i < another_stats.stats_list.Count; i++)
+            for (int i = 0; i < another_stats.stats_list.Count(); i++)
             {
-                BaseStatsContainer baseStatsContainer = another_stats.stats_list[i];
+                // 由于Assembly的公开，此处直接[]访问会导致歧义
+                BaseStatsContainer baseStatsContainer = another_stats.stats_list._items[i];
                 string id = baseStatsContainer.id;
                 float value = baseStatsContainer.value * co;
                 if(value > this_stats[id]) this_stats[id] = value;

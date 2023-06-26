@@ -1,12 +1,12 @@
-# CW_Core ĞŞÕæÖ®Â·ºËĞÄ
-Å¬Á¦ÎªWorldboxÌá¹©»ÃÏëÏµÍØÕ¹Ö§³Ö¡£
+# CW_Core ä¿®çœŸä¹‹è·¯æ ¸å¿ƒ
+åŠªåŠ›ä¸ºWorldboxæä¾›å¹»æƒ³ç³»æ‹“å±•æ”¯æŒã€‚
 
-|ÖĞ|Ó¢£¨ÖĞÎÄ°æ¶¼Ã»Ğ´Íê£©|
+|ä¸­|è‹±ï¼ˆä¸­æ–‡ç‰ˆéƒ½æ²¡å†™å®Œï¼‰|
 |:----:|:----:|
-|[°Ù¿Æ](https://github.com/inmny/Cultivation-Way-Core/wiki/Home)|[Wiki](https://github.com/inmny/Cultivation-Way-Core/)|   
-|[ÎÄµµ](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/index.md)|[Documentation](https://github.com/inmny/Cultivation-Way-Core/)|	
+|[ç™¾ç§‘](https://github.com/inmny/Cultivation-Way-Core/wiki/Home)|[Wiki](https://github.com/inmny/Cultivation-Way-Core/)|   
+|[æ–‡æ¡£](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/index.md)|[Documentation](https://github.com/inmny/Cultivation-Way-Core/)|	
 
-## ¸½Êô
+## é™„å±
 
 
 ## TODO
@@ -14,4 +14,4 @@
 
 ## Attention
 
-Í³Ò»²ÉÓÃCWA½øĞĞ¿ª·¢, ¼´ÎŞ·¨ÅĞ¶¨ÔòÈÏÎªÊÇFalse
+ç»Ÿä¸€é‡‡ç”¨CWAè¿›è¡Œå¼€å‘, å³æ— æ³•åˆ¤å®šåˆ™è®¤ä¸ºæ˜¯False

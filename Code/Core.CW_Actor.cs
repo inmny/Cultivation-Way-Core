@@ -389,7 +389,7 @@ namespace Cultivation_Way.Core
             
             new_cultibook.name = $"{new_cultibook.author_name}著,{new_cultibook.editor_name}改的功法";
             new_cultibook.id = $"{new_cultibook.level}_{data.id}";
-            new_cultibook.bonus_stats.mergeStats(data.get_element().comp_bonus_stats(), new_cultibook.level * 0.3f);
+            new_cultibook.bonus_stats.merge_stats(data.get_element().comp_bonus_stats(), new_cultibook.level * 0.3f);
 
             Library.Manager.cultibooks.add(new_cultibook);
             data.set_cultibook(new_cultibook);
