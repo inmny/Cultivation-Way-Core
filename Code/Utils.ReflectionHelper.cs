@@ -15,8 +15,7 @@ namespace Cultivation_Way.Utils
         }
         internal static Func<InstanceType, OutType> create_getter<InstanceType, OutType>(string field_name)
         {
-            FieldInfo field = typeof(InstanceType).GetField(field_name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            if (field == null) field = HarmonyLib.AccessTools.Field(typeof(InstanceType), field_name);
+            FieldInfo field = typeof(InstanceType).GetField(field_name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public) ?? HarmonyLib.AccessTools.Field(typeof(InstanceType), field_name);
             if (field == null) WorldBoxConsole.Console.print("Cannot find '" + field_name + "' in type " + typeof(InstanceType).FullName);
             try
             {

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using Cultivation_Way.Animation;
 
 namespace Cultivation_Way
 {
@@ -20,6 +21,7 @@ namespace Cultivation_Way
             internal ModDeclaration.Info mod_info;
             internal List<Addon.CW_Addon> addons;
             internal SpellManager spell_manager;
+            public EffectManager anim_manager;
             public Library.Manager library_manager;
             public CW_MapChunkManager map_chunk_manager;
         };
@@ -36,11 +38,15 @@ namespace Cultivation_Way
             update_nr = 0,
             mod_info = null,
             addons = new(),
+            anim_manager = null,
             spell_manager = null,
             library_manager = null,
             map_chunk_manager = null
         };
+        static void Main()
+        {
 
+        }
         void Awake()
         {
             instance = this;
@@ -114,7 +120,7 @@ namespace Cultivation_Way
                     break;
                 }
             }
-
+            state.anim_manager = gameObject.AddComponent<EffectManager>();
             state.spell_manager = new();
             state.library_manager = new();
             state.map_chunk_manager = new();

@@ -37,6 +37,8 @@
     <Prefer32Bit>false</Prefer32Bit>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PlatformTarget>x86</PlatformTarget>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -3507,6 +3509,11 @@
     <Content Include="Includes\UnityEngine.UIModule.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\General.AboutAnim.EndActions.cs" />
+    <Compile Include="Code\General.AboutAnim.FrameActions.cs" />
+    <Compile Include="Code\General.AboutAnim.TraceFunctions.cs" />
+    <Compile Include="Code\General.AboutSpell.CostChecks.cs" />
+    <Compile Include="Code\General.AboutSpell.LearnChecks.cs" />
     <Compile Include="Code\Library.EnergyLibrary.cs" />
     <Compile Include="Code\Library.Manager.cs" />
     <Compile Include="Code\Localizer.cs" />
@@ -3522,7 +3529,6 @@
     <None Include="app.config" />
     <Compile Include="Code\Addon.CW_Addon.cs" />
     <Compile Include="Code\Animation.AnimationSetting.cs" />
-    <Compile Include="Code\Animation.AnimFunctions.cs" />
     <Compile Include="Code\Animation.EffectController.cs" />
     <Compile Include="Code\Animation.EffectManager.cs" />
     <Compile Include="Code\Animation.SpriteAnimation.cs" />

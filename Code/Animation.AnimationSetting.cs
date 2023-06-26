@@ -132,31 +132,33 @@ namespace Cultivation_Way.Animation
         public bool always_point_to_dst = false;
         internal AnimationSetting __deepcopy()
         {
-            AnimationSetting copy = new();
-            copy.visible_in_low_res = visible_in_low_res;
-            copy.froze_time_after_end = froze_time_after_end;
-            copy.free_val = free_val;
-            copy.possible_referenced = false;
-            copy.loop_limit_type = loop_limit_type;
-            copy.loop_time_limit = loop_time_limit;
-            copy.loop_nr_limit = loop_nr_limit;
-            copy.loop_type = loop_type;
-            copy.frame_interval = frame_interval;
-            copy.play_direction = play_direction;
-            copy.loop_trace_limit = loop_trace_limit;
-            copy.stop_frame_idx = stop_frame_idx;
-            copy.trace_type = trace_type;
-            copy.trace_updater = trace_updater;
-            copy.frame_action = frame_action;
-            copy.end_action = end_action;
-            copy.trace_grad = trace_grad;
-            copy.layer_name = layer_name;
-            copy.always_roll = always_roll;
-            copy.always_roll_axis = always_roll_axis;
-            copy.always_point_to_dst = always_point_to_dst;
-            copy.roll_angle_per_frame = roll_angle_per_frame;
-            copy.point_to_dst = point_to_dst;
-            copy.anim_froze_frame_idx = anim_froze_frame_idx;
+            AnimationSetting copy = new()
+            {
+                visible_in_low_res = visible_in_low_res,
+                froze_time_after_end = froze_time_after_end,
+                free_val = free_val,
+                possible_referenced = false,
+                loop_limit_type = loop_limit_type,
+                loop_time_limit = loop_time_limit,
+                loop_nr_limit = loop_nr_limit,
+                loop_type = loop_type,
+                frame_interval = frame_interval,
+                play_direction = play_direction,
+                loop_trace_limit = loop_trace_limit,
+                stop_frame_idx = stop_frame_idx,
+                trace_type = trace_type,
+                trace_updater = trace_updater,
+                frame_action = frame_action,
+                end_action = end_action,
+                trace_grad = trace_grad,
+                layer_name = layer_name,
+                always_roll = always_roll,
+                always_roll_axis = always_roll_axis,
+                always_point_to_dst = always_point_to_dst,
+                roll_angle_per_frame = roll_angle_per_frame,
+                point_to_dst = point_to_dst,
+                anim_froze_frame_idx = anim_froze_frame_idx
+            };
             return copy;
         }
         public void set_trace(AnimationTraceType type)
@@ -171,17 +173,17 @@ namespace Cultivation_Way.Animation
                     }
                 case AnimationTraceType.TRACK:
                     {
-                        this.trace_updater = AnimFunctions.trace_track;
+                        this.trace_updater = General.AboutAnim.TraceFunctions.trace_track;
                         break;
                     }
                 case AnimationTraceType.LINE:
                     {
-                        this.trace_updater = AnimFunctions.trace_line;
+                        this.trace_updater = General.AboutAnim.TraceFunctions.trace_line;
                         break;
                     }
                 case AnimationTraceType.PARABOLIC:
                     {
-                        this.trace_updater = AnimFunctions.trace_parabolic;
+                        this.trace_updater = General.AboutAnim.TraceFunctions.trace_parabolic;
                         break;
                     }
                 default:

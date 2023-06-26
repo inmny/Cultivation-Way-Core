@@ -25,7 +25,7 @@ namespace Cultivation_Way.Core
         /// <param name="normalize">是否规格化</param>
         /// <param name="normalize_ceil">规格化上界</param>
         /// <param name="comp_type">是否即时确定元素类型</param>
-        private CW_Element(int[] base_elements, bool normalize = false, int normalize_ceil = 100, bool comp_type = true)
+        internal CW_Element(int[] base_elements, bool normalize = false, int normalize_ceil = 100, bool comp_type = true)
         {
             for (int i = 0; i < Constants.Core.element_type_nr; i++)
             {
@@ -186,7 +186,7 @@ namespace Cultivation_Way.Core
         }
         private void __comp_type()
         {
-            int i, j;
+            int i;
             List<ElementAsset> asset_list = Manager.elements.list;
             int length = asset_list.Count;
             float min_no_similarity = 10000f;

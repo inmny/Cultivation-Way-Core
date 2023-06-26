@@ -3,6 +3,9 @@ using System;
 using UnityEngine;
 namespace Cultivation_Way.Animation
 {
+    /// <summary>
+    /// 自定义的动画, 与原版SpriteAnimation同名
+    /// </summary>
     public class SpriteAnimation
     {
         /// <summary>
@@ -53,9 +56,21 @@ namespace Cultivation_Way.Animation
         /// 组件
         /// </summary>
         public GameObject gameObject;
+        /// <summary>
+        /// 起始位置
+        /// </summary>
         public Vector2 src_vec;
+        /// <summary>
+        /// 目标位置
+        /// </summary>
         public Vector2 dst_vec;
+        /// <summary>
+        /// 起始对象
+        /// </summary>
         public BaseSimObject src_object;
+        /// <summary>
+        /// 目标对象
+        /// </summary>
         public BaseSimObject dst_object;
         /// <summary>
         /// 本次更新间隔
@@ -186,10 +201,10 @@ namespace Cultivation_Way.Animation
                 next_frame_time += setting.frame_interval; // TODO: 可能直接设置为frame_interval更合理
 
                 // 切换至下一帧图像
-                /** Original Version
+                /* Original Version
                 int change = setting.play_direction == AnimationPlayDirection.FORWARD ? 1 : -1;
                 if (setting.loop_type == AnimationLoopType.ETOE && (loop_nr & 0x1) == 1) change = 0-change;
-                **/
+                */
                 if (cur_frame_idx != setting.anim_froze_frame_idx)
                 {
                     int change = ((setting.loop_type == AnimationLoopType.ETOE && (loop_nr & 0x1) == 1) ^ (setting.play_direction == AnimationPlayDirection.FORWARD)) ? 1 : -1;
@@ -210,7 +225,7 @@ namespace Cultivation_Way.Animation
                 gameObject.transform.Rotate(setting.always_roll_axis * elapsed * setting.roll_angle_per_frame);
             }
             // 检测到目标不存在后停止
-            /**
+            /*
             if (setting.trace_type == AnimationTraceType.TRACK && dst_object == null)
             {
                 isOn = false;
@@ -323,14 +338,26 @@ namespace Cultivation_Way.Animation
         {
             gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x * scale, gameObject.transform.localScale.y * scale, gameObject.transform.localScale.z);
         }
+        /// <summary>
+        /// 获取当前localScale
+        /// </summary>
+        /// <returns></returns>
         public Vector3 get_scale()
         {
             return gameObject.transform.localScale;
         }
+        /// <summary>
+        /// 设置绝对位置
+        /// </summary>
+        /// <param name="pos"></param>
         public void set_position(Vector3 pos)
         {
             this.gameObject.transform.position = pos;
         }
+        /// <summary>
+        /// 以输入进行偏移
+        /// </summary>
+        /// <param name="offset"></param>
         public void offset(Vector2 offset)
         {
             this.renderer.transform.localPosition = new Vector3(offset.x + renderer.transform.localPosition.x, offset.y + renderer.transform.localPosition.y, renderer.transform.localPosition.z);
@@ -346,6 +373,10 @@ namespace Cultivation_Way.Animation
             else { this.setting = setting; this.setting.possible_referenced = true; }
             apply_setting(src_vec, dst_vec, src_object, dst_object);
         }
+        /// <summary>
+        /// 设置透明度
+        /// </summary>
+        /// <param name="alpha">透明度(0,1)</param>
         public void set_alpha(float alpha)
         {
             Color color = this.renderer.color;
