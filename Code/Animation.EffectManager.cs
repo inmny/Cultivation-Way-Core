@@ -8,7 +8,7 @@ namespace Cultivation_Way.Animation
     {
         public static EffectManager instance;
         internal bool low_res;
-        internal static QualityChanger quality_changer;
+        private static QualityChanger quality_changer;
         private bool initialized = false;
         private readonly GameObject default_prefab = new();
         private readonly List<SpriteAnimation> single_anims = new();
@@ -18,14 +18,13 @@ namespace Cultivation_Way.Animation
 
         private void Awake()
         {
-            if (!initialized)
-            {
-                initialized = true;
-                instance = this;
-                default_prefab.AddComponent<SpriteRenderer>();
+            if (initialized) return;
+            
+            initialized = true;
+            instance = this;
+            default_prefab.AddComponent<SpriteRenderer>();
 
-                quality_changer = MapBox.instance.qualityChanger;
-            }
+            quality_changer = MapBox.instance.qualityChanger;
         }
 
         private void Update()
@@ -44,10 +43,8 @@ namespace Cultivation_Way.Animation
                     for (i = 0; i < single_anims.Count; i++)
                     {
                         single_anims[i].update(Time.fixedDeltaTime);
-                        if (!single_anims[i].isOn)
-                        {
-                            single_anims.RemoveAt(i); i--;
-                        }
+                        if (single_anims[i].isOn) continue;
+                        single_anims.RemoveAt(i); i--;
                     }
                 }
             }
@@ -60,13 +57,13 @@ namespace Cultivation_Way.Animation
             if (timer > 0)
             {
                 timer -= Time.deltaTime;
-                if (timer <= 0)
+            }
+            else
+            {
+                timer = Constants.Others.anim_recycle_interval;
+                for (i = 0; i < controllers.Count; i++)
                 {
-                    timer = Constants.Others.anim_recycle_interval;
-                    for (i = 0; i < controllers.Count; i++)
-                    {
-                        controllers[i].recycle_memory();
-                    }
+                    controllers[i].recycle_memory();
                 }
             }
         }
@@ -79,7 +76,7 @@ namespace Cultivation_Way.Animation
             }
             Sprite[] sprites = Resources.LoadAll<Sprite>(path_to_anim);
             if (sprites == null || sprites.Length == 0) throw new System.Exception("No found sprites under:" + path_to_anim);
-            EffectController controller = new(id, anim_limit, controller_setting == null ? new AnimationSetting() : controller_setting, sprites, default_prefab, base_scale, base_offset);
+            EffectController controller = new(id, anim_limit, controller_setting ?? new(), sprites, default_prefab, base_scale, base_offset);
             this.controllers.Add(controller);
             this.controllers_dict.Add(id, controller);
             return controller;
