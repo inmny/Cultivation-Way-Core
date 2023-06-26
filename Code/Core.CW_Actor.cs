@@ -26,7 +26,7 @@ namespace Cultivation_Way.Core
         /// <summary>
         /// data中的法术的拷贝, 用于快速访问
         /// </summary>
-        private HashSet<string> __data_spells = new();
+        internal HashSet<string> __data_spells = new();
         /// <summary>
         /// 状态数据
         /// </summary>

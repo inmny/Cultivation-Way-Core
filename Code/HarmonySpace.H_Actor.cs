@@ -212,7 +212,64 @@ namespace Cultivation_Way.HarmonySpace
             return false;
         }
         #endregion
+        #region 攻击机制补充
+        /// <summary>
+        /// 法术释放
+        /// </summary>
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Actor), nameof(Actor.tryToAttack))]
+        public static bool tryToAttack_prefix(Actor __instance, BaseSimObject pTarget, ref bool pDoChecks, ref bool __result)
+        {
+            if (((CW_Actor)__instance).__data_spells.Count == 0) return true;
 
+            __result = false;
+            bool can_continue_check = true;
+            if (pDoChecks)
+            {
+                pDoChecks = false;
+                if(__instance.isInLiquid() && !__instance.asset.oceanCreature) return false;
+                if(!__instance.isAttackReady()) return false;
+                if ((__instance.s_attackType == WeaponType.Melee && pTarget.zPosition.y > 0)||!__instance.isInAttackRange(pTarget))
+                {
+                    can_continue_check = false;
+                }
+            }
+            CW_Actor actor = (CW_Actor)__instance;
+            CW_SpellAsset spell = Library.Manager.spells.get(actor.__data_spells.GetRandom());
+
+            if (spell.can_trigger(SpellTriggerTag.ATTACK) && actor.cast_spell(spell, pTarget, pTarget.currentTile))
+            {
+                actor.timer_action = actor.s_attackSpeed_seconds;
+                actor.attackTimer = actor.s_attackSpeed_seconds;
+                // 播放法术声音
+                // 简单的释放动作
+                __result = true;
+                can_continue_check = false;
+            }
+
+            return can_continue_check;
+        }
+        /// <summary>
+        /// 攻击后触发状态效果
+        /// </summary>
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Actor), nameof(Actor.tryToAttack))]
+        public static void tryToAttack_postfix(Actor __instance, BaseSimObject pTarget, bool __result)
+        {
+            if (!__result) return;
+            CW_Actor actor = (CW_Actor)__instance;
+            if (!actor.has_any_status_effect()) return;
+
+            List<CW_StatusEffectData> list = Factories.status_list_factory.get_next();
+            list.AddRange(actor.statuses.Values);
+            foreach(CW_StatusEffectData status in list)
+            {
+                if (status.finished) continue;
+                status.status_asset.action_on_attack?.Invoke(status, pTarget, actor);
+            }
+            list.Clear();
+        }
+        #endregion
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Actor), nameof(Actor.killHimself))]
         public static void killHimself_patch(Actor __instance)
