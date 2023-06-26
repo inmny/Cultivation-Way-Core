@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ModDeclaration;
 using UnityEngine;
 
-namespace Cultivation_Way.Addon
+namespace Cultivation_Way.Addon;
+
+public class CW_Addon : MonoBehaviour
 {
-    public class CW_Addon : MonoBehaviour
+    internal bool initialized = false;
+    private bool loaded;
+    public Info mod_info;
+
+    internal void Awake()
     {
-        private bool loaded = false;
-        internal bool initialized = false;
-        public ModDeclaration.Info mod_info;
-        internal void Awake()
-        {
-            if(loaded) return;
-            loaded = true;
-        }
+        if (loaded) return;
+        loaded = true;
     }
 }
