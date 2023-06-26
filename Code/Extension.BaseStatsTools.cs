@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Cultivation_Way.Extension;
 
@@ -12,9 +13,9 @@ public static class BaseStatsTools
         for (int i = 0; i < another_stats.stats_list.Count(); i++)
         {
             // 由于Assembly的公开，此处直接[]访问会导致歧义
-            BaseStatsContainer baseStatsContainer = another_stats.stats_list._items[i];
-            string id = baseStatsContainer.id;
-            this_stats[id] += baseStatsContainer.value * co;
+            BaseStatsContainer base_stats_container = another_stats.stats_list._items[i];
+            string id = base_stats_container.id;
+            this_stats[id] += base_stats_container.value * co;
         }
     }
 
@@ -26,9 +27,11 @@ public static class BaseStatsTools
         for (int i = 0; i < another_stats.stats_list.Count(); i++)
         {
             // 由于Assembly的公开，此处直接[]访问会导致歧义
-            BaseStatsContainer baseStatsContainer = another_stats.stats_list._items[i];
-            string id = baseStatsContainer.id;
-            float value = baseStatsContainer.value * co;
+            BaseStatsContainer base_stats_container = another_stats.stats_list._items[i] ??
+                                                      throw new ArgumentNullException(
+                                                          "another_stats.stats_list._items[i]");
+            string id = base_stats_container.id;
+            float value = base_stats_container.value * co;
             if (value > this_stats[id]) this_stats[id] = value;
         }
     }

@@ -71,7 +71,17 @@ public class EffectManager : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// 加载一个动画控制器并返回
+    /// </summary>
+    /// <param name="id">控制器id</param>
+    /// <param name="path_to_anim">动画文件夹路径</param>
+    /// <param name="base_offset">加载时偏移</param>
+    /// <param name="anim_limit">动画数量软限制</param>
+    /// <param name="base_scale">基础缩放(与动画实例缩放相乘)</param>
+    /// <param name="controller_setting">动画设置</param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public EffectController load_as_controller(string id, string path_to_anim, Vector2 base_offset,
         int anim_limit = 100, float base_scale = 1.0f, AnimationSetting controller_setting = null)
     {
@@ -98,29 +108,35 @@ public class EffectManager : MonoBehaviour
 
     public EffectController get_controller(string id)
     {
-        EffectController controller;
-        if (controllers_dict.TryGetValue(id, out controller)) return controller;
-        return null;
+        return controllers_dict.TryGetValue(id, out EffectController controller) ? controller : null;
     }
 
     public SpriteAnimation spawn_anim(string id, WorldTile src_tile, WorldTile dst_tile, BaseSimObject src_obj = null,
         BaseSimObject dst_obj = null, float scale = 1.0f)
     {
-        EffectController controller;
-        if (controllers_dict.TryGetValue(id, out controller))
+        if (controllers_dict.TryGetValue(id, out EffectController controller))
         {
-            return controller.spawn_on(src_tile.pos, dst_tile == null ? src_tile.pos : dst_tile.pos, src_obj, dst_obj,
+            return controller.spawn_on(src_tile.pos, dst_tile?.pos ?? src_tile.pos, src_obj, dst_obj,
                 scale);
         }
 
         throw new Exception("No found animations controller for id:" + id);
     }
-
+    /// <summary>
+    /// 生成动画并返回, 如果已有动画数量超过限制则会返回null
+    /// </summary>
+    /// <param name="id">控制器id</param>
+    /// <param name="src_vec">起始点</param>
+    /// <param name="dst_vec">终点</param>
+    /// <param name="src_obj">起始对象</param>
+    /// <param name="dst_obj">目标对象</param>
+    /// <param name="scale">动画实例缩放(与控制器缩放相乘)</param>
+    /// <returns></returns>
+    /// <exception cref="Exception">没有找到对应的控制器则抛出异常</exception>
     public SpriteAnimation spawn_anim(string id, Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_obj = null,
         BaseSimObject dst_obj = null, float scale = 1.0f)
     {
-        EffectController controller;
-        if (controllers_dict.TryGetValue(id, out controller))
+        if (controllers_dict.TryGetValue(id, out EffectController controller))
         {
             return controller.spawn_on(src_vec, dst_vec, src_obj, dst_obj, scale);
         }
