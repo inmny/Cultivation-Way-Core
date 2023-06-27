@@ -85,14 +85,32 @@ public class CW_StatusEffect : Asset
     public string path_icon = "ui/Icons/iconRage";
 
     /// <summary>
-    ///     状态标签, 以32位二进制表示, 具体参考 <see cref="StatusEffectTag" />
+    ///     状态类别标签, 以32位二进制表示, 具体参考 <see cref="StatusEffectTag" />
     /// </summary>
-    public uint tags;
+    private uint _tags;
 
     /// <summary>
     ///     等级
     /// </summary>
     public StatusTier tier = StatusTier.None;
+
+    /// <summary>
+    ///     添加状态类别标签
+    /// </summary>
+    /// <param name="tag">添加的标签</param>
+    public void add_tag(StatusEffectTag tag)
+    {
+        _tags |= (uint)tag;
+    }
+
+    /// <summary>
+    ///     添加一组状态类别标签
+    /// </summary>
+    /// <param name="tags">可迭代的一组标签</param>
+    public void add_tags(IEnumerable<StatusEffectTag> tags)
+    {
+        foreach (StatusEffectTag tag in tags) add_tag(tag);
+    }
 }
 
 public class CW_StatusEffectLibrary : CW_Library<CW_StatusEffect>
