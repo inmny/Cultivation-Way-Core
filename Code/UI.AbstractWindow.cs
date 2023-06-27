@@ -1,5 +1,6 @@
 using NCMS.Utils;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Cultivation_Way.UI;
 
@@ -21,6 +22,11 @@ public class AbstractWindow<T> : MonoBehaviour where T : MonoBehaviour
 
         background_transform = scroll_window.transform.Find("Background");
         background_transform.Find("Scroll View").gameObject.SetActive(true);
+
+        LocalizedText localized_text = background_transform.Find("Title").gameObject.AddComponent<LocalizedText>();
+        localized_text.text = background_transform.Find("Title").GetComponent<Text>();
+        localized_text.key = window_id + Constants.Core.title_suffix;
+
         content_transform = background_transform.Find("Scroll View/Viewport/Content");
     }
 }
