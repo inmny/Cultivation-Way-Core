@@ -18,13 +18,14 @@ public static class FormatStatusEffect
     /// <param name="anim_scale">动画大小</param>
     /// <param name="path_icon">图标</param>
     /// <param name="tags">状态类别标签</param>
+    /// <param name="tier">等阶(None: 隐藏; Basic: 基础; Advanced: 高级)</param>
     /// <returns>创建的状态效果</returns>
     /// <exception cref="Exception">状态效果的属性加成为空; 对应id的状态效果已经存在</exception>
     public static CW_StatusEffect create_simple_status_effect(
         string id, BaseStats bonus_stats,
         float duration = 30f,
         string anim_id = "", string anim_path = "", float anim_scale = 1f,
-        string path_icon = "", StatusEffectTag[] tags = null
+        string path_icon = "", StatusEffectTag[] tags = null, StatusTier tier = StatusTier.Basic
     )
     {
         if (bonus_stats == null) throw new Exception("create_simple_status_effect: bonus_stats is null");
@@ -38,7 +39,8 @@ public static class FormatStatusEffect
             bonus_stats = bonus_stats,
             duration = duration,
             anim_id = anim_id,
-            path_icon = path_icon
+            path_icon = path_icon,
+            tier = tier
         };
         if (tags != null) status_asset.add_tags(tags);
 
