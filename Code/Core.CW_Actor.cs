@@ -128,6 +128,9 @@ public class CW_Actor : Actor
         statuses.Add(as_id, status);
         status_asset.action_on_get?.Invoke(status, from, this);
 
+        activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
+        activeStatus_dict[status_id] = new StatusEffectData(this, AssetManager.status.get(status_id));
+        activeStatus_dict[status_id].setTimer(status.left_time);
         return status;
     }
 
@@ -163,6 +166,7 @@ public class CW_Actor : Actor
         }
 
         add_status(pID, null, pOverrideTimer);
+        if (has_any_status_effect()) batch.c_status_effects.Add(this);
     }
 
     /// <summary>
@@ -179,9 +183,8 @@ public class CW_Actor : Actor
 
         List<CW_StatusEffectData> list = Factories.status_list_factory.get_next();
         list.AddRange(statuses.Values);
-        foreach (CW_StatusEffectData status in list)
+        foreach (CW_StatusEffectData status in list.Where(status => !status.finished))
         {
-            if (status.finished) continue;
             if (status.status_asset.action_on_update != null && status._update_action_timer <= 0)
             {
                 status.status_asset.action_on_update(status, status.source, this);
@@ -189,15 +192,13 @@ public class CW_Actor : Actor
             }
 
             status.update_timer(pElapsed);
+            activeStatus_dict?[status.status_asset.id].setTimer(status.left_time);
         }
 
-        foreach (CW_StatusEffectData status in list)
+        foreach (CW_StatusEffectData status in list.Where(status => status.finished))
         {
-            if (status.finished)
-            {
-                status.status_asset.action_on_end?.Invoke(status, status.source, this);
-                statuses.Remove(status.id);
-            }
+            status.status_asset.action_on_end?.Invoke(status, status.source, this);
+            statuses.Remove(status.id);
         }
 
         list.Clear();
