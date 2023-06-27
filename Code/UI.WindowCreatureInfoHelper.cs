@@ -453,6 +453,23 @@ internal class WindowCreatureInfoHelper
                     break;
             }
         }
+
+        load_cw_statuses(actor, window_creature_info);
+    }
+
+    private static void load_cw_statuses(CW_Actor actor, WindowCreatureInfo window_creature_info)
+    {
+        if (actor.statuses == null || actor.statuses.Count == 0) return;
+
+        foreach (CW_StatusEffectData status_effect_data in actor.statuses.Values)
+        {
+            if (status_effect_data.finished) continue;
+            StatusEffectData fake_status_effect_data =
+                new(actor, AssetManager.status.get(status_effect_data.status_asset.id));
+            fake_status_effect_data.setTimer(status_effect_data.left_time);
+
+            window_creature_info.loadStatusButton(fake_status_effect_data);
+        }
     }
 
     public static void Update_postfix(WindowCreatureInfo window_creature_info)

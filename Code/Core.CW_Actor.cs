@@ -135,6 +135,17 @@ public class CW_Actor : Actor
     }
 
     /// <summary>
+    ///     按id搜寻状态, 仅作用于模组内状态效果
+    /// </summary>
+    /// <param name="id">状态id</param>
+    /// <returns>状态效果数据</returns>
+    public CW_StatusEffectData get_status(string id)
+    {
+        if (statuses == null || statuses.Count > 0) return null;
+        return statuses.TryGetValue(id, out CW_StatusEffectData statuse) ? statuse : null;
+    }
+
+    /// <summary>
     ///     拓展后hasAnyStatusEffect, 直接调用
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -159,14 +170,16 @@ public class CW_Actor : Actor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override void addStatusEffect(string pID, float pOverrideTimer = -1)
     {
-        if (Manager.statuses.get(pID) == null)
+        if (!Manager.statuses.contains(pID))
         {
             base.addStatusEffect(pID, pOverrideTimer);
             return;
         }
 
         add_status(pID, null, pOverrideTimer);
-        if (has_any_status_effect()) batch.c_status_effects.Add(this);
+        if (!has_any_status_effect()) return;
+        activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
+        batch.c_status_effects.Add(this);
     }
 
     /// <summary>
@@ -177,6 +190,8 @@ public class CW_Actor : Actor
     {
         if (statuses == null || statuses.Count == 0)
         {
+            if (activeStatus_dict == null || activeStatus_dict.Count == 0) return;
+
             base.updateStatusEffects(pElapsed);
             return;
         }
@@ -202,6 +217,8 @@ public class CW_Actor : Actor
         }
 
         list.Clear();
+        if (activeStatus_dict == null || activeStatus_dict.Count == 0) return;
+
         base.updateStatusEffects(pElapsed);
     }
 

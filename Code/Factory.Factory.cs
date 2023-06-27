@@ -15,7 +15,7 @@ public abstract class BaseFactory
     internal abstract void recycle_memory(int target_count);
 }
 
-public class NoClearFactory<T> : BaseFactory
+public class NoClearFactory<T> : BaseFactory where T : new()
 {
     private readonly Stack<T> empty_items = new(4);
     private readonly Stack<T> items = new(4);
@@ -32,11 +32,11 @@ public class NoClearFactory<T> : BaseFactory
             return empty_items.Pop();
         }
 
-        T ret = default;
+        T ret = new();
 
         items.Push(ret);
 
-        return default;
+        return ret;
     }
 
     internal override void recycle_items()
@@ -44,7 +44,6 @@ public class NoClearFactory<T> : BaseFactory
         while (items.Count > 0)
         {
             empty_items.Push(items.Pop());
-            empty_items.Peek();
         }
     }
 
