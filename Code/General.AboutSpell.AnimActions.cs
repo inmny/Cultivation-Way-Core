@@ -17,7 +17,7 @@ public static class AnimActions
     /// <param name="target"></param>
     /// <param name="target_tile"></param>
     /// <param name="cost"></param>
-    public static void simple_on_obj(CW_SpellAsset spell_asset, BaseSimObject user, BaseSimObject target,
+    public static void simple_on_something(CW_SpellAsset spell_asset, BaseSimObject user, BaseSimObject target,
         WorldTile target_tile, float cost)
     {
         if (string.IsNullOrEmpty(spell_asset.anim_id)) return;
@@ -38,9 +38,11 @@ public static class AnimActions
                 throw new Exception(
                     $"simple_on_obj: anim_type {spell_asset.anim_type} not supported for {spell_asset.id}");
         }
-        if(anim is not { isOn: true }) return;
+
+        if (anim is not { isOn: true }) return;
         anim.data.set(DataS.spell_cost, cost);
     }
+
     /// <summary>
     ///     使用者(src), 目标(dst)传入spawn_anim
     /// </summary>

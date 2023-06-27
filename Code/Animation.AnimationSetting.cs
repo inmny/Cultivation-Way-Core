@@ -195,32 +195,14 @@ public class AnimationSetting
     public void set_trace(AnimationTraceType type)
     {
         trace_type = type;
-        switch (type)
+        trace_updater = type switch
         {
-            case AnimationTraceType.NONE:
-            {
-                trace_updater = null;
-                break;
-            }
-            case AnimationTraceType.TRACK:
-            {
-                trace_updater = TraceFunctions.trace_track;
-                break;
-            }
-            case AnimationTraceType.LINE:
-            {
-                trace_updater = TraceFunctions.trace_line;
-                break;
-            }
-            case AnimationTraceType.PARABOLIC:
-            {
-                trace_updater = TraceFunctions.trace_parabolic;
-                break;
-            }
-            default:
-                trace_updater = null;
-                break;
-        }
+            AnimationTraceType.NONE => null,
+            AnimationTraceType.TRACK => TraceFunctions.trace_track,
+            AnimationTraceType.LINE => TraceFunctions.trace_line,
+            AnimationTraceType.PARABOLIC => TraceFunctions.trace_parabolic,
+            _ => null
+        };
     }
 
     public void set_trace(AnimTraceUpdate trace_updater)

@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using Cultivation_Way.Core;
+using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 
 namespace Cultivation_Way.General.AboutSpell;
@@ -29,5 +30,18 @@ public static class SpellActions
                     throw new RowNotInTableException();
             }
         };
+    }
+
+    /// <summary>
+    ///     默认的伤害计算
+    /// </summary>
+    /// <param name="spell_asset"></param>
+    /// <param name="user"></param>
+    /// <param name="target"></param>
+    /// <param name="target_tile"></param>
+    /// <param name="cost"></param>
+    public static void default_damage_on(CW_SpellAsset spell_asset, BaseSimObject user, BaseSimObject target,
+        WorldTile target_tile, float cost)
+    {
     }
 }

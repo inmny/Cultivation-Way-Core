@@ -104,12 +104,30 @@ public class CW_SpellAsset : Asset
     }
 
     /// <summary>
-    ///     添加修炼体系要求
+    ///     添加一组法术触发标签
+    /// </summary>
+    /// <param name="tags">可迭代的一组标签</param>
+    public void add_trigger_tags(IEnumerable<SpellTriggerTag> tags)
+    {
+        foreach (SpellTriggerTag tag in tags) add_trigger_tag(tag);
+    }
+
+    /// <summary>
+    ///     添加修炼体系类型要求
     /// </summary>
     /// <param name="type">添加的修炼类型</param>
     public void add_cultisys_require(CultisysType type)
     {
         cultisys_require |= (uint)type;
+    }
+
+    /// <summary>
+    ///     添加一组修炼体系类型要求
+    /// </summary>
+    /// <param name="types">可迭代的一组修炼体系类型要求</param>
+    public void add_cultisys_requires(IEnumerable<CultisysType> types)
+    {
+        foreach (CultisysType cultisys_type in types) add_cultisys_require(cultisys_type);
     }
 
     /// <summary>

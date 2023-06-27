@@ -23,7 +23,7 @@ internal static class Spell
 
         #region 金剑
 
-        spell_asset = FormatSpells.create_track_projectile_spell(
+        spell_asset = FormatSpells.create_track_projectile_attack_spell(
             "gold_sword",
             "single_gold_sword_anim", "effects/single_gold_sword",
             rarity: 3,
@@ -44,7 +44,7 @@ internal static class Spell
 
         #region 木剑
 
-        spell_asset = FormatSpells.create_track_projectile_spell(
+        spell_asset = FormatSpells.create_track_projectile_attack_spell(
             "wood_sword",
             "single_wood_sword_anim", "effects/single_wood_sword",
             rarity: 3,
@@ -65,7 +65,7 @@ internal static class Spell
 
         #region 水剑
 
-        spell_asset = FormatSpells.create_track_projectile_spell(
+        spell_asset = FormatSpells.create_track_projectile_attack_spell(
             "water_sword",
             "single_water_sword_anim", "effects/single_water_sword",
             rarity: 3,

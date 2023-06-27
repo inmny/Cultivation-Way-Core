@@ -50,17 +50,13 @@
         <WarningLevel>4</WarningLevel>
         <Prefer32Bit>false</Prefer32Bit>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <DocumentationFile>bin\Release\Cultivation Way Core.xml</DocumentationFile>
     </PropertyGroup>
     <PropertyGroup>
         <RootNamespace>Cultivation_Way</RootNamespace>
     </PropertyGroup>
     <PropertyGroup>
         <StartupObject/>
-    </PropertyGroup>
-    <PropertyGroup>
-        <PostBuildEvent>del "C:\Program Files (x86)\Steam\steamapps\common\worldbox\Mods\CW_Addon_Template\Assemblies\CW_Core.*"
-            copy "C:\Program Files (x86)\Steam\steamapps\common\worldbox\Mods\CW_Core\build\CW_Core.dll" "C:\Program Files (x86)\Steam\steamapps\common\worldbox\Mods\CW_Addon_Template\Assemblies"
-        </PostBuildEvent>
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="0Harmony">
@@ -250,26 +246,26 @@
         <Content Include="GameResources\actors\boats\boat_trading_yao\normal.png"/>
         <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-90%400.png"/>
         <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-45%400.png"/>
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-45%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\0%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\45%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\90%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\135%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\180%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-135%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\broken.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\0%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\45%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\90%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\135%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\180%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-135%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\normal.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-90%401.png" />
-        <Content Include="GameResources\actors\boats\boat_transport_yao\-135%400.png" />
-        <Content Include="GameResources\actors\boats\boat_transport_yao\-135%401.png" />
-        <Content Include="GameResources\actors\boats\boat_transport_yao\-45%400.png" />
-        <Content Include="GameResources\actors\boats\boat_transport_yao\-45%401.png" />
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-45%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\0%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\45%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\90%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\135%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\180%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-135%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\broken.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\0%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\45%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\90%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\135%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\180%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-135%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\normal.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-90%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_transport_yao\-135%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_transport_yao\-135%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_transport_yao\-45%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_transport_yao\-45%401.png"/>
         <Content Include="GameResources\actors\boats\boat_transport_yao\-90%400.png" />
         <Content Include="GameResources\actors\boats\boat_transport_yao\-90%401.png" />
         <Content Include="GameResources\actors\boats\boat_transport_yao\0%400.png" />
