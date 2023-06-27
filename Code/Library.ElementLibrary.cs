@@ -15,7 +15,7 @@ public class ElementAsset : Asset
     internal ElementAsset(string id, int[] base_elements, float promot = 1.0f, float rarity = 1.0f,
         BaseStats base_stats = null)
     {
-        if (base_elements == null || base_elements.Length != Constants.Core.element_type_nr || promot < 0.01f ||
+        if (base_elements is not { Length: Constants.Core.element_type_nr } || promot < 0.01f ||
             rarity < 0.99f)
             throw new Exception(string.Format("Init arguments error: {0},{1},{2}",
                 base_elements == null ? -1 : base_elements.Length, promot, rarity));

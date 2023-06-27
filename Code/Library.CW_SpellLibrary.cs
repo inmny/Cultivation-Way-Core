@@ -91,7 +91,7 @@ public class CW_SpellAsset : Asset
     /// <summary>
     ///     法术触发标签, 以32位的二进制表示, 具体参考 <see cref="SpellTriggerTag" />
     /// </summary>
-    private uint trigger_tags;
+    private uint _trigger_tags;
 
 
     /// <summary>
@@ -100,7 +100,7 @@ public class CW_SpellAsset : Asset
     /// <param name="tag">添加的标签</param>
     public void add_trigger_tag(SpellTriggerTag tag)
     {
-        trigger_tags |= (uint)tag;
+        _trigger_tags |= (uint)tag;
     }
 
     /// <summary>
@@ -143,7 +143,7 @@ public class CW_SpellAsset : Asset
     /// <param name="tag">指定的触发情况</param>
     public bool can_trigger(SpellTriggerTag tag)
     {
-        return (trigger_tags & (uint)tag) > 0;
+        return (_trigger_tags & (uint)tag) > 0;
     }
 }
 

@@ -21,22 +21,21 @@ public static class FormatSpells
     /// <param name="rarity">法术稀有度</param>
     /// <param name="anim_id">动画id</param>
     /// <param name="anim_path">动画文件夹路径</param>
-    /// <param name="anim_type">动画类型, 释放者到目标/目标到释放者</param>
+    /// <param name="anim_type">动画类型, 释放者到目标/目标到释放者, USER_TO_TARGET/TARGET_TO_USER</param>
     /// <param name="element_container">法术元素</param>
-    /// <param name="trigger_tags">触发条件</param>
-    /// <param name="target_camp">目标阵营</param>
-    /// <param name="target_type">目标类型</param>
-    /// <param name="cultisys_require">修习需要的修炼体系类型</param>
+    /// <param name="trigger_tags">触发条件, 默认ATTACK</param>
+    /// <param name="target_type">目标类型, ACTOR或BUILDING</param>
+    /// <param name="cultisys_require">修习需要的修炼体系类型, 默认WAKAN</param>
     /// <param name="spell_cost_list">法术消耗列表</param>
     /// <returns>新添加spell asset</returns>
-    /// <exception cref="Exception"></exception>
+    /// <exception cref="Exception">已存在对应id的法术; <paramref name="anim_type"/>不满足限定; <paramref name="target_type"/>不满足限定</exception>
     public static CW_SpellAsset create_track_projectile_spell(
         string id,
         string anim_id, string anim_path, SpellAnimType anim_type = SpellAnimType.USER_TO_TARGET,
         int rarity = 1,
         int[] element_container = null,
         SpellTriggerTag[] trigger_tags = null,
-        SpellTargetCamp target_camp = SpellTargetCamp.ENEMY, SpellTargetType target_type = SpellTargetType.ACTOR,
+        SpellTargetType target_type = SpellTargetType.ACTOR,
         CultisysType[] cultisys_require = null, KeyValuePair<string, float>[] spell_cost_list = null
     )
     {
@@ -50,7 +49,7 @@ public static class FormatSpells
             throw new Exception("create_trace_projectile_spell: anim_type must be USER_TO_TARGET or TARGET_TO_USER");
         }
 
-        if (target_type != SpellTargetType.ACTOR)
+        if (target_type != SpellTargetType.ACTOR && target_type != SpellTargetType.BUILDING)
         {
             throw new Exception("create_trace_projectile_spell: target_type must be ACTOR");
         }
@@ -70,7 +69,9 @@ public static class FormatSpells
             anim_action = anim_type == SpellAnimType.USER_TO_TARGET
                 ? AnimActions.simple_user_to_target
                 : AnimActions.simple_target_to_user,
-            target_camp = target_camp, target_type = target_type
+            target_camp = SpellTargetCamp.ENEMY, target_type = target_type,
+            spell_cost_action = CostChecks.generate_spell_cost_action(spell_cost_list),
+            spell_learn_check = LearnChecks.default_learn_check
         };
         foreach (SpellTriggerTag tag in trigger_tags)
         {
@@ -81,8 +82,6 @@ public static class FormatSpells
         {
             spell_asset.add_cultisys_require(cultisys);
         }
-
-        spell_asset.spell_cost_action = CostChecks.generate_spell_cost_action(spell_cost_list);
 
 
         if (CW_Core.mod_state.anim_manager.get_controller(anim_id) != null)
@@ -108,6 +107,77 @@ public static class FormatSpells
             );
         }
 
+        Manager.spells.add(spell_asset);
+        return spell_asset;
+    }
+    /// <summary>
+    ///     创造并添加一个简单的给予使用者状态的法术
+    /// </summary>
+    /// <param name="id">法术id</param>
+    /// <param name="status_id">给予的状态效果的id, 要求在调用前已经添加</param>
+    /// <param name="anim_id">可选的动画id, 将在使用者身上播放一次</param>
+    /// <param name="anim_path">可选动画的文件夹路径</param>
+    /// <param name="rarity">稀有度</param>
+    /// <param name="element_container">元素数组</param>
+    /// <param name="trigger_tags">触发条件, 默认ATTACK</param>
+    /// <param name="cultisys_require">修炼体系类型要求, 默认WAKAN</param>
+    /// <param name="spell_cost_list">法术消耗列表</param>
+    /// <returns>新添加的spell asset</returns>
+    /// <exception cref="Exception">status_id的状态效果未添加; 已存在对应id的法术</exception>
+    public static CW_SpellAsset create_give_self_status_spell(
+        string id, string status_id,
+        string anim_id = "", string anim_path = "",
+        int rarity = 1,
+        int[] element_container = null,
+        SpellTriggerTag[] trigger_tags = null,
+        CultisysType[] cultisys_require = null, KeyValuePair<string, float>[] spell_cost_list = null
+    )
+    {
+        if(!Manager.statuses.contains(status_id)) throw new Exception($"create_give_status_spell: not found status {status_id} when the function called");
+        if(Manager.spells.contains(id)) throw new Exception($"create_give_status_spell: repeated spell {id}");
+        
+        element_container ??= new[] { 20, 20, 20, 20, 20 };
+        trigger_tags ??= new[] { SpellTriggerTag.ATTACK };
+        cultisys_require ??= new[] { CultisysType.WAKAN };
+        spell_cost_list ??= new KeyValuePair<string, float>[]
+        {
+            new(S.health, 1f)
+        };
+        
+        CW_SpellAsset spell_asset = new()
+        {
+            id = id, rarity = rarity, element = new(element_container),
+            target_camp = SpellTargetCamp.ALIAS, target_type = SpellTargetType.ACTOR,
+            spell_cost_action = CostChecks.generate_spell_cost_action(spell_cost_list),
+            spell_learn_check = LearnChecks.default_learn_check,
+            spell_action = SpellActions.generate_give_status_spell_action(status_id),
+            anim_type = SpellAnimType.ON_USER
+        };
+        
+        foreach (SpellTriggerTag trigger_tag in trigger_tags)
+        {
+            spell_asset.add_trigger_tag(trigger_tag);
+        }
+        foreach (CultisysType cultisys_type in cultisys_require)
+        {
+            spell_asset.add_cultisys_require(cultisys_type);
+        }
+
+        if (anim_id != null)
+        {
+            AnimationSetting setting = new()
+            {
+                loop_limit_type = AnimationLoopLimitType.NUMBER_LIMIT,
+                loop_nr_limit = 1
+            };
+            EffectController controller = CW_Core.mod_state.anim_manager.load_as_controller(anim_id, anim_path, controller_setting: setting);
+            if (controller != null)
+            {
+                spell_asset.anim_id = anim_id;
+                spell_asset.anim_action = AnimActions.simple_on_obj;
+            }
+        }
+        
         Manager.spells.add(spell_asset);
         return spell_asset;
     }
