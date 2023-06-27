@@ -131,19 +131,14 @@ public static class ActorDataTools
         /* 删除低占比血脉, 并normalize至其和为1 */
         List<string> keys = blood_nodes.Keys.ToList();
 
-        float sum_at_first = 0;
-        foreach (string key in keys)
-        {
-            sum_at_first += blood_nodes[key];
-        }
+        float sum_at_first = keys.Sum(key => blood_nodes[key]);
 
         float curr_sum = sum_at_first;
 
 
-        foreach (string key in keys)
+        foreach (string key in keys
+                     .Where(key => !(blood_nodes[key] / sum_at_first >= Constants.Others.blood_ignore_line)))
         {
-            if (blood_nodes[key] / sum_at_first >= Constants.Others.blood_ignore_line) continue;
-
             curr_sum -= blood_nodes[key];
             blood_nodes.Remove(key);
         }
@@ -176,25 +171,20 @@ public static class ActorDataTools
     internal static void set_blood_nodes_only_save(this ActorData data, Dictionary<string, float> blood_nodes)
     {
         Dictionary<string, float> old_blood_nodes = data.get_blood_nodes();
-        if (old_blood_nodes != null && old_blood_nodes.Keys.Count > 0 && Constants.Others.strict_mode)
+        if (old_blood_nodes is { Keys.Count: > 0 } && Constants.Others.strict_mode)
             throw new Exception("only_save should not be true when old blood nodes exist");
 
         /* 删除低占比血脉, 并normalize至其和为1 */
 
         List<string> keys = blood_nodes.Keys.ToList();
 
-        float sum_at_first = 0;
-        foreach (string key in keys)
-        {
-            sum_at_first += blood_nodes[key];
-        }
+        float sum_at_first = keys.Sum(key => blood_nodes[key]);
 
         float curr_sum = sum_at_first;
 
-        foreach (string key in keys)
+        foreach (string key in keys
+                     .Where(key => !(blood_nodes[key] / sum_at_first >= Constants.Others.blood_ignore_line)))
         {
-            if (blood_nodes[key] / sum_at_first >= Constants.Others.blood_ignore_line) continue;
-
             curr_sum -= blood_nodes[key];
             blood_nodes.Remove(key);
         }

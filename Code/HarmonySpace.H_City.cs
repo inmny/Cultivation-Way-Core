@@ -144,15 +144,10 @@ internal static class H_City
 
         CW_ActorAsset cw_asset = Library.Manager.actors.get(asset.id);
         // 设置灵根
-        if (Toolbox.randomChance(Constants.Others.random_element_when_inherit_chance))
-        {
-            child_data.set_element(
-                CW_Element.get_element_for_set_data(cw_asset.prefer_element, cw_asset.prefer_element_scale));
-        }
-        else
-        {
-            child_data.set_element(CW_Element.get_middle(parent_1.data.get_element(), parent_2.data.get_element()));
-        }
+        child_data.set_element(
+            Toolbox.randomChance(Constants.Others.random_element_when_inherit_chance)
+                ? CW_Element.get_element_for_set_data(cw_asset.prefer_element, cw_asset.prefer_element_scale)
+                : CW_Element.get_middle(parent_1.data.get_element(), parent_2.data.get_element()));
 
         // 准备传承功法
         Cultibook parent_1_cultibook = parent_1.data.get_cultibook();

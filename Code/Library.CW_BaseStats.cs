@@ -11,26 +11,22 @@ internal static class CW_BaseStatsLibrary
     {
         foreach (FieldInfo field in typeof(CW_S).GetFields())
         {
-            if (field.FieldType == typeof(string))
+            if (field.FieldType != typeof(string)) continue;
+            string stat_id = (string)field.GetValue(null);
+            BaseStatAsset stat_asset = add(new BaseStatAsset
             {
-                string stat_id = (string)field.GetValue(null);
-                BaseStatAsset stat_asset = add(new BaseStatAsset
-                {
-                    hidden = false,
-                    icon = string.Empty,
-                    id = stat_id,
-                    translation_key = "stat_" + Constants.Core.mod_prefix + stat_id,
-                    ignore = false,
-                    normalize = false,
-                    used_only_for_civs = true
-                });
-                if (stat_id.StartsWith("mod_"))
-                {
-                    stat_asset.main_stat_to_mod = stat_id.Substring(4);
-                    stat_asset.mod = true;
-                    stat_asset.show_as_percents = true;
-                }
-            }
+                hidden = false,
+                icon = string.Empty,
+                id = stat_id,
+                translation_key = "stat_" + Constants.Core.mod_prefix + stat_id,
+                ignore = false,
+                normalize = false,
+                used_only_for_civs = true
+            });
+            if (!stat_id.StartsWith("mod_")) continue;
+            stat_asset.main_stat_to_mod = stat_id.Substring(4);
+            stat_asset.mod = true;
+            stat_asset.show_as_percents = true;
         }
 
         get(CW_S.mod_cultivelo).mod = false;

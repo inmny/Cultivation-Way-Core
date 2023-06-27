@@ -12,9 +12,9 @@ internal static class ReflectionHelper
 {
     internal static Delegate get_method<T>(string method_name, bool is_static = false)
     {
-        if (is_static)
-            return createMethodDelegate(typeof(T).GetMethod(method_name, BindingFlags.Static | BindingFlags.NonPublic));
-        return createMethodDelegate(AccessTools.Method(typeof(T), method_name));
+        return createMethodDelegate(is_static
+            ? typeof(T).GetMethod(method_name, BindingFlags.Static | BindingFlags.NonPublic)
+            : AccessTools.Method(typeof(T), method_name));
     }
 
     internal static Func<InstanceType, OutType> create_getter<InstanceType, OutType>(string field_name)
@@ -73,10 +73,8 @@ internal static class ReflectionHelper
 
     private static Delegate createMethodDelegate(MethodInfo method_info)
     {
-        List<ParameterExpression> paramExpressions = method_info.GetParameters().Select((p, i) =>
-        {
-            return Expression.Parameter(p.ParameterType, p.Name);
-        }).ToList();
+        List<ParameterExpression> paramExpressions = method_info.GetParameters()
+            .Select((p, i) => Expression.Parameter(p.ParameterType, p.Name)).ToList();
 
         MethodCallExpression callExpression;
         if (method_info.IsStatic)

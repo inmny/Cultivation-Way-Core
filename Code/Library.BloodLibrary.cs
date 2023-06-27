@@ -36,12 +36,10 @@ public class BloodNodeAsset : Asset
     public void decrease()
     {
         alive_descendants_count--;
-        if (alive_descendants_count < 0 && Constants.Others.strict_mode)
-        {
-            max_descendants_count = Constants.Others.blood_node_lock_line;
-            throw new Exception(
-                $"Error current users {alive_descendants_count} for BloodNode {id}. Set its max_users up to remove line");
-        }
+        if (alive_descendants_count >= 0 || !Constants.Others.strict_mode) return;
+        max_descendants_count = Constants.Others.blood_node_lock_line;
+        throw new Exception(
+            $"Error current users {alive_descendants_count} for BloodNode {id}. Set its max_users up to remove line");
     }
 
     /// <summary>

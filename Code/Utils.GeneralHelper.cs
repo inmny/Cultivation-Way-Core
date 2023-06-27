@@ -66,9 +66,9 @@ public static class GeneralHelper
         {
             WorldTile readyToAdd = center_tile; //水平移动用于添加
             WorldTile yLine = center_tile; //竖直移动，以校准x=0
-            for (int yPos = 0; yPos < right.Count; yPos++)
+            foreach (int right_bound in right)
             {
-                for (int xPos = 0; xPos < right[yPos]; xPos++)
+                for (int xPos = 0; xPos < right_bound; xPos++)
                 {
                     tiles.Add(readyToAdd);
                     if (readyToAdd.world_edge)

@@ -74,19 +74,17 @@ internal static class H_Actor
         actor.stats.mergeStats(actor.data.get_element().comp_bonus_stats());
         // 载入血脉的加成
         BloodNodeAsset main_blood_node = actor.data.get_main_blood();
-        if (main_blood_node != null)
+        if (main_blood_node == null) return;
+        if (main_blood_node.id == actor.data.id)
         {
-            if (main_blood_node.id == actor.data.id)
-            {
-                // 记录属性到血脉
-                main_blood_node.ancestor_stats.clear();
-                main_blood_node.ancestor_stats.mergeStats(actor.stats);
-            }
-            else
-            {
-                // TODO: 添加血脉纯度对属性加成的影响
-                actor.stats.max(main_blood_node.ancestor_stats, 0.6f);
-            }
+            // 记录属性到血脉
+            main_blood_node.ancestor_stats.clear();
+            main_blood_node.ancestor_stats.mergeStats(actor.stats);
+        }
+        else
+        {
+            // TODO: 添加血脉纯度对属性加成的影响
+            actor.stats.max(main_blood_node.ancestor_stats, 0.6f);
         }
     }
 
@@ -308,9 +306,8 @@ internal static class H_Actor
 
         List<CW_StatusEffectData> list = Factories.status_list_factory.get_next();
         list.AddRange(actor.statuses.Values);
-        foreach (CW_StatusEffectData status in list)
+        foreach (CW_StatusEffectData status in list.Where(status => !status.finished))
         {
-            if (status.finished) continue;
             status.status_asset.action_on_attack?.Invoke(status, pTarget, actor);
         }
 

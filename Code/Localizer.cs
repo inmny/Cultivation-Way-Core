@@ -61,26 +61,20 @@ internal static class Localizer
             // 正常加载对应语言的本地化文件
             foreach (FileInfo locale_file in files)
             {
-                if (locale_file.Name == language + ".json")
-                {
-                    load_json(locale_file.FullName, language);
-                    language_locale_file_found = true;
-                    break;
-                }
+                if (locale_file.Name != language + ".json") continue;
+                load_json(locale_file.FullName, language);
+                language_locale_file_found = true;
+                break;
             }
 
             // 如果对应语言的本地化文件不存在，则尝试加载英文的本地化文件
-            if (!language_locale_file_found)
+            if (language_locale_file_found) continue;
+            foreach (FileInfo locale_file in files)
             {
-                foreach (FileInfo locale_file in files)
-                {
-                    if (locale_file.Name == "en.json")
-                    {
-                        load_json(locale_file.FullName, language);
-                        language_locale_file_found = true;
-                        break;
-                    }
-                }
+                if (locale_file.Name != "en.json") continue;
+                load_json(locale_file.FullName, language);
+                language_locale_file_found = true;
+                break;
             }
         }
 

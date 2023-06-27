@@ -79,12 +79,10 @@ public class Cultibook : Asset
     public void decrease()
     {
         cur_users--;
-        if (cur_users < 0 && Constants.Others.strict_mode)
-        {
-            max_users = Constants.Others.cultibook_lock_line;
-            throw new Exception(
-                $"Error current users {cur_users} for Cultibook {id}. Set its max_users up to remove line");
-        }
+        if (cur_users >= 0 || !Constants.Others.strict_mode) return;
+        max_users = Constants.Others.cultibook_lock_line;
+        throw new Exception(
+            $"Error current users {cur_users} for Cultibook {id}. Set its max_users up to remove line");
     }
 
     /// <summary>
@@ -110,12 +108,10 @@ public class CultibookLibrary : CW_DynamicLibrary<Cultibook>
         base.update();
         for (int i = 0; i < list.Count; i++)
         {
-            if (list[i].cur_users <= 0 && list[i].max_users < Constants.Others.cultibook_lock_line)
-            {
-                dict.Remove(list[i].id);
-                list.RemoveAt(i);
-                i--;
-            }
+            if (list[i].cur_users > 0 || list[i].max_users >= Constants.Others.cultibook_lock_line) continue;
+            dict.Remove(list[i].id);
+            list.RemoveAt(i);
+            i--;
         }
     }
 

@@ -64,13 +64,10 @@ public class CW_Core : MonoBehaviour
                      * 核心第一次Update
                      */
                     state.addons_initialized = true;
-                    foreach (CW_Addon addon in state.addons)
+                    foreach (CW_Addon addon in state.addons.Where(addon => !addon.initialized))
                     {
-                        if (!addon.initialized)
-                        {
-                            state.addons_initialized = false;
-                            break;
-                        }
+                        state.addons_initialized = false;
+                        break;
                     }
                 }
                 else
@@ -143,14 +140,12 @@ public class CW_Core : MonoBehaviour
     {
         //fastJSON.JSON.Parameters.UseExtensions = false;
 
-        if (Environment.UserName == "Inmny")
-        {
-            state.editor_inmny = true;
-            Config.isEditor = true;
-            Config.editor_maxim = true;
-            Config.editor_mastef = true;
-            Config.disableLocaleLogs = true;
-        }
+        if (Environment.UserName != "Inmny") return;
+        state.editor_inmny = true;
+        Config.isEditor = true;
+        Config.editor_maxim = true;
+        Config.editor_mastef = true;
+        Config.disableLocaleLogs = true;
     }
 
     public class ModState

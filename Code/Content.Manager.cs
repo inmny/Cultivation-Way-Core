@@ -7,6 +7,7 @@ internal static class Manager
         Cultisys.init();
         Element.init();
         Energy.init();
+        StatusEffect.init();
         Spell.init();
 
         HarmonySpace.Manager.init();

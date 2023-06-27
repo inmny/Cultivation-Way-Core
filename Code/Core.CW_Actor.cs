@@ -140,7 +140,7 @@ public class CW_Actor : Actor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool has_any_status_effect()
     {
-        return (activeStatus_dict != null && activeStatus_dict.Count > 0) || (statuses != null && statuses.Count > 0);
+        return activeStatus_dict is { Count: > 0 } || statuses is { Count: > 0 };
     }
 
     /// <summary>
@@ -149,8 +149,8 @@ public class CW_Actor : Actor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool has_status(string id)
     {
-        return (activeStatus_dict != null && activeStatus_dict.Count > 0 && activeStatus_dict.ContainsKey(id)) ||
-               (statuses != null && statuses.Count > 0 && statuses.ContainsKey(id));
+        return (activeStatus_dict is { Count: > 0 } && activeStatus_dict.ContainsKey(id)) ||
+               (statuses is { Count: > 0 } && statuses.ContainsKey(id));
     }
 
     /// <summary>
@@ -218,9 +218,9 @@ public class CW_Actor : Actor
         }
 
         // 修炼体系的月度更新
-        foreach (var cultisys in Manager.cultisys.list)
+        foreach (CultisysAsset cultisys in Manager.cultisys.list.Where(cultisys =>
+                     cultisys.monthly_update_action != null))
         {
-            if (cultisys.monthly_update_action == null) continue;
             data.get(cultisys.id, out int level, -1);
             if (level < 0) continue;
             cultisys.monthly_update_action(this, cultisys, level);
@@ -257,13 +257,15 @@ public class CW_Actor : Actor
         #region 伤害计算
 
         float num = 1f;
-        if (attack_type == CW_AttackType.Other || attack_type == CW_AttackType.Weapon)
+        switch (attack_type)
         {
-            num = 1f - stats[S.armor] / (stats[S.armor] + 100);
-        }
-        else if (attack_type == CW_AttackType.Spell)
-        {
-            num = 1f - stats[CW_S.spell_armor] / (stats[CW_S.spell_armor] + 100);
+            case CW_AttackType.Other:
+            case CW_AttackType.Weapon:
+                num = 1f - stats[S.armor] / (stats[S.armor] + 100);
+                break;
+            case CW_AttackType.Spell:
+                num = 1f - stats[CW_S.spell_armor] / (stats[CW_S.spell_armor] + 100);
+                break;
         }
 
         pDamage *= num;
@@ -558,13 +560,11 @@ public class CW_Actor : Actor
 
         spell_float.OrderBy(x => x.Value);
         // 尝试学习
-        foreach (KeyValuePair<CW_SpellAsset, float> spell_chance in spell_float)
+        foreach (KeyValuePair<CW_SpellAsset, float> spell_chance in spell_float.Where(spell_chance =>
+                     Toolbox.randomChance(spell_chance.Value)))
         {
-            if (Toolbox.randomChance(spell_chance.Value))
-            {
-                learn_spell(spell_chance.Key);
-                return;
-            }
+            learn_spell(spell_chance.Key);
+            return;
         }
     }
 
@@ -586,10 +586,10 @@ public class CW_Actor : Actor
             cultisys_types |= (uint)Manager.cultisys.list[i].type;
         }
 
-        for (int i = 0; i < cultibook.spells.Count; i++)
+        foreach (string t in cultibook.spells)
         {
-            if (__data_spells.Contains(cultibook.spells[i])) continue;
-            CW_SpellAsset spell = Manager.spells.get(cultibook.spells[i]);
+            if (__data_spells.Contains(t)) continue;
+            CW_SpellAsset spell = Manager.spells.get(t);
 
             float learn_chance = spell.learn_check(this, cultisys_types);
 
@@ -637,20 +637,17 @@ public class CW_Actor : Actor
         // 暂且不支持直接的血脉修炼体系
         uint allow_cultisys_types = 0b111;
         // 强制添加的修炼体系
-        foreach (CultisysAsset cultisys in cw_asset.force_cultisys)
+        foreach (CultisysAsset cultisys in cw_asset.force_cultisys
+                     .Where(cultisys => (allow_cultisys_types & (uint)cultisys.type) != 0))
         {
-            if ((allow_cultisys_types & (uint)cultisys.type) == 0) continue;
-
             data.set(cultisys.id, 0);
             allow_cultisys_types &= ~(uint)cultisys.type;
         }
 
-        foreach (CultisysAsset cultisys in cw_asset.allowed_cultisys)
+        foreach (CultisysAsset cultisys in cw_asset.allowed_cultisys
+                     .Where(cultisys => (allow_cultisys_types & (uint)cultisys.type) != 0)
+                     .Where(cultisys => cultisys.allow(this, cultisys)))
         {
-            if ((allow_cultisys_types & (uint)cultisys.type) == 0) continue;
-
-            if (!cultisys.allow(this, cultisys)) continue;
-
             data.set(cultisys.id, 0);
             allow_cultisys_types &= ~(uint)cultisys.type;
         }

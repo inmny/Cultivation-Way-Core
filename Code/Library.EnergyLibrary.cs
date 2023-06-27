@@ -41,7 +41,7 @@ public class EnergyAsset : Asset
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Color get_color(float value, float density, float power_level)
     {
-        return color_calc == null ? Color.white : color_calc(this, value, density, power_level);
+        return color_calc?.Invoke(this, value, density, power_level) ?? Color.white;
     }
 }
 

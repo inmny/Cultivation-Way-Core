@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Cultivation_Way.Library;
 
 namespace Cultivation_Way.Core;
@@ -72,9 +73,9 @@ public class CW_MapChunkManager
     {
         this.width = width;
         this.height = height;
-        foreach (EnergyAsset energy in Manager.energies.list)
+        foreach (EnergyAsset energy in Manager.energies.list.Where(energy => energy.is_dissociative))
         {
-            if (energy.is_dissociative) maps.Add(energy.id, new CW_EnergyMap(energy));
+            maps.Add(energy.id, new CW_EnergyMap(energy));
         }
 
         foreach (CW_EnergyMap map in maps.Values)

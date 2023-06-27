@@ -33,7 +33,7 @@ internal class CW_TipButton : MonoBehaviour
     {
         tooltip_action?.Invoke(gameObject);
 
-        if (origin_scale.x < 0 && origin_scale.y < 0)
+        if (origin_scale is { x: < 0, y: < 0 })
         {
             origin_scale = transform.localScale;
         }

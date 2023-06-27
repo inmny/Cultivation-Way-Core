@@ -12,6 +12,15 @@ internal static class Spell
     public static void init()
     {
         add_track_projectile_spells();
+        add_give_self_status_spells();
+    }
+
+    [SuppressMessage("ReSharper", "JoinDeclarationAndInitializer")]
+    private static void add_give_self_status_spells()
+    {
+        CW_SpellAsset spell_asset;
+        EffectController effect_controller;
+        AnimationSetting anim_setting;
     }
 
     [SuppressMessage("ReSharper", "JoinDeclarationAndInitializer")]

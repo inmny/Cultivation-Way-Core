@@ -105,14 +105,10 @@ public class CultisysAsset : Asset
     /// </summary>
     public BaseStats get_bonus_stats(CW_Actor actor, int level)
     {
-        if (stats_action != null)
-        {
-            BaseStats ret = stats_action(actor, this);
-            ret.mergeStats(bonus_stats[level]);
-            return ret;
-        }
-
-        return bonus_stats[level];
+        if (stats_action == null) return bonus_stats[level];
+        BaseStats ret = stats_action(actor, this);
+        ret.mergeStats(bonus_stats[level]);
+        return ret;
     }
 }
 

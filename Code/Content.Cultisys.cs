@@ -30,9 +30,7 @@ internal static class Cultisys
             max_progress = (actor, culti, level) => actor.stats[CW_S.wakan],
             allow = (actor, culti) => true,
             can_levelup = (actor, culti) =>
-            {
-                return immortal.curr_progress(actor, immortal, 0) >= immortal.max_progress(actor, immortal, 0);
-            },
+                immortal.curr_progress(actor, immortal, 0) >= immortal.max_progress(actor, immortal, 0),
             monthly_update_action = (actor, culti, level) =>
             {
                 float regen_wakan_line = actor.stats[CW_S.wakan] * Content_Constants.immortal_max_wakan_regen;

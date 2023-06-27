@@ -21,23 +21,16 @@ public static class AnimActions
         WorldTile target_tile, float cost)
     {
         if (string.IsNullOrEmpty(spell_asset.anim_id)) return;
-        Animation.SpriteAnimation anim;
-        switch (spell_asset.anim_type)
+        Animation.SpriteAnimation anim = spell_asset.anim_type switch
         {
-            case SpellAnimType.ON_USER:
-                anim = CW_Core.mod_state.anim_manager.spawn_anim(spell_asset.anim_id, src_vec: user.currentPosition,
-                    dst_vec: user.currentPosition, src_obj: user, dst_obj: target);
-                break;
-            case SpellAnimType.ON_TARGET:
-                anim = CW_Core.mod_state.anim_manager.spawn_anim(spell_asset.anim_id,
-                    src_vec: target == null ? target_tile.posV : target.currentPosition,
-                    dst_vec: target == null ? target_tile.posV : target.currentPosition, src_obj: user,
-                    dst_obj: target);
-                break;
-            default:
-                throw new Exception(
-                    $"simple_on_obj: anim_type {spell_asset.anim_type} not supported for {spell_asset.id}");
-        }
+            SpellAnimType.ON_USER => CW_Core.mod_state.anim_manager.spawn_anim(spell_asset.anim_id,
+                user.currentPosition, user.currentPosition, user, target),
+            SpellAnimType.ON_TARGET => CW_Core.mod_state.anim_manager.spawn_anim(spell_asset.anim_id,
+                target == null ? target_tile.posV : target.currentPosition,
+                target == null ? target_tile.posV : target.currentPosition, user, target),
+            _ => throw new Exception(
+                $"simple_on_obj: anim_type {spell_asset.anim_type} not supported for {spell_asset.id}")
+        };
 
         if (anim is not { isOn: true }) return;
         anim.data.set(DataS.spell_cost, cost);
