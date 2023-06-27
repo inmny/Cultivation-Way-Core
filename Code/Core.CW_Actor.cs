@@ -128,9 +128,9 @@ public class CW_Actor : Actor
         statuses.Add(as_id, status);
         status_asset.action_on_get?.Invoke(status, from, this);
 
-        activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
-        activeStatus_dict[status_id] = new StatusEffectData(this, AssetManager.status.get(status_id));
-        activeStatus_dict[status_id].setTimer(status.left_time);
+        //activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
+        //activeStatus_dict[status_id] = new StatusEffectData(this, AssetManager.status.get(status_id));
+        //activeStatus_dict[status_id].setTimer(status.left_time);
         return status;
     }
 
@@ -192,7 +192,7 @@ public class CW_Actor : Actor
             }
 
             status.update_timer(pElapsed);
-            activeStatus_dict?[status.status_asset.id].setTimer(status.left_time);
+            //activeStatus_dict?[status.status_asset.id].setTimer(status.left_time);
         }
 
         foreach (CW_StatusEffectData status in list.Where(status => status.finished))
