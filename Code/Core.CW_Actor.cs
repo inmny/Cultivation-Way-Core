@@ -112,7 +112,7 @@ public class CW_Actor : Actor
         as_id ??= status_id;
         statuses ??= new Dictionary<string, CW_StatusEffectData>();
 
-        if (statuses.ContainsKey(as_id)) return statuses[as_id];
+        if (statuses.TryGetValue(as_id, out CW_StatusEffectData same_id_status)) return same_id_status;
         CW_StatusEffectData status = new(status_asset, from)
         {
             id = as_id
@@ -123,6 +123,10 @@ public class CW_Actor : Actor
         {
             status.anim = EffectManager.instance.spawn_anim(status_asset.anim_id,
                 from == null ? Vector2.zero : from.currentPosition, currentPosition, from, this);
+            if (status.anim is { isOn: true })
+            {
+                status.anim.change_scale(stats[S.scale]);
+            }
         }
 
         statuses.Add(as_id, status);
