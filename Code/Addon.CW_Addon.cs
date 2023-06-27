@@ -53,7 +53,6 @@ public abstract class CW_Addon : MonoBehaviour
             return;
         }
 
-        addon_name = this_mod.info.Name.Replace($"{CW_Core.mod_state.mod_info.Name}.postload", "");
         CW_Core.mod_state.addons.Add(this);
     }
 
@@ -69,6 +68,7 @@ public abstract class CW_Addon : MonoBehaviour
         if (!CW_Core.mod_state.core_initialized) return;
 
         initialized = true;
+        addon_name = this_mod.info.Name.Replace($"{CW_Core.mod_state.mod_info.Name}.postload", "");
         try
         {
             initialize();

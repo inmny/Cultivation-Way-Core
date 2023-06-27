@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Cultivation_Way.Addon;
 using Cultivation_Way.Animation;
@@ -110,16 +111,13 @@ public class CW_Core : MonoBehaviour
     private void initialize()
     {
         List<NCMod> mods = NCMS.ModLoader.Mods;
-        foreach (NCMod mod in mods)
+        foreach (NCMod mod in mods.Where(mod => mod.name == Constants.Core.mod_name))
         {
-            if (mod.name == Constants.Core.mod_name)
-            {
-                state.mod_info =
-                    typeof(Info)
-                        .GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(NCMod) },
-                            null).Invoke(new object[] { mod }) as Info;
-                break;
-            }
+            state.mod_info =
+                typeof(Info)
+                    .GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(NCMod) },
+                        null).Invoke(new object[] { mod }) as Info;
+            break;
         }
 
         state.anim_manager = gameObject.AddComponent<EffectManager>();
