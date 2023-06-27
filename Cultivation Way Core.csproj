@@ -25,12 +25,13 @@
         <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
         <UseApplicationTrust>false</UseApplicationTrust>
         <BootstrapperEnabled>true</BootstrapperEnabled>
+        <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <DebugSymbols>true</DebugSymbols>
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
+        <OutputPath>build\</OutputPath>
         <DefineConstants>DEBUG;TRACE</DefineConstants>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
@@ -54,7 +55,12 @@
         <RootNamespace>Cultivation_Way</RootNamespace>
     </PropertyGroup>
     <PropertyGroup>
-        <StartupObject />
+        <StartupObject/>
+    </PropertyGroup>
+    <PropertyGroup>
+        <PostBuildEvent>del "C:\Program Files (x86)\Steam\steamapps\common\worldbox\Mods\CW_Addon_Template\Assemblies\CW_Core.*"
+            copy "C:\Program Files (x86)\Steam\steamapps\common\worldbox\Mods\CW_Core\build\CW_Core.dll" "C:\Program Files (x86)\Steam\steamapps\common\worldbox\Mods\CW_Addon_Template\Assemblies"
+        </PostBuildEvent>
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="0Harmony">
@@ -74,9 +80,9 @@
         <Reference Include="Ionic.Zlib.CF">
             <HintPath>Includes\Ionic.Zlib.CF.dll</HintPath>
         </Reference>
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="NCMS">
-            <HintPath>Includes\NCMS.dll</HintPath>
+        <Reference Include="Microsoft.CSharp"/>
+        <Reference Include="NCMS_memload">
+            <HintPath>Includes\NCMS_memload.dll</HintPath>
         </Reference>
         <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
             <HintPath>packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -84,61 +90,16 @@
         <Reference Include="Purchasing.Common">
             <HintPath>Includes\Purchasing.Common.dll</HintPath>
         </Reference>
-        <Reference Include="System" />
-        <Reference Include="System.Core" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="System.Drawing" />
-        <Reference Include="System.Net.Http" />
-        <Reference Include="System.Numerics" />
-        <Reference Include="System.Windows.Forms" />
-        <Reference Include="System.Xml" />
-        <Reference Include="System.Xml.Linq" />
-        <Reference Include="Unity.Analytics.DataPrivacy">
-            <HintPath>Includes\Unity.Analytics.DataPrivacy.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Analytics.StandardEvents">
-            <HintPath>Includes\Unity.Analytics.StandardEvents.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Analytics.Tracker">
-            <HintPath>Includes\Unity.Analytics.Tracker.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Burst">
-            <HintPath>Includes\Unity.Burst.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Burst.Cecil">
-            <HintPath>Includes\Unity.Burst.Cecil.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Burst.Cecil.Mdb">
-            <HintPath>Includes\Unity.Burst.Cecil.Mdb.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Burst.Cecil.Pdb">
-            <HintPath>Includes\Unity.Burst.Cecil.Pdb.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Burst.Cecil.Rocks">
-            <HintPath>Includes\Unity.Burst.Cecil.Rocks.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Burst.Unsafe">
-            <HintPath>Includes\Unity.Burst.Unsafe.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Compat">
-            <HintPath>Includes\Unity.Compat.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Mathematics">
-            <HintPath>Includes\Unity.Mathematics.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Postprocessing.Runtime">
-            <HintPath>Includes\Unity.Postprocessing.Runtime.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Tasks">
-            <HintPath>Includes\Unity.Tasks.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.TextMeshPro">
-            <HintPath>Includes\Unity.TextMeshPro.dll</HintPath>
-        </Reference>
-        <Reference Include="Unity.Timeline">
-            <HintPath>Includes\Unity.Timeline.dll</HintPath>
-        </Reference>
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.Data.DataSetExtensions"/>
+        <Reference Include="System.Drawing"/>
+        <Reference Include="System.Net.Http"/>
+        <Reference Include="System.Numerics"/>
+        <Reference Include="System.Windows.Forms"/>
+        <Reference Include="System.Xml"/>
+        <Reference Include="System.Xml.Linq"/>
         <Reference Include="UnityEngine">
             <HintPath>Includes\UnityEngine.dll</HintPath>
         </Reference>
@@ -222,27 +183,73 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Content Include="Assemblies\Assembly-CSharp.dll" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\-135%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\-135%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\-45%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\-45%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\-90%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\-90%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\0%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\0%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\135%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\135%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\180%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\180%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\45%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\45%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\90%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\90%401.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\broken.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_yao\normal.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-90%400.png" />
-        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-45%400.png" />
+        <Content Include=".gitignore"/>
+        <Content Include="Assemblies\Assembly-CSharp.dll"/>
+        <Content Include="build\0Harmony.dll"/>
+        <Content Include="build\Assembly-CSharp-firstpass.dll"/>
+        <Content Include="build\Assembly-CSharp.dll"/>
+        <Content Include="build\CW_Core.dll"/>
+        <Content Include="build\CW_Core.pdb"/>
+        <Content Include="build\DOTween.dll"/>
+        <Content Include="build\Ionic.Zlib.CF.dll"/>
+        <Content Include="build\NCMS_memload.dll"/>
+        <Content Include="build\Newtonsoft.Json.dll"/>
+        <Content Include="build\Newtonsoft.Json.xml"/>
+        <Content Include="build\Purchasing.Common.dll"/>
+        <Content Include="build\System.Buffers.dll"/>
+        <Content Include="build\System.Collections.Immutable.dll"/>
+        <Content Include="build\System.Memory.dll"/>
+        <Content Include="build\System.Numerics.Vectors.dll"/>
+        <Content Include="build\System.Runtime.CompilerServices.Unsafe.dll"/>
+        <Content Include="build\Unity.Mathematics.dll"/>
+        <Content Include="build\UnityEngine.AssetBundleModule.dll"/>
+        <Content Include="build\UnityEngine.AudioModule.dll"/>
+        <Content Include="build\UnityEngine.ClothModule.dll"/>
+        <Content Include="build\UnityEngine.CoreModule.dll"/>
+        <Content Include="build\UnityEngine.dll"/>
+        <Content Include="build\UnityEngine.GridModule.dll"/>
+        <Content Include="build\UnityEngine.JSONSerializeModule.dll"/>
+        <Content Include="build\UnityEngine.LocalizationModule.dll"/>
+        <Content Include="build\UnityEngine.Physics2DModule.dll"/>
+        <Content Include="build\UnityEngine.Purchasing.AppleCore.dll"/>
+        <Content Include="build\UnityEngine.Purchasing.AppleMacosStub.dll"/>
+        <Content Include="build\UnityEngine.Purchasing.AppleStub.dll"/>
+        <Content Include="build\UnityEngine.Purchasing.Codeless.dll"/>
+        <Content Include="build\UnityEngine.Purchasing.dll"/>
+        <Content Include="build\UnityEngine.Purchasing.SecurityCore.dll"/>
+        <Content Include="build\UnityEngine.Purchasing.SecurityStub.dll"/>
+        <Content Include="build\UnityEngine.Purchasing.Stores.dll"/>
+        <Content Include="build\UnityEngine.Purchasing.WinRTCore.dll"/>
+        <Content Include="build\UnityEngine.Purchasing.WinRTStub.dll"/>
+        <Content Include="build\UnityEngine.SpriteMaskModule.dll"/>
+        <Content Include="build\UnityEngine.StreamingModule.dll"/>
+        <Content Include="build\UnityEngine.TextCoreModule.dll"/>
+        <Content Include="build\UnityEngine.TextRenderingModule.dll"/>
+        <Content Include="build\UnityEngine.TilemapModule.dll"/>
+        <Content Include="build\UnityEngine.UI.dll"/>
+        <Content Include="build\UnityEngine.UIElementsModule.dll"/>
+        <Content Include="build\UnityEngine.UIElementsNativeModule.dll"/>
+        <Content Include="build\UnityEngine.UIModule.dll"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\-135%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\-135%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\-45%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\-45%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\-90%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\-90%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\0%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\0%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\135%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\135%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\180%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\180%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\45%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\45%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\90%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\90%401.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\broken.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_yao\normal.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-90%400.png"/>
+        <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-45%400.png"/>
         <Content Include="GameResources\actors\boats\boat_trading_eastern_human\-45%401.png" />
         <Content Include="GameResources\actors\boats\boat_trading_eastern_human\0%400.png" />
         <Content Include="GameResources\actors\boats\boat_trading_eastern_human\45%400.png" />
@@ -3545,6 +3552,7 @@
         <Compile Include="Code\Library.CW_SpellLibrary.cs" />
         <Compile Include="Code\Library.CW_StatusEffectLibrary.cs" />
         <Compile Include="Code\Library.ElementLibrary.cs" />
+        <None Include="build\CW_Core.dll.config"/>
         <None Include="docs\index.md" />
         <None Include="GameResources\actors\races\eastern_human\unit_female_1\sprites.json" />
         <None Include="GameResources\actors\races\eastern_human\unit_king\sprites.json" />

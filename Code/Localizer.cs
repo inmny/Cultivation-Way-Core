@@ -22,7 +22,7 @@ internal static class Localizer
         load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "GameResources/cw_locales/en.json"), "en");
     }
 
-    public static void load_json(string path, string language)
+    private static void load_json(string path, string language)
     {
         string json = File.ReadAllText(path);
         //Logger.Log(json);
@@ -49,7 +49,7 @@ internal static class Localizer
 
         foreach (CW_Addon addon in CW_Core.mod_state.addons)
         {
-            string locale_dir = Path.Combine(addon.mod_info.Path, "Locales");
+            string locale_dir = Path.Combine(addon.this_mod.info.Path, "Locales");
 
             DirectoryInfo dir = new(locale_dir);
             // 检查本地化文件夹是否存在
