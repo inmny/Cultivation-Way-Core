@@ -1,7 +1,6 @@
 ﻿using Cultivation_Way.Library;
-using Cultivation_Way.Others;
 
-namespace Cultivation_Way.General;
+namespace Cultivation_Way.General.AboutSpell;
 
 public static class LearnChecks
 {
