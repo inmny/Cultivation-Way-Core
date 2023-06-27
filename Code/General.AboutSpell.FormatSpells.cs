@@ -155,18 +155,26 @@ public static class FormatSpells
 
         if (anim_id != null)
         {
-            AnimationSetting setting = new()
+            if (CW_Core.mod_state.anim_manager.get_controller(anim_id) != null)
             {
-                loop_limit_type = AnimationLoopLimitType.NUMBER_LIMIT,
-                loop_nr_limit = 1
-            };
-            EffectController controller =
-                CW_Core.mod_state.anim_manager.load_as_controller(anim_id, anim_path, base_scale: anim_scale,
-                    controller_setting: setting);
-            if (controller != null)
+                Logger.Warn(
+                    $"create_give_self_status_spell: There is already animation {anim_id}, it will not create a new one for spell {id}");
+            }
+            else
             {
-                spell_asset.anim_id = anim_id;
-                spell_asset.anim_action = AnimActions.simple_on_something;
+                AnimationSetting setting = new()
+                {
+                    loop_limit_type = AnimationLoopLimitType.NUMBER_LIMIT,
+                    loop_nr_limit = 1
+                };
+                EffectController controller =
+                    CW_Core.mod_state.anim_manager.load_as_controller(anim_id, anim_path, base_scale: anim_scale,
+                        controller_setting: setting);
+                if (controller != null)
+                {
+                    spell_asset.anim_id = anim_id;
+                    spell_asset.anim_action = AnimActions.simple_on_something;
+                }
             }
         }
 
