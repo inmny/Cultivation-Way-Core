@@ -370,4 +370,4 @@ FodyWeavers.xsd
 /sim_script.py
 *.swp
 /Code/OpenAIWrapper.cs
-.idea/
+/build/
