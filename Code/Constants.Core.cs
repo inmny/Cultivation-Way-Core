@@ -4,7 +4,13 @@ public static class Core
 {
     public const string uniform_type = mod_prefix + "uniform";
     public const string mod_prefix = "cw_";
+    public const string title_suffix = "_title";
+    public const string desc_suffix = "_description";
     public const string mod_name = "启源核心";
+
+    public const string modinfo_window = mod_prefix + "modinfo_window";
+    public const string tops_window = mod_prefix + "tops_window";
+
     public const int BASE_TYPE_WATER = 0;
     public const int BASE_TYPE_FIRE = 1;
     public const int BASE_TYPE_WOOD = 2;

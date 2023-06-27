@@ -59,7 +59,7 @@ public class CW_Core : MonoBehaviour
                 if (!state.addons_initialized)
                 {
                     /* 检查附属是否初始化完全 */
-                    /**一般加载流程为
+                    /*一般加载流程为
                      * 核心Awake, 附属依次Awake, 将自身加入到核心的附属列表中
                      * 核心第一次Update
                      */
@@ -73,6 +73,7 @@ public class CW_Core : MonoBehaviour
                 else
                 {
                     // 在所有附属初始化完毕后, 进行后续处理
+                    CWTab.post_init();
                     state.library_manager.post_init();
                     state.map_chunk_manager.init(World.world.mapChunkManager.amountX,
                         World.world.mapChunkManager.amountY);
@@ -101,10 +102,6 @@ public class CW_Core : MonoBehaviour
         }
     }
 
-    private static void Main()
-    {
-    }
-
     private void initialize()
     {
         List<NCMod> mods = NCMS.ModLoader.Mods;
@@ -113,7 +110,8 @@ public class CW_Core : MonoBehaviour
             state.mod_info =
                 typeof(Info)
                     .GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(NCMod) },
-                        null).Invoke(new object[] { mod }) as Info;
+                        null)
+                    ?.Invoke(new object[] { mod }) as Info;
             break;
         }
 
@@ -131,9 +129,26 @@ public class CW_Core : MonoBehaviour
         Factories.init();
         Localizer.init();
         Prefabs.init();
+        CWTab.init();
         FastVisit.init();
         HarmonySpace.Manager.init();
         state.library_manager.init();
+        init_windows();
+    }
+
+    private void init_windows()
+    {
+        Type[] all_types = Assembly.GetExecutingAssembly().GetTypes();
+        foreach (Type type in all_types)
+        {
+            if (type.Namespace != $"{nameof(Cultivation_Way)}.{nameof(UI)}") continue;
+            if (type.BaseType == null) continue;
+            if (type.BaseType.Name.Contains("AbstractWindow"))
+            {
+                type.GetMethod("init", BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic)
+                    ?.Invoke(null, null);
+            }
+        }
     }
 
     private void configure()

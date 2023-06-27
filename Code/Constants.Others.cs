@@ -276,3 +276,16 @@ public enum CW_AttackType
     RealWeapon,
     God
 }
+
+// TODO: 补充注释, 懒得写了
+public enum ButtonContainerType
+{
+    INFO,
+    DEBUG,
+    TOOL,
+    RACE,
+    ACTOR,
+    BUILDING,
+    BOSS,
+    OTHERS
+}
