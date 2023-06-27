@@ -25,7 +25,7 @@ internal static class Spell
 
         spell_asset = FormatSpells.create_track_projectile_attack_spell(
             "gold_sword",
-            "single_gold_sword_anim", "effects/single_gold_sword",
+            "single_gold_sword_anim", "effects/single_gold_sword", 0.15f,
             rarity: 3,
             spell_cost_list: new KeyValuePair<string, float>[]
             {
@@ -34,7 +34,6 @@ internal static class Spell
             element_container: new[] { 0, 0, 0, 100, 0 }
         );
         effect_controller = CW_Core.mod_state.anim_manager.get_controller(spell_asset.anim_id);
-        effect_controller.base_scale = 0.15f;
         effect_controller.anim_limit = 1000;
         anim_setting = effect_controller.default_setting;
         anim_setting.frame_interval = 1;
@@ -46,7 +45,7 @@ internal static class Spell
 
         spell_asset = FormatSpells.create_track_projectile_attack_spell(
             "wood_sword",
-            "single_wood_sword_anim", "effects/single_wood_sword",
+            "single_wood_sword_anim", "effects/single_wood_sword", 0.15f,
             rarity: 3,
             spell_cost_list: new KeyValuePair<string, float>[]
             {
@@ -67,7 +66,7 @@ internal static class Spell
 
         spell_asset = FormatSpells.create_track_projectile_attack_spell(
             "water_sword",
-            "single_water_sword_anim", "effects/single_water_sword",
+            "single_water_sword_anim", "effects/single_water_sword", 0.15f,
             rarity: 3,
             spell_cost_list: new KeyValuePair<string, float>[]
             {

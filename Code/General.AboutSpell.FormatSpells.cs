@@ -21,6 +21,7 @@ public static class FormatSpells
     /// <param name="rarity">法术稀有度</param>
     /// <param name="anim_id">动画id</param>
     /// <param name="anim_path">动画文件夹路径</param>
+    /// <param name="anim_scale">动画大小</param>
     /// <param name="anim_type">动画类型, 释放者到目标/目标到释放者, USER_TO_TARGET/TARGET_TO_USER</param>
     /// <param name="element_container">法术元素</param>
     /// <param name="trigger_tags">触发条件, 默认ATTACK</param>
@@ -31,7 +32,7 @@ public static class FormatSpells
     /// <exception cref="Exception">已存在对应id的法术; <paramref name="anim_type"/>不满足限定; <paramref name="target_type"/>不满足限定</exception>
     public static CW_SpellAsset create_track_projectile_attack_spell(
         string id,
-        string anim_id, string anim_path, SpellAnimType anim_type = SpellAnimType.USER_TO_TARGET,
+        string anim_id, string anim_path, float anim_scale = 1f, SpellAnimType anim_type = SpellAnimType.USER_TO_TARGET,
         int rarity = 1,
         int[] element_container = null,
         SpellTriggerTag[] trigger_tags = null,
@@ -96,7 +97,7 @@ public static class FormatSpells
             anim_setting.set_trace(AnimationTraceType.TRACK);
 
             CW_Core.mod_state.anim_manager.load_as_controller(
-                anim_id, anim_path, 100, 1, anim_setting
+                anim_id, anim_path, 100, anim_scale, anim_setting
             );
         }
 
@@ -111,6 +112,7 @@ public static class FormatSpells
     /// <param name="status_id">给予的状态效果的id, 要求在调用前已经添加</param>
     /// <param name="anim_id">可选的动画id, 将在使用者身上播放一次</param>
     /// <param name="anim_path">可选动画的文件夹路径</param>
+    /// <param name="anim_scale">可选动画的大小</param>
     /// <param name="rarity">稀有度</param>
     /// <param name="element_container">元素数组</param>
     /// <param name="trigger_tags">触发条件, 默认ATTACK</param>
@@ -120,7 +122,7 @@ public static class FormatSpells
     /// <exception cref="Exception">status_id的状态效果未添加; 已存在对应id的法术</exception>
     public static CW_SpellAsset create_give_self_status_spell(
         string id, string status_id,
-        string anim_id = "", string anim_path = "",
+        string anim_id = "", string anim_path = "", float anim_scale = 1f,
         int rarity = 1,
         int[] element_container = null,
         SpellTriggerTag[] trigger_tags = null,
@@ -159,7 +161,8 @@ public static class FormatSpells
                 loop_nr_limit = 1
             };
             EffectController controller =
-                CW_Core.mod_state.anim_manager.load_as_controller(anim_id, anim_path, controller_setting: setting);
+                CW_Core.mod_state.anim_manager.load_as_controller(anim_id, anim_path, base_scale: anim_scale,
+                    controller_setting: setting);
             if (controller != null)
             {
                 spell_asset.anim_id = anim_id;
@@ -177,6 +180,7 @@ public static class FormatSpells
     /// <param name="id">法术id</param>
     /// <param name="anim_id">动画id</param>
     /// <param name="anim_path">动画文件夹路径</param>
+    /// <param name="anim_scale">动画大小</param>
     /// <param name="rarity">法术稀有度</param>
     /// <param name="target_type">目标类型</param>
     /// <param name="element_container">法术元素</param>
@@ -187,7 +191,7 @@ public static class FormatSpells
     /// <returns></returns>
     /// <exception cref="Exception">已存在对应id的法术</exception>
     public static CW_SpellAsset create_on_target_attack_spell(
-        string id, string anim_id, string anim_path,
+        string id, string anim_id, string anim_path, float anim_scale = 1f,
         int rarity = 1, SpellTargetType target_type = SpellTargetType.ACTOR,
         int[] element_container = null,
         SpellTriggerTag[] trigger_tags = null,
@@ -237,7 +241,7 @@ public static class FormatSpells
             };
             anim_setting.set_trace(AnimationTraceType.NONE);
             CW_Core.mod_state.anim_manager.load_as_controller(
-                anim_id, anim_path, 100, 1, anim_setting
+                anim_id, anim_path, 100, anim_scale, anim_setting
             );
         }
 
