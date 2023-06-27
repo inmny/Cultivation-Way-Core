@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.Windows.Forms;
 using Cultivation_Way.Core;
 using Cultivation_Way.Others;
 
