@@ -17,13 +17,14 @@ internal static class Localizer
 
     public static void init()
     {
-        load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "GameResources/cw_locales/cz.json"), "cz");
-        load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "GameResources/cw_locales/tc.json"), "tc");
-        load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "GameResources/cw_locales/en.json"), "en");
+        load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/cz.json"), "cz");
+        load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/tc.json"), "tc");
+        load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/en.json"), "en");
     }
 
     private static void load_json(string path, string language)
     {
+        if (loaded_path.Contains(path)) return;
         string json = File.ReadAllText(path);
         //Logger.Log(json);
         //Dictionary<string, string> key_text = fastJSON.JSON.ToObject<Dictionary<string, string>>(json);
@@ -73,7 +74,6 @@ internal static class Localizer
             {
                 if (locale_file.Name != "en.json") continue;
                 load_json(locale_file.FullName, language);
-                language_locale_file_found = true;
                 break;
             }
         }
