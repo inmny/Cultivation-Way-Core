@@ -133,7 +133,9 @@ public class CW_StatusEffectLibrary : CW_Library<CW_StatusEffect>
                 id = status_asset.id,
                 tier = status_asset.tier,
                 path_icon = status_asset.path_icon,
-                base_stats = status_asset.bonus_stats
+                base_stats = status_asset.bonus_stats,
+                name = status_asset.id + Constants.Core.title_suffix,
+                description = status_asset.id + Constants.Core.desc_suffix
             });
         }
     }
