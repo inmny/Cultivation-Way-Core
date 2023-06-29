@@ -21,6 +21,57 @@ internal static class Spell
         CW_SpellAsset spell_asset;
         EffectController effect_controller;
         AnimationSetting anim_setting;
+
+        // 玄武之甲
+        FormatSpells.create_give_self_status_spell(
+            "basalt_armor", "status_basalt_armor",
+            rarity: 3, element_container: new[] { 100, 0, 0, 0, 0 },
+            trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND },
+            spell_cost_list: new KeyValuePair<string, float>[]
+            {
+                new(DataS.wakan, 30f)
+            }
+        );
+        // 青龙之鳞
+        FormatSpells.create_give_self_status_spell(
+            "gloong_scale", "status_gloong_scale",
+            rarity: 3, element_container: new[] { 0, 0, 100, 0, 0 },
+            trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND },
+            spell_cost_list: new KeyValuePair<string, float>[]
+            {
+                new(DataS.wakan, 30f)
+            }
+        );
+        // 朱雀之羽
+        FormatSpells.create_give_self_status_spell(
+            "rosefinch_feather", "status_rosefinch_feather",
+            rarity: 3, element_container: new[] { 0, 100, 0, 0, 0 },
+            trigger_tags: new[] { SpellTriggerTag.ATTACK },
+            spell_cost_list: new KeyValuePair<string, float>[]
+            {
+                new(DataS.wakan, 30f)
+            }
+        );
+        // 麒麟之角
+        FormatSpells.create_give_self_status_spell(
+            "unicorn_horn", "status_unicorn_horn",
+            rarity: 3, element_container: new[] { 0, 0, 0, 0, 100 },
+            trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND },
+            spell_cost_list: new KeyValuePair<string, float>[]
+            {
+                new(DataS.wakan, 30f)
+            }
+        );
+        // 白虎之牙
+        FormatSpells.create_give_self_status_spell(
+            "wtiger_tooth", "status_wtiger_tooth",
+            rarity: 3, element_container: new[] { 0, 0, 0, 100, 0 },
+            trigger_tags: new[] { SpellTriggerTag.ATTACK },
+            spell_cost_list: new KeyValuePair<string, float>[]
+            {
+                new(DataS.wakan, 30f)
+            }
+        );
     }
 
     [SuppressMessage("ReSharper", "JoinDeclarationAndInitializer")]
