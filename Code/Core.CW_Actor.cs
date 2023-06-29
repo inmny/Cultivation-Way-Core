@@ -137,6 +137,7 @@ public class CW_Actor : Actor
         statuses.Add(as_id, status);
         status_asset.action_on_get?.Invoke(status, from, this);
 
+        activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
         return status;
     }
 
