@@ -53,7 +53,8 @@ public static class FormatStatusEffect
         {
             AnimationSetting anim_setting = new()
             {
-                loop_limit_type = AnimationLoopLimitType.NO_LIMIT
+                loop_limit_type = AnimationLoopLimitType.NO_LIMIT,
+                layer_name = "EffectsBack"
             };
             anim_setting.set_trace(AnimationTraceType.ATTACH);
 
