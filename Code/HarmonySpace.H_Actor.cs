@@ -88,6 +88,11 @@ internal static class H_Actor
             // TODO: 添加血脉纯度对属性加成的影响
             actor.stats.max(main_blood_node.ancestor_stats, 0.6f);
         }
+
+        // 载入法术
+        CW_Actor cw_actor = (CW_Actor)actor;
+        cw_actor.cur_spells.Clear();
+        cw_actor.cur_spells.AddRange(cw_actor.__data_spells);
     }
 
     #endregion
