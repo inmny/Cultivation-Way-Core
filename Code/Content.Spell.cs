@@ -11,6 +11,7 @@ internal static class Spell
 {
     public static void init()
     {
+        // TODO: 调整法术消耗
         add_track_projectile_spells();
         add_give_self_status_spells();
     }

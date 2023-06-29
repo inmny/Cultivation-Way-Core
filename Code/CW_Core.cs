@@ -42,6 +42,8 @@ public class CW_Core : MonoBehaviour
         mod_state = state;
     }
 
+    private int _last_year;
+
     private void Update()
     {
         if (!state.all_initialized)
@@ -87,6 +89,14 @@ public class CW_Core : MonoBehaviour
 
             return;
         }
+
+        int current_year = World.world.mapStats.getCurrentYear();
+        if (current_year != _last_year)
+        {
+            update_year();
+        }
+
+        _last_year = current_year;
 
         state.update_nr++;
         state.spell_manager.deal_all();
@@ -134,6 +144,11 @@ public class CW_Core : MonoBehaviour
         HarmonySpace.Manager.init();
         state.library_manager.init();
         init_windows();
+    }
+
+    private void update_year()
+    {
+        state.map_chunk_manager.update_per_year();
     }
 
     private void init_windows()

@@ -32,6 +32,22 @@ public delegate float CultisysCheck(CW_Actor actor, CultisysAsset cultisys, int 
 public delegate Color EnergyColorCalc(EnergyAsset energy, float value, float density, float power_level);
 
 /// <summary>
+///     能量的扩散计算
+/// </summary>
+/// <param name="curr_value">当前区块该能量的量</param>
+/// <param name="curr_density">当前区块该能量的密度</param>
+/// <param name="target_value">相邻一区块该能量的量</param>
+/// <param name="target_density">相邻一区块该能量的密度</param>
+/// <param name="curr_chunk">当前区块</param>
+/// <param name="target_chunk">相邻一区块</param>
+/// <returns>当前区块能量的增量/相邻区块能量的减量</returns>
+public delegate float EnergySpreadGradCalc(
+    float curr_value, float curr_density,
+    float target_value, float target_density,
+    MapChunk curr_chunk, MapChunk target_chunk
+);
+
+/// <summary>
 ///     动画结束时的委托
 /// </summary>
 public delegate void AnimEndAction(int cur_frame_idx, ref Vector2 src_vec, ref Vector2 dst_vec,

@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using System;
+using System.Reflection;
+using HarmonyLib;
 
 namespace Cultivation_Way.HarmonySpace;
 
@@ -7,10 +9,17 @@ internal class Manager
     public static void init()
     {
         _ = new Harmony(Constants.Others.harmony_id);
-        Harmony.CreateAndPatchAll(typeof(H_Actor), Constants.Others.harmony_id);
-        Harmony.CreateAndPatchAll(typeof(H_City), Constants.Others.harmony_id);
-        Harmony.CreateAndPatchAll(typeof(H_LocalizationManager), Constants.Others.harmony_id);
-        Harmony.CreateAndPatchAll(typeof(H_ScrollWindows), Constants.Others.harmony_id);
-        Harmony.CreateAndPatchAll(typeof(H_WindowCreatureInfo), Constants.Others.harmony_id);
+        Type[] all_types = Assembly.GetExecutingAssembly().GetTypes();
+        foreach (Type type in all_types)
+        {
+            if (type.Namespace != $"{nameof(Cultivation_Way)}.{nameof(Harmony)}") continue;
+
+            if (type.Name.StartsWith("H_"))
+            {
+                Harmony.CreateAndPatchAll(
+                    type, Constants.Others.harmony_id
+                );
+            }
+        }
     }
 }

@@ -40,11 +40,20 @@ public class CW_EnergyMap
     /// </summary>
     public CW_EnergyMapChunk[,] chunks { get; private set; }
 
+    private CW_EnergyMapChunk[,] _tmp_chunks;
+
+    private static readonly List<KeyValuePair<int, int>> _forward_dirs = new()
+    {
+        new(0, 1),
+        new(1, 0)
+    };
+
     internal void init(int width, int height)
     {
         if (chunks == null || width > 0 || height > 0)
         {
             chunks = new CW_EnergyMapChunk[width, height];
+            _tmp_chunks = new CW_EnergyMapChunk[width, height];
         }
 
         for (int i = 0; i < width; i++)
@@ -57,8 +66,64 @@ public class CW_EnergyMap
         }
     }
 
-    internal void update()
+    internal void update(int width, int height)
     {
+        float delta_value;
+        for (int i = 0; i < width - 1; i++)
+        {
+            for (int j = 0; j < height - 1; j++)
+            {
+                foreach (var dir in _forward_dirs)
+                {
+                    delta_value = energy.get_spread_grad(
+                        chunks[i, j].value, chunks[i, j].density,
+                        chunks[i + dir.Key, j + dir.Value].value,
+                        chunks[i + dir.Key, j + dir.Value].density,
+                        World.world.mapChunkManager.map[i, j],
+                        World.world.mapChunkManager.map[i + dir.Key, j + dir.Value]
+                    );
+                    _tmp_chunks[i, j].value += delta_value;
+                    _tmp_chunks[i + dir.Key, j + dir.Value].value -= delta_value;
+                }
+            }
+        }
+
+        for (int i = 0; i < width - 1; i++)
+        {
+            var dir = _forward_dirs[0];
+            delta_value = energy.get_spread_grad(
+                chunks[i, height - 1].value, chunks[i, height - 1].density,
+                chunks[i + dir.Key, height - 1 + dir.Value].value,
+                chunks[i + dir.Key, height - 1 + dir.Value].density,
+                World.world.mapChunkManager.map[i, height - 1],
+                World.world.mapChunkManager.map[i + dir.Key, height - 1 + dir.Value]
+            );
+            _tmp_chunks[i, height - 1].value += delta_value;
+            _tmp_chunks[i + dir.Key, height - 1 + dir.Value].value -= delta_value;
+        }
+
+        for (int j = 0; j < height - 1; j++)
+        {
+            var dir = _forward_dirs[1];
+            delta_value = energy.get_spread_grad(
+                chunks[width - 1, j].value, chunks[width - 1, j].density,
+                chunks[width - 1 + dir.Key, j + dir.Value].value,
+                chunks[width - 1 + dir.Key, j + dir.Value].density,
+                World.world.mapChunkManager.map[width - 1, j],
+                World.world.mapChunkManager.map[width - 1 + dir.Key, j + dir.Value]
+            );
+            _tmp_chunks[width - 1, j].value += delta_value;
+            _tmp_chunks[width - 1 + dir.Key, j + dir.Value].value -= delta_value;
+        }
+
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++)
+            {
+                chunks[i, j].value = _tmp_chunks[i, j].value;
+                chunks[i, j].density = _tmp_chunks[i, j].density;
+            }
+        }
     }
 }
 
@@ -104,11 +169,11 @@ public class CW_MapChunkManager
         }
     }
 
-    internal void update()
+    internal void update_per_year()
     {
         foreach (CW_EnergyMap map in maps.Values)
         {
-            map.update();
+            map.update(width, height);
         }
     }
 }
