@@ -108,7 +108,12 @@ public class CW_Actor : Actor
     {
         CW_StatusEffect status_asset = Manager.statuses.get(status_id);
         if (status_asset == null) return null;
-        if (status_asset.opposite_statuses.Any(lastX => has_status(lastX))) return null;
+        // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+        foreach (string op_status_id in status_asset.opposite_statuses)
+        {
+            if (has_status(op_status_id)) return null;
+        }
+
         as_id ??= status_id;
         statuses ??= new Dictionary<string, CW_StatusEffectData>();
 
@@ -132,9 +137,6 @@ public class CW_Actor : Actor
         statuses.Add(as_id, status);
         status_asset.action_on_get?.Invoke(status, from, this);
 
-        //activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
-        //activeStatus_dict[status_id] = new StatusEffectData(this, AssetManager.status.get(status_id));
-        //activeStatus_dict[status_id].setTimer(status.left_time);
         return status;
     }
 
@@ -146,7 +148,7 @@ public class CW_Actor : Actor
     public CW_StatusEffectData get_status(string id)
     {
         if (statuses == null || statuses.Count > 0) return null;
-        return statuses.TryGetValue(id, out CW_StatusEffectData statuse) ? statuse : null;
+        return statuses.TryGetValue(id, out CW_StatusEffectData status) ? status : null;
     }
 
     /// <summary>
@@ -308,9 +310,9 @@ public class CW_Actor : Actor
 
         if (activeStatus_dict != null)
         {
-            foreach (StatusEffectData statusEffectData in activeStatus_dict.Values)
+            foreach (StatusEffectData status_effect_data in activeStatus_dict.Values)
             {
-                statusEffectData.asset.action_get_hit?.Invoke(this, pAttacker, currentTile);
+                status_effect_data.asset.action_get_hit?.Invoke(this, pAttacker, currentTile);
             }
         }
 
@@ -318,9 +320,9 @@ public class CW_Actor : Actor
         {
             List<CW_StatusEffectData> statuses_list = Factories.status_list_factory.get_next();
             statuses_list.AddRange(statuses.Values);
-            foreach (CW_StatusEffectData statusEffectData2 in statuses_list)
+            foreach (CW_StatusEffectData status_effect_data in statuses_list)
             {
-                statusEffectData2.status_asset.action_on_get_hit?.Invoke(statusEffectData2, pAttacker, this);
+                status_effect_data.status_asset.action_on_get_hit?.Invoke(status_effect_data, pAttacker, this);
             }
 
             statuses_list.Clear();
@@ -332,7 +334,7 @@ public class CW_Actor : Actor
             if ((pAttacker != null && spell.can_trigger(SpellTriggerTag.NAMED_DEFEND)) ||
                 (pAttacker == null && spell.can_trigger(SpellTriggerTag.UNNAMED_DEFEND)))
             {
-                cast_spell(spell, pAttacker, pAttacker?.currentTile);
+                cast_spell(spell, pAttacker, pAttacker == null ? null : pAttacker.currentTile);
             }
         }
 
@@ -353,33 +355,38 @@ public class CW_Actor : Actor
         if (pFlash) startColorEffect(ActorColorEffect.Red);
         if (data.health <= 0)
         {
-            Kingdom kingdom = this.kingdom;
-            if (pAttacker != null && pAttacker != this && pAttacker.isActor() && pAttacker.isAlive())
+            if (!(pAttacker != null && pAttacker != this && pAttacker.isActor() && pAttacker.isAlive()))
             {
-                BattleKeeperManager.unitKilled(this);
-                pAttacker.a.newKillAction(this, kingdom);
-                if (pAttacker.city != null)
-                {
-                    if (asset.animal)
-                    {
-                        pAttacker.city.data.storage.change("meat");
-                    }
+                killHimself(false, pAttackType);
+                return;
+            }
 
-                    if (asset.animal || (asset.unit && pAttacker.a.hasTrait("savage")))
-                    {
-                        if (Toolbox.randomChance(0.5f))
-                        {
-                            pAttacker.city.data.storage.change(SR.bones);
-                        }
-                        else if (Toolbox.randomChance(0.5f))
-                        {
-                            pAttacker.city.data.storage.change(SR.leather);
-                        }
-                        else if (Toolbox.randomChance(0.5f))
-                        {
-                            pAttacker.city.data.storage.change(SR.meat);
-                        }
-                    }
+            BattleKeeperManager.unitKilled(this);
+            pAttacker.a.newKillAction(this, kingdom);
+            if (pAttacker.city == null)
+            {
+                killHimself(false, pAttackType);
+                return;
+            }
+
+            if (asset.animal)
+            {
+                pAttacker.city.data.storage.change("meat");
+            }
+
+            if (asset.animal || (asset.unit && pAttacker.a.hasTrait("savage")))
+            {
+                if (Toolbox.randomChance(0.5f))
+                {
+                    pAttacker.city.data.storage.change(SR.bones);
+                }
+                else if (Toolbox.randomChance(0.5f))
+                {
+                    pAttacker.city.data.storage.change(SR.leather);
+                }
+                else if (Toolbox.randomChance(0.5f))
+                {
+                    pAttacker.city.data.storage.change(SR.meat);
                 }
             }
 
@@ -579,9 +586,11 @@ public class CW_Actor : Actor
             spell_float.Add(spell, chance);
         }
 
-        spell_float.OrderBy(x => x.Value);
+        IOrderedEnumerable<KeyValuePair<CW_SpellAsset, float>>
+            ordered_spell_chances = spell_float.OrderBy(x => x.Value);
         // 尝试学习
-        foreach (KeyValuePair<CW_SpellAsset, float> spell_chance in spell_float.Where(spell_chance =>
+        foreach (KeyValuePair<CW_SpellAsset, float> spell_chance in
+                 ordered_spell_chances.Where(spell_chance =>
                      Toolbox.randomChance(spell_chance.Value)))
         {
             learn_spell(spell_chance.Key);
@@ -658,17 +667,17 @@ public class CW_Actor : Actor
         // 暂且不支持直接的血脉修炼体系
         uint allow_cultisys_types = 0b111;
         // 强制添加的修炼体系
-        foreach (CultisysAsset cultisys in cw_asset.force_cultisys
-                     .Where(cultisys => (allow_cultisys_types & (uint)cultisys.type) != 0))
+        foreach (CultisysAsset cultisys in cw_asset.force_cultisys)
         {
+            if ((allow_cultisys_types & (uint)cultisys.type) == 0) continue;
             data.set(cultisys.id, 0);
             allow_cultisys_types &= ~(uint)cultisys.type;
         }
 
-        foreach (CultisysAsset cultisys in cw_asset.allowed_cultisys
-                     .Where(cultisys => (allow_cultisys_types & (uint)cultisys.type) != 0)
-                     .Where(cultisys => cultisys.allow(this, cultisys)))
+        foreach (CultisysAsset cultisys in cw_asset.allowed_cultisys)
         {
+            if ((allow_cultisys_types & (uint)cultisys.type) == 0 || !cultisys.allow(this, cultisys))
+                continue;
             data.set(cultisys.id, 0);
             allow_cultisys_types &= ~(uint)cultisys.type;
         }

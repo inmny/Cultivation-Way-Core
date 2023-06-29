@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection.Emit;
 using Cultivation_Way.Constants;
@@ -11,6 +12,7 @@ using UnityEngine;
 
 namespace Cultivation_Way.HarmonySpace;
 
+[SuppressMessage("ReSharper", "InconsistentNaming")]
 internal static class H_Actor
 {
     [HarmonyPostfix]
