@@ -21,6 +21,7 @@ internal static class CWTab
     private const float down_y = -18f;
     private const float line_step = 23f;
     private static bool _to_add_to_up = true;
+    private static GameObject _last_line;
 
     public static void init()
     {
@@ -38,7 +39,9 @@ internal static class CWTab
         foreach (ButtonContainerType container_type in Enum.GetValues(typeof(ButtonContainerType)))
         {
             HashSet<PowerButton> buttons = button_containers[container_type];
+            if (buttons.Count == 0) continue;
             _to_add_to_up = true;
+
             foreach (PowerButton button in buttons)
             {
                 button.transform.localScale = Vector3.one;
@@ -50,6 +53,7 @@ internal static class CWTab
             add_line();
         }
 
+        if (_last_line != null) _last_line.SetActive(false);
         _tab.SetActive(true);
     }
 
@@ -134,6 +138,14 @@ internal static class CWTab
             ButtonType.Click,
             ButtonContainerType.TOOL
         );
+        // 能量地图
+        create_and_add_button(
+            Constants.Core.energy_maps_toggle_name,
+            "ui/Icons/iconCheckWakan",
+            null,
+            ButtonType.Toggle,
+            ButtonContainerType.TOOL
+        );
     }
 
     private static void add_line()
@@ -142,6 +154,7 @@ internal static class CWTab
         line.transform.localPosition =
             new Vector3(_cur_x + line_step - (_to_add_to_up ? step_x : 0), line.transform.localPosition.y);
         _cur_x += 2 * line_step - (_to_add_to_up ? step_x : 0);
+        _last_line = line;
     }
 
     private static void create_and_add_button(string id, string sprite_path, UnityAction action,
@@ -183,7 +196,8 @@ internal static class CWTab
             Vector2.zero,
             button_type,
             _tab.transform,
-            action ?? (() => { })
+            action ??
+            (button_type == ButtonType.Click ? () => { } : null)
         );
     }
 }

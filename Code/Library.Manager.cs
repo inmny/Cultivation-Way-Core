@@ -19,6 +19,8 @@ public class Manager
     {
         instance = this;
         CW_BaseStatsLibrary.init();
+        CW_GodPowers.init();
+        CW_Options.init();
         add(actors, "actors");
         add(bloods, "bloods");
         add(cultibooks, "cultibooks");
@@ -37,6 +39,7 @@ public class Manager
 
     public void post_init()
     {
+        CW_GodPowers.post_init();
         foreach (BaseAssetLibrary library in libraries.Values)
         {
             library.post_init();

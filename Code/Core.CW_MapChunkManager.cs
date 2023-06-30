@@ -131,6 +131,12 @@ public class CW_EnergyMap
 public class CW_MapChunkManager
 {
     public readonly Dictionary<string, CW_EnergyMap> maps = new();
+
+    /// <summary>
+    ///     当前应用的地图ID
+    /// </summary>
+    public string current_map_id { get; internal set; }
+
     public int height;
     public int width;
 
