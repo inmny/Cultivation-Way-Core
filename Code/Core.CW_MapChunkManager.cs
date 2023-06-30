@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cultivation_Way.Library;
+using UnityEngine;
 
 namespace Cultivation_Way.Core;
 
@@ -18,6 +20,10 @@ public struct CW_EnergyMapChunk
     ///     密度
     /// </summary>
     public float density;
+
+    internal Color32 color;
+
+    internal bool need_redraw;
 }
 
 /// <summary>
@@ -38,9 +44,9 @@ public class CW_EnergyMap
     /// <summary>
     ///     地图的数组
     /// </summary>
-    public CW_EnergyMapChunk[,] chunks { get; private set; }
+    public CW_EnergyMapChunk[,] map { get; private set; }
 
-    private CW_EnergyMapChunk[,] _tmp_chunks;
+    private CW_EnergyMapChunk[,] _tmp_map;
 
     private static readonly List<KeyValuePair<int, int>> _forward_dirs = new()
     {
@@ -50,18 +56,19 @@ public class CW_EnergyMap
 
     internal void init(int width, int height)
     {
-        if (chunks == null || width > 0 || height > 0)
+        if (map == null || width > 0 || height > 0)
         {
-            chunks = new CW_EnergyMapChunk[width, height];
-            _tmp_chunks = new CW_EnergyMapChunk[width, height];
+            map = new CW_EnergyMapChunk[height, width];
+            _tmp_map = new CW_EnergyMapChunk[height, width];
         }
 
-        for (int i = 0; i < width; i++)
+        for (int i = 0; i < height; i++)
         {
-            for (int j = 0; j < height; j++)
+            for (int j = 0; j < width; j++)
             {
-                chunks[i, j].value = 0;
-                chunks[i, j].density = 0;
+                map[i, j].value = Toolbox.randomFloat(0, 1000);
+                map[i, j].density = Toolbox.randomFloat(1, 3);
+                map[i, j].color = Color.white;
             }
         }
     }
@@ -69,59 +76,71 @@ public class CW_EnergyMap
     internal void update(int width, int height)
     {
         float delta_value;
-        for (int i = 0; i < width - 1; i++)
+        for (int i = 0; i < height - 1; i++)
         {
-            for (int j = 0; j < height - 1; j++)
+            for (int j = 0; j < width - 1; j++)
             {
                 foreach (var dir in _forward_dirs)
                 {
                     delta_value = energy.get_spread_grad(
-                        chunks[i, j].value, chunks[i, j].density,
-                        chunks[i + dir.Key, j + dir.Value].value,
-                        chunks[i + dir.Key, j + dir.Value].density,
-                        World.world.mapChunkManager.map[i, j],
-                        World.world.mapChunkManager.map[i + dir.Key, j + dir.Value]
+                        map[i, j].value, map[i, j].density,
+                        map[i + dir.Key, j + dir.Value].value,
+                        map[i + dir.Key, j + dir.Value].density,
+                        World.world.tilesMap[i, j],
+                        World.world.tilesMap[i + dir.Key, j + dir.Value]
                     );
-                    _tmp_chunks[i, j].value += delta_value;
-                    _tmp_chunks[i + dir.Key, j + dir.Value].value -= delta_value;
+                    _tmp_map[i, j].value = map[i, j].value + delta_value;
+                    _tmp_map[i + dir.Key, j + dir.Value].value =
+                        map[i + dir.Key, j + dir.Value].value - delta_value;
                 }
             }
         }
 
-        for (int i = 0; i < width - 1; i++)
-        {
-            var dir = _forward_dirs[0];
-            delta_value = energy.get_spread_grad(
-                chunks[i, height - 1].value, chunks[i, height - 1].density,
-                chunks[i + dir.Key, height - 1 + dir.Value].value,
-                chunks[i + dir.Key, height - 1 + dir.Value].density,
-                World.world.mapChunkManager.map[i, height - 1],
-                World.world.mapChunkManager.map[i + dir.Key, height - 1 + dir.Value]
-            );
-            _tmp_chunks[i, height - 1].value += delta_value;
-            _tmp_chunks[i + dir.Key, height - 1 + dir.Value].value -= delta_value;
-        }
-
-        for (int j = 0; j < height - 1; j++)
+        for (int i = 0; i < height - 1; i++)
         {
             var dir = _forward_dirs[1];
             delta_value = energy.get_spread_grad(
-                chunks[width - 1, j].value, chunks[width - 1, j].density,
-                chunks[width - 1 + dir.Key, j + dir.Value].value,
-                chunks[width - 1 + dir.Key, j + dir.Value].density,
-                World.world.mapChunkManager.map[width - 1, j],
-                World.world.mapChunkManager.map[width - 1 + dir.Key, j + dir.Value]
+                map[i, width - 1].value, map[i, width - 1].density,
+                map[i + dir.Key, width - 1 + dir.Value].value,
+                map[i + dir.Key, width - 1 + dir.Value].density,
+                World.world.tilesMap[i, width - 1],
+                World.world.tilesMap[i + dir.Key, width - 1 + dir.Value]
             );
-            _tmp_chunks[width - 1, j].value += delta_value;
-            _tmp_chunks[width - 1 + dir.Key, j + dir.Value].value -= delta_value;
+            _tmp_map[i, width - 1].value = map[i, width - 1].value + delta_value;
+            _tmp_map[i + dir.Key, width - 1 + dir.Value].value =
+                map[i + dir.Key, width - 1 + dir.Value].value - delta_value;
         }
 
-        for (int i = 0; i < width; i++)
+        for (int j = 0; j < width - 1; j++)
         {
-            for (int j = 0; j < height; j++)
+            var dir = _forward_dirs[0];
+            delta_value = energy.get_spread_grad(
+                map[height - 1, j].value, map[height - 1, j].density,
+                map[height - 1 + dir.Key, j + dir.Value].value,
+                map[height - 1 + dir.Key, j + dir.Value].density,
+                World.world.tilesMap[height - 1, j],
+                World.world.tilesMap[height - 1 + dir.Key, j + dir.Value]
+            );
+            _tmp_map[height - 1, j].value = map[height - 1, j].value + delta_value;
+            _tmp_map[height - 1 + dir.Key, j + dir.Value].value =
+                map[height - 1 + dir.Key, j + dir.Value].value - delta_value;
+        }
+
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
             {
-                chunks[i, j].value = _tmp_chunks[i, j].value;
-                chunks[i, j].density = _tmp_chunks[i, j].density;
+                map[i, j].value = _tmp_map[i, j].value;
+                //map[i, j].density = _tmp_map[i, j].density;
+                Color32 new_color = energy.get_color(map[i, j].value, map[i, j].density, 1);
+                if (Math.Abs(new_color.a - map[i, j].color.a) >= 0.1f ||
+                    Math.Abs(new_color.r - map[i, j].color.r) >= 0.1f ||
+                    Math.Abs(new_color.g - map[i, j].color.g) >= 0.1f ||
+                    Math.Abs(new_color.b - map[i, j].color.b) >= 0.1f)
+                {
+                    map[i, j].color = new_color;
+                    map[i, j].need_redraw = true;
+                }
             }
         }
     }
@@ -135,10 +154,11 @@ public class CW_MapChunkManager
     /// <summary>
     ///     当前应用的地图ID
     /// </summary>
-    public string current_map_id { get; internal set; }
+    public string current_map_id => PlayerConfig.dict[Constants.Core.energy_maps_toggle_name].stringVal;
 
     public int height;
     public int width;
+    internal bool paused = false;
 
     internal void init(int width, int height)
     {

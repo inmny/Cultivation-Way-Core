@@ -34,17 +34,17 @@ public delegate Color EnergyColorCalc(EnergyAsset energy, float value, float den
 /// <summary>
 ///     能量的扩散计算
 /// </summary>
-/// <param name="curr_value">当前区块该能量的量</param>
-/// <param name="curr_density">当前区块该能量的密度</param>
-/// <param name="target_value">相邻一区块该能量的量</param>
-/// <param name="target_density">相邻一区块该能量的密度</param>
-/// <param name="curr_chunk">当前区块</param>
-/// <param name="target_chunk">相邻一区块</param>
-/// <returns>当前区块能量的增量/相邻区块能量的减量</returns>
+/// <param name="curr_value">当前地块该能量的量</param>
+/// <param name="curr_density">当前地块该能量的密度</param>
+/// <param name="target_value">相邻一地块该能量的量</param>
+/// <param name="target_density">相邻一地块该能量的密度</param>
+/// <param name="curr_tile">当前地块</param>
+/// <param name="target_tile">相邻一地块</param>
+/// <returns>当前地块能量的增量/相邻地块能量的减量</returns>
 public delegate float EnergySpreadGradCalc(
     float curr_value, float curr_density,
     float target_value, float target_density,
-    MapChunk curr_chunk, MapChunk target_chunk
+    WorldTile curr_tile, WorldTile target_tile
 );
 
 /// <summary>

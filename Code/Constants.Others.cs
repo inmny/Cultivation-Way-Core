@@ -277,6 +277,17 @@ public enum CW_AttackType
     God
 }
 
+public enum CW_ZoneDisplayMode
+{
+    None,
+    CityBorders,
+    Cultures,
+    KingdomBorders,
+    Clans,
+    Alliance,
+    Energy
+}
+
 // TODO: 补充注释, 懒得写了
 public enum ButtonContainerType
 {

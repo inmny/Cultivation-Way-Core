@@ -15,6 +15,7 @@ internal static class CW_Options
     public static void post_init()
     {
         PlayerConfig.instance.loadData();
+        PlayerConfig.dict[Constants.Core.energy_maps_toggle_name].boolVal = false;
     }
 
     private static void add(OptionAsset option_asset)

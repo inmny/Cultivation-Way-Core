@@ -57,20 +57,20 @@ public class EnergyAsset : Asset
     /// <param name="curr_density">当前区块该能量的密度</param>
     /// <param name="target_value">相邻一区块该能量的量</param>
     /// <param name="target_density">相邻一区块该能量的密度</param>
-    /// <param name="curr_chunk">当前区块</param>
-    /// <param name="target_chunk">相邻一区块</param>
+    /// <param name="curr_tile">当前区块</param>
+    /// <param name="target_tile">相邻一区块</param>
     /// <returns>当前区块能量的增量/相邻区块能量的减量</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public float get_spread_grad(
         float curr_value, float curr_density,
         float target_value, float target_density,
-        MapChunk curr_chunk, MapChunk target_chunk
+        WorldTile curr_tile, WorldTile target_tile
     )
     {
         return spread_grad_calc?.Invoke(
             curr_value, curr_density,
             target_value, target_density,
-            curr_chunk, target_chunk
+            curr_tile, target_tile
         ) ?? 0;
     }
 }

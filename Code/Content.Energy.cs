@@ -29,11 +29,11 @@ internal static class Energy
             is_dissociative = false,
             color_calc = (energy, value, density, power_level) =>
             {
-                Color color_to_ret = power_level switch
+                Color color_to_ret = density switch
                 {
                     1 => Toolbox.blendColor(level_0, level_1, 100 / (100 + value)),
-                    <= 2 => Toolbox.blendColor(level_1, level_2, 2 - power_level),
-                    <= 3 => Toolbox.blendColor(level_2, level_3, 3 - power_level),
+                    <= 2 => Toolbox.blendColor(level_1, level_2, 2 - density),
+                    <= 3 => Toolbox.blendColor(level_2, level_3, 3 - density),
                     _ => level_3
                 };
 
@@ -54,11 +54,11 @@ internal static class Energy
             is_dissociative = false,
             color_calc = (energy, value, density, power_level) =>
             {
-                Color color_to_ret = power_level switch
+                Color color_to_ret = density switch
                 {
                     1 => Toolbox.blendColor(level_0, level_1, 100 / (100 + value)),
-                    <= 2 => Toolbox.blendColor(level_1, level_2, 2 - power_level),
-                    <= 3 => Toolbox.blendColor(level_2, level_3, 3 - power_level),
+                    <= 2 => Toolbox.blendColor(level_1, level_2, 2 - density),
+                    <= 3 => Toolbox.blendColor(level_2, level_3, 3 - density),
                     _ => level_3
                 };
 
@@ -79,11 +79,11 @@ internal static class Energy
             is_dissociative = true,
             color_calc = (energy, value, density, power_level) =>
             {
-                Color color_to_ret = power_level switch
+                Color color_to_ret = density switch
                 {
                     1 => Toolbox.blendColor(level_0, level_1, 100 / (100 + value)),
-                    <= 2 => Toolbox.blendColor(level_1, level_2, 2 - power_level),
-                    <= 3 => Toolbox.blendColor(level_2, level_3, 3 - power_level),
+                    <= 2 => Toolbox.blendColor(level_1, level_2, 2 - density),
+                    <= 3 => Toolbox.blendColor(level_2, level_3, 3 - density),
                     _ => level_3
                 };
 

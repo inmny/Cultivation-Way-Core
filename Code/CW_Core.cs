@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Cultivation_Way.Addon;
 using Cultivation_Way.Animation;
 using Cultivation_Way.Core;
@@ -77,17 +78,30 @@ public class CW_Core : MonoBehaviour
                     // 在所有附属初始化完毕后, 进行后续处理
                     CWTab.post_init();
                     state.library_manager.post_init();
-                    state.map_chunk_manager.init(World.world.mapChunkManager.amountX,
-                        World.world.mapChunkManager.amountY);
-
+                    state.map_chunk_manager.init(World.world.tilesMap.GetLength(1),
+                        World.world.tilesMap.GetLength(0));
                     Localizer.apply_localization(LocalizedTextManager.instance.localizedText,
                         LocalizedTextManager.instance.language);
-
+                    new Task(() =>
+                    {
+                        while (true)
+                        {
+                            if (!state.map_chunk_manager.paused) state.map_chunk_manager.update_per_year();
+                            Task.Delay(1000).Wait();
+                        }
+                    }, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent).Start();
                     state.all_initialized = true;
                 }
             }
 
             return;
+        }
+
+        if (World.world.tilesMap.GetLength(0) != state.map_chunk_manager.height
+            || World.world.tilesMap.GetLength(1) != state.map_chunk_manager.width)
+        {
+            state.map_chunk_manager.reset(World.world.tilesMap.GetLength(1),
+                World.world.tilesMap.GetLength(0));
         }
 
         int current_year = World.world.mapStats.getCurrentYear();
@@ -139,16 +153,16 @@ public class CW_Core : MonoBehaviour
         Factories.init();
         Localizer.init();
         Prefabs.init();
-        CWTab.init();
         FastVisit.init();
         HarmonySpace.Manager.init();
         state.library_manager.init();
+        CWTab.init();
         init_windows();
     }
 
     private void update_year()
     {
-        state.map_chunk_manager.update_per_year();
+        //state.map_chunk_manager.update_per_year();
     }
 
     private void init_windows()

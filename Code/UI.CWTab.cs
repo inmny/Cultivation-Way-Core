@@ -203,6 +203,18 @@ internal static class CWTab
         {
             ret.transform.Find("toggleIcon").gameObject.name = "ToggleIcon";
             ret.godPower = AssetManager.powers.get(id);
+            ToggleIcon toggle_icon = ret.transform.Find("ToggleIcon").gameObject.AddComponent<ToggleIcon>();
+            toggle_icon.spriteON = SpriteTextureLoader.getSprite("ui/cw_window/buttonToggleIndicator_0");
+            toggle_icon.spriteOFF = SpriteTextureLoader.getSprite("ui/cw_window/buttonToggleIndicator_1");
+            Button button = ret.GetComponent<Button>();
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(
+                () =>
+                {
+                    ret.godPower?.toggle_action(ret.godPower.id);
+                    toggle_icon.updateIcon(PlayerConfig.optionBoolEnabled(id));
+                }
+            );
             PowerButton.toggleButtons.Add(ret);
         }
 
