@@ -153,7 +153,7 @@ public static class FormatSpells
         spell_asset.add_trigger_tags(trigger_tags);
         spell_asset.add_cultisys_requires(cultisys_require);
 
-        if (anim_id != null)
+        if (!string.IsNullOrEmpty(anim_id))
         {
             if (CW_Core.mod_state.anim_manager.get_controller(anim_id) != null)
             {

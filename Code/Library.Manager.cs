@@ -39,6 +39,7 @@ public class Manager
 
     public void post_init()
     {
+        CW_Options.post_init();
         CW_GodPowers.post_init();
         foreach (BaseAssetLibrary library in libraries.Values)
         {

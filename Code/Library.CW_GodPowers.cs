@@ -23,7 +23,7 @@ internal static class CW_GodPowers
     private static void add_more_map_modes_switch()
     {
         GodPower global_switch = new();
-        global_switch.id = Constants.Core.mod_prefix + "energy_maps_switch";
+        global_switch.id = Constants.Core.energy_maps_toggle_name;
         global_switch.name = "Energy Maps Layer";
         global_switch.unselectWhenWindow = true;
         global_switch.map_modes_switch = true;

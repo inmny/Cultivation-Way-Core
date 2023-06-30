@@ -184,7 +184,7 @@ internal static class CWTab
     public static PowerButton create_button(string id, string sprite_path, UnityAction action,
         ButtonType button_type = ButtonType.Click)
     {
-        return PowerButtons.CreateButton(
+        PowerButton ret = PowerButtons.CreateButton(
             id,
             Resources.Load<Sprite>(sprite_path),
             LocalizedTextManager.stringExists(id + Constants.Core.title_suffix)
@@ -199,5 +199,13 @@ internal static class CWTab
             action ??
             (button_type == ButtonType.Click ? () => { } : null)
         );
+        if (button_type == ButtonType.Toggle)
+        {
+            ret.transform.Find("toggleIcon").gameObject.name = "ToggleIcon";
+            ret.godPower = AssetManager.powers.get(id);
+            PowerButton.toggleButtons.Add(ret);
+        }
+
+        return ret;
     }
 }

@@ -12,6 +12,11 @@ internal static class CW_Options
         add(energy_maps_toggle);
     }
 
+    public static void post_init()
+    {
+        PlayerConfig.instance.loadData();
+    }
+
     private static void add(OptionAsset option_asset)
     {
         AssetManager.options_library.add(option_asset);

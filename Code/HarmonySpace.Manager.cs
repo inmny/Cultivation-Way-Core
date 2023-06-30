@@ -12,7 +12,7 @@ internal class Manager
         Type[] all_types = Assembly.GetExecutingAssembly().GetTypes();
         foreach (Type type in all_types)
         {
-            if (type.Namespace != $"{nameof(Cultivation_Way)}.{nameof(Harmony)}") continue;
+            if (type.Namespace != $"{nameof(Cultivation_Way)}.{nameof(HarmonySpace)}") continue;
 
             if (type.Name.StartsWith("H_"))
             {

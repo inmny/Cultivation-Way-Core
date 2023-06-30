@@ -44,27 +44,30 @@ public static class FormatStatusEffect
         };
         if (tags != null) status_asset.add_tags(tags);
 
-        if (CW_Core.mod_state.anim_manager.get_controller(anim_id) != null)
+        switch (string.IsNullOrEmpty(anim_id))
         {
-            Logger.Warn(
-                $"create_simple_status_effect: There is already animation {anim_id}, it will not create a new one for status {id}");
-        }
-        else
-        {
-            AnimationSetting anim_setting = new()
+            case false when CW_Core.mod_state.anim_manager.get_controller(anim_id) != null:
+                Logger.Warn(
+                    $"create_simple_status_effect: There is already animation {anim_id}, it will not create a new one for status {id}");
+                break;
+            case false:
             {
-                loop_limit_type = AnimationLoopLimitType.NO_LIMIT,
-                layer_name = "EffectsBack"
-            };
-            anim_setting.set_trace(AnimationTraceType.ATTACH);
+                AnimationSetting anim_setting = new()
+                {
+                    loop_limit_type = AnimationLoopLimitType.NO_LIMIT,
+                    layer_name = "EffectsBack"
+                };
+                anim_setting.set_trace(AnimationTraceType.ATTACH);
 
-            CW_Core.mod_state.anim_manager.load_as_controller(
-                anim_id,
-                anim_path,
-                100,
-                anim_scale,
-                anim_setting
-            );
+                CW_Core.mod_state.anim_manager.load_as_controller(
+                    anim_id,
+                    anim_path,
+                    100,
+                    anim_scale,
+                    anim_setting
+                );
+                break;
+            }
         }
 
 
