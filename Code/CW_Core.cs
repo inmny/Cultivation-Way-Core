@@ -87,7 +87,7 @@ public class CW_Core : MonoBehaviour
                         while (true)
                         {
                             if (!state.map_chunk_manager.paused) state.map_chunk_manager.update_per_year();
-                            Task.Delay(1000).Wait();
+                            Task.Delay((int)(100 / Math.Min(Config.timeScale, 0))).Wait();
                         }
                     }, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent).Start();
                     state.all_initialized = true;

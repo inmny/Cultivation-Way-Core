@@ -38,6 +38,10 @@ internal static class Energy
                 };
 
                 return color_to_ret;
+            },
+            spread_grad_calc = (value, density, target_value, target_density, tile, target_tile) =>
+            {
+                return target_density - density;
             }
         };
         Library.Manager.energies.add(energy);
