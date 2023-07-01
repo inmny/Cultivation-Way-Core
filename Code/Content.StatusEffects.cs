@@ -4,7 +4,7 @@ using Cultivation_Way.General.AboutStatusEffect;
 
 namespace Cultivation_Way.Content;
 
-internal static class StatusEffect
+internal static class StatusEffects
 {
     public static void init()
     {

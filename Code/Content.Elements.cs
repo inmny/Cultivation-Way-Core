@@ -2,7 +2,7 @@
 
 namespace Cultivation_Way.Content;
 
-internal static class Element
+internal static class Elements
 {
     public static void init()
     {

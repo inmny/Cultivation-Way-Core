@@ -3,7 +3,7 @@ using Cultivation_Way.Library;
 
 namespace Cultivation_Way.Content;
 
-internal static class Cultisys
+internal static class Cultisyses
 {
     public static CultisysAsset immortal;
     public static CultisysAsset bushido;

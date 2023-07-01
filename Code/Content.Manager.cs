@@ -4,11 +4,11 @@ internal static class Manager
 {
     public static void init()
     {
-        Cultisys.init();
-        Element.init();
-        Energy.init();
-        StatusEffect.init();
-        Spell.init();
+        Cultisyses.init();
+        Elements.init();
+        Energies.init();
+        StatusEffects.init();
+        Spells.init();
 
         HarmonySpace.Manager.init();
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Cultivation_Way.Content;
 
-internal static class Energy
+internal static class Energies
 {
     private static readonly Color level_0 = Color.white;
     private static readonly Color level_1 = new(0.38f, 0.71f, 1);

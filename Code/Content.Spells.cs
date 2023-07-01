@@ -7,7 +7,7 @@ using Cultivation_Way.Library;
 
 namespace Cultivation_Way.Content;
 
-internal static class Spell
+internal static class Spells
 {
     public static void init()
     {
