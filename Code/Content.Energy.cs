@@ -27,7 +27,7 @@ internal static class Energy
             base_value = 1,
             power_base_value = 1000,
             is_dissociative = false,
-            color_calc = (energy, value, density, power_level) =>
+            color_calc = (energy, value, density) =>
             {
                 Color color_to_ret = density switch
                 {
@@ -56,7 +56,7 @@ internal static class Energy
             base_value = 1,
             power_base_value = 1000,
             is_dissociative = false,
-            color_calc = (energy, value, density, power_level) =>
+            color_calc = (energy, value, density) =>
             {
                 Color color_to_ret = density switch
                 {
@@ -81,7 +81,7 @@ internal static class Energy
             base_value = 1,
             power_base_value = 1000,
             is_dissociative = true,
-            color_calc = (energy, value, density, power_level) =>
+            color_calc = (energy, value, density) =>
             {
                 Color color_to_ret = density switch
                 {

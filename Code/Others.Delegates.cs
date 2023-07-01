@@ -29,7 +29,7 @@ public delegate float CultisysCheck(CW_Actor actor, CultisysAsset cultisys, int 
 /// <summary>
 ///     能量的颜色计算
 /// </summary>
-public delegate Color EnergyColorCalc(EnergyAsset energy, float value, float density, float power_level);
+public delegate Color EnergyColorCalc(EnergyAsset energy, float value, float density);
 
 /// <summary>
 ///     能量的扩散计算

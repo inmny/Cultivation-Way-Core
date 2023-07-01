@@ -12,12 +12,12 @@ namespace Cultivation_Way.Core;
 public struct CW_EnergyMapChunk
 {
     /// <summary>
-    ///     量
+    ///     总量
     /// </summary>
     public float value;
 
     /// <summary>
-    ///     密度
+    ///     评估得到的密度
     /// </summary>
     public float density;
 
@@ -131,8 +131,9 @@ public class CW_EnergyMap
             for (int j = 0; j < width; j++)
             {
                 map[i, j].value = _tmp_map[i, j].value;
-                map[i, j].density = Math.Max(1, Mathf.Log(map[i, j].value + 1, energy.power_base_value));
-                Color32 new_color = energy.get_color(map[i, j].value, map[i, j].density, 1);
+                map[i, j].density = Mathf.Log(Mathf.Max(map[i, j].value, energy.power_base_value),
+                    energy.power_base_value);
+                Color32 new_color = energy.get_color(map[i, j].value, map[i, j].density);
                 if (Math.Abs(new_color.a - map[i, j].color.a) >= 0.02f ||
                     Math.Abs(new_color.r - map[i, j].color.r) >= 0.02f ||
                     Math.Abs(new_color.g - map[i, j].color.g) >= 0.02f ||

@@ -61,7 +61,7 @@ internal class CultiProgress : MonoBehaviour
         };
         if (cultisys.culti_energy != null)
         {
-            bar_image.color = cultisys.culti_energy.get_color(curr, 0, cultisys.power_level[cultisys_level]);
+            bar_image.color = cultisys.culti_energy.get_color(curr, cultisys.power_level[cultisys_level]);
         }
 
         set_height = bar_height * curr / max;
