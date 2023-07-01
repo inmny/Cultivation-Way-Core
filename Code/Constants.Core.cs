@@ -7,6 +7,7 @@ public static class Core
     public const string title_suffix = "_title";
     public const string desc_suffix = "_description";
     public const string mod_name = "启源核心";
+    public const int save_version = 2;
 
     public const string modinfo_window = mod_prefix + "modinfo_window";
     public const string tops_window = mod_prefix + "tops_window";
