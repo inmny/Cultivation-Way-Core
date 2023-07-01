@@ -72,4 +72,48 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
             add(new CW_ActorAsset(vanllia_asset));
         }
     }
+
+    public override CW_ActorAsset add(CW_ActorAsset pAsset)
+    {
+        if (pAsset.vanllia_asset != null && !AssetManager.actor_library.dict.ContainsKey(pAsset.vanllia_asset.id))
+        {
+            AssetManager.actor_library.add(pAsset.vanllia_asset);
+        }
+
+        return base.add(pAsset);
+    }
+
+    /// <summary>
+    ///     除正常get外, 将其他mod添加的生物以默认方式加入
+    /// </summary>
+    public override CW_ActorAsset get(string pID)
+    {
+        if (!dict.ContainsKey(pID) && AssetManager.actor_library.dict.ContainsKey(pID))
+        {
+            add(new CW_ActorAsset(AssetManager.actor_library.get(pID)));
+        }
+
+        return base.get(pID);
+    }
+
+    /// <summary>
+    ///     进行安全检查, 保证所有CW_ActorAsset都有对应的ActorAsset
+    /// </summary>
+    public override void post_init()
+    {
+        base.post_init();
+        foreach (CW_ActorAsset cw_actor_asset in list)
+        {
+            if (cw_actor_asset.vanllia_asset == null)
+            {
+                Logger.Warn($"CW_ActorAsset {cw_actor_asset.id} has no vanilla asset!");
+            }
+
+            if (cw_actor_asset.vanllia_asset != null
+                && !AssetManager.actor_library.dict.ContainsKey(cw_actor_asset.vanllia_asset.id))
+            {
+                AssetManager.actor_library.add(cw_actor_asset.vanllia_asset);
+            }
+        }
+    }
 }
