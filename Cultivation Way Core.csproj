@@ -80,9 +80,6 @@
         <Reference Include="NCMS_memload">
             <HintPath>Includes\NCMS_memload.dll</HintPath>
         </Reference>
-        <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-            <HintPath>packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-        </Reference>
         <Reference Include="Purchasing.Common">
             <HintPath>Includes\Purchasing.Common.dll</HintPath>
         </Reference>
@@ -449,26 +446,26 @@
         <Content Include="GameResources\actors\t_rooster\swim_0.png"/>
         <Content Include="GameResources\actors\t_rooster\swim_1.png"/>
         <Content Include="GameResources\actors\t_rooster\swim_2.png"/>
-        <Content Include="GameResources\actors\t_rooster\walk_0.png" />
-        <Content Include="GameResources\actors\t_rooster\walk_1.png" />
-        <Content Include="GameResources\actors\t_rooster\walk_2.png" />
-        <Content Include="GameResources\actors\t_tiger\swim_0.png" />
-        <Content Include="GameResources\actors\t_tiger\swim_1.png" />
-        <Content Include="GameResources\actors\t_tiger\swim_2.png" />
-        <Content Include="GameResources\actors\t_tiger\walk_0.png" />
-        <Content Include="GameResources\actors\t_tiger\walk_1.png" />
-        <Content Include="GameResources\actors\t_tiger\walk_2.png" />
-        <Content Include="GameResources\actors\t_wild_boar\swim_0.png" />
-        <Content Include="GameResources\actors\t_wild_boar\swim_1.png" />
-        <Content Include="GameResources\actors\t_wild_boar\swim_2.png" />
-        <Content Include="GameResources\actors\t_wild_boar\walk_0.png" />
-        <Content Include="GameResources\actors\t_wild_boar\walk_1.png" />
-        <Content Include="GameResources\actors\t_wild_boar\walk_2.png" />
-        <Content Include="GameResources\actors\yaos\t_bear_yao\1.png" />
-        <Content Include="GameResources\actors\yaos\t_bear_yao\2.png" />
-        <Content Include="GameResources\actors\yaos\t_bear_yao\3.png" />
-        <Content Include="GameResources\actors\yaos\t_bear_yao\t_bear.png" />
-        <Content Include="GameResources\actors\yaos\t_bear_yao\unit_child\swim_0.png" />
+        <Content Include="GameResources\actors\t_rooster\walk_0.png"/>
+        <Content Include="GameResources\actors\t_rooster\walk_1.png"/>
+        <Content Include="GameResources\actors\t_rooster\walk_2.png"/>
+        <Content Include="GameResources\actors\t_tiger\swim_0.png"/>
+        <Content Include="GameResources\actors\t_tiger\swim_1.png"/>
+        <Content Include="GameResources\actors\t_tiger\swim_2.png"/>
+        <Content Include="GameResources\actors\t_tiger\walk_0.png"/>
+        <Content Include="GameResources\actors\t_tiger\walk_1.png"/>
+        <Content Include="GameResources\actors\t_tiger\walk_2.png"/>
+        <Content Include="GameResources\actors\t_wild_boar\swim_0.png"/>
+        <Content Include="GameResources\actors\t_wild_boar\swim_1.png"/>
+        <Content Include="GameResources\actors\t_wild_boar\swim_2.png"/>
+        <Content Include="GameResources\actors\t_wild_boar\walk_0.png"/>
+        <Content Include="GameResources\actors\t_wild_boar\walk_1.png"/>
+        <Content Include="GameResources\actors\t_wild_boar\walk_2.png"/>
+        <Content Include="GameResources\actors\yaos\t_bear_yao\1.png"/>
+        <Content Include="GameResources\actors\yaos\t_bear_yao\2.png"/>
+        <Content Include="GameResources\actors\yaos\t_bear_yao\3.png"/>
+        <Content Include="GameResources\actors\yaos\t_bear_yao\t_bear.png"/>
+        <Content Include="GameResources\actors\yaos\t_bear_yao\unit_child\swim_0.png"/>
         <Content Include="GameResources\actors\yaos\t_bear_yao\unit_child\swim_1.png" />
         <Content Include="GameResources\actors\yaos\t_bear_yao\unit_child\swim_2.png" />
         <Content Include="GameResources\actors\yaos\t_bear_yao\unit_child\walk_0.png" />
@@ -3731,7 +3728,6 @@
         <None Include="Locales\en.json"/>
         <None Include="Locales\tc.json"/>
         <None Include="mod.json"/>
-        <None Include="packages.config"/>
         <None Include="README.md"/>
     </ItemGroup>
     <ItemGroup>
@@ -3755,6 +3751,9 @@
             <Install>false</Install>
         </BootstrapperPackage>
     </ItemGroup>
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
-    <ProjectExtensions />
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets"/>
+    <ProjectExtensions/>
 </Project>
