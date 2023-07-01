@@ -54,7 +54,7 @@ public class CW_Core : MonoBehaviour
                 // 初始化核心
                 state.core_initialized = true;
                 initialize();
-                Content.Manager.init();
+                try_to_load_core_content();
             }
             else
             {
@@ -124,6 +124,16 @@ public class CW_Core : MonoBehaviour
                 Factories.recycle_memory();
             }
         }
+    }
+
+    /// <summary>
+    ///     为了保证Content可拆卸, 通过反射调用Content的初始化方法
+    /// </summary>
+    private void try_to_load_core_content()
+    {
+        Type.GetType("Cultivation_Way.Content.Manager")
+            ?.GetMethod("init", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)
+            ?.Invoke(null, new object[] { });
     }
 
     private void initialize()
