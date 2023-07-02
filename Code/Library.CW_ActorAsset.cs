@@ -58,6 +58,20 @@ public class CW_ActorAsset : Asset
         born_spells = new List<string>();
         culti_velo = 1;
     }
+
+    internal readonly List<string> allowed_cultisys_ids = new();
+
+    public void add_allowed_cultisys(string cultisys_id)
+    {
+        allowed_cultisys_ids.Add(cultisys_id);
+    }
+
+    internal readonly List<string> force_cultisys_ids = new();
+
+    public void add_force_cultisys(string cultisys_id)
+    {
+        force_cultisys_ids.Add(cultisys_id);
+    }
 }
 
 public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
@@ -113,6 +127,33 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
                 && !AssetManager.actor_library.dict.ContainsKey(cw_actor_asset.vanllia_asset.id))
             {
                 AssetManager.actor_library.add(cw_actor_asset.vanllia_asset);
+            }
+
+            foreach (string allowed_cultisys_id in cw_actor_asset.allowed_cultisys_ids)
+            {
+                if (Manager.cultisys.get(allowed_cultisys_id) == null)
+                {
+                    Logger.Warn(
+                        $"CW_ActorAsset {cw_actor_asset.id} has invalid allowed_cultisys {allowed_cultisys_id}!");
+                    continue;
+                }
+
+                cw_actor_asset.allowed_cultisys.Add(
+                    Manager.cultisys.get(allowed_cultisys_id)
+                );
+            }
+
+            foreach (string force_cultisys_id in cw_actor_asset.force_cultisys_ids)
+            {
+                if (Manager.cultisys.get(force_cultisys_id) == null)
+                {
+                    Logger.Warn($"CW_ActorAsset {cw_actor_asset.id} has invalid force_cultisys {force_cultisys_id}!");
+                    continue;
+                }
+
+                cw_actor_asset.force_cultisys.Add(
+                    Manager.cultisys.get(force_cultisys_id)
+                );
             }
         }
     }
