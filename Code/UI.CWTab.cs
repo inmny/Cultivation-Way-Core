@@ -157,7 +157,7 @@ internal static class CWTab
         _last_line = line;
     }
 
-    private static void create_and_add_button(string id, string sprite_path, UnityAction action,
+    public static void create_and_add_button(string id, string sprite_path, UnityAction action,
         ButtonType button_type = ButtonType.Click, ButtonContainerType container_type = ButtonContainerType.OTHERS)
     {
         add_button(create_button(id, sprite_path, action, button_type), container_type);
