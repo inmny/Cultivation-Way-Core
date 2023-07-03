@@ -43,6 +43,22 @@ internal static class Actors
         #endregion
 
         FormatButtons.add_actor_button(asset.id);
+
+        ActorAsset baby_asset =
+            AssetManager.actor_library.clone(Content_Constants.eastern_human_id.Replace("unit", "baby"),
+                Content_Constants.eastern_human_id);
+
+        baby_asset.take_items = false;
+        baby_asset.use_items = false;
+        baby_asset.base_stats[S.speed] = 10f;
+        baby_asset.can_turn_into_demon_in_age_of_chaos = false;
+        baby_asset.years_to_grow_to_adult = 18;
+        baby_asset.baby = true;
+        baby_asset.growIntoID = Content_Constants.eastern_human_id;
+        baby_asset.animation_idle = "walk_3";
+        baby_asset.traits.Add("peaceful");
+        AssetManager.actor_library.cloneColorSetFrom(Content_Constants.eastern_human_id);
+        AssetManager.actor_library.loadShadow(baby_asset);
     }
 
     private static void add(CW_ActorAsset actor_asset)
