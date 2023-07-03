@@ -20,4 +20,9 @@ internal class Content_Constants
     public const string soul_id = cultisys_prefix + "soul";
     public const string energy_soul_id = energy_prefix + "soul";
     public const int soul_max_level = 20;
+
+    public const string nomad_kingdom_prefix = "nomads_";
+    public const string eastern_human_id = "unit_eastern_human";
+    public const string eastern_human_race = "eastern_human";
+    public const string eastern_human_name_locale = "Eastern Humans";
 }
