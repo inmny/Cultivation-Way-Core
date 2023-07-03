@@ -24,7 +24,7 @@ public static class FormatButtons
         god_power.actor_asset_id = actor_id;
         god_power.click_action = AssetManager.powers.spawnUnit;
         PowerButton button = CWTab.create_button(
-            god_power.id, actor_asset.icon,
+            god_power.id, "ui/Icons/" + actor_asset.icon,
             null, ButtonType.GodPower
         );
         CWTab.add_button(button);
