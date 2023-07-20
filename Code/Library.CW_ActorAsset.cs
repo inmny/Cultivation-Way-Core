@@ -87,6 +87,32 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
         }
     }
 
+    /// <summary>
+    ///     一般clone外添加了对vanilla_asset的clone
+    /// </summary>
+    public override CW_ActorAsset clone(string pNew, string pFrom)
+    {
+        CW_ActorAsset from_asset = get(pFrom);
+        if (from_asset == null)
+        {
+            Logger.Warn($"CW_ActorAsset {pFrom} not found!");
+            return null;
+        }
+
+        CW_ActorAsset new_asset = base.clone(pNew, pFrom);
+
+        if (from_asset.vanllia_asset == null)
+        {
+            Logger.Warn($"CW_ActorAsset {pFrom} has no vanilla asset!");
+        }
+        else
+        {
+            new_asset.vanllia_asset = AssetManager.actor_library.clone(pNew, pFrom);
+        }
+
+        return new_asset;
+    }
+
     public override CW_ActorAsset add(CW_ActorAsset pAsset)
     {
         if (pAsset.vanllia_asset != null && !AssetManager.actor_library.dict.ContainsKey(pAsset.vanllia_asset.id))
