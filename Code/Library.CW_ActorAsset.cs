@@ -59,14 +59,14 @@ public class CW_ActorAsset : Asset
         culti_velo = 1;
     }
 
-    internal readonly List<string> allowed_cultisys_ids = new();
+    internal List<string> allowed_cultisys_ids = new();
 
     public void add_allowed_cultisys(string cultisys_id)
     {
         allowed_cultisys_ids.Add(cultisys_id);
     }
 
-    internal readonly List<string> force_cultisys_ids = new();
+    internal List<string> force_cultisys_ids = new();
 
     public void add_force_cultisys(string cultisys_id)
     {
@@ -109,6 +109,13 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
         {
             new_asset.vanllia_asset = AssetManager.actor_library.clone(pNew, pFrom);
         }
+
+        // 由于clone是采用JSON实现的, 默认值会为null, 此时需要手动初始化
+        new_asset.allowed_cultisys_ids ??= new List<string>();
+        new_asset.force_cultisys_ids ??= new List<string>();
+        new_asset.born_spells ??= new List<string>();
+        new_asset.force_cultisys ??= new List<CultisysAsset>();
+        new_asset.allowed_cultisys ??= new List<CultisysAsset>();
 
         return new_asset;
     }
