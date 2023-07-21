@@ -44,4 +44,34 @@ internal static class H_Actor
 
         actor.data.set(DataS.wakan, wakan);
     }
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(ActorBase), nameof(ActorBase.getUnitTexturePath))]
+    public static bool actor_getUnitTexture(ActorBase __instance, ref string __result)
+    {
+        if (__instance.asset.race != "yao") return true;
+        CW_Actor actor = (CW_Actor)__instance;
+        switch (actor.data.profession)
+        {
+            case UnitProfession.Baby:
+                __result = __instance.asset.texture_path + "/unit_child";
+                break;
+            case UnitProfession.Null:
+            case UnitProfession.Unit:
+                __result = __instance.asset.texture_path +
+                           (actor.data.gender == ActorGender.Male ? "/unit_male_1" : "/unit_female_1");
+                break;
+            case UnitProfession.Warrior:
+                __result = __instance.asset.texture_path + "/unit_warrior_1";
+                break;
+            case UnitProfession.Leader:
+                __result = __instance.asset.texture_path + "/unit_leader";
+                break;
+            case UnitProfession.King:
+                __result = "races/eastern_human/unit_king";
+                break;
+        }
+
+        return false;
+    }
 }

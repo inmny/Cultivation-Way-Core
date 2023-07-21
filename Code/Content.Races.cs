@@ -13,6 +13,23 @@ internal static class Races
 
     private static void add_yao()
     {
+        Race yao = AssetManager.raceLibrary.clone(Content_Constants.yao_race, SK.human);
+        AssetManager.raceLibrary.t = yao;
+        yao.path_icon = "ui/Icons/iconYaos";
+        yao.nameLocale = "Yaos";
+        yao.nomad_kingdom_id = Content_Constants.nomad_kingdom_prefix + Content_Constants.yao_race;
+        yao.skin_citizen_male = new List<string> { "unit_male_1" };
+        yao.skin_citizen_female = new List<string> { "unit_female_1" };
+        yao.skin_warrior = new List<string> { "unit_warrior_1" };
+        AssetManager.raceLibrary.setPreferredStatPool("diplomacy#5,warfare#5,stewardship#5,intelligence#5");
+        AssetManager.raceLibrary.setPreferredFoodPool(
+            "berries#5,bread#5,fish#5,meat#2,sushi#2,jam#1,cider#1,ale#2,burger#1,pie#1,tea#2");
+        AssetManager.raceLibrary.addPreferredWeapon("stick", 5);
+        AssetManager.raceLibrary.addPreferredWeapon("sword", 5);
+        AssetManager.raceLibrary.addPreferredWeapon("axe", 2);
+        AssetManager.raceLibrary.addPreferredWeapon("spear", 2);
+        AssetManager.raceLibrary.addPreferredWeapon("bow", 5);
+        AssetManager.raceLibrary.cloneBuildingKeys(SK.human, yao.id);
     }
 
     private static void add_eastern_human()

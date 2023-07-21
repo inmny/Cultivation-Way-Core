@@ -13,6 +13,9 @@ internal static class Buildings
 
     private static void add_yao()
     {
+        clone_human_buildings(Content_Constants.yao_race);
+        AssetManager.buildings.get("windmill_yao_0").fundament = new BuildingFundament(2, 2, 1, 0);
+        AssetManager.buildings.get("windmill_yao_1").fundament = new BuildingFundament(3, 3, 1, 0);
     }
 
     private static void add_eastern_human()
@@ -31,26 +34,7 @@ internal static class Buildings
             }
         }
 
-        List<BuildingAsset> human_buildings = AssetManager.buildings.list
-            .Where(building => building.race == "human").ToList();
-
-        foreach (BuildingAsset building in human_buildings)
-        {
-            BuildingAsset new_building =
-                AssetManager.buildings.clone(building.id.Replace(SK.human, Content_Constants.eastern_human_race),
-                    building.id);
-
-            new_building.race = Content_Constants.eastern_human_race;
-
-            if (building.canBeUpgraded)
-                new_building.upgradeTo = new_building.upgradeTo.Replace(SK.human, Content_Constants.eastern_human_race);
-
-            if (!string.IsNullOrEmpty(new_building.upgradedFrom))
-                new_building.upgradedFrom =
-                    new_building.upgradedFrom.Replace(SK.human, Content_Constants.eastern_human_race);
-
-            AssetManager.buildings.loadSprites(new_building);
-        }
+        clone_human_buildings(Content_Constants.eastern_human_race);
 
         BuildingAsset bonfire = AssetManager.buildings.clone("bonfire_eastern_human", "bonfire");
         bonfire.smoke = false;
@@ -73,5 +57,29 @@ internal static class Buildings
         AssetManager.buildings.get("windmill_eastern_human_0").fundament = new BuildingFundament(2, 1, 2, 0);
         AssetManager.buildings.get("windmill_eastern_human_1").fundament = new BuildingFundament(2, 2, 2, 0);
         AssetManager.buildings.get("watch_tower_eastern_human").fundament = new BuildingFundament(2, 2, 3, 0);
+    }
+
+    private static void clone_human_buildings(string race)
+    {
+        List<BuildingAsset> human_buildings = AssetManager.buildings.list
+            .Where(building => building.race == "human").ToList();
+
+        foreach (BuildingAsset building in human_buildings)
+        {
+            BuildingAsset new_building =
+                AssetManager.buildings.clone(building.id.Replace(SK.human, race),
+                    building.id);
+
+            new_building.race = race;
+
+            if (building.canBeUpgraded)
+                new_building.upgradeTo = new_building.upgradeTo.Replace(SK.human, race);
+
+            if (!string.IsNullOrEmpty(new_building.upgradedFrom))
+                new_building.upgradedFrom =
+                    new_building.upgradedFrom.Replace(SK.human, race);
+
+            AssetManager.buildings.loadSprites(new_building);
+        }
     }
 }

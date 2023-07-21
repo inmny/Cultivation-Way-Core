@@ -25,4 +25,7 @@ internal class Content_Constants
     public const string eastern_human_id = "unit_eastern_human";
     public const string eastern_human_race = "eastern_human";
     public const string eastern_human_name_locale = "Eastern Humans";
+    public const string yao_postfix = "_yao";
+    public const string yao_race = "yao";
+    public const string yao_name_locale = "Yaos";
 }
