@@ -40,6 +40,7 @@ public static class EndActions
     {
         if (b_obj != null && b_obj.isAlive())
         {
+            if (!GeneralHelper.is_enemy(b_obj, a_obj)) return;
             anim.data.get(DataS.spell_cost, out float spell_cost, 1);
             b_obj.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell, pAttacker: a_obj);
         }
@@ -63,6 +64,7 @@ public static class EndActions
                 tile.building.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell, pAttacker: a_obj);
             foreach (Actor actor in tile._units)
             {
+                if (!GeneralHelper.is_enemy(actor, a_obj)) continue;
                 actor.getHit(spell_cost, pAttackType: (AttackType)CW_AttackType.Spell, pAttacker: a_obj);
             }
         }
