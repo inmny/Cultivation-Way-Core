@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Cultivation_Way.Constants;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -35,7 +36,11 @@ public static class GeneralHelper
     public static List<WorldTile> get_tiles_in_circle(WorldTile center_tile, float radius)
     {
         List<WorldTile> tiles = new();
-        if (center_tile == null) return tiles;
+        if (radius <= 0 || center_tile == null)
+        {
+            tiles.Add(center_tile);
+            return tiles;
+        }
 
         #region 寻找圆周1/4边界, 翻转获取整个圆面
 
@@ -138,6 +143,53 @@ public static class GeneralHelper
         #endregion
 
         return tiles;
+    }
+
+    /// <summary>
+    ///     获取以center_tile为中心, 向四个方向延伸half_edge距离的方形区域中所有WorldTile
+    /// </summary>
+    public static List<WorldTile> get_tiles_in_square(WorldTile center_tile, float half_edge)
+    {
+        List<WorldTile> tiles = new();
+        if (half_edge <= 0 || center_tile == null)
+        {
+            tiles.Add(center_tile);
+            return tiles;
+        }
+
+        int rt_x = (int)(center_tile.x + half_edge);
+        int rt_y = (int)(center_tile.y + half_edge);
+
+        int edge = 2 * (int)half_edge;
+
+        for (int x = rt_x - edge; x <= rt_x; x++)
+        {
+            for (int y = rt_y - edge; y <= rt_y; y++)
+            {
+                WorldTile tile = MapBox.instance.GetTile(x, y);
+                if (tile != null)
+                {
+                    tiles.Add(tile);
+                }
+            }
+        }
+
+        return tiles;
+    }
+
+    public static void damage_to_tiles(List<WorldTile> tiles, float damage, BaseSimObject attacker,
+        CW_AttackType attack_type)
+    {
+        foreach (WorldTile tile in tiles)
+        {
+            if (tile.building != null && is_enemy(tile.building, attacker))
+                tile.building.getHit(damage, pType: (AttackType)attack_type, pAttacker: attacker);
+            foreach (Actor actor in tile._units)
+            {
+                if (!is_enemy(actor, attacker)) continue;
+                actor.getHit(damage, pAttackType: (AttackType)attack_type, pAttacker: attacker);
+            }
+        }
     }
 
     public static bool is_enemy(BaseSimObject obj_1, BaseSimObject obj_2)
