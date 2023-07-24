@@ -20,7 +20,79 @@ internal static class Spells
         add_track_projectile_spells();
         add_give_self_status_spells();
         add_blade_spells();
+        add_escape_spells();
     }
+
+    /// <summary>
+    ///     添加简单的遁术
+    /// </summary>
+    private static void add_escape_spell(
+        string spell_id, int rarity,
+        int[] element,
+        string anim_id, string anim_path,
+        KeyValuePair<string, float>[] spell_cost_list,
+        int tran_frame_idx
+    )
+    {
+        CW_SpellAsset spell_asset = new()
+        {
+            id = spell_id, rarity = rarity, element = new CW_Element(element),
+            anim_id = anim_id, anim_type = SpellAnimType.ON_USER,
+            anim_action = AnimActions.on_something_auto_scale,
+            target_camp = SpellTargetCamp.ALIAS, target_type = SpellTargetType.ACTOR,
+            spell_cost_action = CostChecks.generate_spell_cost_action(spell_cost_list),
+            spell_learn_check = LearnChecks.default_learn_check
+        };
+        spell_asset.add_trigger_tags(new[] { SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND });
+        spell_asset.add_cultisys_require(CultisysType.WAKAN);
+        Library.Manager.spells.add(spell_asset);
+
+        AnimationSetting anim_setting = new()
+        {
+            loop_limit_type = AnimationLoopLimitType.NUMBER_LIMIT,
+            loop_nr_limit = 1,
+            frame_interval = 0.05f,
+            frame_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
+            {
+                if (anim.src_object == null || !anim.src_object.base_data.alive)
+                {
+                    anim.force_stop();
+                    return;
+                }
+
+                if (idx != tran_frame_idx) return;
+                WorldTile target = null;
+                if (anim.src_object.city != null)
+                {
+                    // 优先回城
+                    target = anim.src_object.city.getTile();
+                }
+                else
+                {
+                    int time_limit = 5;
+                    while (time_limit-- > 0 && target == null)
+                    {
+                        TileIsland ground_island = World.world.islandsCalculator.getRandomIslandGround();
+                        if (ground_island == null) continue;
+                        MapRegion random = ground_island.regions.GetRandom();
+                        target = random?.tiles.GetRandom();
+                        if (target == null || target.Type.block || !target.Type.ground) target = null;
+                    }
+                }
+
+                if (target == null) return;
+                CW_Actor actor = (CW_Actor)anim.src_object;
+                actor.spawnOn(target);
+                actor.updatePos();
+                anim.set_position(anim.src_object.currentPosition);
+            }
+        };
+        anim_setting.set_trace(AnimationTraceType.NONE);
+        CW_Core.mod_state.anim_manager.load_as_controller(
+            anim_id, anim_path, controller_setting: anim_setting, base_scale: 0.08f
+        );
+    }
+
 
     /// <summary>
     ///     添加金刃相似法术
@@ -59,6 +131,61 @@ internal static class Spells
         anim_setting.set_trace(AnimationTraceType.LINE);
         CW_Core.mod_state.anim_manager.load_as_controller(
             anim_id, anim_path, controller_setting: anim_setting, base_scale: 0.08f
+        );
+    }
+
+    [SuppressMessage("ReSharper", "JoinDeclarationAndInitializer")]
+    private static void add_escape_spells()
+    {
+        add_escape_spell(
+            "gold_escape", 5,
+            new[] { 0, 0, 0, 100, 0 },
+            "gold_escape_anim", "effects/gold_escape",
+            new KeyValuePair<string, float>[]
+            {
+                new(CW_S.wakan, Content_Constants.default_spell_cost)
+            },
+            9
+        );
+        add_escape_spell(
+            "ground_escape", 5,
+            new[] { 0, 0, 0, 0, 100 },
+            "ground_escape_anim", "effects/ground_escape",
+            new KeyValuePair<string, float>[]
+            {
+                new(CW_S.wakan, Content_Constants.default_spell_cost)
+            },
+            9
+        );
+        add_escape_spell(
+            "wood_escape", 5,
+            new[] { 0, 0, 100, 0, 0 },
+            "wood_escape_anim", "effects/wood_escape",
+            new KeyValuePair<string, float>[]
+            {
+                new(CW_S.wakan, Content_Constants.default_spell_cost)
+            },
+            7
+        );
+        add_escape_spell(
+            "water_escape", 5,
+            new[] { 100, 0, 0, 0, 0 },
+            "water_escape_anim", "effects/water_escape",
+            new KeyValuePair<string, float>[]
+            {
+                new(CW_S.wakan, Content_Constants.default_spell_cost)
+            },
+            9
+        );
+        add_escape_spell(
+            "fire_escape", 5,
+            new[] { 0, 100, 0, 0, 0 },
+            "fire_escape_anim", "effects/fire_escape",
+            new KeyValuePair<string, float>[]
+            {
+                new(CW_S.wakan, Content_Constants.default_spell_cost)
+            },
+            5
         );
     }
 
