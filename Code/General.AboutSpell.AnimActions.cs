@@ -1,6 +1,8 @@
 ﻿using System;
+using Cultivation_Way.Animation;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Library;
+using UnityEngine;
 
 namespace Cultivation_Way.General.AboutSpell;
 
@@ -9,6 +11,24 @@ namespace Cultivation_Way.General.AboutSpell;
 /// </summary>
 public static class AnimActions
 {
+    /// <summary>
+    ///     下落高度来自于anim_setting.free_val
+    /// </summary>
+    public static void fall_to_ground(CW_SpellAsset spell_asset, BaseSimObject user, BaseSimObject target,
+        WorldTile target_tile, float cost)
+    {
+        if (string.IsNullOrEmpty(spell_asset.anim_id)) return;
+
+        float fall_height = EffectManager.instance.get_controller(spell_asset.anim_id).default_setting.free_val;
+        Animation.SpriteAnimation anim = CW_Core.mod_state.anim_manager.spawn_anim(spell_asset.anim_id,
+            (target == null ? target_tile.posV : target.currentPosition) + new Vector2(0, fall_height),
+            target == null ? target_tile.posV : target.currentPosition,
+            user, target);
+
+        if (anim is not { isOn: true }) return;
+        anim.data.set(DataS.spell_cost, cost);
+    }
+
     /// <summary>
     ///     使用者(src_obj), 目标(dst_obj), 按anim_type=ON_USER/ON_TARGET, 设定src_vec,dst_vec = target_vec / user_vec
     /// </summary>
