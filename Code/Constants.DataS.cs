@@ -15,5 +15,6 @@ public static class DataS
 
     public const string spell_cost = Core.mod_prefix + "spell_cost";
     public const string spell_range = Core.mod_prefix + "spell_range";
+    public const string is_bound = Core.mod_prefix + "is_bound";
     public static readonly string[] element_list = Core.element_str;
 }
