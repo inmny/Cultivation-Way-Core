@@ -272,6 +272,7 @@ public enum CW_AttackType
     Poison,
     Block,
     Spell,
+    Soul,
     RealSpell,
     RealWeapon,
     God
