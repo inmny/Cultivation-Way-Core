@@ -230,6 +230,39 @@ public class CW_Actor : Actor
     }
 
     /// <summary>
+    ///     恢复属性(生命/其他)
+    /// </summary>
+    /// <param name="regen_id">恢复的属性id</param>
+    /// <param name="value">恢复量, 生命恢复四舍五入</param>
+    public void regen(string regen_id, float value)
+    {
+        if (regen_id == S.health)
+        {
+            data.health += (int)(value + 0.5f);
+            if (data.health > stats[S.health])
+            {
+                data.health = (int)stats[S.health];
+            }
+
+            return;
+        }
+
+        data.get(regen_id, out float cur_value, -1);
+        if (cur_value < 0)
+        {
+            return;
+        }
+
+        cur_value += value;
+        if (cur_value > stats[regen_id])
+        {
+            cur_value = stats[regen_id];
+        }
+
+        data.set(regen_id, cur_value);
+    }
+
+    /// <summary>
     ///     每月更新，用于生命恢复等
     /// </summary>
     internal void update_month()
