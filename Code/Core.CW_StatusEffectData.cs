@@ -45,6 +45,11 @@ public class CW_StatusEffectData
     public CW_StatusEffect status_asset;
 
     /// <summary>
+    ///     效果值, 一个自由变量
+    /// </summary>
+    public float effect_val;
+
+    /// <summary>
     ///     创建状态数据, 注意动画需要自行创建
     /// </summary>
     /// <param name="status_asset"></param>
