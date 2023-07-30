@@ -58,7 +58,7 @@ internal class SpellManager
         {
             SpellArg arg_to_deal = args_to_deal.Dequeue();
 
-            if (arg_to_deal.user != null || arg_to_deal.user.isAlive())
+            if (arg_to_deal.user != null && arg_to_deal.user.isAlive())
             {
                 arg_to_deal.spell.anim_action?.Invoke(arg_to_deal.spell, arg_to_deal.user, arg_to_deal.target,
                     arg_to_deal.target_tile, arg_to_deal.cost);
