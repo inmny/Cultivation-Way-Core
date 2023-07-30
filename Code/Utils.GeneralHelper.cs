@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Cultivation_Way.Constants;
 using Newtonsoft.Json;
@@ -146,6 +147,24 @@ public static class GeneralHelper
     }
 
     /// <summary>
+    ///     获取以center_tile为中心, radius为半径的圆内的所有WorldTile上的敌人
+    /// </summary>
+    public static List<BaseSimObject> find_enemies_in_circle(WorldTile center_tile, Kingdom kingdom, float radius,
+        bool building_included = true)
+    {
+        List<WorldTile> tiles = get_tiles_in_circle(center_tile, radius);
+        List<BaseSimObject> enemies = new();
+        foreach (WorldTile tile in tiles)
+        {
+            if (building_included && tile.building != null && is_enemy(tile.building.kingdom, kingdom))
+                enemies.Add(tile.building);
+            enemies.AddRange(tile._units.Where(actor => is_enemy(actor.kingdom, kingdom)));
+        }
+
+        return enemies;
+    }
+
+    /// <summary>
     ///     获取以center_tile为中心, 向四个方向延伸half_edge距离的方形区域中所有WorldTile
     /// </summary>
     public static List<WorldTile> get_tiles_in_square(WorldTile center_tile, float half_edge)
@@ -177,6 +196,24 @@ public static class GeneralHelper
         return tiles;
     }
 
+    /// <summary>
+    ///     获取以center_tile为中心, 向四个方向延伸half_edge距离的方形区域中所有WorldTile上的敌人
+    /// </summary>
+    public static List<BaseSimObject> find_enemies_in_square(WorldTile center_tile, Kingdom kingdom, float half_edge,
+        bool building_included = true)
+    {
+        List<WorldTile> tiles = get_tiles_in_square(center_tile, half_edge);
+        List<BaseSimObject> enemies = new();
+        foreach (WorldTile tile in tiles)
+        {
+            if (building_included && tile.building != null && is_enemy(tile.building.kingdom, kingdom))
+                enemies.Add(tile.building);
+            enemies.AddRange(tile._units.Where(actor => is_enemy(actor.kingdom, kingdom)));
+        }
+
+        return enemies;
+    }
+
     public static void damage_to_tiles(List<WorldTile> tiles, float damage, BaseSimObject attacker,
         CW_AttackType attack_type)
     {
@@ -190,6 +227,13 @@ public static class GeneralHelper
                 actor.getHit(damage, pAttackType: (AttackType)attack_type, pAttacker: attacker);
             }
         }
+    }
+
+    public static bool is_enemy(Kingdom k1, Kingdom k2)
+    {
+        if (k1 == null || k2 == null) return true;
+        return ((!k1.asset.mobs && !k2.asset.mobs) ||
+                !MapBox.instance.worldLaws.world_law_peaceful_monsters.boolVal) && k2.isEnemy(k1);
     }
 
     public static bool is_enemy(BaseSimObject obj_1, BaseSimObject obj_2)
