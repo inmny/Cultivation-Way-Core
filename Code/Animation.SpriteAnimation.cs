@@ -292,7 +292,7 @@ public class SpriteAnimation
             }
             else if (setting.trace_type == AnimationTraceType.ATTACH)
             {
-                if (!dst_object.base_data.alive)
+                if (dst_object == null || !dst_object.isAlive())
                 {
                     isOn = false;
                     return;
