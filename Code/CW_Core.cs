@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using System.Threading;
 using Cultivation_Way.Addon;
 using Cultivation_Way.Animation;
 using Cultivation_Way.Core;
@@ -82,14 +82,7 @@ public class CW_Core : MonoBehaviour
                         World.world.tilesMap.GetLength(0));
                     Localizer.apply_localization(LocalizedTextManager.instance.localizedText,
                         LocalizedTextManager.instance.language);
-                    new Task(() =>
-                    {
-                        while (true)
-                        {
-                            if (!state.map_chunk_manager.paused) state.map_chunk_manager.update_per_year();
-                            Task.Delay((int)(100 / Math.Min(Config.timeScale, 0))).Wait();
-                        }
-                    }, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent).Start();
+
                     state.all_initialized = true;
                 }
             }
@@ -168,6 +161,16 @@ public class CW_Core : MonoBehaviour
         state.library_manager.init();
         CWTab.init();
         init_windows();
+
+        new Thread(() =>
+        {
+            while (true)
+            {
+                if (!state.map_chunk_manager.paused && mod_state.all_initialized)
+                    state.map_chunk_manager.update_per_year();
+                Thread.Sleep((int)(500 / Math.Min(Config.timeScale, 1)));
+            }
+        }).Start();
     }
 
     private void update_year()
