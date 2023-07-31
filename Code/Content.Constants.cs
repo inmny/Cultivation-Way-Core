@@ -9,7 +9,7 @@ internal class Content_Constants
     public const string immortal_id = cultisys_prefix + "immortal";
     public const int immortal_max_level = 20;
     public const float immortal_max_wakan_regen = 0.6f;
-    public const float immortal_base_cultivelo = 12;
+    public const float immortal_base_cultivelo = 1.2f;
 
 
     public const string bushido_id = cultisys_prefix + "bushido";
