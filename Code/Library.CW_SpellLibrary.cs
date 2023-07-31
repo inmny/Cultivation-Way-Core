@@ -60,9 +60,9 @@ public class CW_SpellAsset : Asset
 
 
     /// <summary>
-    ///     法术消耗, 在核心*action执行时调用以计算法术消耗
+    ///     法术修习的等级要求
     /// </summary>
-    public float spell_cost;
+    public List<KeyValuePair<string, int>> spell_cultisys_level_require;
 
     /// <summary>
     ///     法术消耗行为, 在申请释放法术时调用以检查法术是否可释放
@@ -191,6 +191,11 @@ public class CW_SpellLibrary : CW_Library<CW_SpellAsset>
                     cultisys_spells[i].Add(list[j]);
                 }
             }
+        }
+
+        foreach (CW_SpellAsset spell in list)
+        {
+            spell.spell_cultisys_level_require ??= new List<KeyValuePair<string, int>>();
         }
     }
 
