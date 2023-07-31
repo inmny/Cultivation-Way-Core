@@ -79,7 +79,7 @@ public static class ActorDataTools
     }
 
     /// <summary>
-    ///     读取所有法术
+    ///     读取所有法术, 注意!无法术时返回null
     /// </summary>
     /// <returns>读取所有法术的集合的拷贝</returns>
     public static HashSet<string> get_spells(this ActorData data)
@@ -101,6 +101,7 @@ public static class ActorDataTools
     public static void add_spell(this ActorData data, string spell)
     {
         HashSet<string> curr_spells = data.get_spells();
+        curr_spells ??= new HashSet<string>();
         curr_spells.Add(spell);
         data.write_obj(DataS.spells, curr_spells);
     }
