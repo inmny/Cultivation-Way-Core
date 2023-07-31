@@ -55,6 +55,7 @@ internal class CW_TipButton : MonoBehaviour
 internal static class Prefabs
 {
     public static CW_TipButton tip_button_prefab;
+    public static GameObject tip_button_with_bg_game_obj_prefab;
     private static Dictionary<string, Object> resources_dict;
 
     public static void init()
@@ -63,10 +64,23 @@ internal static class Prefabs
             Reflection.GetField(typeof(ResourcesPatch), null, "modsResources") as Dictionary<string, Object>;
 
         set_tip_button_prefab();
+        set_tip_button_with_bg_prefab();
         add_tooltip_element_prefab();
         add_tooltip_cultibook_prefab();
         add_tooltip_blood_nodes_prefab();
         add_tooltip_cultisys_prefab();
+    }
+
+    private static void set_tip_button_with_bg_prefab()
+    {
+        tip_button_with_bg_game_obj_prefab = new GameObject("Tip_Button_With_BG_Prefab");
+        tip_button_with_bg_game_obj_prefab.transform.SetParent(CW_Core.prefab_library);
+        GameObject bg = new("BG", typeof(Image));
+        bg.transform.SetParent(tip_button_with_bg_game_obj_prefab.transform);
+
+        GameObject tip_button = Object.Instantiate(tip_button_prefab.gameObject,
+            tip_button_with_bg_game_obj_prefab.transform);
+        tip_button.name = "Tip_Button";
     }
 
     private static void add_tooltip_element_prefab()

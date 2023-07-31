@@ -9,9 +9,9 @@ public class AbstractWindow<T> : MonoBehaviour where T : MonoBehaviour
     public static T instance;
     public static Transform content_transform;
     public static Transform background_transform;
-    internal static bool initialized = false;
-    internal static bool is_open = false;
-    internal static bool first_open = true;
+    public static bool initialized = false;
+    public static bool is_open = false;
+    public static bool first_open = true;
 
     public static void base_init(string window_id)
     {
