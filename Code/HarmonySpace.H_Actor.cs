@@ -93,6 +93,9 @@ internal static class H_Actor
         CW_Actor cw_actor = (CW_Actor)actor;
         cw_actor.cur_spells.Clear();
         cw_actor.cur_spells.AddRange(cw_actor.__data_spells);
+
+        // 清空束缚状态
+        actor.data.removeFlag(DataS.is_bound);
     }
 
     #endregion

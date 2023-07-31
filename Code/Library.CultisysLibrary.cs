@@ -11,6 +11,11 @@ namespace Cultivation_Way.Library;
 public class CultisysAsset : Asset
 {
     /// <summary>
+    ///     在list中的位置
+    /// </summary>
+    [NonSerialized] internal int pid;
+
+    /// <summary>
     ///     能否修炼判定
     /// </summary>
     [NonSerialized] public CultisysJudge allow;
@@ -133,8 +138,10 @@ public class CultisysLibrary : CW_Library<CultisysAsset>
     public override void post_init()
     {
         base.post_init();
+        int idx = 0;
         foreach (CultisysAsset cultisys in list)
         {
+            cultisys.pid = idx++;
             cultisys.allow ??= (actor, culti) => false;
             cultisys.can_levelup ??= (actor, culti) => false;
             cultisys.curr_progress ??= (actor, culti, level) => 0;
