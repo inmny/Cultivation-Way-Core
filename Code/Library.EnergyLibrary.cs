@@ -43,7 +43,6 @@ public class EnergyAsset : Asset
     /// </summary>
     /// <param name="value">值</param>
     /// <param name="density">密度</param>
-    /// <param name="power_level">层次</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Color get_color(float value, float density)
     {
