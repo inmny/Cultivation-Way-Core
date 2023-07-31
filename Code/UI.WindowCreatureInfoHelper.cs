@@ -309,6 +309,13 @@ internal class WindowCreatureInfoHelper
         str_builder.AppendLine(
             $"{cultisys_asset.curr_progress(actor, cultisys_asset, level)}/{cultisys_asset.max_progress(actor, cultisys_asset, level)}");
 
+        HashSet<string> spells = actor.data.get_spells();
+        spells ??= new HashSet<string>();
+        foreach (string spell_id in spells)
+        {
+            str_builder.AppendLine(LocalizedTextManager.getText($"spell_{spell_id}"));
+        }
+
         tooltip.addDescription(str_builder.ToString());
 
         if (CW_Core.mod_state.editor_inmny)
