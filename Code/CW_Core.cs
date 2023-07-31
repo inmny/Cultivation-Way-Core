@@ -155,6 +155,7 @@ public class CW_Core : MonoBehaviour
 
         Factories.init();
         Localizer.init();
+        Fonts.init();
         Prefabs.init();
         FastVisit.init();
         HarmonySpace.Manager.init();

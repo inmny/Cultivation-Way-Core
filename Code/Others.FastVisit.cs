@@ -13,12 +13,11 @@ internal static class FastVisit
     };
 
     private static readonly Dictionary<string, GameObject> actor_prefabs = new();
-    internal static Font font_STLiti = Font.CreateDynamicFontFromOSFont("STLiti", 18);
-    internal static Font font_STKaiti = Font.CreateDynamicFontFromOSFont("STKaiti", 18);
     private static Sprite square_frame;
     private static Sprite square_frame_only;
     private static Sprite window_bar;
     private static Sprite window_bar_90;
+    private static Sprite window_big_close;
 
     public static void init()
     {
@@ -68,6 +67,16 @@ internal static class FastVisit
             SpriteMeshType.Tight, new Vector4(6, 5, 6, 5));
         window_bar_90.name = "window_bar_90";
         return window_bar_90;
+    }
+
+    public static Sprite get_window_big_close()
+    {
+        if (window_big_close != null) return window_big_close;
+        Sprite _orig = SpriteTextureLoader.getSprite("ui/cw_window/windowBigClose");
+        window_big_close = Sprite.Create(_orig.texture, _orig.rect, new Vector2(20, 0), _orig.pixelsPerUnit, 0,
+            SpriteMeshType.Tight, new Vector4(0, 4, 0, 6));
+        window_big_close.name = "windowBigClose";
+        return window_big_close;
     }
 
     private static void get_actor_prefabs()
