@@ -78,8 +78,8 @@ public class CW_Core : MonoBehaviour
                     // 在所有附属初始化完毕后, 进行后续处理
                     CWTab.post_init();
                     state.library_manager.post_init();
-                    state.map_chunk_manager.init(World.world.tilesMap.GetLength(1),
-                        World.world.tilesMap.GetLength(0));
+                    state.map_chunk_manager.init(World.world.tilesMap.GetLength(0),
+                        World.world.tilesMap.GetLength(1));
                     Localizer.apply_localization(LocalizedTextManager.instance.localizedText,
                         LocalizedTextManager.instance.language);
 
@@ -90,11 +90,11 @@ public class CW_Core : MonoBehaviour
             return;
         }
 
-        if (World.world.tilesMap.GetLength(0) != state.map_chunk_manager.height
-            || World.world.tilesMap.GetLength(1) != state.map_chunk_manager.width)
+        if (World.world.tilesMap != null && (World.world.tilesMap.GetLength(0) != state.map_chunk_manager.width
+                                             || World.world.tilesMap.GetLength(1) != state.map_chunk_manager.height))
         {
-            state.map_chunk_manager.reset(World.world.tilesMap.GetLength(1),
-                World.world.tilesMap.GetLength(0));
+            state.map_chunk_manager.reset(World.world.tilesMap.GetLength(0),
+                World.world.tilesMap.GetLength(1));
         }
 
         int current_year = World.world.mapStats.getCurrentYear();

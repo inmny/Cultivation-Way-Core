@@ -76,23 +76,23 @@ internal static class H_ZoneCalculator
             return false;
         }
 
-        CW_EnergyMapChunk[,] map =
+        CW_EnergyMapTile[,] map =
             CW_Core.mod_state.map_chunk_manager.maps[
                 CW_Core.mod_state.map_chunk_manager.current_map_id
             ].map;
         if (all_redraw)
         {
-            for (int i = 0; i < CW_Core.mod_state.map_chunk_manager.height; i++)
+            for (int x = 0; x < CW_Core.mod_state.map_chunk_manager.width; x++)
             {
-                for (int j = 0; j < CW_Core.mod_state.map_chunk_manager.width; j++)
+                for (int y = 0; y < CW_Core.mod_state.map_chunk_manager.height; y++)
                 {
-                    TileZone zone = World.world.tilesMap[i, j].zone;
+                    TileZone zone = World.world.tilesMap[x, y].zone;
                     __instance._currentDrawnZones.Add(zone);
                     __instance._toCleanUp.Remove(zone);
 
-                    map[i, j].need_redraw = false;
+                    map[x, y].need_redraw = false;
 
-                    __instance.pixels[World.world.tilesMap[i, j].data.tile_id] = map[i, j].color;
+                    __instance.pixels[World.world.tilesMap[x, y].data.tile_id] = map[x, y].color;
                     __instance._dirty = true;
                     //`color_zone(__instance, zone, ref map[i, j].color);
                 }
@@ -100,20 +100,20 @@ internal static class H_ZoneCalculator
         }
         else
         {
-            for (int i = 0; i < CW_Core.mod_state.map_chunk_manager.height; i++)
+            for (int x = 0; x < CW_Core.mod_state.map_chunk_manager.width; x++)
             {
-                for (int j = 0; j < CW_Core.mod_state.map_chunk_manager.width; j++)
+                for (int y = 0; y < CW_Core.mod_state.map_chunk_manager.height; y++)
                 {
-                    TileZone zone = World.world.tilesMap[i, j].zone;
+                    TileZone zone = World.world.tilesMap[x, y].zone;
                     __instance._toCleanUp.Remove(zone);
 
-                    if (!map[i, j].need_redraw) continue;
+                    if (!map[x, y].need_redraw) continue;
 
                     __instance._currentDrawnZones.Add(zone);
 
-                    map[i, j].need_redraw = false;
+                    map[x, y].need_redraw = false;
 
-                    __instance.pixels[World.world.tilesMap[i, j].data.tile_id] = map[i, j].color;
+                    __instance.pixels[World.world.tilesMap[x, y].data.tile_id] = map[x, y].color;
                     __instance._dirty = true;
                     //color_zone(__instance, zone, ref map[i, j].color);
                 }

@@ -9,7 +9,7 @@ namespace Cultivation_Way.Core;
 /// <summary>
 ///     对区块中的能量进行描述
 /// </summary>
-public struct CW_EnergyMapChunk
+public class CW_EnergyMapTile
 {
     /// <summary>
     ///     总量
@@ -44,9 +44,9 @@ public class CW_EnergyMap
     /// <summary>
     ///     地图的数组
     /// </summary>
-    public CW_EnergyMapChunk[,] map { get; private set; }
+    public CW_EnergyMapTile[,] map { get; private set; }
 
-    private CW_EnergyMapChunk[,] _tmp_map;
+    private CW_EnergyMapTile[,] _tmp_map;
 
     private static readonly List<KeyValuePair<int, int>> _forward_dirs = new()
     {
@@ -58,17 +58,21 @@ public class CW_EnergyMap
     {
         if (map == null || width > 0 || height > 0)
         {
-            map = new CW_EnergyMapChunk[height, width];
-            _tmp_map = new CW_EnergyMapChunk[height, width];
+            map = new CW_EnergyMapTile[width, height];
+            _tmp_map = new CW_EnergyMapTile[width, height];
         }
 
-        for (int i = 0; i < height; i++)
+        for (int x = 0; x < width; x++)
         {
-            for (int j = 0; j < width; j++)
+            for (int y = 0; y < height; y++)
             {
-                map[i, j].value = Toolbox.randomFloat(0, 1000);
-                map[i, j].density = Toolbox.randomFloat(1, 2);
-                map[i, j].color = Color.white;
+                map[x, y] = new CW_EnergyMapTile
+                {
+                    value = Toolbox.randomFloat(0, 10000),
+                    density = Toolbox.randomFloat(1, 3),
+                    color = Color.white
+                };
+                _tmp_map[x, y] = new CW_EnergyMapTile();
             }
         }
     }
@@ -76,71 +80,71 @@ public class CW_EnergyMap
     internal void update(int width, int height)
     {
         float delta_value;
-        for (int i = 0; i < height - 1; i++)
+        for (int x = 0; x < width - 1; x++)
         {
-            for (int j = 0; j < width - 1; j++)
+            for (int y = 0; y < height - 1; y++)
             {
                 foreach (var dir in _forward_dirs)
                 {
                     delta_value = energy.get_spread_grad(
-                        map[i, j].value, map[i, j].density,
-                        map[i + dir.Key, j + dir.Value].value,
-                        map[i + dir.Key, j + dir.Value].density,
-                        World.world.tilesMap[i, j],
-                        World.world.tilesMap[i + dir.Key, j + dir.Value]
+                        map[x, y].value, map[x, y].density,
+                        map[x + dir.Key, y + dir.Value].value,
+                        map[x + dir.Key, y + dir.Value].density,
+                        World.world.tilesMap[x, y],
+                        World.world.tilesMap[x + dir.Key, y + dir.Value]
                     );
-                    _tmp_map[i, j].value = map[i, j].value + delta_value;
-                    _tmp_map[i + dir.Key, j + dir.Value].value =
-                        map[i + dir.Key, j + dir.Value].value - delta_value;
+                    _tmp_map[x, y].value = map[x, y].value + delta_value;
+                    _tmp_map[x + dir.Key, y + dir.Value].value =
+                        map[x + dir.Key, y + dir.Value].value - delta_value;
                 }
             }
         }
 
-        for (int i = 0; i < height - 1; i++)
+        for (int x = 0; x < width - 1; x++)
         {
             var dir = _forward_dirs[1];
             delta_value = energy.get_spread_grad(
-                map[i, width - 1].value, map[i, width - 1].density,
-                map[i + dir.Key, width - 1 + dir.Value].value,
-                map[i + dir.Key, width - 1 + dir.Value].density,
-                World.world.tilesMap[i, width - 1],
-                World.world.tilesMap[i + dir.Key, width - 1 + dir.Value]
+                map[x, height - 1].value, map[x, height - 1].density,
+                map[x + dir.Key, height - 1 + dir.Value].value,
+                map[x + dir.Key, height - 1 + dir.Value].density,
+                World.world.tilesMap[x, height - 1],
+                World.world.tilesMap[x + dir.Key, height - 1 + dir.Value]
             );
-            _tmp_map[i, width - 1].value = map[i, width - 1].value + delta_value;
-            _tmp_map[i + dir.Key, width - 1 + dir.Value].value =
-                map[i + dir.Key, width - 1 + dir.Value].value - delta_value;
+            _tmp_map[x, height - 1].value = map[x, height - 1].value + delta_value;
+            _tmp_map[x + dir.Key, height - 1 + dir.Value].value =
+                map[x + dir.Key, height - 1 + dir.Value].value - delta_value;
         }
 
-        for (int j = 0; j < width - 1; j++)
+        for (int y = 0; y < height - 1; y++)
         {
             var dir = _forward_dirs[0];
             delta_value = energy.get_spread_grad(
-                map[height - 1, j].value, map[height - 1, j].density,
-                map[height - 1 + dir.Key, j + dir.Value].value,
-                map[height - 1 + dir.Key, j + dir.Value].density,
-                World.world.tilesMap[height - 1, j],
-                World.world.tilesMap[height - 1 + dir.Key, j + dir.Value]
+                map[width - 1, y].value, map[width - 1, y].density,
+                map[width - 1 + dir.Key, y + dir.Value].value,
+                map[width - 1 + dir.Key, y + dir.Value].density,
+                World.world.tilesMap[width - 1, y],
+                World.world.tilesMap[width - 1 + dir.Key, y + dir.Value]
             );
-            _tmp_map[height - 1, j].value = map[height - 1, j].value + delta_value;
-            _tmp_map[height - 1 + dir.Key, j + dir.Value].value =
-                map[height - 1 + dir.Key, j + dir.Value].value - delta_value;
+            _tmp_map[width - 1, y].value = map[width - 1, y].value + delta_value;
+            _tmp_map[width - 1 + dir.Key, y + dir.Value].value =
+                map[width - 1 + dir.Key, y + dir.Value].value - delta_value;
         }
 
-        for (int i = 0; i < height; i++)
+        for (int x = 0; x < width; x++)
         {
-            for (int j = 0; j < width; j++)
+            for (int y = 0; y < height; y++)
             {
-                map[i, j].value = _tmp_map[i, j].value;
-                map[i, j].density = Mathf.Log(Mathf.Max(map[i, j].value, energy.power_base_value),
+                map[x, y].value = _tmp_map[x, y].value;
+                map[x, y].density = Mathf.Log(Mathf.Max(map[x, y].value, energy.power_base_value),
                     energy.power_base_value);
-                Color32 new_color = energy.get_color(map[i, j].value, map[i, j].density);
-                if (Math.Abs(new_color.a - map[i, j].color.a) >= 0.02f ||
-                    Math.Abs(new_color.r - map[i, j].color.r) >= 0.02f ||
-                    Math.Abs(new_color.g - map[i, j].color.g) >= 0.02f ||
-                    Math.Abs(new_color.b - map[i, j].color.b) >= 0.02f)
+                Color32 new_color = energy.get_color(map[x, y].value, map[x, y].density);
+                if (Math.Abs(new_color.a - map[x, y].color.a) >= 0.0f ||
+                    Math.Abs(new_color.r - map[x, y].color.r) >= 0.0f ||
+                    Math.Abs(new_color.g - map[x, y].color.g) >= 0.0f ||
+                    Math.Abs(new_color.b - map[x, y].color.b) >= 0.0f)
                 {
-                    map[i, j].color = new_color;
-                    map[i, j].need_redraw = true;
+                    map[x, y].color = new_color;
+                    map[x, y].need_redraw = true;
                 }
             }
         }
