@@ -30,17 +30,26 @@ internal static class H_Actor
             return;
         }
 
-        float culti_wakan = actor.cw_asset.culti_velo * (1 + actor.stats[CW_S.mod_cultivelo]) *
+        CW_EnergyMapTile energy_tile = actor.currentTile.get_energy_tile(Content_Constants.energy_wakan_id);
+        if (energy_tile == null) return;
+
+        float culti_wakan = actor.cw_asset.culti_velo * energy_tile.density * (1 + actor.stats[CW_S.mod_cultivelo]) *
                             Content_Constants.immortal_base_cultivelo * actor.data.get_element().get_type().rarity;
+
+        culti_wakan = culti_wakan > energy_tile.value ? energy_tile.value : culti_wakan;
+
         if (wakan + culti_wakan >= max_wakan)
         {
             wakan = max_wakan;
+            culti_wakan = max_wakan - wakan;
             actor.check_level_up(Content_Constants.immortal_id);
         }
         else
         {
             wakan += culti_wakan;
         }
+
+        energy_tile.value -= culti_wakan;
 
         actor.data.set(DataS.wakan, wakan);
     }
