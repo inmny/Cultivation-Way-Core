@@ -177,7 +177,7 @@ internal static class StatusEffects
         status_effect = FormatStatusEffect.create_simple_status_effect(
             "status_samadhi_fire", new BaseStats(),
             10f,
-            "status_samadhi_fire_anim", "effects/samadhi_fire", 0.12f,
+            "status_samadhi_fire_anim", "effects/samadhi_fire", 1f,
             "effects/samadhi_fire/00",
             new[] { StatusEffectTag.NEGATIVE },
             StatusTier.Advanced
@@ -190,10 +190,10 @@ internal static class StatusEffects
         };
         // 红莲业火
         status_effect = FormatStatusEffect.create_simple_status_effect(
-            "status_lotus_fire", new BaseStats(),
+            "status_loltus_fire", new BaseStats(),
             10f,
-            "status_lotus_fire_anim", "effects/lotus_fire", 0.12f,
-            "effects/lotus_fire/00",
+            "status_loltus_fire_anim", "effects/loltus_fire", 1f,
+            "effects/loltus_fire/00",
             new[] { StatusEffectTag.NEGATIVE },
             StatusTier.Advanced
         );
@@ -214,7 +214,7 @@ internal static class StatusEffects
         status_effect = FormatStatusEffect.create_simple_status_effect(
             "status_fen_fire", new BaseStats(),
             10f,
-            "status_fen_fire_anim", "effects/fen_fire", 0.12f,
+            "status_fen_fire_anim", "effects/fen_fire", 1f,
             "effects/fen_fire/00",
             new[] { StatusEffectTag.NEGATIVE },
             StatusTier.Advanced

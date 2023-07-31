@@ -509,7 +509,7 @@ public class CW_Actor : Actor
 
                 if (Manager.spells.get(spell_id).learn_check(this) >= 0)
                 {
-                    new_cultibook.spells.Append(spell_id);
+                    new_cultibook.spells.Add(spell_id);
                     if (new_cultibook.spells.Count > new_cultibook.max_spell_nr)
                     {
                         new_cultibook.spells.RemoveAt(0);
@@ -615,7 +615,7 @@ public class CW_Actor : Actor
         foreach (CW_SpellAsset spell in spells)
         {
             if (__data_spells.Contains(spell.id)) continue;
-            float chance = spell.learn_check(this);
+            float chance = spell.learn_check(this, cultisys_types);
             if (chance < 0) continue;
             spell_float.Add(spell, chance);
         }
