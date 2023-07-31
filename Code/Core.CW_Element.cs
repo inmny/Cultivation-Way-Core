@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Factory;
 using Cultivation_Way.Library;
+using UnityEngine;
 
 namespace Cultivation_Way.Core;
 
@@ -357,5 +358,28 @@ public class CW_Element : FactoryItem<CW_Element>
         }
 
         data.get(DataS.element_type_id, out type_id, Constants.Core.uniform_type);
+    }
+
+    private static readonly Color water = Color.blue;
+    private static readonly Color fire = Color.red;
+    private static readonly Color wood = Color.green;
+    private static readonly Color iron = Color.yellow;
+    private static readonly Color ground = Toolbox.makeColor("#603700");
+    private static readonly Color[] element_colors = { water, fire, wood, iron, ground };
+
+    public Color get_color()
+    {
+        float r = 0;
+        float b = 0;
+        float g = 0;
+        float a = 1;
+        for (int i = 0; i < Constants.Core.element_type_nr; i++)
+        {
+            r += base_elements[i] * element_colors[i].r / 100;
+            g += base_elements[i] * element_colors[i].g / 100;
+            b += base_elements[i] * element_colors[i].b / 100;
+        }
+
+        return new Color(r, g, b, a);
     }
 }
