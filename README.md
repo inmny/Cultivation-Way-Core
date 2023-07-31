@@ -11,7 +11,7 @@
 
 ## TODO
 
-- [ ] 
+- [x] 
   将base14中W_Content_Spell内容迁移至main中Content.Spells([详细](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/spell.md))
 - [ ] 迁移妖族(较为繁琐)
 - [ ] 天榜([详细](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/contents_index/world_top.md))
