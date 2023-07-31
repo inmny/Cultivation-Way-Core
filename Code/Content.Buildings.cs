@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,6 +10,18 @@ internal static class Buildings
     {
         add_eastern_human();
         add_yao();
+        fix_bugs();
+    }
+
+    private static void fix_bugs()
+    {
+        // 修复树阻止建筑升级
+        foreach (BuildingAsset building in AssetManager.buildings.list)
+        {
+            if (building.type == "trees") building.priority = -1;
+            if (building.kingdom == "nature") building.upgradeLevel -= 1;
+            if (building.upgradeLevel >= 0) building.priority = Math.Max(building.priority, building.upgradeLevel);
+        }
     }
 
     private static void add_yao()
