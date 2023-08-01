@@ -12,6 +12,9 @@ public static class Core
     public const string modinfo_window = mod_prefix + "modinfo_window";
     public const string tops_window = mod_prefix + "tops_window";
 
+    public const string power_energy_increase = mod_prefix + "energy_increase";
+    public const string power_energy_decrease = mod_prefix + "energy_decrease";
+
     public const string energy_maps_toggle_name = mod_prefix + "energy_maps";
 
     public const int BASE_TYPE_WATER = 0;

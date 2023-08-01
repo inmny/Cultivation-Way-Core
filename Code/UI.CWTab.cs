@@ -146,6 +146,22 @@ internal static class CWTab
             ButtonType.Toggle,
             ButtonContainerType.TOOL
         );
+        // 拔高能量
+        create_and_add_button(
+            Constants.Core.power_energy_increase,
+            "ui/Icons/iconWakan_Increase",
+            null,
+            ButtonType.GodPower,
+            ButtonContainerType.TOOL
+        );
+        // 降低能量
+        create_and_add_button(
+            Constants.Core.power_energy_decrease,
+            "ui/Icons/iconWakan_Decrease",
+            null,
+            ButtonType.GodPower,
+            ButtonContainerType.TOOL
+        );
     }
 
     private static void add_line()

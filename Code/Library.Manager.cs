@@ -20,6 +20,7 @@ public class Manager
         instance = this;
         CW_BaseStatsLibrary.init();
         CW_GodPowers.init();
+        CW_Drops.init();
         CW_Options.init();
         add(actors, "actors");
         add(bloods, "bloods");

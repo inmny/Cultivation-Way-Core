@@ -1,5 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cultivation_Way.Animation;
+using Cultivation_Way.Core;
+using Cultivation_Way.Extension;
+using UnityEngine;
 
 namespace Cultivation_Way.Library;
 
@@ -10,6 +15,8 @@ internal static class CW_GodPowers
     public static void init()
     {
         add_more_map_modes_switch();
+        add_energy_increase();
+        add_energy_decrease();
     }
 
     public static void post_init()
@@ -63,6 +70,104 @@ internal static class CW_GodPowers
             PlayerConfig.saveData();
         };
         add(global_switch);
+    }
+
+    private static Animation.SpriteAnimation anim;
+
+    private static void add_energy_decrease()
+    {
+        AnimationSetting setting = new()
+        {
+            loop_limit_type = AnimationLoopLimitType.TIME_LIMIT,
+            loop_time_limit = 2f,
+            frame_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
+            {
+                if (idx == 17) anim.cur_frame_idx = 6;
+            },
+            end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation origin_anim) =>
+            {
+                anim = EffectManager.instance.spawn_anim("wakan_decrease_end_anim",
+                    origin_anim.gameObject.transform.localPosition, origin_anim.gameObject.transform.localPosition);
+                if (idx > 6) anim.setting.play_direction = AnimationPlayDirection.FORWARD;
+                anim.set_position(origin_anim.gameObject.transform.localPosition);
+                anim.cur_frame_idx = idx;
+                anim.gameObject.transform.localScale = origin_anim.gameObject.transform.localScale;
+            },
+            layer_name = "EffectsBack",
+            play_direction = AnimationPlayDirection.FORWARD,
+            visible_in_low_res = true
+        };
+        setting.set_trace(AnimationTraceType.NONE);
+        EffectManager.instance.load_as_controller("wakan_decrease_anim", "effects/wakan_hole/", 10,
+            controller_setting: setting, base_scale: 1.2f);
+
+        setting.frame_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation animation) =>
+        {
+            if (idx == 17)
+            {
+                anim.cur_frame_idx = 6;
+                anim.setting.play_direction = AnimationPlayDirection.BACKWARD;
+            }
+        };
+        setting.end_action = null;
+        setting.loop_limit_type = AnimationLoopLimitType.NUMBER_LIMIT;
+
+        EffectManager.instance.load_as_controller("wakan_decrease_end_anim", "effects/wakan_hole/", 10,
+            controller_setting: setting, base_scale: 1.2f);
+        GodPower power = AssetManager.powers.clone(Constants.Core.power_energy_decrease, "sponge");
+        power.name = "Decrease Wakan";
+        power.click_action = (tile, id) =>
+        {
+            if (!PlayerConfig.optionBoolEnabled(Constants.Core.energy_maps_toggle_name)
+                || string.IsNullOrEmpty(CW_Core.mod_state.map_chunk_manager.current_map_id))
+                return false;
+            if (tile == null) return false;
+            EnergyAsset energy_asset = Manager.energies.get(CW_Core.mod_state.map_chunk_manager.current_map_id);
+            CW_EnergyMapTile energy_tile = tile.get_energy_tile(energy_asset.id);
+            if (energy_tile.value is <= 1 or float.NaN)
+            {
+                energy_tile.value = 0;
+                return true;
+            }
+
+            energy_tile.value *= 0.99f;
+            energy_tile.update(energy_asset);
+
+            return true;
+        };
+        power.click_brush_action = (PowerActionWithID)Delegate.Combine(power.click_brush_action, new PowerActionWithID(
+            (tile, id) =>
+            {
+                if (anim == null || !anim.isOn)
+                {
+                    anim = EffectManager.instance.spawn_anim("wakan_decrease_anim", tile, tile, null, null,
+                        Config.currentBrushData.size / 20f);
+                }
+
+                return true;
+            }));
+        power.click_brush_action = (PowerActionWithID)Delegate.Combine(power.click_brush_action, new PowerActionWithID(
+            (center, id) =>
+            {
+                if (anim == null || !anim.isOn || center == null) return false;
+                anim.set_position(center.posV);
+                anim.play_time -= Time.deltaTime;
+                anim.play_time = Mathf.Max(anim.play_time, 0.1f);
+                MapBox.instance.loopWithBrush(center, Config.currentBrushData, AssetManager.powers.get(id).click_action,
+                    id);
+                return true;
+            }));
+    }
+
+    private static void add_energy_increase()
+    {
+        GodPower power = AssetManager.powers.clone(Constants.Core.power_energy_increase, "_drops");
+        power.name = "Increase Wakan";
+        power.dropID = "wakan_increase";
+        power.click_power_action = (pTile, pPower)
+            => AssetManager.powers.spawnDrops(pTile, pPower);
+        power.click_power_brush_action =
+            (pTile, pPower) => AssetManager.powers.loopWithCurrentBrushPower(pTile, pPower);
     }
 
     private static void add(GodPower power)
