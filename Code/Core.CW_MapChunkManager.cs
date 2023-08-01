@@ -80,6 +80,14 @@ public class CW_EnergyMap
     internal void update(int width, int height)
     {
         float delta_value;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                _tmp_map[x, y].value = map[x, y].value;
+            }
+        }
+
         for (int x = 0; x < width - 1; x++)
         {
             for (int y = 0; y < height - 1; y++)
@@ -93,9 +101,8 @@ public class CW_EnergyMap
                         World.world.tilesMap[x, y],
                         World.world.tilesMap[x + dir.Key, y + dir.Value]
                     );
-                    _tmp_map[x, y].value = map[x, y].value + delta_value;
-                    _tmp_map[x + dir.Key, y + dir.Value].value =
-                        map[x + dir.Key, y + dir.Value].value - delta_value;
+                    _tmp_map[x, y].value += delta_value;
+                    _tmp_map[x + dir.Key, y + dir.Value].value -= delta_value;
                 }
             }
         }
@@ -110,9 +117,8 @@ public class CW_EnergyMap
                 World.world.tilesMap[x, height - 1],
                 World.world.tilesMap[x + dir.Key, height - 1 + dir.Value]
             );
-            _tmp_map[x, height - 1].value = map[x, height - 1].value + delta_value;
-            _tmp_map[x + dir.Key, height - 1 + dir.Value].value =
-                map[x + dir.Key, height - 1 + dir.Value].value - delta_value;
+            _tmp_map[x, height - 1].value += delta_value;
+            _tmp_map[x + dir.Key, height - 1 + dir.Value].value -= delta_value;
         }
 
         for (int y = 0; y < height - 1; y++)
@@ -125,9 +131,8 @@ public class CW_EnergyMap
                 World.world.tilesMap[width - 1, y],
                 World.world.tilesMap[width - 1 + dir.Key, y + dir.Value]
             );
-            _tmp_map[width - 1, y].value = map[width - 1, y].value + delta_value;
-            _tmp_map[width - 1 + dir.Key, y + dir.Value].value =
-                map[width - 1 + dir.Key, y + dir.Value].value - delta_value;
+            _tmp_map[width - 1, y].value += delta_value;
+            _tmp_map[width - 1 + dir.Key, y + dir.Value].value -= delta_value;
         }
 
         for (int x = 0; x < width; x++)
@@ -135,17 +140,7 @@ public class CW_EnergyMap
             for (int y = 0; y < height; y++)
             {
                 map[x, y].value = _tmp_map[x, y].value;
-                map[x, y].density = Mathf.Log(Mathf.Max(map[x, y].value, energy.power_base_value),
-                    energy.power_base_value);
-                Color32 new_color = energy.get_color(map[x, y].value, map[x, y].density);
-                if (Math.Abs(new_color.a - map[x, y].color.a) >= 0.0f ||
-                    Math.Abs(new_color.r - map[x, y].color.r) >= 0.0f ||
-                    Math.Abs(new_color.g - map[x, y].color.g) >= 0.0f ||
-                    Math.Abs(new_color.b - map[x, y].color.b) >= 0.0f)
-                {
-                    map[x, y].color = new_color;
-                    map[x, y].need_redraw = true;
-                }
+                map[x, y].update(energy);
             }
         }
     }
