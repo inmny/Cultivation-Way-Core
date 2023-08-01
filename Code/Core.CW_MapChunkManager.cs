@@ -24,6 +24,21 @@ public class CW_EnergyMapTile
     internal Color32 color;
 
     internal bool need_redraw;
+
+    public void update(EnergyAsset energy_asset)
+    {
+        density = Mathf.Log(Mathf.Max(value, energy_asset.power_base_value),
+            energy_asset.power_base_value);
+        Color32 new_color = energy_asset.get_color(value, density);
+        if (Math.Abs(new_color.a - color.a) >= 0.0f ||
+            Math.Abs(new_color.r - color.r) >= 0.0f ||
+            Math.Abs(new_color.g - color.g) >= 0.0f ||
+            Math.Abs(new_color.b - color.b) >= 0.0f)
+        {
+            color = new_color;
+            need_redraw = true;
+        }
+    }
 }
 
 /// <summary>
