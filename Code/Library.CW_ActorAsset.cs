@@ -17,7 +17,7 @@ public class CW_ActorAsset : Asset
     /// <summary>
     ///     自带法术
     /// </summary>
-    public List<string> born_spells;
+    public List<string> born_spells = new();
 
     /// <summary>
     ///     此类生物修炼速度
@@ -110,9 +110,12 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
             new_asset.vanllia_asset = AssetManager.actor_library.clone(pNew, pFrom);
         }
 
+        // 由于访问权限问题, 需要手动拷贝
+        new_asset.allowed_cultisys_ids = new List<string>();
+        new_asset.force_cultisys_ids = new List<string>();
+        new_asset.allowed_cultisys_ids.AddRange(from_asset.allowed_cultisys_ids);
+        new_asset.force_cultisys_ids.AddRange(from_asset.force_cultisys_ids);
         // 由于clone是采用JSON实现的, 默认值会为null, 此时需要手动初始化
-        new_asset.allowed_cultisys_ids ??= new List<string>();
-        new_asset.force_cultisys_ids ??= new List<string>();
         new_asset.born_spells ??= new List<string>();
         new_asset.force_cultisys ??= new List<CultisysAsset>();
         new_asset.allowed_cultisys ??= new List<CultisysAsset>();
