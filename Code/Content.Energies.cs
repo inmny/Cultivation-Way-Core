@@ -95,7 +95,7 @@ internal static class Energies
             },
             spread_grad_calc = (value, density, target_value, target_density, tile, target_tile) =>
             {
-                return (target_value - value) * 0.001f;
+                return (target_value - value) * 0.2f;
             }
         };
         Library.Manager.energies.add(energy);
