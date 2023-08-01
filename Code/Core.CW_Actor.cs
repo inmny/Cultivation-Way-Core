@@ -716,6 +716,11 @@ public class CW_Actor : Actor
             allow_cultisys_types &= ~(uint)cultisys.type;
         }
 
+        foreach (string spell_id in cw_asset.born_spells)
+        {
+            learn_spell(Manager.spells.get(spell_id));
+        }
+
         setStatsDirty();
     }
 }

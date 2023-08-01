@@ -195,6 +195,10 @@ internal static class H_Actor
 
 
         actor.cw_asset = Library.Manager.actors.get(pData.asset_id);
+        foreach (string spell_id in actor.cw_asset.born_spells)
+        {
+            actor.learn_spell(Library.Manager.spells.get(spell_id));
+        }
 
         __instance.finalizeActor(asset.id, actor, pTile);
         pCity.addNewUnit(actor);
