@@ -195,6 +195,24 @@ internal static class H_Actor
 
 
         actor.cw_asset = Library.Manager.actors.get(pData.asset_id);
+        // 暂且不支持直接的血脉修炼体系
+        uint allow_cultisys_types = 0b111;
+        // 强制添加的修炼体系
+        foreach (CultisysAsset cultisys in actor.cw_asset.force_cultisys)
+        {
+            if ((allow_cultisys_types & (uint)cultisys.type) == 0) continue;
+            actor.data.set(cultisys.id, 0);
+            allow_cultisys_types &= ~(uint)cultisys.type;
+        }
+
+        foreach (CultisysAsset cultisys in actor.cw_asset.allowed_cultisys)
+        {
+            if ((allow_cultisys_types & (uint)cultisys.type) == 0 || !cultisys.allow(actor, cultisys))
+                continue;
+            actor.data.set(cultisys.id, 0);
+            allow_cultisys_types &= ~(uint)cultisys.type;
+        }
+
         foreach (string spell_id in actor.cw_asset.born_spells)
         {
             actor.learn_spell(Library.Manager.spells.get(spell_id));
