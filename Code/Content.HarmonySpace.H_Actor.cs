@@ -15,6 +15,16 @@ internal static class H_Actor
     [HarmonyPatch(typeof(Actor), nameof(Actor.updateAge))]
     public static void updateAge_postfix(Actor __instance)
     {
+        if (__instance.isProfession(UnitProfession.Baby) &&
+            __instance.asset.years_to_grow_to_adult <= __instance.data.getAge())
+        {
+            __instance.setProfession(UnitProfession.Unit);
+            __instance.dirty_sprite_main = true;
+            __instance.dirty_sprite_head = true;
+            __instance.dirty_sprite_item = true;
+            __instance.checkSpriteToRender();
+        }
+
         CW_Actor actor = (CW_Actor)__instance;
 
         actor.data.get(Content_Constants.immortal_id, out int level, -1);
