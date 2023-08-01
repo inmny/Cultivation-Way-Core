@@ -413,6 +413,18 @@ internal static class Spells
                 new(DataS.wakan, Content_Constants.default_spell_cost)
             }
         );
+        // 兽化
+        spell_asset = FormatSpells.create_give_self_status_spell(
+            "brutalize", "status_brutalize",
+            rarity: 1, element_container: new[] { 20, 20, 20, 20, 20 },
+            trigger_tags: new[]
+                { SpellTriggerTag.ATTACK, SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND },
+            spell_cost_list: new KeyValuePair<string, float>[]
+            {
+                new(DataS.wakan, Content_Constants.default_spell_cost)
+            }
+        );
+        spell_asset.spell_learn_check = (asset, user) => -1;
     }
 
     [SuppressMessage("ReSharper", "JoinDeclarationAndInitializer")]

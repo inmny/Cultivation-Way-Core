@@ -16,6 +16,63 @@ internal static class StatusEffects
         add_fire_statuses();
         add_shield_statuses();
         add_bound_statuses();
+
+        add_brutalize_status();
+    }
+
+    // 兽化
+    private static void add_brutalize_status()
+    {
+        BaseStats bonus_stats = new();
+        bonus_stats[CW_S.mod_health_regen] = 0.8f;
+        bonus_stats[CW_S.mod_shield_regen] = 0.5f;
+        bonus_stats[S.mod_health] = 0.3f;
+        bonus_stats[S.mod_damage] = 0.5f;
+        bonus_stats[S.mod_armor] = 0.3f;
+        bonus_stats[S.mod_speed] = 0.2f;
+        CW_StatusEffect status_effect = FormatStatusEffect.create_simple_status_effect(
+            "status_brutalize", bonus_stats,
+            10f,
+            "", "", 1f,
+            "effects/vine_bound/40",
+            new[] { StatusEffectTag.POSITIVE },
+            StatusTier.Advanced
+        );
+        status_effect.action_on_get = (effect, object1, object2) =>
+        {
+            if (object2.objectType != MapObjectType.Actor) return;
+
+            CW_Actor actor = (CW_Actor)object2;
+
+            if (actor.asset.race != "yao") return;
+            ActorAsset beast_stats = AssetManager.actor_library.get(actor.asset.id.Replace("_yao", ""));
+            AnimationContainerUnit anim_beast =
+                ActorAnimationLoader.loadAnimationUnit("actors/" + beast_stats.texture_path, beast_stats);
+
+            actor.animationContainer = anim_beast;
+
+            actor.checkSpriteToRender();
+        };
+        status_effect.action_on_update = (effect, object1, object2) =>
+        {
+            if (object2.objectType != MapObjectType.Actor) return;
+
+            CW_Actor actor = (CW_Actor)object2;
+            if (actor.attackedBy != null || actor.attackTarget != null)
+            {
+                effect.left_time = effect.status_asset.duration;
+            }
+        };
+        status_effect.action_on_end = (effect, object1, object2) =>
+        {
+            if (object2.objectType != MapObjectType.Actor) return;
+
+            CW_Actor actor = (CW_Actor)object2;
+
+            if (actor.asset.race != "yao") return;
+            actor.dirty_sprite_main = true;
+            actor.checkSpriteToRender();
+        };
     }
 
     private static void add_bound_statuses()

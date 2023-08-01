@@ -27,6 +27,7 @@ internal static class Actors
         _cw_yao_asset.add_allowed_cultisys(Content_Constants.immortal_id);
         _cw_yao_asset.add_allowed_cultisys(Content_Constants.bushido_id);
         _cw_yao_asset.culti_velo = 0.85f;
+        _cw_yao_asset.born_spells.Add("brutalize");
 
         #region 原版设置
 
