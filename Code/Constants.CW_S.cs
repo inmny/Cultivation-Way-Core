@@ -25,5 +25,11 @@ public static class CW_S
     public const string wakan_regen = "wakan_regen";
     public const string mod_wakan_regen = "mod_wakan_regen";
 
+    public const string soul = "soul";
+    public const string mod_soul = "mod_soul";
+
+    public const string soul_regen = "soul_regen";
+    public const string mod_soul_regen = "mod_soul_regen";
+
     public const string mod_cultivelo = "mod_cultivelo";
 }
