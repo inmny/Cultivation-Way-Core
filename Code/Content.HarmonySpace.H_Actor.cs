@@ -94,6 +94,8 @@ internal static class H_Actor
 
             actor.check_level_up(Content_Constants.bushido_id);
         }
+
+        actor.check_level_up(Content_Constants.soul_id);
     }
 
     [HarmonyPrefix]

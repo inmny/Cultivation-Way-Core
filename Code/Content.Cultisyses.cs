@@ -131,7 +131,16 @@ internal static class Cultisyses
         CultisysAsset cultisys = new("cw_cultisys_soul", Content_Constants.energy_soul_id, CultisysType.SOUL,
             Content_Constants.soul_max_level)
         {
-            sprite_path = "ui/Icons/iconCultiBook_immortal"
+            sprite_path = "ui/Icons/iconCultiBook_immortal",
+            curr_progress = (actor, asset, level) =>
+            {
+                actor.data.get(DataS.soul, out float soul);
+                return soul;
+            },
+            max_progress = (actor, asset, level) => actor.stats[CW_S.soul],
+            can_levelup = (actor, asset) =>
+                asset.curr_progress(actor, asset, 0) >= asset.max_progress(actor, asset, 0),
+            allow = (actor, asset) => { return true; }
         };
         for (int i = 0; i < Content_Constants.soul_max_level; i++)
         {
