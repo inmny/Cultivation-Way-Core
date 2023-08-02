@@ -10,6 +10,8 @@ public static class Core
     public const int save_version = 2;
 
     public const string modinfo_window = mod_prefix + "modinfo_window";
+    public const string modconfig_window = mod_prefix + "modconfig_window";
+    public const string worldlaw_window = mod_prefix + "worldlaw_window";
     public const string tops_window = mod_prefix + "tops_window";
 
     public const string power_energy_increase = mod_prefix + "energy_increase";

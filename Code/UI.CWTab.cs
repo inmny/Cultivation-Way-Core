@@ -130,6 +130,22 @@ internal static class CWTab
             ButtonType.Click,
             ButtonContainerType.INFO
         );
+        // 世界法则窗口
+        create_and_add_button(
+            Constants.Core.worldlaw_window,
+            "ui/Icons/iconworldlaws",
+            () => ScrollWindow.showWindow(Constants.Core.worldlaw_window),
+            ButtonType.Click,
+            ButtonContainerType.TOOL
+        );
+        // 模组设置窗口
+        create_and_add_button(
+            Constants.Core.modconfig_window,
+            "ui/Icons/iconOptions",
+            () => ScrollWindow.showWindow(Constants.Core.modconfig_window),
+            ButtonType.Click,
+            ButtonContainerType.TOOL
+        );
         // 天榜窗口
         create_and_add_button(
             Constants.Core.tops_window,
