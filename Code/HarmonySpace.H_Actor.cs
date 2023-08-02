@@ -301,7 +301,11 @@ internal static class H_Actor
         {
             pDoChecks = false;
             if (__instance.isInLiquid() && !__instance.asset.oceanCreature) return false;
-            if (!__instance.isAttackReady()) return false;
+            if (!__instance.isAttackReady())
+            {
+                can_continue_check = false;
+            }
+
             if ((__instance.s_attackType == WeaponType.Melee && pTarget.zPosition.y > 0) ||
                 !__instance.isInAttackRange(pTarget))
             {
