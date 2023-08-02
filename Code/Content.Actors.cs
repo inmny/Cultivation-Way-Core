@@ -150,6 +150,12 @@ internal static class Actors
         baby_asset.growIntoID = Content_Constants.eastern_human_id;
         baby_asset.animation_idle = "walk_3";
         baby_asset.traits.Add("peaceful");
+
+        cw_actor_asset = new CW_ActorAsset(baby_asset);
+        add(cw_actor_asset);
+        cw_actor_asset.add_allowed_cultisys(Content_Constants.immortal_id);
+        cw_actor_asset.add_allowed_cultisys(Content_Constants.bushido_id);
+        cw_actor_asset.add_allowed_cultisys(Content_Constants.soul_id);
         AssetManager.actor_library.cloneColorSetFrom(Content_Constants.eastern_human_id);
         AssetManager.actor_library.loadShadow(baby_asset);
     }
