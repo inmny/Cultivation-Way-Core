@@ -274,6 +274,16 @@ public class CW_Actor : Actor
             data.health = (int)stats[S.health];
         }
 
+        // 元神恢复
+        data.get(DataS.soul, out float soul);
+        soul += stats[CW_S.soul_regen];
+        if (soul > stats[CW_S.soul])
+        {
+            soul = stats[CW_S.soul];
+        }
+
+        data.set(DataS.soul, soul);
+
         // 修炼体系的月度更新
         foreach (CultisysAsset cultisys in Manager.cultisys.list.Where(cultisys =>
                      cultisys.monthly_update_action != null))
