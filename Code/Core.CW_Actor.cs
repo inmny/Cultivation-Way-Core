@@ -406,7 +406,16 @@ public class CW_Actor : Actor
             }
 
             BattleKeeperManager.unitKilled(this);
-            pAttacker.a.newKillAction(this, kingdom);
+            try
+            {
+                pAttacker.a.newKillAction(this, kingdom);
+            }
+            catch (NullReferenceException)
+            {
+                if (pAttacker.a.data == null) Logger.Error("pAttacker.a.data==null");
+                if (pAttacker.kingdom == null) Logger.Error("pAttacker.kingdom==null");
+            }
+
             if (pAttacker.city == null)
             {
                 killHimself(false, pAttackType);
@@ -451,7 +460,15 @@ public class CW_Actor : Actor
             }
         }
 
-        startShake();
+        try
+        {
+            startShake();
+        }
+        catch (NullReferenceException)
+        {
+            if (batch == null) Logger.Error("batch==null");
+            if (batch != null && batch.c_shake == null) Logger.Error("batch.c_shake==null");
+        }
 
         #endregion
     }
