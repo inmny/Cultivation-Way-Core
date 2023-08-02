@@ -300,6 +300,11 @@ internal class WindowCreatureInfoHelper
     {
         CW_Actor actor = (CW_Actor)data.actor;
         CultisysAsset cultisys_asset = Manager.cultisys.get(data.tip_name);
+        if (cultisys_asset == null)
+        {
+            return;
+        }
+
         actor.data.get(cultisys_asset.id, out int level, -1);
 
         tooltip.name.text = LocalizedTextManager.getText(data.tip_name);
