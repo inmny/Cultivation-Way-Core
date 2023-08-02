@@ -114,9 +114,9 @@ internal static class Spells
                 anim.set_position(anim.src_object.currentPosition);
             }
         };
-        anim_setting.set_trace(AnimationTraceType.NONE);
+        anim_setting.set_trace(AnimationTraceType.ATTACH);
         CW_Core.mod_state.anim_manager.load_as_controller(
-            anim_id, anim_path, controller_setting: anim_setting, base_scale: 0.08f
+            anim_id, anim_path, controller_setting: anim_setting, base_scale: 1f
         );
     }
 
@@ -170,7 +170,7 @@ internal static class Spells
             "gold_escape_anim", "effects/gold_escape",
             new KeyValuePair<string, float>[]
             {
-                new(CW_S.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost)
             },
             9
         );
@@ -180,7 +180,7 @@ internal static class Spells
             "ground_escape_anim", "effects/ground_escape",
             new KeyValuePair<string, float>[]
             {
-                new(CW_S.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost)
             },
             9
         );
@@ -190,7 +190,7 @@ internal static class Spells
             "wood_escape_anim", "effects/wood_escape",
             new KeyValuePair<string, float>[]
             {
-                new(CW_S.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost)
             },
             7
         );
@@ -200,7 +200,7 @@ internal static class Spells
             "water_escape_anim", "effects/water_escape",
             new KeyValuePair<string, float>[]
             {
-                new(CW_S.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost)
             },
             9
         );
@@ -210,7 +210,7 @@ internal static class Spells
             "fire_escape_anim", "effects/fire_escape",
             new KeyValuePair<string, float>[]
             {
-                new(CW_S.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost)
             },
             5
         );
@@ -223,7 +223,7 @@ internal static class Spells
             "gold_blade", 3, new[] { 0, 0, 100, 0, 0 },
             "gold_blade_anim", "effects/gold_blade", new KeyValuePair<string, float>[]
             {
-                new(CW_S.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost)
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
@@ -248,7 +248,7 @@ internal static class Spells
             "water_blade", 3, new[] { 100, 0, 0, 0, 0 },
             "water_blade_anim", "effects/water_blade", new KeyValuePair<string, float>[]
             {
-                new(CW_S.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost)
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
@@ -283,7 +283,7 @@ internal static class Spells
             "fire_blade", 3, new[] { 0, 100, 0, 0, 0 },
             "fire_blade_anim", "effects/fire_blade", new KeyValuePair<string, float>[]
             {
-                new(CW_S.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost)
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
@@ -308,7 +308,7 @@ internal static class Spells
             "wind_blade", 3, new[] { 40, 40, 20, 0, 0 },
             "wind_blade_anim", "effects/wind_blade", new KeyValuePair<string, float>[]
             {
-                new(CW_S.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost)
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
@@ -523,7 +523,7 @@ internal static class Spells
                     anim.change_scale(1 - cur_scale * 0.1f);
                 }
 
-                if (anim.src_object == null || !anim.src_object.base_data.alive)
+                if (anim.src_object == null || !anim.src_object.isAlive())
                 {
                     anim.change_scale(1 - cur_scale * 0.1f);
                     return;
