@@ -1,4 +1,5 @@
 ﻿using Cultivation_Way.Constants;
+using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 
 namespace Cultivation_Way.Content;
@@ -28,7 +29,7 @@ internal static class Cultisyses
                 return wakan;
             },
             max_progress = (actor, culti, level) => actor.stats[CW_S.wakan],
-            allow = (actor, culti) => true,
+            allow = (actor, culti) => actor.data.get_element().get_type().id != "cw_common",
             can_levelup = (actor, culti) =>
                 immortal.curr_progress(actor, immortal, 0) >= immortal.max_progress(actor, immortal, 0),
             monthly_update_action = (actor, culti, level) =>
@@ -72,11 +73,53 @@ internal static class Cultisyses
         CultisysAsset cultisys = new("cw_cultisys_bushido", Content_Constants.energy_bushido_id, CultisysType.BODY,
             Content_Constants.bushido_max_level)
         {
-            sprite_path = "ui/Icons/iconCultiBook_bushido"
+            sprite_path = "ui/Icons/iconCultiBook_bushido",
+            curr_progress = (actor, culti, level) => actor.data.health,
+            max_progress = (actor, asset, level) => actor.stats[S.health],
+            can_levelup = (actor, asset) =>
+                asset.curr_progress(actor, asset, 0) >= asset.max_progress(actor, asset, 0) * 0.95f,
+            monthly_update_action = (actor, asset, level) =>
+            {
+                // 强制控制生命恢复上限
+                float regen_health_line = actor.stats[S.health] * Content_Constants.bushido_max_health_regen;
+                if (!(actor.data.health >= regen_health_line)) return 0;
+
+                if (actor.data.health > regen_health_line + actor.stats[CW_S.health_regen])
+                {
+                    actor.data.health -= (int)actor.stats[CW_S.health_regen];
+                }
+                else
+                {
+                    actor.data.health = (int)regen_health_line;
+                }
+
+                return 0;
+            },
+            allow = (actor, asset) =>
+            {
+                if (false)
+                {
+                    return false;
+                }
+
+                actor.data.set(Content_Constants.data_bushido_cultivelo, Toolbox.randomFloat(1, 100));
+                return true;
+            },
+            external_levelup_bonus = (actor, asset, level) =>
+            {
+                actor.data.get(Content_Constants.data_bushido_cultivelo, out float cultivelo, 1);
+                cultivelo *= Toolbox.randomFloat(1, 2);
+                actor.data.set(Content_Constants.data_bushido_cultivelo, cultivelo);
+                return 0;
+            }
         };
         for (int i = 0; i < Content_Constants.bushido_max_level; i++)
         {
             cultisys.power_level[i] = 1 + i * 0.1f;
+            cultisys.bonus_stats[i][S.mod_health] = i * 0.2f;
+            cultisys.bonus_stats[i][CW_S.health_regen] = i;
+            cultisys.bonus_stats[i][S.health] = i * 99;
+            cultisys.bonus_stats[i][S.damage] = i * 9;
         }
 
         Library.Manager.cultisys.add(cultisys);

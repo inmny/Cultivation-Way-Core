@@ -15,6 +15,9 @@ internal class Content_Constants
     public const string bushido_id = cultisys_prefix + "bushido";
     public const string energy_bushido_id = energy_prefix + "inforce";
     public const int bushido_max_level = 20;
+    public const float bushido_max_health_regen = 0.6f;
+    public const float bushido_base_cultivelo = 5f;
+    public const string data_bushido_cultivelo = "cw_bushido_cultivelo";
 
 
     public const string soul_id = cultisys_prefix + "soul";
