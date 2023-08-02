@@ -155,6 +155,9 @@ public class CW_Core : MonoBehaviour
 
         Factories.init();
         Localizer.init();
+        // 首先进行一次加载, 以便于在内容初始化时, 可以使用翻译文本
+        Localizer.apply_localization(LocalizedTextManager.instance.localizedText,
+            LocalizedTextManager.instance.language);
         Fonts.init();
         Prefabs.init();
         FastVisit.init();
