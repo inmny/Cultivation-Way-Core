@@ -157,13 +157,21 @@ public static class ActorDataTools
             Manager.bloods.get(key).increase();
         }
 
+/*
         foreach (string key in keys)
         {
             Logger.Log($"{key}: {blood_nodes[key]}");
         }
-
+*/
         data.write_obj(DataS.blood_nodes, blood_nodes);
-        data.set(DataS.main_blood_id, blood_nodes.Aggregate((max, cur) => max.Value > cur.Value ? max : cur).Key);
+        if (blood_nodes.Count > 0)
+        {
+            data.set(DataS.main_blood_id, blood_nodes.Aggregate((max, cur) => max.Value > cur.Value ? max : cur).Key);
+        }
+        else
+        {
+            data.set(DataS.main_blood_id, "");
+        }
     }
 
     /// <summary>
