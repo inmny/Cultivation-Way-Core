@@ -18,6 +18,7 @@ internal static class FastVisit
     private static Sprite window_bar;
     private static Sprite window_bar_90;
     private static Sprite window_big_close;
+    private static Sprite window_inner_sliced;
 
     public static void init()
     {
@@ -77,6 +78,16 @@ internal static class FastVisit
             SpriteMeshType.Tight, new Vector4(0, 4, 0, 6));
         window_big_close.name = "windowBigClose";
         return window_big_close;
+    }
+
+    public static Sprite get_window_inner_sliced()
+    {
+        if (window_inner_sliced != null) return window_inner_sliced;
+        Sprite _orig = SpriteTextureLoader.getSprite("ui/cw_window/windowInnerSliced");
+        window_inner_sliced = Sprite.Create(_orig.texture, _orig.rect, new Vector2(0, 0), _orig.pixelsPerUnit, 0,
+            SpriteMeshType.Tight, new Vector4(5, 6, 5, 6));
+        window_inner_sliced.name = "windowInnerSliced";
+        return window_inner_sliced;
     }
 
     private static void get_actor_prefabs()
