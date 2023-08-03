@@ -5,7 +5,6 @@ using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,45 +12,37 @@ namespace Cultivation_Way.UI;
 
 internal class CultiProgress : MonoBehaviour
 {
-    private RectTransform bar;
-    private float bar_height;
+    private StatBar bar;
     private Image bar_image;
-    private RectTransform mask;
-    private float set_height;
-    private CW_TipButton tip_button;
+    private TipButton tip_button;
 
     private void Awake()
     {
-        mask = transform.Find("Mask") as RectTransform;
-        bar = transform.Find("Mask/Bar") as RectTransform;
-        bar_image = bar.GetComponent<Image>();
-        bar_height = bar.sizeDelta.y;
-        GetComponent<Button>().onClick.AddListener(() =>
-        {
-            clear();
-            mask.DOSizeDelta(new Vector2(mask.sizeDelta.x, set_height), set_height / bar_height);
-            tip_button.gameObject.SetActive(true);
-        });
-        tip_button = transform.Find("Info").GetComponent<CW_TipButton>();
-        tip_button.transform.localScale = new Vector3(1, 1);
-        tip_button.transform.localPosition = new Vector3(0, -60, 0);
-    }
+        bar = GetComponent<StatBar>();
+        bar_image = transform.Find("Mask/Bar").GetComponent<Image>();
+        bar_image.color = Color.white;
 
-    private void Update()
-    {
-        bar.localPosition = new Vector3(0, 0);
-    }
+        bar_image.enabled = false;
+        transform.Find("Background").gameObject.SetActive(false);
+        transform.Find("Text").gameObject.SetActive(false);
+        transform.Find("Icon").gameObject.SetActive(false);
 
-    public void clear()
-    {
-        mask.sizeDelta = new Vector2(mask.sizeDelta.x, 0.1f);
-        tip_button.gameObject.SetActive(false);
+        tip_button = GetComponent<TipButton>();
+        tip_button.hoverAction = null;
     }
 
     public void load_cultisys(CultisysAsset cultisys, int cultisys_level, CultisysType type, CW_Actor actor)
     {
+        bar_image.enabled = true;
+        transform.Find("Background").gameObject.SetActive(true);
+        transform.Find("Text").gameObject.SetActive(true);
+        transform.Find("Icon").gameObject.SetActive(true);
+        transform.Find("Icon").GetComponent<Image>().sprite = SpriteTextureLoader.getSprite(cultisys.sprite_path);
+
         float max = cultisys.max_progress(actor, cultisys, cultisys_level);
         float curr = cultisys.curr_progress(actor, cultisys, cultisys_level);
+        bar.setBar(curr, max, $"/{max}");
+
         bar_image.color = type switch
         {
             CultisysType.BODY => Color.red,
@@ -64,19 +55,14 @@ internal class CultiProgress : MonoBehaviour
             bar_image.color = cultisys.culti_energy.get_color(curr, cultisys.power_level[cultisys_level]);
         }
 
-        set_height = bar_height * curr / max;
-        mask.DOSizeDelta(new Vector2(mask.sizeDelta.x, set_height), set_height / bar_height);
-
-        tip_button.gameObject.SetActive(true);
-        tip_button.transform.localPosition = new Vector3(0, 0);
-        tip_button.load(cultisys.sprite_path.Replace("ui/Icons/", ""), go =>
+        tip_button.hoverAction = () =>
         {
-            Tooltip.show(go, Constants.Core.mod_prefix + "cultisys", new TooltipData
+            Tooltip.show(gameObject, Constants.Core.mod_prefix + "cultisys", new TooltipData
             {
                 actor = actor,
                 tip_name = cultisys.id
             });
-        });
+        };
     }
 }
 
@@ -198,7 +184,7 @@ internal class WindowCreatureInfoHelper
         GameObject left_part = new("Left", typeof(Image), typeof(GridLayoutGroup));
         left_part.transform.SetParent(background_transform);
         left_part.transform.localScale = new Vector3(1, 1);
-        left_part.transform.localPosition = new Vector3(-150, 0, 0);
+        left_part.transform.localPosition = new Vector3(-250, 0, 0);
         left_part.GetComponent<Image>().sprite = FastVisit.get_square_frame();
         left_part.GetComponent<Image>().type = Image.Type.Sliced;
         left_part.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 128);
@@ -217,52 +203,36 @@ internal class WindowCreatureInfoHelper
 
         #endregion
 
-        #region Right
-
-        GameObject body_culti_progress = new("BodyCultiProgress", typeof(Button));
-        body_culti_progress.transform.SetParent(background_transform);
-        body_culti_progress.transform.localScale = new Vector3(0.5f, 0.5f);
-        //body_culti_progress.transform.rotation = new(0, 0, -90, 0);
-        GameObject body_progress_mask = new("Mask", typeof(Image), typeof(Mask));
-        body_progress_mask.transform.SetParent(body_culti_progress.transform);
-        body_progress_mask.transform.localScale = new Vector3(1f, 1f);
-        body_progress_mask.transform.localPosition = new Vector3(0, -99f);
-        body_progress_mask.GetComponent<RectTransform>().sizeDelta = new Vector2(30, 198);
-        body_progress_mask.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0);
-        body_progress_mask.GetComponent<Mask>().showMaskGraphic = false;
-        GameObject body_progress_bar = new("Bar", typeof(Image));
-        body_progress_bar.transform.SetParent(body_progress_mask.transform);
-        body_progress_bar.transform.localScale = new Vector3(1, 1);
-        body_progress_bar.transform.localPosition = new Vector3(0, 0);
-        body_progress_bar.GetComponent<RectTransform>().sizeDelta = new Vector2(30, 198);
-        body_progress_bar.GetComponent<RectTransform>().pivot = new Vector2(0.5f, 0);
-        body_progress_bar.GetComponent<Image>().sprite = FastVisit.get_window_bar_90();
-        body_progress_bar.GetComponent<Image>().type = Image.Type.Sliced;
-        GameObject body_culti_progress_bg = new("BG", typeof(Image));
-        body_culti_progress_bg.transform.SetParent(body_culti_progress.transform);
-        body_culti_progress_bg.transform.localScale = new Vector3(1f, 1f);
-        body_culti_progress_bg.transform.localPosition = new Vector3(0, 0, 0);
-        body_culti_progress_bg.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 200);
-        body_culti_progress_bg.GetComponent<Image>().sprite = FastVisit.get_square_frame_only();
-        body_culti_progress_bg.GetComponent<Image>().type = Image.Type.Sliced;
-        CW_TipButton body_culti_info = Object.Instantiate(Prefabs.tip_button_prefab, body_culti_progress.transform);
-        body_culti_info.transform.localScale = new Vector3(1f, 1f);
-        body_culti_info.transform.localPosition = new Vector3(0, 0, 0);
-        body_culti_info.name = "Info";
-
-        body_progress = body_culti_progress.AddComponent<CultiProgress>();
-
-        wakan_progress = Object.Instantiate(body_culti_progress, background_transform).GetComponent<CultiProgress>();
+        body_progress = Object.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
+            .AddComponent<CultiProgress>();
+        body_progress.name = "BodyCultiProgress";
+        body_progress.transform.localPosition = new Vector3(-165, 50, 0);
+        body_progress.GetComponent<Image>().sprite = FastVisit.get_square_frame();
+        body_progress.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 21);
+        body_progress.transform.Find("Background").localPosition += new Vector3(7, 0);
+        body_progress.transform.Find("Mask").localPosition += new Vector3(7, 0);
+        body_progress.transform.Find("Icon").localPosition += new Vector3(7, 0);
+        //body_progress.transform.Find("Text").localPosition += new Vector3(7, 0);
+        wakan_progress = Object.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
+            .AddComponent<CultiProgress>();
         wakan_progress.name = "WakanCultiProgress";
-
-        soul_progress = Object.Instantiate(body_culti_progress, background_transform).GetComponent<CultiProgress>();
+        wakan_progress.transform.localPosition = new Vector3(-165, 0, 0);
+        wakan_progress.GetComponent<Image>().sprite = FastVisit.get_square_frame();
+        wakan_progress.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 21);
+        wakan_progress.transform.Find("Background").localPosition += new Vector3(7, 0);
+        wakan_progress.transform.Find("Mask").localPosition += new Vector3(7, 0);
+        wakan_progress.transform.Find("Icon").localPosition += new Vector3(7, 0);
+        //wakan_progress.transform.Find("Text").localPosition += new Vector3(7, 0);
+        soul_progress = Object.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
+            .AddComponent<CultiProgress>();
         soul_progress.name = "SoulCultiProgress";
-
-        body_progress.transform.localPosition = new Vector3(160, 50, 0);
-        wakan_progress.transform.localPosition = new Vector3(185, 50, 0);
-        soul_progress.transform.localPosition = new Vector3(210, 50, 0);
-
-        #endregion
+        soul_progress.transform.localPosition = new Vector3(-165, -50, 0);
+        soul_progress.GetComponent<Image>().sprite = FastVisit.get_square_frame();
+        soul_progress.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 21);
+        soul_progress.transform.Find("Background").localPosition += new Vector3(7, 0);
+        soul_progress.transform.Find("Mask").localPosition += new Vector3(7, 0);
+        soul_progress.transform.Find("Icon").localPosition += new Vector3(7, 0);
+        //soul_progress.transform.Find("Text").localPosition += new Vector3(7, 0);
 
         init_tooltip_assets();
         initialized = true;
@@ -441,10 +411,6 @@ internal class WindowCreatureInfoHelper
         if (actor.data.get_cultibook() != null) load_cultibook(actor);
 
         if (actor.data.get_blood_nodes() != null) load_blood(actor);
-
-        body_progress.clear();
-        wakan_progress.clear();
-        soul_progress.clear();
 
         //body_progress.load_cultisys(null, 0, CultisysType.BODY, actor);
         int[] cultisys_level = actor.data.get_cultisys_level();
