@@ -6,10 +6,20 @@ namespace Cultivation_Way.Content;
 
 internal static class Energies
 {
-    private static readonly Color level_0 = Color.white;
-    private static readonly Color level_1 = new(0.38f, 0.71f, 1);
-    private static readonly Color level_2 = Color.magenta;
-    private static readonly Color level_3 = Color.yellow;
+    private static readonly Color wakan_level_0 = Color.white;
+    private static readonly Color wakan_level_1 = new(0.38f, 0.71f, 1);
+    private static readonly Color wakan_level_2 = Color.magenta;
+    private static readonly Color wakan_level_3 = Color.yellow;
+
+    private static readonly Color inforce_level_0 = new(1, 0.31f, 0.26f);
+    private static readonly Color inforce_level_1 = Color.red;
+    private static readonly Color inforce_level_2 = Color.white;
+    private static readonly Color inforce_level_3 = Color.yellow;
+
+    private static readonly Color soul_level_0 = Color.white;
+    private static readonly Color soul_level_1 = Color.green;
+    private static readonly Color soul_level_2 = Color.blue;
+    private static readonly Color soul_level_3 = Color.black;
 
     public static void init()
     {
@@ -31,10 +41,10 @@ internal static class Energies
             {
                 Color color_to_ret = density switch
                 {
-                    1 => Toolbox.blendColor(level_0, level_1, 100 / (100 + value)),
-                    <= 2 => Toolbox.blendColor(level_1, level_2, 2 - density),
-                    <= 3 => Toolbox.blendColor(level_2, level_3, 3 - density),
-                    _ => level_3
+                    1 => Toolbox.blendColor(inforce_level_0, inforce_level_1, 100 / (100 + value)),
+                    <= 2 => Toolbox.blendColor(inforce_level_1, inforce_level_2, 2 - density),
+                    <= 3 => Toolbox.blendColor(inforce_level_2, inforce_level_3, 3 - density),
+                    _ => inforce_level_3
                 };
 
                 return color_to_ret;
@@ -60,10 +70,10 @@ internal static class Energies
             {
                 Color color_to_ret = density switch
                 {
-                    1 => Toolbox.blendColor(level_0, level_1, 100 / (100 + value)),
-                    <= 2 => Toolbox.blendColor(level_1, level_2, 2 - density),
-                    <= 3 => Toolbox.blendColor(level_2, level_3, 3 - density),
-                    _ => level_3
+                    1 => Toolbox.blendColor(soul_level_0, soul_level_1, 100 / (100 + value)),
+                    <= 2 => Toolbox.blendColor(soul_level_1, soul_level_2, 2 - density),
+                    <= 3 => Toolbox.blendColor(soul_level_2, soul_level_3, 3 - density),
+                    _ => soul_level_3
                 };
 
                 return color_to_ret;
@@ -85,10 +95,10 @@ internal static class Energies
             {
                 Color color_to_ret = density switch
                 {
-                    1 => Toolbox.blendColor(level_0, level_1, 100 / (100 + value)),
-                    <= 2 => Toolbox.blendColor(level_1, level_2, 2 - density),
-                    <= 3 => Toolbox.blendColor(level_2, level_3, 3 - density),
-                    _ => level_3
+                    1 => Toolbox.blendColor(wakan_level_0, wakan_level_1, 100 / (100 + value)),
+                    <= 2 => Toolbox.blendColor(wakan_level_1, wakan_level_2, 2 - density),
+                    <= 3 => Toolbox.blendColor(wakan_level_2, wakan_level_3, 3 - density),
+                    _ => wakan_level_3
                 };
 
                 return color_to_ret;
