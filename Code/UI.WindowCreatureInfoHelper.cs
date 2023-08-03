@@ -31,6 +31,17 @@ internal class CultiProgress : MonoBehaviour
         tip_button.hoverAction = null;
     }
 
+    public void clear()
+    {
+        bar_image.enabled = false;
+        transform.Find("Background").gameObject.SetActive(false);
+        transform.Find("Text").gameObject.SetActive(false);
+        transform.Find("Icon").gameObject.SetActive(false);
+
+        tip_button = GetComponent<TipButton>();
+        tip_button.hoverAction = null;
+    }
+
     public void load_cultisys(CultisysAsset cultisys, int cultisys_level, CultisysType type, CW_Actor actor)
     {
         bar_image.enabled = true;
@@ -413,6 +424,9 @@ internal class WindowCreatureInfoHelper
         if (actor.data.get_blood_nodes() != null) load_blood(actor);
 
         //body_progress.load_cultisys(null, 0, CultisysType.BODY, actor);
+        body_progress.clear();
+        wakan_progress.clear();
+        soul_progress.clear();
         int[] cultisys_level = actor.data.get_cultisys_level();
         for (int i = 0; i < Manager.cultisys.size; i++)
         {
