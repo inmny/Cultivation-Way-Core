@@ -81,7 +81,7 @@ public class EnergyLibrary : CW_Library<EnergyAsset>
         base.post_init();
         foreach (EnergyAsset energy_asset in list)
         {
-            if (energy_asset.spread_grad_calc == null)
+            if (energy_asset.is_dissociative && energy_asset.spread_grad_calc == null)
             {
                 Logger.Warn(
                     $"The spread_grad_calc of Energy Asset {energy_asset.id} is null, so it will not spread to other chunks."
@@ -93,6 +93,13 @@ public class EnergyLibrary : CW_Library<EnergyAsset>
                 Logger.Warn(
                     $"The color_calc of Energy Asset {energy_asset.id} is null, all colors of it will be white."
                 );
+            }
+
+            if (energy_asset.is_dissociative)
+            {
+                // 限制传播法则
+                General.AboutUI.WorldLaws.add_switch_law($"{energy_asset.id}_spread_limit", "worldlaw_energy_grid",
+                    "ui/icons/iconNo_Wakan_Spread", false);
             }
         }
     }

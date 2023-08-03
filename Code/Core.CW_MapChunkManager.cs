@@ -94,6 +94,12 @@ public class CW_EnergyMap
 
     internal void update(int width, int height)
     {
+        if (World.world.worldLaws.dict.ContainsKey($"{energy.id}_spread_limit") &&
+            World.world.worldLaws.dict[$"{energy.id}_spread_limit"].boolVal)
+        {
+            return;
+        }
+
         float delta_value;
         for (int x = 0; x < width; x++)
         {
