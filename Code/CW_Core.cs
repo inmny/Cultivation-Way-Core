@@ -77,6 +77,7 @@ public class CW_Core : MonoBehaviour
                 {
                     // 在所有附属初始化完毕后, 进行后续处理
                     CWTab.post_init();
+                    WindowWorldLaw.post_init();
                     state.library_manager.post_init();
                     state.map_chunk_manager.init(World.world.tilesMap.GetLength(0),
                         World.world.tilesMap.GetLength(1));

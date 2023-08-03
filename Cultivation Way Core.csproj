@@ -3525,10 +3525,13 @@
         <Compile Include="Code\Content.Kingdoms.cs"/>
         <Compile Include="Code\Content.Races.cs"/>
         <Compile Include="Code\Content.StatusEffects.cs"/>
+        <Compile Include="Code\Content.WorldLaws.cs"/>
         <Compile Include="Code\Extension.WorldTileTools.cs"/>
         <Compile Include="Code\General.AboutUI.FormatButtons.cs"/>
+        <Compile Include="Code\General.AboutUI.WorldLaws.cs"/>
         <Compile Include="Code\HarmonySpace.H_DebugTooltip.cs"/>
         <Compile Include="Code\HarmonySpace.H_ZoneCalculator.cs"/>
+        <Compile Include="Code\HarmonySpace.H_WorldLaws.cs"/>
         <Compile Include="Code\Library.CW_Drops.cs"/>
         <Compile Include="Code\Library.CW_GodPowers.cs"/>
         <Compile Include="Code\Library.CW_Options.cs"/>

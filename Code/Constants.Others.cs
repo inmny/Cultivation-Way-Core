@@ -301,3 +301,24 @@ public enum ButtonContainerType
     BOSS,
     OTHERS
 }
+
+/// <summary>
+///     世界法则类型
+/// </summary>
+public enum WorldLawType
+{
+    /// <summary>
+    ///     开关
+    /// </summary>
+    SWITCH,
+
+    /// <summary>
+    ///     复杂设置
+    /// </summary>
+    SETTING,
+
+    /// <summary>
+    ///     其他
+    /// </summary>
+    OTHERS
+}
