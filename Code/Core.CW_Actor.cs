@@ -716,7 +716,7 @@ public class CW_Actor : Actor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private bool __can_create_cultibook_on_levelup(CultisysAsset cultisys, int curr_level)
     {
-        return curr_level % 5 == 1;
+        return curr_level % 5 == 4;
     }
 
     internal void cw_newCreature()
