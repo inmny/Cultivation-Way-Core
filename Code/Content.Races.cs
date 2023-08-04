@@ -22,6 +22,14 @@ internal static class Races
         yao.skin_citizen_male = new List<string> { "unit_male_1" };
         yao.skin_citizen_female = new List<string> { "unit_female_1" };
         yao.skin_warrior = new List<string> { "unit_warrior_1" };
+        if (Environment.UserName == "94508")
+        {
+            yao.name_template_kingdom = "easternhuman_kingdom";
+            yao.name_template_city = "easternhuman_city";
+            yao.name_template_clan = "easternhuman_clan";
+            yao.name_template_culture = "easternhuman_culture";
+        }
+
         AssetManager.raceLibrary.setPreferredStatPool("diplomacy#5,warfare#5,stewardship#5,intelligence#5");
         AssetManager.raceLibrary.setPreferredFoodPool(
             "berries#5,bread#5,fish#5,meat#2,sushi#2,jam#1,cider#1,ale#2,burger#1,pie#1,tea#2");
