@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using HarmonyLib;
@@ -63,8 +64,11 @@ internal static class H_ZoneCalculator
         __instance._redraw_timer = 0.3f;
         __instance._dirty = false;
         __instance._debug_redrawn_last = 0;
-        if (__instance._currentDrawnZones.Any())
+        if (__instance._currentDrawnZones.Count < World.world.zoneCalculator.zones.Count)
+        {
+            __instance._currentDrawnZones.UnionWith(__instance.zones);
             __instance._toCleanUp.UnionWith(__instance._currentDrawnZones);
+        }
 
         #region 选择性渲染
 
@@ -86,59 +90,36 @@ internal static class H_ZoneCalculator
             {
                 for (int y = 0; y < CW_Core.mod_state.map_chunk_manager.height; y++)
                 {
-                    TileZone zone = World.world.tilesMap[x, y].zone;
-                    __instance._currentDrawnZones.Add(zone);
-                    __instance._toCleanUp.Remove(zone);
-
-                    map[x, y].need_redraw = false;
-
                     __instance.pixels[World.world.tilesMap[x, y].data.tile_id] = map[x, y].color;
                     __instance._dirty = true;
-                    //`color_zone(__instance, zone, ref map[i, j].color);
                 }
             }
+
+            CW_Core.mod_state.map_chunk_manager.maps[
+                CW_Core.mod_state.map_chunk_manager.current_map_id
+            ].tiles_to_redraw.Clear();
         }
         else
         {
-            for (int x = 0; x < CW_Core.mod_state.map_chunk_manager.width; x++)
+            HashSet<CW_EnergyMapTile> energy_tiles_to_redraw = CW_Core.mod_state.map_chunk_manager.maps[
+                CW_Core.mod_state.map_chunk_manager.current_map_id
+            ].tiles_to_redraw;
+            foreach (CW_EnergyMapTile energy_tile in energy_tiles_to_redraw)
             {
-                for (int y = 0; y < CW_Core.mod_state.map_chunk_manager.height; y++)
-                {
-                    TileZone zone = World.world.tilesMap[x, y].zone;
-                    __instance._toCleanUp.Remove(zone);
-
-                    if (!map[x, y].need_redraw) continue;
-
-                    __instance._currentDrawnZones.Add(zone);
-
-                    map[x, y].need_redraw = false;
-
-                    __instance.pixels[World.world.tilesMap[x, y].data.tile_id] = map[x, y].color;
-                    __instance._dirty = true;
-                    //color_zone(__instance, zone, ref map[i, j].color);
-                }
+                __instance.pixels[World.world.tilesMap[energy_tile.x, energy_tile.y].data.tile_id] = energy_tile.color;
+                __instance._dirty = true;
             }
+
+            energy_tiles_to_redraw.Clear();
         }
 
         #endregion
 
 
-        if (__instance._toCleanUp.Any()) __instance.clearDrawnZones();
+        //if (__instance._toCleanUp.Any()) __instance.clearDrawnZones();
         if (!__instance._dirty) return false;
         __instance.updatePixels();
 
         return false;
-    }
-
-    private static void color_zone(ZoneCalculator zone_calculator, TileZone zone, ref Color32 color)
-    {
-        foreach (WorldTile tile in zone.tiles)
-        {
-            zone_calculator.pixels[tile.data.tile_id] = color;
-        }
-
-        zone_calculator._dirty = true;
-
-        ++zone_calculator._debug_redrawn_last;
     }
 }

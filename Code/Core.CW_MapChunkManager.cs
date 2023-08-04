@@ -23,20 +23,22 @@ public class CW_EnergyMapTile
 
     internal Color32 color;
 
-    internal bool need_redraw;
+    internal int x;
+    internal int y;
 
     public void update(EnergyAsset energy_asset)
     {
         density = Mathf.Log(Mathf.Max(value, energy_asset.power_base_value),
             energy_asset.power_base_value);
         Color32 new_color = energy_asset.get_color(value, density);
-        if (Math.Abs(new_color.a - color.a) >= 0.0f ||
-            Math.Abs(new_color.r - color.r) >= 0.0f ||
-            Math.Abs(new_color.g - color.g) >= 0.0f ||
-            Math.Abs(new_color.b - color.b) >= 0.0f)
+        if (Math.Abs(new_color.a - color.a) >= 0.03f ||
+            Math.Abs(new_color.r - color.r) >= 0.03f ||
+            Math.Abs(new_color.g - color.g) >= 0.03f ||
+            Math.Abs(new_color.b - color.b) >= 0.03f)
         {
             color = new_color;
-            need_redraw = true;
+            CW_Core.mod_state.map_chunk_manager.maps[CW_Core.mod_state.map_chunk_manager.current_map_id].tiles_to_redraw
+                .Add(this);
         }
     }
 }
@@ -62,6 +64,7 @@ public class CW_EnergyMap
     public CW_EnergyMapTile[,] map { get; private set; }
 
     private CW_EnergyMapTile[,] _tmp_map;
+    internal HashSet<CW_EnergyMapTile> tiles_to_redraw = new();
 
     private static readonly List<KeyValuePair<int, int>> _forward_dirs = new()
     {
@@ -85,8 +88,10 @@ public class CW_EnergyMap
                 {
                     value = Toolbox.randomFloat(0, 10000),
                     density = Toolbox.randomFloat(1, 3),
-                    color = Color.white
+                    x = x,
+                    y = y
                 };
+                map[x, y].update(energy);
                 _tmp_map[x, y] = new CW_EnergyMapTile();
             }
         }
@@ -94,8 +99,9 @@ public class CW_EnergyMap
 
     internal void update(int width, int height)
     {
-        if (World.world.worldLaws.dict.ContainsKey($"{energy.id}_spread_limit") &&
-            World.world.worldLaws.dict[$"{energy.id}_spread_limit"].boolVal)
+        if (World.world.worldLaws == null ||
+            (World.world.worldLaws.dict.ContainsKey($"{energy.id}_spread_limit") &&
+             World.world.worldLaws.dict[$"{energy.id}_spread_limit"].boolVal))
         {
             return;
         }
