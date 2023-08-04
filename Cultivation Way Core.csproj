@@ -3561,6 +3561,8 @@
         <Compile Include="Code\UI.Fonts.cs"/>
         <Compile Include="Code\UI.Prefabs.cs"/>
         <Compile Include="Code\UI.WindowCreatureInfoHelper.cs"/>
+        <Compile Include="Code\UI.WindowCultisysConfig.cs"/>
+        <Compile Include="Code\UI.WindowCultisysLevelConfig.cs"/>
         <Compile Include="Code\UI.WindowModConfig.cs"/>
         <Compile Include="Code\UI.WindowTops.cs"/>
         <Compile Include="Code\UI.WindowWorldLaw.cs"/>

@@ -14,7 +14,7 @@ internal static class Manager
         Races.init();
         // 由于BuildingOrderAsset初始化在Races.init之中，所以必须在Races.init之后
         Buildings.init();
-
+        WorldLaws.init();
         HarmonySpace.Manager.init();
     }
 }

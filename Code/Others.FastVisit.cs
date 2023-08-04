@@ -19,6 +19,7 @@ internal static class FastVisit
     private static Sprite window_bar_90;
     private static Sprite window_big_close;
     private static Sprite window_inner_sliced;
+    private static Sprite red_button;
 
     public static void init()
     {
@@ -28,6 +29,16 @@ internal static class FastVisit
     public static GameObject get_actor_prefab(string path)
     {
         return actor_prefabs.ContainsKey(path) ? actor_prefabs[path] : null;
+    }
+
+    public static Sprite get_red_button()
+    {
+        if (red_button != null) return red_button;
+        Sprite _orig = SpriteTextureLoader.getSprite("ui/cw_window/red_button");
+        red_button = Sprite.Create(_orig.texture, _orig.rect, new Vector2(40.5f, 10), _orig.pixelsPerUnit, 0,
+            SpriteMeshType.Tight, new Vector4(3, 3, 3, 3));
+        red_button.name = "red_button";
+        return red_button;
     }
 
     public static Sprite get_square_frame()
