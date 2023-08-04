@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using HarmonyLib;
@@ -19,6 +20,7 @@ internal static class H_ZoneCalculator
     }
 
     private static ZoneDisplayMode _last_mode;
+    private static readonly HashSet<CW_EnergyMapTile> _tiles_to_redraw = new();
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(ZoneCalculator), nameof(ZoneCalculator.redrawZones))]
@@ -68,6 +70,7 @@ internal static class H_ZoneCalculator
         {
             __instance._currentDrawnZones.UnionWith(__instance.zones);
             __instance._toCleanUp.UnionWith(__instance._currentDrawnZones);
+            all_redraw = true;
         }
 
         #region 选择性渲染
@@ -80,37 +83,38 @@ internal static class H_ZoneCalculator
             return false;
         }
 
-        CW_EnergyMapTile[,] map =
+        CW_EnergyMap map =
             CW_Core.mod_state.map_chunk_manager.maps[
                 CW_Core.mod_state.map_chunk_manager.current_map_id
-            ].map;
+            ];
         if (all_redraw)
         {
             for (int x = 0; x < CW_Core.mod_state.map_chunk_manager.width; x++)
             {
                 for (int y = 0; y < CW_Core.mod_state.map_chunk_manager.height; y++)
                 {
-                    __instance.pixels[World.world.tilesMap[x, y].data.tile_id] = map[x, y].color;
+                    __instance.pixels[World.world.tilesMap[x, y].data.tile_id] = map.map[x, y].color;
                     __instance._dirty = true;
                 }
             }
 
-            CW_Core.mod_state.map_chunk_manager.maps[
-                CW_Core.mod_state.map_chunk_manager.current_map_id
-            ].tiles_to_redraw.Clear();
+            map.tiles_to_redraw.Clear();
         }
         else
         {
-            HashSet<CW_EnergyMapTile> energy_tiles_to_redraw = CW_Core.mod_state.map_chunk_manager.maps[
-                CW_Core.mod_state.map_chunk_manager.current_map_id
-            ].tiles_to_redraw;
-            foreach (CW_EnergyMapTile energy_tile in energy_tiles_to_redraw)
+            Monitor.Enter(map.tiles_to_redraw);
+
+            _tiles_to_redraw.UnionWith(map.tiles_to_redraw);
+            map.tiles_to_redraw.Clear();
+
+            Monitor.Exit(map.tiles_to_redraw);
+            foreach (CW_EnergyMapTile energy_tile in _tiles_to_redraw)
             {
                 __instance.pixels[World.world.tilesMap[energy_tile.x, energy_tile.y].data.tile_id] = energy_tile.color;
                 __instance._dirty = true;
             }
 
-            energy_tiles_to_redraw.Clear();
+            _tiles_to_redraw.Clear();
         }
 
         #endregion

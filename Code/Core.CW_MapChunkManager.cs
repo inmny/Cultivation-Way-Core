@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cultivation_Way.Library;
 using UnityEngine;
 
@@ -31,14 +32,17 @@ public class CW_EnergyMapTile
         density = Mathf.Log(Mathf.Max(value, energy_asset.power_base_value),
             energy_asset.power_base_value);
         Color32 new_color = energy_asset.get_color(value, density);
-        if (Math.Abs(new_color.a - color.a) >= 0.03f ||
-            Math.Abs(new_color.r - color.r) >= 0.03f ||
-            Math.Abs(new_color.g - color.g) >= 0.03f ||
-            Math.Abs(new_color.b - color.b) >= 0.03f)
+        if (Math.Abs(new_color.a - color.a) >= 0.02f ||
+            Math.Abs(new_color.r - color.r) >= 0.02f ||
+            Math.Abs(new_color.g - color.g) >= 0.02f ||
+            Math.Abs(new_color.b - color.b) >= 0.02f)
         {
             color = new_color;
-            CW_Core.mod_state.map_chunk_manager.maps[CW_Core.mod_state.map_chunk_manager.current_map_id].tiles_to_redraw
-                .Add(this);
+            var tiles_to_redraw = CW_Core.mod_state.map_chunk_manager
+                .maps[CW_Core.mod_state.map_chunk_manager.current_map_id].tiles_to_redraw;
+            Monitor.Enter(tiles_to_redraw);
+            tiles_to_redraw.Add(this);
+            Monitor.Exit(tiles_to_redraw);
         }
     }
 }
@@ -65,6 +69,7 @@ public class CW_EnergyMap
 
     private CW_EnergyMapTile[,] _tmp_map;
     internal HashSet<CW_EnergyMapTile> tiles_to_redraw = new();
+    internal static bool redraw_lock = false;
 
     private static readonly List<KeyValuePair<int, int>> _forward_dirs = new()
     {
@@ -99,7 +104,7 @@ public class CW_EnergyMap
 
     internal void update(int width, int height)
     {
-        if (World.world.worldLaws == null ||
+        if (World.world.worldLaws.dict == null ||
             (World.world.worldLaws.dict.ContainsKey($"{energy.id}_spread_limit") &&
              World.world.worldLaws.dict[$"{energy.id}_spread_limit"].boolVal))
         {
