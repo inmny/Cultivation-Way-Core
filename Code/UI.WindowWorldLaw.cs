@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cultivation_Way.Others;
 using NCMS.Utils;
@@ -48,6 +49,23 @@ public class WindowWorldLaw : AbstractWindow<WindowWorldLaw>
         WorldLawElement element = Instantiate(switch_law_prefab, grid.Find("Grid"));
         element.name = id;
         element.icon.sprite = SpriteTextureLoader.getSprite(icon_path);
+    }
+
+    internal void add_setting_law_button(string id, string grid_id, string icon_path, string window_id,
+        Action addition_action = null)
+    {
+        if (!grids.ContainsKey(grid_id))
+        {
+            create_grid(grid_id);
+        }
+
+        Transform grid = grids[grid_id];
+        PowerButton button = CWTab.create_button(id, icon_path, () =>
+        {
+            addition_action?.Invoke();
+            ScrollWindow.showWindow(window_id);
+        });
+        button.transform.SetParent(grid.Find("Grid"));
     }
 
     internal void create_grid(string id)

@@ -2,6 +2,7 @@
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Others;
+using Cultivation_Way.UI;
 
 namespace Cultivation_Way.Library;
 
@@ -38,7 +39,7 @@ public class CultisysAsset : Asset
     /// <summary>
     ///     最大等级
     /// </summary>
-    public int max_level;
+    [NonSerialized] public int max_level;
 
     /// <summary>
     ///     当前境界最大修炼进度
@@ -53,12 +54,12 @@ public class CultisysAsset : Asset
     /// <summary>
     ///     力量基数, b^l
     /// </summary>
-    public float power_base = 1;
+    [NonSerialized] public float power_base = 1;
 
     /// <summary>
     ///     体系图标路径, 从根目录开始
     /// </summary>
-    public string sprite_path;
+    [NonSerialized] public string sprite_path;
 
     /// <summary>
     ///     获取额外的属性加成数据
@@ -148,6 +149,12 @@ public class CultisysLibrary : CW_Library<CultisysAsset>
             cultisys.max_progress ??= (actor, culti, level) => 1;
             cultisys.sprite_path ??= "ui/Icons/iconCultiSys";
             cultisys.culti_energy = Manager.energies.get(cultisys.culti_energy_id);
+
+            General.AboutUI.WorldLaws.add_setting_law(
+                $"worldlaw_config_{cultisys.id}", "worldlaw_cultisys_grid",
+                cultisys.sprite_path, Constants.Core.cultisys_config_window,
+                () => { WindowCultisysConfig.select_cultisys(cultisys); }
+            );
         }
     }
 }
