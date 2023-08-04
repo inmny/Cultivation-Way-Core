@@ -48,6 +48,8 @@ internal static class Races
         {
             eastern_human.name_template_kingdom = "easternhuman_kingdom";
             eastern_human.name_template_city = "easternhuman_city";
+            eastern_human.name_template_clan = "easternhuman_clan";
+            eastern_human.name_template_culture = "easternhuman_culture";
         }
 
         AssetManager.raceLibrary.setPreferredStatPool("diplomacy#5,warfare#5,stewardship#5,intelligence#5");
