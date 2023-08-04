@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cultivation_Way.Constants;
@@ -42,6 +43,11 @@ internal static class Actors
         _yao_asset.nameLocale = Content_Constants.yao_name_locale;
         _yao_asset.color = Toolbox.makeColor("#005E72");
         _yao_asset.body_separate_part_head = false;
+        if (Environment.UserName == "94508")
+        {
+            _yao_asset.nameTemplate = "easternhuman_name";
+        }
+
         AssetManager.actor_library.t = _yao_asset;
         AssetManager.actor_library.addColorSet(S_SkinColor.human_default);
         AssetManager.actor_library.loadShadow(_yao_asset);
@@ -123,6 +129,11 @@ internal static class Actors
         cw_actor_asset.culti_velo = 1;
 
         #region 原版设置
+
+        if (Environment.UserName == "94508")
+        {
+            asset.nameTemplate = "easternhuman_name";
+        }
 
         asset.nameLocale = Content_Constants.eastern_human_name_locale;
         asset.race = Content_Constants.eastern_human_race;
