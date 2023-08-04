@@ -145,6 +145,7 @@ internal static class Cultisyses
         for (int i = 0; i < Content_Constants.soul_max_level; i++)
         {
             cultisys.power_level[i] = 1 + i * 0.1f;
+            cultisys.bonus_stats[i][CW_S.soul] = 1 + i * i * 99;
         }
 
         Library.Manager.cultisys.add(cultisys);
