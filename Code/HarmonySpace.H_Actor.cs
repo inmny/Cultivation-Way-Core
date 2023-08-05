@@ -34,7 +34,7 @@ internal static class H_Actor
     /**
      * 原版中采用dirty标记来判断是否需要更新人物属性
      * 当需要更新时, 会调用updateStats函数
-     * 这里拦截updateStats函数, 
+     * 这里拦截updateStats函数,
      * 通过HarmonyTranspiler在原版代码
      * <code>
      *  test = S.attack_speed;
@@ -43,7 +43,7 @@ internal static class H_Actor
      *  if (base.hasAnyStatusEffect())
      *  </code>
      * 中指定位置插入调用cw_updateStats(this)函数
-     *  
+     *
      * 恰好在统计完生物类型属性、心情、数据中的四维属性、等级、默认武器、状态效果、特质后
      * 忽略了装备目的是为了统计作为血脉主导者在血脉中记录的属性加成
      */
@@ -62,16 +62,19 @@ internal static class H_Actor
     {
         // 载入修炼体系的加成
         int[] cultisys_levels = actor.data.get_cultisys_level();
+        bool has_cultisys = false;
+
         for (int i = 0; i < cultisys_levels.Length; i++)
         {
             if (cultisys_levels[i] < 0) continue;
+            has_cultisys = true;
             CultisysAsset cultisys = Library.Manager.cultisys.list[i];
             actor.stats.mergeStats(cultisys.get_bonus_stats((CW_Actor)actor, cultisys_levels[i]));
         }
 
         // 载入功法的加成
         Cultibook cultibook = actor.data.get_cultibook();
-        if (cultibook != null) actor.stats.mergeStats(cultibook.bonus_stats);
+        if (cultibook != null && has_cultisys) actor.stats.mergeStats(cultibook.bonus_stats);
         // 载入灵根的加成
         actor.stats.mergeStats(actor.data.get_element().comp_bonus_stats());
         // 载入血脉的加成
