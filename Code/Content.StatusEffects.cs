@@ -1,6 +1,7 @@
 using Cultivation_Way.Animation;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
+using Cultivation_Way.Extension;
 using Cultivation_Way.General.AboutStatusEffect;
 using Cultivation_Way.Library;
 using UnityEngine;
@@ -18,6 +19,46 @@ internal static class StatusEffects
         add_bound_statuses();
 
         add_brutalize_status();
+
+        add_ancestor_called_status();
+    }
+
+    private static void add_ancestor_called_status()
+    {
+        CW_StatusEffect status_effect = FormatStatusEffect.create_simple_status_effect(
+            "status_ancestor_called", new BaseStats(),
+            60f,
+            "", "", 1f,
+            "effects/vine_bound/40",
+            new[] { StatusEffectTag.POSITIVE },
+            StatusTier.None
+        );
+        status_effect.action_on_update = (effect, object1, object2) =>
+        {
+            if (object2.objectType != MapObjectType.Actor) return;
+            if (object1 == null || !object1.isAlive())
+            {
+                if (Toolbox.randomChance(0.8f))
+                {
+                    effect.effect_val = -1;
+                }
+                else
+                {
+                    effect.effect_val = 1;
+                }
+
+                effect.finished = true;
+            }
+        };
+        status_effect.action_on_end = (effect, object1, object2) =>
+        {
+            if (effect.effect_val >= 0)
+            {
+                // 防止killHimself时更新血脉中的数据
+                object2.a.data.clear_blood_nodes();
+                object2.a.killHimself();
+            }
+        };
     }
 
     // 兽化

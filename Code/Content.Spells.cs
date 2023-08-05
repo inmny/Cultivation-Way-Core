@@ -4,11 +4,14 @@ using System.Linq;
 using Cultivation_Way.Animation;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
+using Cultivation_Way.Extension;
 using Cultivation_Way.General.AboutSpell;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using Cultivation_Way.Utils;
+using Newtonsoft.Json;
 using UnityEngine;
+using Debug = System.Diagnostics.Debug;
 
 namespace Cultivation_Way.Content;
 
@@ -21,6 +24,7 @@ internal static class Spells
         add_give_self_status_spells();
         add_blade_spells();
         add_escape_spells();
+        //add_call_spells();
 
         add_regen_spell();
         add_tornado_spell();
@@ -48,6 +52,71 @@ internal static class Spells
         add_default_lightning_spell();
         add_positive_quintuple_lightning_spell();
         add_negative_quintuple_lightning_spell();
+    }
+
+    private static void add_call_spells()
+    {
+        CW_SpellAsset call_ancestor = new()
+        {
+            id = "call_ancestor", rarity = 99,
+            anim_action = null,
+            anim_id = "",
+            anim_type = SpellAnimType.CUSTOM,
+            cultisys_require = 0,
+            element = new CW_Element(new[] { 20, 20, 20, 20, 20 }),
+            spell_action = (spell_asset, user, target, tile, cost) =>
+            {
+                if (user.objectType != MapObjectType.Actor || user.city == null) return;
+                CW_Actor cw_actor = (CW_Actor)user;
+                cw_actor.data.get(DataS.main_blood_purity, out float purity);
+
+                if (purity < Content_Constants.call_ancestor_min_purity) return;
+                BloodNodeAsset main_blood = cw_actor.data.get_main_blood();
+                if (main_blood.id == cw_actor.data.id) return;
+                CW_Actor ancestor_actor = (CW_Actor)World.world.units.get(main_blood.id);
+                if (ancestor_actor != null)
+                {
+                    // 竞争权限
+                }
+                else
+                {
+                    // 此处不提取函数, 仅在此处使用
+                    CW_ActorAsset cw_asset = Library.Manager.actors.get(main_blood.ancestor_data.asset_id);
+                    if (cw_asset == null) return;
+                    ActorAsset asset = cw_asset.vanllia_asset;
+                    CW_Actor prefab = FastVisit.get_actor_prefab("actors/" + asset.prefab).GetComponent<CW_Actor>();
+                    ancestor_actor = (CW_Actor)World.world.units.newObject(prefab);
+                    ancestor_actor.setData(
+                        JsonConvert.DeserializeObject<ActorData>(
+                            JsonConvert.SerializeObject(main_blood.ancestor_data)));
+
+                    ancestor_actor.cw_asset = cw_asset;
+                    World.world.units.finalizeActor(asset.id, ancestor_actor, cw_actor.currentTile);
+                    ancestor_actor.add_status("status_ancestor_called", user);
+                }
+
+                cw_actor.city.addNewUnit(ancestor_actor);
+                if (!cw_actor.is_group_leader)
+                {
+                    if (cw_actor.unit_group != null)
+                    {
+                        cw_actor.removeFromGroup();
+                    }
+
+                    // 创建队伍, 并将祖先加入队伍
+                    World.world.unitGroupManager.createNewGroup(cw_actor.city).addUnit(cw_actor);
+                    Debug.Assert(cw_actor.unit_group != null, "cw_actor.unit_group != null");
+
+                    cw_actor.unit_group.setGroupLeader(cw_actor);
+                    cw_actor.unit_group.addUnit(ancestor_actor);
+                }
+            },
+            spell_cost_action = (asset, user) => { return -1; },
+            spell_learn_check = (asset, user) => { return 0; }
+        };
+        call_ancestor.add_trigger_tags(new[]
+            { SpellTriggerTag.ATTACK, SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND });
+        Library.Manager.spells.add(call_ancestor);
     }
 
     /// <summary>
@@ -81,7 +150,7 @@ internal static class Spells
             frame_interval = 0.05f,
             frame_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
-                if (anim.src_object == null || !anim.src_object.base_data.alive)
+                if (anim.src_object == null || !anim.src_object.isAlive())
                 {
                     anim.force_stop();
                     return;
@@ -227,7 +296,7 @@ internal static class Spells
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
-                if (anim.src_object == null || !anim.src_object.base_data.alive) return;
+                if (anim.src_object == null || !anim.src_object.isAlive()) return;
                 var position = anim.gameObject.transform.position;
                 int x = (int)position.x;
                 int y = (int)position.y;
@@ -252,7 +321,7 @@ internal static class Spells
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
-                if (anim.src_object == null || !anim.src_object.base_data.alive) return;
+                if (anim.src_object == null || !anim.src_object.isAlive()) return;
                 var position = anim.gameObject.transform.position;
                 int x = (int)position.x;
                 int y = (int)position.y;
@@ -287,7 +356,7 @@ internal static class Spells
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
-                if (anim.src_object == null || !anim.src_object.base_data.alive) return;
+                if (anim.src_object == null || !anim.src_object.isAlive()) return;
                 var position = anim.gameObject.transform.position;
                 int x = (int)position.x;
                 int y = (int)position.y;
@@ -312,7 +381,7 @@ internal static class Spells
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
-                if (anim.src_object == null || !anim.src_object.base_data.alive) return;
+                if (anim.src_object == null || !anim.src_object.isAlive()) return;
                 var position = anim.gameObject.transform.position;
                 int x = (int)position.x;
                 int y = (int)position.y;
@@ -734,7 +803,7 @@ internal static class Spells
             frame_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx != 3) return;
-                if (anim.src_object == null || !anim.src_object.base_data.alive) return;
+                if (anim.src_object == null || !anim.src_object.isAlive()) return;
                 var position = anim.gameObject.transform.position;
                 int x = (int)position.x;
                 int y = (int)position.y;
@@ -795,7 +864,7 @@ internal static class Spells
             {
                 if (idx > 2)
                 {
-                    if (anim.src_object == null || !anim.src_object.base_data.alive) return;
+                    if (anim.src_object == null || !anim.src_object.isAlive()) return;
                     var position = anim.gameObject.transform.position;
                     int x = (int)position.x;
                     int y = (int)position.y;
@@ -1123,8 +1192,8 @@ internal static class Spells
             {
                 if (idx != 5) return;
                 float radius = 5;
-                if (anim.src_object == null || !anim.src_object.base_data.alive || anim.dst_object == null ||
-                    !anim.dst_object.base_data.alive) return;
+                if (anim.src_object == null || !anim.src_object.isAlive() || anim.dst_object == null ||
+                    !anim.dst_object.isAlive()) return;
                 WorldTile center = anim.dst_object.currentTile;
                 if (center == null) return;
                 List<WorldTile> tiles = GeneralHelper.get_tiles_in_circle(center, radius);
@@ -1173,8 +1242,8 @@ internal static class Spells
             {
                 if (idx != 5) return;
                 float radius = 5;
-                if (anim.src_object == null || !anim.src_object.base_data.alive || anim.dst_object == null ||
-                    !anim.dst_object.base_data.alive) return;
+                if (anim.src_object == null || !anim.src_object.isAlive() || anim.dst_object == null ||
+                    !anim.dst_object.isAlive()) return;
                 WorldTile center = anim.dst_object.currentTile;
                 if (center == null) return;
                 List<WorldTile> tiles = GeneralHelper.get_tiles_in_circle(center, radius);
@@ -1218,8 +1287,8 @@ internal static class Spells
             {
                 if (idx != 5) return;
                 float radius = 5;
-                if (anim.src_object == null || !anim.src_object.base_data.alive || anim.dst_object == null ||
-                    !anim.dst_object.base_data.alive) return;
+                if (anim.src_object == null || !anim.src_object.isAlive() || anim.dst_object == null ||
+                    !anim.dst_object.isAlive()) return;
                 WorldTile center = anim.dst_object.currentTile;
                 if (center == null) return;
                 List<WorldTile> tiles = GeneralHelper.get_tiles_in_circle(center, radius);

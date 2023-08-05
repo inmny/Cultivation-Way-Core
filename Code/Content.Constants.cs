@@ -25,6 +25,7 @@ internal class Content_Constants
     public const int soul_max_level = 20;
 
     public const float default_spell_cost = 30f;
+    public const float call_ancestor_min_purity = 0.75f;
 
     public const string nomad_kingdom_prefix = "nomads_";
     public const string eastern_human_id = "unit_eastern_human";
