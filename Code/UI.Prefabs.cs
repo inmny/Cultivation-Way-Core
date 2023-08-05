@@ -182,6 +182,7 @@ internal static class Prefabs
         input_field_component.textComponent = text_component;
 
         text_component.alignment = TextAnchor.MiddleCenter;
+        text_component.horizontalOverflow = HorizontalWrapMode.Wrap;
         text_component.font = LocalizedTextManager.currentFont;
         text_component.resizeTextForBestFit = true;
         text_component.resizeTextMinSize = 1;
