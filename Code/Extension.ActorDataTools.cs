@@ -200,6 +200,11 @@ public static class ActorDataTools
             blood_nodes.Remove(key);
         }
 
+        if (blood_nodes.Count == 0)
+        {
+            return;
+        }
+
         keys.Clear();
         keys.AddRange(blood_nodes.Keys);
         foreach (string key in keys)

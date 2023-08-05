@@ -303,7 +303,7 @@ public class CW_Actor : Actor
         attackedBy = null;
         CW_AttackType attack_type = (CW_AttackType)pAttackType;
 
-        if ((pSkipIfShake && shake_active) || data.health <= 0 || has_status("invincible")) return;
+        if ((pSkipIfShake && shake_active) || data.health <= 0 || !isAlive() || has_status("invincible")) return;
 
         #region 攻击音效
 
@@ -330,6 +330,15 @@ public class CW_Actor : Actor
             case CW_AttackType.Weapon:
                 num = 1f - stats[S.armor] / (stats[S.armor] + 100);
                 break;
+            case CW_AttackType.Acid:
+            case CW_AttackType.Eaten:
+            case CW_AttackType.Fire:
+            case CW_AttackType.Hunger:
+            case CW_AttackType.Infection:
+            case CW_AttackType.Plague:
+            case CW_AttackType.Poison:
+            case CW_AttackType.Tumor:
+            case CW_AttackType.AshFever:
             case CW_AttackType.Spell:
                 num = 1f - stats[CW_S.spell_armor] / (stats[CW_S.spell_armor] + 100);
                 break;
@@ -414,6 +423,7 @@ public class CW_Actor : Actor
             {
                 if (pAttacker.a.data == null) Logger.Error("pAttacker.a.data==null");
                 if (pAttacker.kingdom == null) Logger.Error("pAttacker.kingdom==null");
+                Logger.Error("Kill action error");
             }
 
             if (pAttacker.city == null)
@@ -447,7 +457,8 @@ public class CW_Actor : Actor
             return;
         }
 
-        if (attack_type == CW_AttackType.Weapon && !asset.immune_to_injuries && !hasStatus("shield"))
+        if (attack_type == CW_AttackType.Weapon && pDamage >= stats[S.health] * 0.01f && !asset.immune_to_injuries &&
+            !hasStatus("shield"))
         {
             if (Toolbox.randomChance(0.02f))
             {
@@ -466,8 +477,9 @@ public class CW_Actor : Actor
         }
         catch (NullReferenceException)
         {
-            if (batch == null) Logger.Error("batch==null");
-            if (batch != null && batch.c_shake == null) Logger.Error("batch.c_shake==null");
+            if (batch == null)
+                Logger.Error($"batch==null, isDestroyed: {object_destroyed}, Alive: {isAlive()}, Health: " +
+                             $"{(data == null ? -1 : data.health)}");
         }
 
         #endregion

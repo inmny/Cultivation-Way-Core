@@ -60,6 +60,7 @@ internal static class Cultisyses
             cultisys.bonus_stats[i][CW_S.wakan_regen] = i * 0.1f;
             cultisys.bonus_stats[i][S.health] = i * 99;
             cultisys.bonus_stats[i][S.damage] = i * 9;
+            cultisys.bonus_stats[i][S.max_age] = i * i * 10;
         }
 
         Library.Manager.cultisys.add(cultisys);
