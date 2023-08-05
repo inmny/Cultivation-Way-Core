@@ -166,7 +166,9 @@ public static class ActorDataTools
         data.write_obj(DataS.blood_nodes, blood_nodes);
         if (blood_nodes.Count > 0)
         {
-            data.set(DataS.main_blood_id, blood_nodes.Aggregate((max, cur) => max.Value > cur.Value ? max : cur).Key);
+            var main_blood = blood_nodes.Aggregate((max, cur) => max.Value > cur.Value ? max : cur);
+            data.set(DataS.main_blood_id, main_blood.Key);
+            data.set(DataS.main_blood_purity, main_blood.Value);
         }
         else
         {
@@ -206,7 +208,9 @@ public static class ActorDataTools
         }
 
         data.write_obj(DataS.blood_nodes, blood_nodes);
-        data.set(DataS.main_blood_id, blood_nodes.Aggregate((max, cur) => max.Value > cur.Value ? max : cur).Key);
+        var main_blood = blood_nodes.Aggregate((max, cur) => max.Value > cur.Value ? max : cur);
+        data.set(DataS.main_blood_id, main_blood.Key);
+        data.set(DataS.main_blood_purity, main_blood.Value);
     }
 
     /// <summary>

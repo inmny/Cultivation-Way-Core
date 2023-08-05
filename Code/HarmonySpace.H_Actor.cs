@@ -85,8 +85,8 @@ internal static class H_Actor
         }
         else
         {
-            // TODO: 添加血脉纯度对属性加成的影响
-            actor.stats.max(main_blood_node.ancestor_stats, 0.6f);
+            actor.data.get(DataS.main_blood_purity, out float purity);
+            actor.stats.max(main_blood_node.ancestor_stats, purity * purity);
         }
 
         // 载入法术

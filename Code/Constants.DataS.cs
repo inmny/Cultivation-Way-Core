@@ -4,6 +4,7 @@ public static class DataS
 {
     public const string blood_nodes = Core.mod_prefix + "blood_nodes";
     public const string main_blood_id = Core.mod_prefix + "main_blood_id";
+    public const string main_blood_purity = Core.mod_prefix + "main_blood_purity";
     public const string cultisys_level = Core.mod_prefix + "cultisys_level";
     public const string cultibook_id = Core.mod_prefix + "cultibook_id";
     public const string element_type_id = "element_type_id";
