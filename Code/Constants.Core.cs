@@ -13,6 +13,7 @@ public static class Core
     public const string modconfig_window = mod_prefix + "modconfig_window";
     public const string worldlaw_window = mod_prefix + "worldlaw_window";
     public const string tops_window = mod_prefix + "tops_window";
+    public const string actorasset_config_window = mod_prefix + "actorasset_config_window";
     public const string cultisys_config_window = mod_prefix + "cultisys_config_window";
     public const string cultisys_level_config_window = mod_prefix + "cultisys_level_config_window";
 

@@ -77,7 +77,7 @@ public class CW_Core : MonoBehaviour
                 {
                     // 在所有附属初始化完毕后, 进行后续处理
                     CWTab.post_init();
-                    WindowWorldLaw.post_init();
+                    action_on_windows("post_init");
                     state.library_manager.post_init();
                     state.map_chunk_manager.init(World.world.tilesMap.GetLength(0),
                         World.world.tilesMap.GetLength(1));
@@ -165,7 +165,7 @@ public class CW_Core : MonoBehaviour
         HarmonySpace.Manager.init();
         state.library_manager.init();
         CWTab.init();
-        init_windows();
+        action_on_windows("init");
 
         new Thread(() =>
         {
@@ -183,7 +183,7 @@ public class CW_Core : MonoBehaviour
         //state.map_chunk_manager.update_per_year();
     }
 
-    private void init_windows()
+    private void action_on_windows(string action_name)
     {
         Type[] all_types = Assembly.GetExecutingAssembly().GetTypes();
         foreach (Type type in all_types)
@@ -192,7 +192,7 @@ public class CW_Core : MonoBehaviour
             if (type.BaseType == null) continue;
             if (type.BaseType.Name.Contains("AbstractWindow"))
             {
-                type.GetMethod("init", BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic)
+                type.GetMethod(action_name, BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic)
                     ?.Invoke(null, null);
             }
         }

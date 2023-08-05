@@ -3560,6 +3560,7 @@
         <Compile Include="Code\UI.CWTab.cs"/>
         <Compile Include="Code\UI.Fonts.cs"/>
         <Compile Include="Code\UI.Prefabs.cs"/>
+        <Compile Include="Code\UI.WindowActorAssetConfig.cs"/>
         <Compile Include="Code\UI.WindowCreatureInfoHelper.cs"/>
         <Compile Include="Code\UI.WindowCultisysConfig.cs"/>
         <Compile Include="Code\UI.WindowCultisysLevelConfig.cs"/>
