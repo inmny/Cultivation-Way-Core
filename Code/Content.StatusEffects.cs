@@ -30,6 +30,7 @@ internal static class StatusEffects
         bonus_stats[S.mod_damage] = 0.5f;
         bonus_stats[S.mod_armor] = 0.3f;
         bonus_stats[S.mod_speed] = 0.2f;
+        bonus_stats[S.scale] = 0.1f;
         CW_StatusEffect status_effect = FormatStatusEffect.create_simple_status_effect(
             "status_brutalize", bonus_stats,
             10f,
@@ -139,7 +140,7 @@ internal static class StatusEffects
         );
         status_effect.action_on_get = (effect, object1, object2) =>
         {
-            if (object2 == null || object2.objectType != MapObjectType.Actor) return;
+            if (object2 == null || !object2.isAlive() || object2.objectType != MapObjectType.Actor) return;
             EffectManager.instance.spawn_anim("status_ice_bound_anim_" + Toolbox.randomInt(0, 5),
                 object2.currentPosition, object2.currentPosition, object2, object2, object2.stats[S.scale]);
         };

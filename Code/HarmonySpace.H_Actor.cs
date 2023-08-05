@@ -92,8 +92,18 @@ internal static class H_Actor
             actor.stats.max(main_blood_node.ancestor_stats, purity * purity);
         }
 
-        // 载入法术
         CW_Actor cw_actor = (CW_Actor)actor;
+        // 载入状态效果的加成
+        if (cw_actor.statuses != null)
+        {
+            foreach (CW_StatusEffectData effect_data in cw_actor.statuses.Values.Where(effect_data =>
+                         !effect_data.finished))
+            {
+                actor.stats.mergeStats(effect_data.bonus_stats);
+            }
+        }
+
+        // 载入法术
         cw_actor.cur_spells.Clear();
         cw_actor.cur_spells.AddRange(cw_actor.__data_spells);
 
