@@ -3417,6 +3417,7 @@
         <Content Include="GameResources\effects\stxh_XTDT\XTDT_7.png" />
         <Content Include="GameResources\effects\wtiger_tooth\白虎之牙.png" />
         <Content Include="GameResources\test.json" />
+        <Content Include="GameResources\ui\cw_window\button1.png"/>
         <Content Include="GameResources\ui\cw_window\buttonToggleIndicator_0.png" />
         <Content Include="GameResources\ui\cw_window\buttonToggleIndicator_1.png" />
         <Content Include="GameResources\ui\cw_window\city_info_bg.png" />
