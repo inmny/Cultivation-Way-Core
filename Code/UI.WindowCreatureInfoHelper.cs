@@ -341,7 +341,31 @@ internal class WindowCreatureInfoHelper
         str_builder.AppendLine($"{cultibook.author_name} 著");
         str_builder.AppendLine($"{cultibook.editor_name} 编");
         str_builder.AppendLine(cultibook.description);
+
         tooltip.addDescription(str_builder.ToString());
+
+        int idx = 0;
+        Text spell_idx_text = tooltip.transform.Find("Spells/StatsDescription").GetComponent<Text>();
+        Text spell_name_text = tooltip.transform.Find("Spells/StatsValues").GetComponent<Text>();
+
+        StringBuilder spell_idx_builder = new();
+        StringBuilder spell_name_builder = new();
+        foreach (string spell_id in cultibook.spells)
+        {
+            idx++;
+            Color color = Manager.spells.get(spell_id).element.get_color();
+            spell_idx_builder.Append(Toolbox.coloredString($"[{idx}]", color));
+            spell_name_builder.Append(Toolbox.coloredString(LocalizedTextManager.getText("spell_" + spell_id),
+                color));
+            if (idx != cultibook.spells.Count)
+            {
+                spell_idx_builder.AppendLine();
+                spell_name_builder.AppendLine();
+            }
+        }
+
+        spell_idx_text.text = spell_idx_builder.ToString();
+        spell_name_text.text = spell_name_builder.ToString();
 
 
         tooltip.showBaseStats(cultibook.bonus_stats);

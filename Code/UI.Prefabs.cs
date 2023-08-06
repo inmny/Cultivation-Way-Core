@@ -234,6 +234,20 @@ internal static class Prefabs
             Object.Instantiate(Resources.Load<Tooltip>("tooltips/tooltip_normal"), CW_Core.prefab_library);
         tooltip.gameObject.name = Constants.Core.mod_prefix + "cultibook";
 
+        GameObject spells = Object.Instantiate(tooltip.transform.Find("Stats").gameObject,
+            tooltip.transform.Find("Stats").parent);
+        spells.transform.localScale = new Vector3(1, 1);
+        spells.transform.SetSiblingIndex(2);
+        spells.name = "Spells";
+        Text text;
+        text = spells.transform.Find("StatsDescription").GetComponent<Text>();
+        text.fontStyle = FontStyle.Normal;
+        text.font = LocalizedTextManager.currentFont;
+
+        text = spells.transform.Find("StatsValues").GetComponent<Text>();
+        text.fontStyle = FontStyle.Normal;
+        text.font = LocalizedTextManager.currentFont;
+
         resources_dict["tooltips/tooltip_" + tooltip.gameObject.name] = tooltip;
     }
 
