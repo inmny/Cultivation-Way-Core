@@ -149,11 +149,11 @@ internal static class H_Actor
 
         actor.cw_asset = Library.Manager.actors.get(pStatsID);
 
+        actor.gameObject.SetActive(true);
         __instance.finalizeActor(pStatsID, actor, pTile, pZHeight);
         actor.newCreature();
         actor.cw_newCreature();
 
-        actor.m_gameObject.SetActive(true);
         __result = actor;
         return false;
     }
@@ -231,9 +231,9 @@ internal static class H_Actor
             actor.learn_spell(Library.Manager.spells.get(spell_id));
         }
 
+        actor.gameObject.SetActive(true);
         __instance.finalizeActor(asset.id, actor, pTile);
         pCity.addNewUnit(actor);
-        actor.gameObject.SetActive(true);
         __result = actor;
 
         return false;
