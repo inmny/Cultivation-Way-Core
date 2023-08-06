@@ -1,5 +1,6 @@
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
+using NCMS.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -99,6 +100,9 @@ public class WindowCultisysConfig : AbstractWindow<WindowCultisysConfig>
             level_obj.transform.Find("Comment").GetComponent<Text>().text = level.ToString();
             level_obj.transform.Find("Name_Input/Input_Field").GetComponent<InputField>().text =
                 LocalizedTextManager.getText($"{editing_cultisys_asset.id}_{level}");
+            level_obj.transform.Find("Name_Input/Input_Field").GetComponent<InputField>().onEndEdit.AddListener(
+                str => { Localization.Set($"{editing_cultisys_asset.id}_{tmp}", str); }
+            );
             level_obj.transform.Find("Edit").GetComponent<Button>().onClick.AddListener(() =>
             {
                 WindowCultisysLevelConfig.select_cultisys_level(instance.editing_cultisys_asset, tmp);
