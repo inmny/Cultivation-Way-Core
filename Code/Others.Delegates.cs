@@ -80,3 +80,18 @@ public delegate float SpellCheck(CW_SpellAsset spell_asset, BaseSimObject user);
 ///     状态相关行为
 /// </summary>
 public delegate void StatusAction(CW_StatusEffectData status_effect, BaseSimObject object1, BaseSimObject object2);
+
+/// <summary>
+///     用于天榜展示评估结果
+/// </summary>
+public delegate string TopValueShow(object obj);
+
+/// <summary>
+///     用于天榜计算评估值
+/// </summary>
+public delegate float TopValueCalc(object obj);
+
+/// <summary>
+///     用于天榜筛选
+/// </summary>
+public delegate bool TopFilter(object obj);

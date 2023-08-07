@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using Cultivation_Way.Core;
 using Cultivation_Way.Others;
 using NCMS.Utils;
 using ReflectionUtility;
@@ -29,6 +32,7 @@ public class WindowTops : AbstractWindow<WindowTops>
     private readonly List<object> curr_list = new();
 
     private readonly Dictionary<string, TopValueCalc> calcs = new();
+    private readonly Dictionary<string, TopValueShow> shows = new();
     private readonly Dictionary<string, TopFilter> filter_funcs = new();
 
     internal static void init()
@@ -161,6 +165,24 @@ public class WindowTops : AbstractWindow<WindowTops>
         #endregion
 
         instance.filter_funcs["default"] = _ => true;
+
+        #region 列表整理
+
+        VerticalLayoutGroup content_layout = content_transform.gameObject.AddComponent<VerticalLayoutGroup>();
+
+        content_layout.childControlHeight = false;
+        content_layout.childControlWidth = false;
+        content_layout.childForceExpandHeight = false;
+        content_layout.childForceExpandWidth = false;
+        content_layout.childAlignment = TextAnchor.UpperCenter;
+        content_layout.spacing = 8;
+        content_layout.padding = new RectOffset(0, 0, 8, 8);
+
+        ContentSizeFitter content_fitter = content_transform.gameObject.AddComponent<ContentSizeFitter>();
+        content_fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+        content_fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        #endregion
     }
 
     private void switch_to_creature()
@@ -169,6 +191,7 @@ public class WindowTops : AbstractWindow<WindowTops>
         curr_list.AddRange(World.world.units.getSimpleList());
         curr_info_prefab = Prefabs.simple_creature_info_prefab;
         curr_value_calc = calcs["age"];
+        curr_value_show = shows["age"];
         curr_filter = filter_funcs["default"];
         show();
     }
@@ -223,6 +246,11 @@ public class WindowTops : AbstractWindow<WindowTops>
         {
             CW_Actor actor = (CW_Actor)o;
             return actor.data.getAge();
+        };
+        shows["age"] = o =>
+        {
+            CW_Actor actor = (CW_Actor)o;
+            return actor.data.getAge().ToString();
         };
     }
 

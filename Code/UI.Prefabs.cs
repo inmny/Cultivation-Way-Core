@@ -104,9 +104,15 @@ internal static class Prefabs
 
     private static void set_simple_creature_info_prefab()
     {
-        simple_creature_info_prefab = new GameObject("Simple_Creature_Info_Prefab", typeof(SimpleCreatureInfo))
-            .GetComponent<SimpleCreatureInfo>();
+        simple_creature_info_prefab =
+            new GameObject("Simple_Creature_Info_Prefab", typeof(SimpleCreatureInfo), typeof(Image))
+                .GetComponent<SimpleCreatureInfo>();
         simple_creature_info_prefab.transform.SetParent(CW_Core.ui_prefab_library);
+        simple_creature_info_prefab.transform.localScale = new Vector3(1, 1, 1);
+        simple_creature_info_prefab.transform.localPosition = new Vector3(0, 0);
+        simple_creature_info_prefab.GetComponent<Image>().sprite = FastVisit.get_info_bg();
+        simple_creature_info_prefab.GetComponent<Image>().type = Image.Type.Sliced;
+        simple_creature_info_prefab.GetComponent<RectTransform>().sizeDelta = new Vector2(193, 31);
     }
 
     private static void set_edit_bar_prefab()

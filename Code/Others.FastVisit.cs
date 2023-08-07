@@ -22,6 +22,7 @@ internal static class FastVisit
     private static Sprite window_inner_sliced;
     private static Sprite red_button;
     private static Sprite button_1;
+    private static Sprite info_bg;
 
     public static void init()
     {
@@ -54,6 +55,16 @@ internal static class FastVisit
     public static GameObject get_actor_prefab(string path)
     {
         return actor_prefabs.ContainsKey(path) ? actor_prefabs[path] : null;
+    }
+
+    public static Sprite get_info_bg()
+    {
+        if (info_bg != null) return info_bg;
+        Sprite _orig = SpriteTextureLoader.getSprite("ui/cw_window/city_info_bg");
+        info_bg = Sprite.Create(_orig.texture, _orig.rect, new Vector2(0, 0), _orig.pixelsPerUnit, 0,
+            SpriteMeshType.Tight, new Vector4(5, 5, 5, 5));
+        info_bg.name = "info_bg";
+        return info_bg;
     }
 
     public static Sprite get_button_1()
