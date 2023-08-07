@@ -60,10 +60,14 @@ internal abstract class SimpleInfo : MonoBehaviour
     public GameObject disp;
     public GameObject info;
     public Text object_name;
+    public abstract void load_obj(object obj, string value);
 }
 
 internal class SimpleCreatureInfo : SimpleInfo
 {
+    public override void load_obj(object obj, string value)
+    {
+    }
 }
 
 [SuppressMessage("ReSharper", "Unity.InefficientPropertyAccess")]
@@ -72,8 +76,10 @@ internal static class Prefabs
     public static CW_TipButton tip_button_prefab;
     public static GameObject tip_button_with_bg_game_obj_prefab;
     public static GameObject cultisys_level_edit_prefab;
-    private static GameObject edit_bar_prefab;
 
+    public static SimpleCreatureInfo simple_creature_info_prefab;
+
+    private static GameObject edit_bar_prefab;
     private static GameObject input_field_prefab;
     private static Dictionary<string, Object> resources_dict;
 
@@ -87,16 +93,26 @@ internal static class Prefabs
         set_tip_button_with_bg_prefab();
         set_cultisys_level_edit_prefab();
         set_edit_bar_prefab();
+
+        set_simple_creature_info_prefab();
+
         add_tooltip_element_prefab();
         add_tooltip_cultibook_prefab();
         add_tooltip_blood_nodes_prefab();
         add_tooltip_cultisys_prefab();
     }
 
+    private static void set_simple_creature_info_prefab()
+    {
+        simple_creature_info_prefab = new GameObject("Simple_Creature_Info_Prefab", typeof(SimpleCreatureInfo))
+            .GetComponent<SimpleCreatureInfo>();
+        simple_creature_info_prefab.transform.SetParent(CW_Core.ui_prefab_library);
+    }
+
     private static void set_edit_bar_prefab()
     {
         edit_bar_prefab = new GameObject("Edit_Bar_Prefab", typeof(Image));
-        edit_bar_prefab.transform.SetParent(CW_Core.prefab_library);
+        edit_bar_prefab.transform.SetParent(CW_Core.ui_prefab_library);
         edit_bar_prefab.GetComponent<Image>().type = Image.Type.Sliced;
         edit_bar_prefab.GetComponent<Image>().sprite = FastVisit.get_square_frame();
         edit_bar_prefab.GetComponent<RectTransform>().sizeDelta = new Vector2(190, 30);
@@ -128,7 +144,7 @@ internal static class Prefabs
     private static void set_cultisys_level_edit_prefab()
     {
         cultisys_level_edit_prefab = new GameObject("Cultisys_Level_Edit_Prefab", typeof(Image));
-        cultisys_level_edit_prefab.transform.SetParent(CW_Core.prefab_library);
+        cultisys_level_edit_prefab.transform.SetParent(CW_Core.ui_prefab_library);
         cultisys_level_edit_prefab.GetComponent<Image>().type = Image.Type.Sliced;
         cultisys_level_edit_prefab.GetComponent<Image>().sprite = FastVisit.get_square_frame();
         cultisys_level_edit_prefab.GetComponent<RectTransform>().sizeDelta = new Vector2(190, 30);
@@ -169,7 +185,7 @@ internal static class Prefabs
     private static void set_input_field_prefab()
     {
         input_field_prefab = new GameObject("Input_Field_Prefab", typeof(Image));
-        input_field_prefab.transform.SetParent(CW_Core.prefab_library);
+        input_field_prefab.transform.SetParent(CW_Core.ui_prefab_library);
         input_field_prefab.GetComponent<Image>().type = Image.Type.Sliced;
         input_field_prefab.GetComponent<Image>().sprite = FastVisit.get_window_inner_sliced();
 
@@ -210,7 +226,7 @@ internal static class Prefabs
     private static void set_tip_button_with_bg_prefab()
     {
         tip_button_with_bg_game_obj_prefab = new GameObject("Tip_Button_With_BG_Prefab");
-        tip_button_with_bg_game_obj_prefab.transform.SetParent(CW_Core.prefab_library);
+        tip_button_with_bg_game_obj_prefab.transform.SetParent(CW_Core.ui_prefab_library);
         GameObject bg = new("BG", typeof(Image));
         bg.transform.SetParent(tip_button_with_bg_game_obj_prefab.transform);
 
@@ -222,7 +238,7 @@ internal static class Prefabs
     private static void add_tooltip_element_prefab()
     {
         Tooltip tooltip =
-            Object.Instantiate(Resources.Load<Tooltip>("tooltips/tooltip_normal"), CW_Core.prefab_library);
+            Object.Instantiate(Resources.Load<Tooltip>("tooltips/tooltip_normal"), CW_Core.ui_prefab_library);
         tooltip.gameObject.name = Constants.Core.mod_prefix + "element";
 
         resources_dict["tooltips/tooltip_" + tooltip.gameObject.name] = tooltip;
@@ -231,7 +247,7 @@ internal static class Prefabs
     private static void add_tooltip_cultibook_prefab()
     {
         Tooltip tooltip =
-            Object.Instantiate(Resources.Load<Tooltip>("tooltips/tooltip_normal"), CW_Core.prefab_library);
+            Object.Instantiate(Resources.Load<Tooltip>("tooltips/tooltip_normal"), CW_Core.ui_prefab_library);
         tooltip.gameObject.name = Constants.Core.mod_prefix + "cultibook";
 
         GameObject spells = Object.Instantiate(tooltip.transform.Find("Stats").gameObject,
@@ -254,7 +270,7 @@ internal static class Prefabs
     private static void add_tooltip_blood_nodes_prefab()
     {
         Tooltip tooltip =
-            Object.Instantiate(Resources.Load<Tooltip>("tooltips/tooltip_normal"), CW_Core.prefab_library);
+            Object.Instantiate(Resources.Load<Tooltip>("tooltips/tooltip_normal"), CW_Core.ui_prefab_library);
         tooltip.gameObject.name = Constants.Core.mod_prefix + "blood_nodes";
 
         resources_dict["tooltips/tooltip_" + tooltip.gameObject.name] = tooltip;
@@ -263,7 +279,7 @@ internal static class Prefabs
     private static void add_tooltip_cultisys_prefab()
     {
         Tooltip tooltip =
-            Object.Instantiate(Resources.Load<Tooltip>("tooltips/tooltip_normal"), CW_Core.prefab_library);
+            Object.Instantiate(Resources.Load<Tooltip>("tooltips/tooltip_normal"), CW_Core.ui_prefab_library);
         tooltip.gameObject.name = Constants.Core.mod_prefix + "cultisys";
 
         resources_dict["tooltips/tooltip_" + tooltip.gameObject.name] = tooltip;
@@ -273,7 +289,7 @@ internal static class Prefabs
     {
         GameObject _obj = new("Tip_Button_Prefab");
         _obj.SetActive(false);
-        _obj.transform.SetParent(CW_Core.prefab_library);
+        _obj.transform.SetParent(CW_Core.ui_prefab_library);
         _obj.AddComponent<Button>();
         _obj.AddComponent<Image>();
         _obj.GetComponent<RectTransform>().sizeDelta = new Vector2(24, 24);
