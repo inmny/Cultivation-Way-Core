@@ -6,6 +6,7 @@ using Cultivation_Way.Animation;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
+using Cultivation_Way.Others;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -37,6 +38,30 @@ public class CW_Actor : Actor
     ///     状态数据
     /// </summary>
     internal Dictionary<string, CW_StatusEffectData> statuses;
+
+    public void start_color_effect(string color_id, float rewrtie_timer = -1)
+    {
+        if (!asset.effectDamage)
+        {
+            return;
+        }
+
+        if (!is_visible)
+        {
+            return;
+        }
+
+        batch.c_color_effect.Add(this);
+        colorEffect = rewrtie_timer < 0 ? 0.3f : rewrtie_timer;
+        Material material = FastVisit.get_color_material(color_id);
+        if (material == null)
+        {
+            Logger.Warn($"No found color material: {color_id}");
+            return;
+        }
+
+        setSpriteSharedMaterial(material);
+    }
 
     /// <summary>
     ///     死后保留需要保留的数据
@@ -81,6 +106,7 @@ public class CW_Actor : Actor
             (spell.target_type == SpellTargetType.BUILDING &&
              (target == null || target.objectType == MapObjectType.Actor)))
             return false;
+        if (data.hasFlag(DataS.is_bound)) return false;
 
         bool is_enemy = kingdom == null || kingdom.isEnemy(target.kingdom);
 

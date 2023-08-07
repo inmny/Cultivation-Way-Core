@@ -13,6 +13,7 @@ internal static class FastVisit
     };
 
     private static readonly Dictionary<string, GameObject> actor_prefabs = new();
+    private static readonly Dictionary<string, Material> color_materials = new();
     private static Sprite square_frame;
     private static Sprite square_frame_only;
     private static Sprite window_bar;
@@ -25,6 +26,29 @@ internal static class FastVisit
     public static void init()
     {
         get_actor_prefabs();
+        add_color_materials();
+    }
+
+    private static void add_color_materials()
+    {
+        Material mat = new(LibraryMaterials.instance.matDamaged.shader);
+        mat.CopyPropertiesFromMaterial(LibraryMaterials.instance.matDamaged);
+        color_materials.Add("red", mat);
+
+        mat = new Material(LibraryMaterials.instance.matHighLighted.shader);
+        mat.CopyPropertiesFromMaterial(LibraryMaterials.instance.matHighLighted);
+        color_materials.Add("white", mat);
+
+        mat = new Material(LibraryMaterials.instance.matHighLighted.shader);
+        mat.CopyPropertiesFromMaterial(LibraryMaterials.instance.matHighLighted);
+        mat.color = new Color(0.2617f, 0.2617f, 0.2617f, 1f);
+        color_materials.Add("grey", mat);
+    }
+
+    public static Material get_color_material(string color_id)
+    {
+        color_materials.TryGetValue(color_id, out Material ret);
+        return ret;
     }
 
     public static GameObject get_actor_prefab(string path)

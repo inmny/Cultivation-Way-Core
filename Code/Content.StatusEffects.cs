@@ -120,6 +120,7 @@ internal static class StatusEffects
     private static void add_bound_statuses()
     {
         CW_StatusEffect status_effect;
+        BaseStats bound_stats;
         // 藤缚
         AnimationSetting anim_setting = new()
         {
@@ -130,11 +131,13 @@ internal static class StatusEffects
             frame_interval = 0.05f
         };
         anim_setting.set_trace(AnimationTraceType.ATTACH);
-
+        bound_stats = new BaseStats();
+        bound_stats[S.speed] = -999999;
+        bound_stats[S.attack_speed] = -999999;
         EffectManager.instance.load_as_controller("status_vine_bound_anim", "effects/vine_bound/",
             controller_setting: anim_setting, base_scale: 1f);
         status_effect = FormatStatusEffect.create_simple_status_effect(
-            "status_vine_bound", new BaseStats(),
+            "status_vine_bound", bound_stats,
             10f,
             "", "", 1f,
             "effects/vine_bound/40",
@@ -148,8 +151,11 @@ internal static class StatusEffects
             object2.a.data.addFlag(DataS.is_bound);
         };
         // 石化
+        bound_stats = new BaseStats();
+        bound_stats[S.speed] = -999999;
+        bound_stats[S.attack_speed] = -999999;
         status_effect = FormatStatusEffect.create_simple_status_effect(
-            "status_landificate", new BaseStats(),
+            "status_landificate", bound_stats,
             10f,
             "", "", 1f,
             "effects/vine_bound/40",
@@ -160,8 +166,12 @@ internal static class StatusEffects
         {
             if (object2.a.data.hasFlag(DataS.is_bound)) return;
             object2.a.data.addFlag(DataS.is_bound);
+            ((CW_Actor)object2).start_color_effect("gray", 1);
         };
         // 冰封
+        bound_stats = new BaseStats();
+        bound_stats[S.speed] = -999999;
+        bound_stats[S.attack_speed] = -999999;
         anim_setting = anim_setting.__deepcopy();
         anim_setting.frame_interval = 1f;
         anim_setting.set_trace(AnimationTraceType.ATTACH);
@@ -172,7 +182,7 @@ internal static class StatusEffects
         }
 
         status_effect = FormatStatusEffect.create_simple_status_effect(
-            "status_ice_bound", new BaseStats(),
+            "status_ice_bound", bound_stats,
             10f,
             "", "", 1f,
             "effects/ice_bound_0/00",
