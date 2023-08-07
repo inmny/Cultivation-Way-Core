@@ -16,7 +16,8 @@
 - [ ] 配置Content.Spells中各个法术的灵气消耗, 等级要求, 消耗与伤害的关系
 - [ ] 设置仙路各个等级属性
 - [ ] 添加雷劫
-- [ ] 实装武道, 魂道, 血脉
+- [x] 实装武道, 魂道, 血脉
+- [ ] 完善武道, 魂道细节
 - [x] 迁移妖族(较为繁琐)
 - [ ] 添加冥族(较为繁琐)
 - [ ] 添加巫族(较为繁琐)
@@ -24,8 +25,9 @@
 - [ ] 添加丹药与炼丹(具体群内详聊)
 - [ ] 天榜([详细](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/contents_index/world_top.md))
 - [ ] 模组设置
-- [ ] 世界法则([详细](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/contents_index/world_law.md))
-- [ ] 实装各类属性(较为繁琐)
+- [x] 世界法则基本内容
+- [ ] 修炼体系各个等级人数限制
+- [x] 实装各类属性(较为繁琐)
 - [ ] 存档([详细](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/contents_index/save.md))
 - [ ] 名字生成器([详细](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/contents_index/name_generator.md))
 

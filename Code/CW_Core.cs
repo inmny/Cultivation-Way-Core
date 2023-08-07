@@ -20,7 +20,9 @@ public class CW_Core : MonoBehaviour
 {
     public static CW_Core instance;
     public static ModState mod_state;
-    public static Transform prefab_library;
+    public static Transform ui_prefab_library;
+    public static Transform actor_prefab_library;
+    public static Transform anim_prefab_library;
 
     public ModState state = new()
     {
@@ -148,9 +150,15 @@ public class CW_Core : MonoBehaviour
         state.library_manager = new Manager();
         state.map_chunk_manager = new CW_MapChunkManager();
 
-        GameObject prefab_library_obj = new("CW_PrefabLibrary");
-        prefab_library = prefab_library_obj.transform;
-        prefab_library_obj.transform.SetParent(transform);
+        GameObject ui_prefab_library_obj = new("UI_PrefabLibrary");
+        GameObject actor_prefab_library_obj = new("Actor_PrefabLibrary");
+        GameObject anim_prefab_library_obj = new("Animation_PrefabLibrary");
+        ui_prefab_library = ui_prefab_library_obj.transform;
+        actor_prefab_library = actor_prefab_library_obj.transform;
+        anim_prefab_library = anim_prefab_library_obj.transform;
+        ui_prefab_library_obj.transform.SetParent(transform);
+        actor_prefab_library_obj.transform.SetParent(transform);
+        anim_prefab_library_obj.transform.SetParent(transform);
 
         configure();
 
