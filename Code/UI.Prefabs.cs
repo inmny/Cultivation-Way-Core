@@ -199,6 +199,8 @@ internal static class Prefabs
 
         simple_creature_info_prefab.value_text = value_obj.transform.Find("Container/Text").GetComponent<Text>();
         simple_creature_info_prefab.value_icon = value_obj.transform.Find("Container/Icon").GetComponent<Image>();
+
+        simple_creature_info_prefab.value_text.supportRichText = true;
     }
 
     private static void set_edit_bar_prefab()

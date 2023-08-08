@@ -122,9 +122,11 @@ public class WindowTops : AbstractWindow<WindowTops>
             sort_key_container.transform.SetParent(instance.sort_key.transform);
             sort_key_container.transform.localPosition = new Vector3(250, 5);
             sort_key_container.transform.localScale = new Vector3(1, 1);
+            sort_key_container.GetComponent<RectTransform>().sizeDelta = new Vector2(200, 200);
 
             GridLayoutGroup layout = sort_key_container.GetComponent<GridLayoutGroup>();
             layout.cellSize = new Vector2(24, 24);
+            layout.spacing = new Vector2(4, 0);
             sort_key_container.SetActive(false);
         }
 
