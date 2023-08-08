@@ -15,6 +15,68 @@ internal static class Actors
     {
         add_eastern_human();
         add_yaos();
+        add_ming();
+        add_wu();
+    }
+
+    private static void add_wu()
+    {
+    }
+
+    private static void add_ming()
+    {
+        ActorAsset asset =
+            AssetManager.actor_library.clone(
+                Content_Constants.ming_id, SA.unit_human
+            );
+        CW_ActorAsset cw_actor_asset = new(asset);
+        add(cw_actor_asset);
+        cw_actor_asset.add_allowed_cultisys(Content_Constants.immortal_id);
+        cw_actor_asset.add_allowed_cultisys(Content_Constants.soul_id);
+
+        cw_actor_asset.culti_velo = 1;
+
+        #region 原版设置
+
+        if (Environment.UserName == "94508")
+        {
+            asset.nameTemplate = "easternhuman_name";
+        }
+
+        asset.nameLocale = Content_Constants.ming_name_locale;
+        asset.race = Content_Constants.ming_race;
+        asset.icon = "iconMing";
+        asset.useSkinColors = false;
+        asset.color = Toolbox.makeColor("#005E72");
+        asset.body_separate_part_head = false;
+        AssetManager.actor_library.t = asset;
+        AssetManager.actor_library.addColorSet(S_SkinColor.human_default);
+        AssetManager.actor_library.loadShadow(asset);
+
+        #endregion
+
+        FormatButtons.add_actor_button(asset.id);
+
+        ActorAsset baby_asset =
+            AssetManager.actor_library.clone(Content_Constants.ming_id.Replace("unit", "baby"),
+                Content_Constants.ming_id);
+
+        baby_asset.take_items = false;
+        baby_asset.use_items = false;
+        baby_asset.base_stats[S.speed] = 10f;
+        baby_asset.can_turn_into_demon_in_age_of_chaos = false;
+        baby_asset.years_to_grow_to_adult = 18;
+        baby_asset.baby = true;
+        baby_asset.growIntoID = Content_Constants.ming_id;
+        baby_asset.animation_idle = "walk_3";
+        baby_asset.traits.Add("peaceful");
+
+        cw_actor_asset = new CW_ActorAsset(baby_asset);
+        add(cw_actor_asset);
+        cw_actor_asset.add_allowed_cultisys(Content_Constants.immortal_id);
+        cw_actor_asset.add_allowed_cultisys(Content_Constants.soul_id);
+        AssetManager.actor_library.cloneColorSetFrom(Content_Constants.ming_id);
+        AssetManager.actor_library.loadShadow(baby_asset);
     }
 
     private static void add_yaos()

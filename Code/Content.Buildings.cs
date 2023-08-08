@@ -10,7 +10,53 @@ internal static class Buildings
     {
         add_eastern_human();
         add_yao();
+        add_ming();
+        add_wu();
         fix_bugs();
+    }
+
+    private static void add_wu()
+    {
+    }
+
+    private static void add_ming()
+    {
+        BuildOrder bonfire_ming_order = AssetManager.race_build_orders
+            .get(Content_Constants.ming_race).list
+            .Find(order => order.id == SB.order_bonfire);
+        bonfire_ming_order.id = "bonfire_ming";
+
+        foreach (BuildOrder order in AssetManager.race_build_orders.get(Content_Constants.ming_race).list)
+        {
+            if (order.requirements_orders.Exists(order_id => order_id == SB.order_bonfire))
+            {
+                order.requirements_orders.Remove(SB.order_bonfire);
+                order.requirements_orders.Add("bonfire_ming");
+            }
+        }
+
+        clone_human_buildings(Content_Constants.ming_race);
+
+        BuildingAsset bonfire = AssetManager.buildings.clone("bonfire_ming", "bonfire");
+        bonfire.race = Content_Constants.ming_race;
+        AssetManager.buildings.loadSprites(bonfire);
+
+        AssetManager.buildings.get("tent_ming").fundament = new BuildingFundament(1, 1, 1, 0);
+        AssetManager.buildings.get("house_ming_0").fundament = new BuildingFundament(3, 3, 4, 0);
+        AssetManager.buildings.get("house_ming_1").fundament = new BuildingFundament(3, 3, 4, 0);
+        AssetManager.buildings.get("house_ming_2").fundament = new BuildingFundament(3, 3, 4, 0);
+        AssetManager.buildings.get("house_ming_3").fundament = new BuildingFundament(4, 4, 6, 0);
+        AssetManager.buildings.get("house_ming_4").fundament = new BuildingFundament(5, 5, 9, 0);
+        AssetManager.buildings.get("house_ming_5").fundament = new BuildingFundament(5, 5, 9, 0);
+        AssetManager.buildings.get("hall_ming_0").fundament = new BuildingFundament(4, 4, 7, 0);
+        AssetManager.buildings.get("hall_ming_1").fundament = new BuildingFundament(5, 5, 9, 0);
+        AssetManager.buildings.get("hall_ming_2").fundament = new BuildingFundament(8, 8, 14, 0);
+
+        AssetManager.buildings.get("temple_ming").fundament = new BuildingFundament(3, 3, 5, 0);
+        AssetManager.buildings.get("barracks_ming").fundament = new BuildingFundament(3, 3, 7, 0);
+        AssetManager.buildings.get("windmill_ming_0").fundament = new BuildingFundament(2, 1, 2, 0);
+        AssetManager.buildings.get("windmill_ming_1").fundament = new BuildingFundament(2, 2, 2, 0);
+        AssetManager.buildings.get("watch_tower_ming").fundament = new BuildingFundament(2, 2, 3, 0);
     }
 
     private static void fix_bugs()

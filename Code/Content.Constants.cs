@@ -34,4 +34,7 @@ internal class Content_Constants
     public const string yao_postfix = "_yao";
     public const string yao_race = "yao";
     public const string yao_name_locale = "Yaos";
+    public const string ming_id = "unit_ming";
+    public const string ming_race = "ming";
+    public const string ming_name_locale = "Mings";
 }
