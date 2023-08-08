@@ -27,12 +27,14 @@ public class WindowTops : AbstractWindow<WindowTops>
     private TopValueCalc curr_value_calc;
     private TopValueShow curr_value_show;
     private TopFilter curr_filter;
+    private string curr_icon;
     private SimpleInfo curr_info_prefab;
     private readonly int show_count = 10;
     private readonly List<object> curr_list = new();
 
     private readonly Dictionary<string, TopValueCalc> calcs = new();
     private readonly Dictionary<string, TopValueShow> shows = new();
+    private readonly Dictionary<string, string> icons = new();
     private readonly Dictionary<string, TopFilter> filter_funcs = new();
 
     internal static void init()
@@ -93,6 +95,7 @@ public class WindowTops : AbstractWindow<WindowTops>
             Instantiate(
                 origin_favorites_gameobject.transform.Find("Background/Scroll View/Viewport/Content/No Items")
                     .gameObject, content_transform);
+        instance.no_item.name = "No_Items";
         origin_favorites_gameobject.SetActive(false);
         Sprite no_item_sprite = Resources.Load<Sprite>("ui/Icons/iconTop");
         instance.no_item.transform.Find("BG").GetComponent<Image>().sprite = no_item_sprite;
@@ -107,9 +110,9 @@ public class WindowTops : AbstractWindow<WindowTops>
         #region 排序关键词选择器
 
         instance.sort_key = new GameObject("Sort_Key");
+        instance.sort_key.transform.SetParent(background_transform);
         instance.sort_key.transform.localPosition = new Vector3(0, 0);
         instance.sort_key.transform.localScale = new Vector3(1, 1);
-        instance.sort_key.transform.SetParent(background_transform);
 
         void add_sort_key_container(string id)
         {
@@ -183,6 +186,25 @@ public class WindowTops : AbstractWindow<WindowTops>
         content_fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
         #endregion
+
+        initialized = true;
+    }
+
+    private void OnEnable()
+    {
+        if (!initialized) return;
+        clear_content();
+        if (curr_value_calc != null)
+        {
+            show();
+        }
+    }
+
+    private void set_sort_key(string id)
+    {
+        curr_value_calc = calcs[id];
+        curr_value_show = shows[id];
+        curr_icon = icons.TryGetValue(id, out string icon) ? icon : null;
     }
 
     private void switch_to_creature()
@@ -190,8 +212,13 @@ public class WindowTops : AbstractWindow<WindowTops>
         clear();
         curr_list.AddRange(World.world.units.getSimpleList());
         curr_info_prefab = Prefabs.simple_creature_info_prefab;
-        curr_value_calc = calcs["age"];
-        curr_value_show = shows["age"];
+        instance.sort_key.transform.Find("creature").gameObject.SetActive(true);
+        foreach (Transform child in instance.sort_key.transform.Find("creature"))
+        {
+            child.gameObject.SetActive(true);
+        }
+
+        set_sort_key("actor_age");
         curr_filter = filter_funcs["default"];
         show();
     }
@@ -226,51 +253,61 @@ public class WindowTops : AbstractWindow<WindowTops>
 
     private void add_creature_sort_keys(Transform container)
     {
-        CW_TipButton key_button;
-
-        key_button = Instantiate(Prefabs.tip_button_prefab, container);
-        key_button.load("iconClock", obj =>
+        void add_sort_key(string id, string icon, string tip_name, TopValueCalc calc, TopValueShow show)
         {
-            Tooltip.show(obj, "normal", new TooltipData
+            CW_TipButton key_button = Instantiate(Prefabs.tip_button_prefab, container);
+            key_button.load(icon, obj =>
             {
-                tip_name = "cw_top_creature_sort_key_age"
+                Tooltip.show(obj, "normal", new TooltipData
+                {
+                    tip_name = tip_name
+                });
             });
-        });
-        key_button.button.onClick.AddListener(() =>
-        {
-            clear_content();
-            curr_value_calc = calcs["age"];
-            show();
-        });
-        calcs["age"] = o =>
-        {
-            CW_Actor actor = (CW_Actor)o;
-            return actor.data.getAge();
-        };
-        shows["age"] = o =>
-        {
-            CW_Actor actor = (CW_Actor)o;
-            return actor.data.getAge().ToString();
-        };
+            key_button.button.onClick.AddListener(() =>
+            {
+                clear_content();
+                set_sort_key(id);
+                instance.show();
+            });
+            calcs[id] = calc;
+            shows[id] = show;
+            icons[id] = $"ui/Icons/{icon}";
+        }
+
+        add_sort_key("actor_age", "iconClock", "cw_top_creature_sort_key_age", o => ((CW_Actor)o).data.getAge(),
+            o => ((CW_Actor)o).data.getAge().ToString());
     }
 
     private void show()
     {
+        content_transform.Find("No_Items").gameObject.SetActive(false);
         List<object> show_list = curr_list.FindAll(o => curr_filter(o));
-        show_list.Sort((o1, o2) => { return curr_value_calc(o1).CompareTo(curr_value_calc(o2)); });
+        show_list.Sort((o1, o2) => { return curr_value_calc(o2).CompareTo(curr_value_calc(o1)); });
         for (int idx = 0; idx < Math.Min(show_count, show_list.Count); idx++)
         {
             SimpleInfo info = Instantiate(curr_info_prefab, content_transform);
-            info.load_obj(show_list[idx], curr_value_show(show_list[idx]));
+            info.load_obj(show_list[idx], curr_value_show(show_list[idx]), curr_icon);
         }
     }
 
     private void clear()
     {
         curr_list.Clear();
+        foreach (Transform child in sort_key.transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+
+        clear_content();
     }
 
     private void clear_content()
     {
+        content_transform.Find("No_Items").gameObject.SetActive(true);
+        foreach (Transform child in content_transform)
+        {
+            if (child.name == "No_Items") continue;
+            Destroy(child.gameObject);
+        }
     }
 }

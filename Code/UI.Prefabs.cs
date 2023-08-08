@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Cultivation_Way.Core;
 using Cultivation_Way.Others;
 using DG.Tweening;
 using NCMS.Utils;
@@ -56,17 +57,43 @@ internal class CW_TipButton : MonoBehaviour
 
 internal abstract class SimpleInfo : MonoBehaviour
 {
-    public GameObject bg;
     public GameObject disp;
     public GameObject info;
     public Text object_name;
-    public abstract void load_obj(object obj, string value);
+
+    public virtual void load_obj(object obj, string value, string icon_path = "")
+    {
+        name = object_name.text;
+    }
 }
 
 internal class SimpleCreatureInfo : SimpleInfo
 {
-    public override void load_obj(object obj, string value)
+    public StatBar health_bar;
+    public Text value_text;
+    public Image value_icon;
+
+    public override void load_obj(object obj, string value, string icon_path = "")
     {
+        CW_Actor actor = (CW_Actor)obj;
+        object_name.text = actor.getName();
+        disp.GetComponent<UiUnitAvatarElement>().show_banner_clan = false;
+        disp.GetComponent<UiUnitAvatarElement>().show_banner_kingdom = false;
+        disp.GetComponent<UiUnitAvatarElement>().show(actor);
+        value_text.text = value;
+        health_bar.setBar(actor.data.health, actor.getMaxHealth(), $"/{Toolbox.formatNumber(actor.getMaxHealth())}");
+
+        if (string.IsNullOrEmpty(icon_path))
+        {
+            value_icon.sprite =
+                SpriteTextureLoader.getSprite("ui/icons/iconFavoriteStar");
+        }
+        else
+        {
+            value_icon.sprite = SpriteTextureLoader.getSprite(icon_path);
+        }
+
+        base.load_obj(obj, value);
     }
 }
 
@@ -104,6 +131,12 @@ internal static class Prefabs
 
     private static void set_simple_creature_info_prefab()
     {
+        ScrollWindow.checkWindowExist("favorites");
+        GameObject vanllia_favorites_window = Windows.GetWindow("favorites").gameObject;
+        vanllia_favorites_window.SetActive(false);
+        PrefabUnitElement vanllia_favorite_element_prefab =
+            vanllia_favorites_window.GetComponent<WindowFavorites>().element_prefab;
+
         simple_creature_info_prefab =
             new GameObject("Simple_Creature_Info_Prefab", typeof(SimpleCreatureInfo), typeof(Image))
                 .GetComponent<SimpleCreatureInfo>();
@@ -113,6 +146,50 @@ internal static class Prefabs
         simple_creature_info_prefab.GetComponent<Image>().sprite = FastVisit.get_info_bg();
         simple_creature_info_prefab.GetComponent<Image>().type = Image.Type.Sliced;
         simple_creature_info_prefab.GetComponent<RectTransform>().sizeDelta = new Vector2(193, 31);
+
+        GameObject name = new("Name", typeof(Text));
+        name.transform.SetParent(simple_creature_info_prefab.transform);
+        name.transform.localPosition = new Vector3(0, 7);
+        name.transform.localScale = new Vector3(1, 1);
+        name.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 15);
+        simple_creature_info_prefab.object_name = name.GetComponent<Text>();
+        simple_creature_info_prefab.object_name.alignment = TextAnchor.MiddleCenter;
+        simple_creature_info_prefab.object_name.font = LocalizedTextManager.currentFont;
+        simple_creature_info_prefab.object_name.resizeTextForBestFit = true;
+        simple_creature_info_prefab.object_name.resizeTextMinSize = 1;
+        simple_creature_info_prefab.object_name.resizeTextMaxSize = 10;
+        simple_creature_info_prefab.object_name.horizontalOverflow = HorizontalWrapMode.Wrap;
+
+        simple_creature_info_prefab.disp =
+            Object.Instantiate(vanllia_favorite_element_prefab.avatarElement, simple_creature_info_prefab.transform)
+                .gameObject;
+        simple_creature_info_prefab.disp.transform.localPosition = new Vector3(-80, 0);
+        simple_creature_info_prefab.disp.transform.localScale = new Vector3(1, 1);
+        simple_creature_info_prefab.disp.GetComponent<RectTransform>().sizeDelta = new Vector2(36, 36);
+        simple_creature_info_prefab.disp.transform.Find("PrefabBanner").gameObject.SetActive(false);
+        simple_creature_info_prefab.disp.transform.Find("PrefabBannerClan").gameObject.SetActive(false);
+
+        simple_creature_info_prefab.info = new GameObject("Info");
+        simple_creature_info_prefab.info.transform.SetParent(simple_creature_info_prefab.transform);
+        simple_creature_info_prefab.info.transform.localPosition = new Vector3(0, -13.67f);
+        simple_creature_info_prefab.info.transform.localScale = new Vector3(1, 1);
+
+        GameObject health_bar = Object
+            .Instantiate(vanllia_favorite_element_prefab.health_bar, simple_creature_info_prefab.info.transform)
+            .gameObject;
+        health_bar.transform.localPosition = new Vector3(1f, 0);
+        health_bar.transform.localScale = new Vector3(1, 1);
+        simple_creature_info_prefab.health_bar = health_bar.GetComponent<StatBar>();
+
+        GameObject value_obj = Object.Instantiate(
+            vanllia_favorite_element_prefab.transform.Find("Icons/Kills").gameObject,
+            simple_creature_info_prefab.info.transform);
+        value_obj.transform.localPosition = new Vector3(50, 6);
+        value_obj.transform.localScale = new Vector3(1, 1);
+        value_obj.GetComponent<RectTransform>().sizeDelta = new Vector2(64, 12);
+
+        simple_creature_info_prefab.value_text = value_obj.transform.Find("Container/Text").GetComponent<Text>();
+        simple_creature_info_prefab.value_icon = value_obj.transform.Find("Container/Icon").GetComponent<Image>();
     }
 
     private static void set_edit_bar_prefab()
