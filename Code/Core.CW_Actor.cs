@@ -164,6 +164,7 @@ public class CW_Actor : Actor
         status_asset.action_on_get?.Invoke(status, from, this);
 
         activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
+        setStatsDirty();
         return status;
     }
 
