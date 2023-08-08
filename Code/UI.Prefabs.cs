@@ -51,7 +51,14 @@ internal class CW_TipButton : MonoBehaviour
         button = GetComponent<Button>();
         image = GetComponent<Image>();
         tooltip_action = show_tooltip;
-        image.sprite = Resources.Load<Sprite>("ui/Icons/" + icon);
+        if (icon.StartsWith("../../"))
+        {
+            image.sprite = SpriteTextureLoader.getSprite(icon.Replace("../../", ""));
+        }
+        else
+        {
+            image.sprite = SpriteTextureLoader.getSprite("ui/Icons/" + icon);
+        }
     }
 }
 
@@ -187,6 +194,8 @@ internal static class Prefabs
         value_obj.transform.localPosition = new Vector3(50, 6);
         value_obj.transform.localScale = new Vector3(1, 1);
         value_obj.GetComponent<RectTransform>().sizeDelta = new Vector2(64, 12);
+
+        value_obj.transform.Find("Container").GetComponent<HorizontalLayoutGroup>().spacing = 2;
 
         simple_creature_info_prefab.value_text = value_obj.transform.Find("Container/Text").GetComponent<Text>();
         simple_creature_info_prefab.value_icon = value_obj.transform.Find("Container/Icon").GetComponent<Image>();

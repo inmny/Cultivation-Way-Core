@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Cultivation_Way.Core;
+using Cultivation_Way.Extension;
+using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using NCMS.Utils;
 using ReflectionUtility;
@@ -118,7 +120,7 @@ public class WindowTops : AbstractWindow<WindowTops>
         {
             GameObject sort_key_container = new(id, typeof(GridLayoutGroup));
             sort_key_container.transform.SetParent(instance.sort_key.transform);
-            sort_key_container.transform.localPosition = new Vector3(200, 55);
+            sort_key_container.transform.localPosition = new Vector3(250, 5);
             sort_key_container.transform.localScale = new Vector3(1, 1);
 
             GridLayoutGroup layout = sort_key_container.GetComponent<GridLayoutGroup>();
@@ -134,8 +136,6 @@ public class WindowTops : AbstractWindow<WindowTops>
         add_sort_key_container("city");
         add_sort_key_container("kingdom");
         add_sort_key_container("clan");
-
-        instance.add_creature_sort_keys(instance.sort_key.transform.Find("creature"));
 
         #endregion
 
@@ -188,6 +188,11 @@ public class WindowTops : AbstractWindow<WindowTops>
         #endregion
 
         initialized = true;
+    }
+
+    internal static void post_init()
+    {
+        instance.add_creature_sort_keys(instance.sort_key.transform.Find("creature"));
     }
 
     private void OnEnable()
@@ -256,6 +261,12 @@ public class WindowTops : AbstractWindow<WindowTops>
         void add_sort_key(string id, string icon, string tip_name, TopValueCalc calc, TopValueShow show)
         {
             CW_TipButton key_button = Instantiate(Prefabs.tip_button_prefab, container);
+            GameObject arrow_obj = new("Arrow", typeof(Image));
+            arrow_obj.transform.SetParent(key_button.transform);
+            arrow_obj.transform.localPosition = new Vector3(4, 4);
+            arrow_obj.transform.localScale = new Vector3(1, 1);
+            arrow_obj.GetComponent<RectTransform>().sizeDelta = new Vector2(16, 16);
+            arrow_obj.GetComponent<Image>().sprite = SpriteTextureLoader.getSprite("ui/Icons/iconArrowUP");
             key_button.load(icon, obj =>
             {
                 Tooltip.show(obj, "normal", new TooltipData
@@ -271,11 +282,47 @@ public class WindowTops : AbstractWindow<WindowTops>
             });
             calcs[id] = calc;
             shows[id] = show;
-            icons[id] = $"ui/Icons/{icon}";
+            if (icon.StartsWith("../../"))
+            {
+                icons[id] = icon.Replace("../../", "");
+            }
+            else
+            {
+                icons[id] = $"ui/Icons/{icon}";
+            }
         }
 
         add_sort_key("actor_age", "iconClock", "cw_top_creature_sort_key_age", o => ((CW_Actor)o).data.getAge(),
             o => ((CW_Actor)o).data.getAge().ToString());
+        add_sort_key("actor_kills", "iconSkulls", "cw_top_creature_sort_key_kills", o => ((CW_Actor)o).data.kills,
+            o => ((CW_Actor)o).data.kills.ToString());
+        add_sort_key("actor_level", "iconLevels", "cw_top_creature_sort_key_level",
+            o => ((CW_Actor)o).data.level * 1e9f + ((CW_Actor)o).data.experience,
+            o => ((CW_Actor)o).data.level.ToString());
+        foreach (CultisysAsset cultisys in Manager.cultisys.list)
+        {
+            string cultisys_id = cultisys.id;
+            int cultisys_pid = cultisys.pid;
+            add_sort_key("actor_" + cultisys.id, "../../" + cultisys.sprite_path,
+                Localization.Get("cw_sort_by").Replace("$sth$", Localization.Get(cultisys.id)),
+                o => ((CW_Actor)o).data.get_cultisys_level()[cultisys_pid],
+                o =>
+                {
+                    if (((CW_Actor)o).data.get_cultisys_level()[cultisys_pid] < 0)
+                    {
+                        return Localization.Get("cw_no_cultisys");
+                    }
+
+                    return Localization.Get($"{cultisys_id}_{((CW_Actor)o).data.get_cultisys_level()[cultisys_pid]}");
+                });
+        }
+
+        add_sort_key("actor_element", "iconElement",
+            Localization.Get("cw_sort_by").Replace("$sth$", Localization.Get("cw_element")),
+            o => ((CW_Actor)o).data.get_element().get_type().rarity,
+            o => Toolbox.coloredString(
+                Localization.Get(((CW_Actor)o).data.get_element().get_type().id),
+                ((CW_Actor)o).data.get_element().get_color()));
     }
 
     private void show()
