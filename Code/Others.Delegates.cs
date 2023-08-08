@@ -94,4 +94,4 @@ public delegate float TopValueCalc(object obj);
 /// <summary>
 ///     用于天榜筛选
 /// </summary>
-public delegate bool TopFilter(object obj);
+public delegate bool TopFilterCheck(object obj);

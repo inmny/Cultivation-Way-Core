@@ -28,7 +28,7 @@ public class WindowTops : AbstractWindow<WindowTops>
 
     private TopValueCalc curr_value_calc;
     private TopValueShow curr_value_show;
-    private TopFilter curr_filter;
+    private TopFilterCheck curr_filter;
     private string curr_icon;
     private SimpleInfo curr_info_prefab;
     private readonly int show_count = 10;
@@ -37,7 +37,7 @@ public class WindowTops : AbstractWindow<WindowTops>
     private readonly Dictionary<string, TopValueCalc> calcs = new();
     private readonly Dictionary<string, TopValueShow> shows = new();
     private readonly Dictionary<string, string> icons = new();
-    private readonly Dictionary<string, TopFilter> filter_funcs = new();
+    private readonly Dictionary<string, TopFilterCheck> filter_funcs = new();
 
     internal static void init()
     {
@@ -120,7 +120,7 @@ public class WindowTops : AbstractWindow<WindowTops>
         {
             GameObject sort_key_container = new(id, typeof(GridLayoutGroup));
             sort_key_container.transform.SetParent(instance.sort_key.transform);
-            sort_key_container.transform.localPosition = new Vector3(250, 5);
+            sort_key_container.transform.localPosition = new Vector3(240, 5);
             sort_key_container.transform.localScale = new Vector3(1, 1);
             sort_key_container.GetComponent<RectTransform>().sizeDelta = new Vector2(200, 200);
 
@@ -148,14 +148,33 @@ public class WindowTops : AbstractWindow<WindowTops>
 
         void add_filter_container(string id)
         {
-            GameObject filter_container = new(id, typeof(GridLayoutGroup));
-            filter_container.transform.SetParent(instance.filter.transform);
-            filter_container.transform.localPosition = new Vector3(-200, 55);
-            filter_container.transform.localScale = new Vector3(1, 1);
+            GameObject _filter = new(id);
+            _filter.transform.SetParent(instance.filter.transform);
+            _filter.transform.localPosition = new Vector3(-200, 55);
+            _filter.transform.localScale = new Vector3(1, 1);
 
-            GridLayoutGroup layout = filter_container.GetComponent<GridLayoutGroup>();
-            layout.cellSize = new Vector2(24, 24);
-            filter_container.SetActive(false);
+            // 筛选器类型, 上方的按钮
+            GameObject filter_type_select_part =
+                new("Detailed Filters", typeof(HorizontalLayoutGroup), typeof(TopFilter));
+            filter_type_select_part.transform.SetParent(_filter.transform);
+            filter_type_select_part.transform.localPosition = new Vector3(0, 0);
+            filter_type_select_part.transform.localScale = new Vector3(1, 1);
+            filter_type_select_part.GetComponent<RectTransform>().sizeDelta = new Vector2(200, 20);
+
+            HorizontalLayoutGroup filter_type_select_part_layout =
+                filter_type_select_part.GetComponent<HorizontalLayoutGroup>();
+            filter_type_select_part_layout.childControlHeight = false;
+            filter_type_select_part_layout.childControlWidth = false;
+            filter_type_select_part_layout.childForceExpandHeight = false;
+            filter_type_select_part_layout.childForceExpandWidth = false;
+            filter_type_select_part_layout.childAlignment = TextAnchor.MiddleCenter;
+            filter_type_select_part_layout.spacing = 4;
+
+            // 筛选器容器, 下方的具体内容
+            GameObject filter_container = new("Container", typeof(TopFilterContainer));
+            filter_container.transform.SetParent(_filter.transform);
+
+            _filter.SetActive(false);
         }
 
         add_filter_container("creature");
@@ -258,55 +277,56 @@ public class WindowTops : AbstractWindow<WindowTops>
     {
     }
 
+    private void add_sort_key(string id, string icon, string tip_name, TopValueCalc calc, TopValueShow show,
+        Transform container)
+    {
+        CW_TipButton key_button = Instantiate(Prefabs.tip_button_prefab, container);
+        GameObject arrow_obj = new("Arrow", typeof(Image));
+        arrow_obj.transform.SetParent(key_button.transform);
+        arrow_obj.transform.localPosition = new Vector3(4, 4);
+        arrow_obj.transform.localScale = new Vector3(1, 1);
+        arrow_obj.GetComponent<RectTransform>().sizeDelta = new Vector2(16, 16);
+        arrow_obj.GetComponent<Image>().sprite = SpriteTextureLoader.getSprite("ui/Icons/iconArrowUP");
+        key_button.load(icon, obj =>
+        {
+            Tooltip.show(obj, "normal", new TooltipData
+            {
+                tip_name = tip_name
+            });
+        });
+        key_button.button.onClick.AddListener(() =>
+        {
+            clear_content();
+            set_sort_key(id);
+            instance.show();
+        });
+        calcs[id] = calc;
+        shows[id] = show;
+        if (icon.StartsWith("../../"))
+        {
+            icons[id] = icon.Replace("../../", "");
+        }
+        else
+        {
+            icons[id] = $"ui/Icons/{icon}";
+        }
+    }
+
     private void add_creature_sort_keys(Transform container)
     {
-        void add_sort_key(string id, string icon, string tip_name, TopValueCalc calc, TopValueShow show)
-        {
-            CW_TipButton key_button = Instantiate(Prefabs.tip_button_prefab, container);
-            GameObject arrow_obj = new("Arrow", typeof(Image));
-            arrow_obj.transform.SetParent(key_button.transform);
-            arrow_obj.transform.localPosition = new Vector3(4, 4);
-            arrow_obj.transform.localScale = new Vector3(1, 1);
-            arrow_obj.GetComponent<RectTransform>().sizeDelta = new Vector2(16, 16);
-            arrow_obj.GetComponent<Image>().sprite = SpriteTextureLoader.getSprite("ui/Icons/iconArrowUP");
-            key_button.load(icon, obj =>
-            {
-                Tooltip.show(obj, "normal", new TooltipData
-                {
-                    tip_name = tip_name
-                });
-            });
-            key_button.button.onClick.AddListener(() =>
-            {
-                clear_content();
-                set_sort_key(id);
-                instance.show();
-            });
-            calcs[id] = calc;
-            shows[id] = show;
-            if (icon.StartsWith("../../"))
-            {
-                icons[id] = icon.Replace("../../", "");
-            }
-            else
-            {
-                icons[id] = $"ui/Icons/{icon}";
-            }
-        }
-
         add_sort_key("actor_age", "iconClock", "cw_top_creature_sort_key_age", o => ((CW_Actor)o).data.getAge(),
-            o => ((CW_Actor)o).data.getAge().ToString());
+            o => ((CW_Actor)o).data.getAge().ToString(), container);
         add_sort_key("actor_kills", "iconSkulls", "cw_top_creature_sort_key_kills", o => ((CW_Actor)o).data.kills,
-            o => ((CW_Actor)o).data.kills.ToString());
+            o => ((CW_Actor)o).data.kills.ToString(), container);
         add_sort_key("actor_level", "iconLevels", "cw_top_creature_sort_key_level",
             o => ((CW_Actor)o).data.level * 1e9f + ((CW_Actor)o).data.experience,
-            o => ((CW_Actor)o).data.level.ToString());
+            o => ((CW_Actor)o).data.level.ToString(), container);
         foreach (CultisysAsset cultisys in Manager.cultisys.list)
         {
             string cultisys_id = cultisys.id;
             int cultisys_pid = cultisys.pid;
             add_sort_key("actor_" + cultisys.id, "../../" + cultisys.sprite_path,
-                Localization.Get("cw_sort_by").Replace("$sth$", Localization.Get(cultisys.id)),
+                $"cw_top_creature_sort_key_{cultisys.id}",
                 o => ((CW_Actor)o).data.get_cultisys_level()[cultisys_pid],
                 o =>
                 {
@@ -316,15 +336,15 @@ public class WindowTops : AbstractWindow<WindowTops>
                     }
 
                     return Localization.Get($"{cultisys_id}_{((CW_Actor)o).data.get_cultisys_level()[cultisys_pid]}");
-                });
+                }, container);
         }
 
         add_sort_key("actor_element", "iconElement",
-            Localization.Get("cw_sort_by").Replace("$sth$", Localization.Get("cw_element")),
+            "cw_top_creature_sort_key_element",
             o => ((CW_Actor)o).data.get_element().get_type().rarity,
             o => Toolbox.coloredString(
                 Localization.Get(((CW_Actor)o).data.get_element().get_type().id),
-                ((CW_Actor)o).data.get_element().get_color()));
+                ((CW_Actor)o).data.get_element().get_color()), container);
     }
 
     private void show()

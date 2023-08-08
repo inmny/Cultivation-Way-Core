@@ -62,6 +62,37 @@ internal class CW_TipButton : MonoBehaviour
     }
 }
 
+/// <summary>
+///     在天榜的筛选器组件中添加便于逻辑处理的组件
+/// </summary>
+internal class TopFilter : MonoBehaviour
+{
+    private TopFilterContainer curr_filter_container;
+
+    public void select_container(string id)
+    {
+        curr_filter_container = transform.Find(id).GetComponent<TopFilterContainer>();
+    }
+
+    public TopFilterContainer add_container(string id)
+    {
+        return null;
+    }
+
+    public TopFilterCheck get_curr_filter_check()
+    {
+        return curr_filter_container.get_filter_check();
+    }
+}
+
+internal class TopFilterContainer : MonoBehaviour
+{
+    public TopFilterCheck get_filter_check()
+    {
+        return _ => true;
+    }
+}
+
 internal abstract class SimpleInfo : MonoBehaviour
 {
     public GameObject disp;
