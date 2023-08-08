@@ -47,8 +47,14 @@ internal static class Actors
         asset.race = Content_Constants.ming_race;
         asset.icon = "iconMing";
         asset.useSkinColors = false;
+        asset.base_stats[S.armor] = 1e5f;
         asset.color = Toolbox.makeColor("#005E72");
         asset.body_separate_part_head = false;
+        asset.traits = new List<string>
+        {
+            Constants.Core.mod_prefix + "negative_creature",
+            Constants.Core.mod_prefix + "curse_immune"
+        };
         AssetManager.actor_library.t = asset;
         AssetManager.actor_library.addColorSet(S_SkinColor.human_default);
         AssetManager.actor_library.loadShadow(asset);
@@ -64,6 +70,12 @@ internal static class Actors
         baby_asset.take_items = false;
         baby_asset.use_items = false;
         baby_asset.base_stats[S.speed] = 10f;
+        baby_asset.base_stats[S.armor] = 1e4f;
+        baby_asset.traits = new List<string>
+        {
+            Constants.Core.mod_prefix + "negative_creature",
+            Constants.Core.mod_prefix + "curse_immune"
+        };
         baby_asset.can_turn_into_demon_in_age_of_chaos = false;
         baby_asset.years_to_grow_to_adult = 18;
         baby_asset.baby = true;

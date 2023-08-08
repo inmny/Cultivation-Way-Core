@@ -130,6 +130,23 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
             AssetManager.actor_library.add(pAsset.vanllia_asset);
         }
 
+        if (pAsset.vanllia_asset != null && (pAsset.vanllia_asset.traits == null ||
+                                             (!pAsset.vanllia_asset.traits.Contains(Constants.Core.mod_prefix +
+                                                  "positive_creature")
+                                              && !pAsset.vanllia_asset.traits.Contains(Constants.Core.mod_prefix +
+                                                  "negative_creature"))))
+        {
+            pAsset.vanllia_asset.traits ??= new List<string>();
+            if (pAsset.vanllia_asset.race == SK.undead || pAsset.vanllia_asset.kingdom == SK.undead)
+            {
+                pAsset.vanllia_asset.traits.Add(Constants.Core.mod_prefix + "negative_creature");
+            }
+            else
+            {
+                pAsset.vanllia_asset.traits.Add(Constants.Core.mod_prefix + "positive_creature");
+            }
+        }
+
         return base.add(pAsset);
     }
 

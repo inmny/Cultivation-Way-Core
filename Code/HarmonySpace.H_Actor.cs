@@ -107,8 +107,15 @@ internal static class H_Actor
         cw_actor.cur_spells.Clear();
         cw_actor.cur_spells.AddRange(cw_actor.__data_spells);
 
-        // 清空束缚状态
-        actor.data.removeFlag(DataS.is_bound);
+        // 载入阴/阳性生物的加成
+        if (cw_actor.hasTrait(CW_ActorTraits.negative_creature.id) && World.world_era.overlay_darkness)
+        {
+            actor.stats.mergeStats(CW_ActorTraits.negative_creature.base_stats);
+        }
+        else if (cw_actor.hasTrait(CW_ActorTraits.negative_creature.id) && !World.world_era.overlay_darkness)
+        {
+            actor.stats.mergeStats(CW_ActorTraits.positive_creature.base_stats);
+        }
     }
 
     #endregion

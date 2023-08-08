@@ -18,6 +18,7 @@ public class Manager
     public void init()
     {
         instance = this;
+        CW_ActorTraits.init();
         CW_BaseStatsLibrary.init();
         CW_GodPowers.init();
         CW_Drops.init();

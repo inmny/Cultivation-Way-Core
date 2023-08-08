@@ -5,6 +5,7 @@ internal static class Manager
     public static void init()
     {
         Actors.init();
+        ActorTraits.init();
         Cultisyses.init();
         Elements.init();
         Energies.init();

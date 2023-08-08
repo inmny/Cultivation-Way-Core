@@ -3522,6 +3522,7 @@
         <Content Include="GameResources\ui\cw_window\sim_info_bg.png" />
         <Content Include="GameResources\ui\cw_window\windowInnerSliced.png" />
         <Content Include="GameResources\ui\cw_window\windowNamePlate.png" />
+        <Content Include="GameResources\ui\Icons\iconCurseImmune.png"/>
         <Content Include="GameResources\ui\Icons\iconMing.png"/>
         <Content Include="GameResources\ui\Icons\iconNo_Auto_Save.png" />
         <Content Include="GameResources\ui\Icons\iconBee.png" />
@@ -3560,6 +3561,8 @@
         <Content Include="GameResources\ui\Icons\iconWakan_Decrease.png" />
         <Content Include="GameResources\ui\Icons\iconEmpty_Cultibook.png" />
         <Content Include="GameResources\ui\Icons\icon_oldage.png" />
+        <Content Include="GameResources\ui\Icons\iconYang.png"/>
+        <Content Include="GameResources\ui\Icons\iconYin.png"/>
         <Content Include="icon.png" />
         <Content Include="Includes\0Harmony.dll" />
         <Content Include="Includes\Assembly-CSharp-firstpass.dll" />
@@ -3614,6 +3617,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Code\Content.Actors.cs"/>
+        <Compile Include="Code\Content.ActorTraits.cs"/>
         <Compile Include="Code\Content.Buildings.cs"/>
         <Compile Include="Code\Content.Kingdoms.cs"/>
         <Compile Include="Code\Content.Races.cs"/>
@@ -3625,6 +3629,7 @@
         <Compile Include="Code\HarmonySpace.H_DebugTooltip.cs"/>
         <Compile Include="Code\HarmonySpace.H_ZoneCalculator.cs"/>
         <Compile Include="Code\HarmonySpace.H_WorldLaws.cs"/>
+        <Compile Include="Code\Library.CW_ActorTraits.cs"/>
         <Compile Include="Code\Library.CW_Drops.cs"/>
         <Compile Include="Code\Library.CW_GodPowers.cs"/>
         <Compile Include="Code\Library.CW_Options.cs"/>
