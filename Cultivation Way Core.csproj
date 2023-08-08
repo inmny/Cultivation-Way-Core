@@ -3616,9 +3616,11 @@
         <Content Include="Includes\UnityEngine.UIModule.dll" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Code\Content.Achievements.cs"/>
         <Compile Include="Code\Content.Actors.cs"/>
         <Compile Include="Code\Content.ActorTraits.cs"/>
         <Compile Include="Code\Content.Buildings.cs"/>
+        <Compile Include="Code\Content.HarmonySpace.H_Achievement.cs"/>
         <Compile Include="Code\Content.Kingdoms.cs"/>
         <Compile Include="Code\Content.Races.cs"/>
         <Compile Include="Code\Content.StatusEffects.cs"/>

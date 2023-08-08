@@ -8,5 +8,6 @@ internal static class Manager
     {
         _ = new Harmony(Constants.Others.harmony_id + ".Content");
         Harmony.CreateAndPatchAll(typeof(H_Actor));
+        Harmony.CreateAndPatchAll(typeof(H_Achievement));
     }
 }

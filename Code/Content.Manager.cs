@@ -6,6 +6,7 @@ internal static class Manager
     {
         Actors.init();
         ActorTraits.init();
+        Achievements.init();
         Cultisyses.init();
         Elements.init();
         Energies.init();
