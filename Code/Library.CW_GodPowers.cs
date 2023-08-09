@@ -35,6 +35,15 @@ internal static class CW_GodPowers
         global_switch.unselectWhenWindow = true;
         global_switch.map_modes_switch = true;
         global_switch.toggle_name = Constants.Core.energy_maps_toggle_name;
+        if (!PlayerConfig.dict.ContainsKey(Constants.Core.energy_maps_toggle_name))
+        {
+            PlayerConfig.instance.data.add(new PlayerOptionData(Constants.Core.energy_maps_toggle_name)
+            {
+                stringVal = "",
+                boolVal = false
+            });
+        }
+
         global_switch.toggle_action = power_id =>
         {
             PlayerOptionData data = PlayerConfig.dict[global_switch.toggle_name];
