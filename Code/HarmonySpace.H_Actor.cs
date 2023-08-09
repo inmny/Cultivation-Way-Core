@@ -112,7 +112,7 @@ internal static class H_Actor
         {
             actor.stats.mergeStats(CW_ActorTraits.negative_creature.base_stats);
         }
-        else if (cw_actor.hasTrait(CW_ActorTraits.negative_creature.id) && !World.world_era.overlay_darkness)
+        else if (cw_actor.hasTrait(CW_ActorTraits.positive_creature.id) && !World.world_era.overlay_darkness)
         {
             actor.stats.mergeStats(CW_ActorTraits.positive_creature.base_stats);
         }
