@@ -31,7 +31,7 @@ internal static class CW_BaseStatsLibrary
 
         get(CW_S.mod_cultivelo).mod = false;
         get(S.armor).show_as_percents = false;
-        get(S.armor).normalize = false;
+        get(S.armor).normalize_max = int.MaxValue;
     }
 
     private static BaseStatAsset get(string id)

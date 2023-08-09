@@ -236,7 +236,13 @@ public class WindowTops : AbstractWindow<WindowTops>
     private void switch_to_creature()
     {
         clear();
-        curr_list.AddRange(World.world.units.getSimpleList());
+        List<Actor> simple_list = World.world.units.getSimpleList();
+        foreach (Actor actor in simple_list)
+        {
+            if (!actor.isAlive()) continue;
+            curr_list.Add(actor);
+        }
+
         curr_info_prefab = Prefabs.simple_creature_info_prefab;
         instance.sort_key.transform.Find("creature").gameObject.SetActive(true);
         foreach (Transform child in instance.sort_key.transform.Find("creature"))
@@ -323,19 +329,17 @@ public class WindowTops : AbstractWindow<WindowTops>
             o => ((CW_Actor)o).data.level.ToString(), container);
         foreach (CultisysAsset cultisys in Manager.cultisys.list)
         {
-            string cultisys_id = cultisys.id;
-            int cultisys_pid = cultisys.pid;
             add_sort_key("actor_" + cultisys.id, "../../" + cultisys.sprite_path,
                 $"cw_top_creature_sort_key_{cultisys.id}",
-                o => ((CW_Actor)o).data.get_cultisys_level()[cultisys_pid],
+                o => ((CW_Actor)o).data.get_cultisys_level()[cultisys.pid],
                 o =>
                 {
-                    if (((CW_Actor)o).data.get_cultisys_level()[cultisys_pid] < 0)
+                    if (((CW_Actor)o).data.get_cultisys_level()[cultisys.pid] < 0)
                     {
                         return Localization.Get("cw_no_cultisys");
                     }
 
-                    return Localization.Get($"{cultisys_id}_{((CW_Actor)o).data.get_cultisys_level()[cultisys_pid]}");
+                    return Localization.Get($"{cultisys.id}_{((CW_Actor)o).data.get_cultisys_level()[cultisys.pid]}");
                 }, container);
         }
 

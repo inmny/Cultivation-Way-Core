@@ -135,8 +135,8 @@ internal static class Cultisyses
             sprite_path = "ui/Icons/iconCultiBook_immortal",
             curr_progress = (actor, asset, level) =>
             {
-                actor.data.get(DataS.soul, out float soul);
-                return soul;
+                actor.data.get(DataS.soul, out float soul_val);
+                return soul_val;
             },
             max_progress = (actor, asset, level) => actor.stats[CW_S.soul],
             can_levelup = (actor, asset) =>
@@ -147,6 +147,7 @@ internal static class Cultisyses
         {
             cultisys.power_level[i] = 1 + i * 0.1f;
             cultisys.bonus_stats[i][CW_S.soul] = 1 + i * i * 99;
+            cultisys.bonus_stats[i][CW_S.soul_regen] = 0.1f * i;
         }
 
         Library.Manager.cultisys.add(cultisys);

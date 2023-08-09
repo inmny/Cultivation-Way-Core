@@ -69,7 +69,7 @@ internal static class H_Actor
         if (level >= 0)
         {
             float health = actor.data.health;
-            float max_health = actor.stats[CW_S.wakan];
+            float max_health = actor.stats[S.health];
 
             if (health >= max_health * 0.95f)
             {
