@@ -16,6 +16,8 @@ internal static class Kingdoms
 
     private static void add_ming()
     {
+        AssetManager.kingdoms.get(SK.undead).addFriendlyTag(Content_Constants.ming_race);
+
         AssetManager.kingdoms.add(new KingdomAsset
         {
             id = Content_Constants.ming_race,
