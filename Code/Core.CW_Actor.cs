@@ -348,6 +348,12 @@ public class CW_Actor : Actor
 
         #endregion
 
+        if (pAttacker != null && pAttacker.isActor() && pAttacker.isAlive() &&
+            ((CW_Actor)pAttacker).cw_asset.addition_soul_damage)
+        {
+            getHit(pAttacker.stats[CW_S.soul_regen], pFlash, (AttackType)CW_AttackType.Soul, pAttacker, pSkipIfShake);
+        }
+
         #region 伤害计算
 
         float num = 1f;
@@ -368,6 +374,17 @@ public class CW_Actor : Actor
             case CW_AttackType.AshFever:
             case CW_AttackType.Spell:
                 num = 1f - stats[CW_S.spell_armor] / (stats[CW_S.spell_armor] + 100);
+                break;
+            case CW_AttackType.Soul:
+                if (pAttacker != null && pAttacker.isActor() && pAttacker.isAlive())
+                {
+                    num = 1f - stats[CW_S.soul_regen] / Mathf.Min(0.01f, pAttacker.stats[CW_S.soul_regen]);
+                }
+                else
+                {
+                    num = 0;
+                }
+
                 break;
         }
 
@@ -427,13 +444,22 @@ public class CW_Actor : Actor
             return;
         }
 
-        data.health -= (int)pDamage;
+        data.get(DataS.soul, out float curr_soul);
+        if (attack_type == CW_AttackType.Soul)
+        {
+            curr_soul -= pDamage;
+            data.set(DataS.soul, curr_soul);
+        }
+        else
+        {
+            data.health -= (int)pDamage;
+        }
 
         #region 攻击额外效果
 
         timer_action = 0.002f;
         if (pFlash) startColorEffect(ActorColorEffect.Red);
-        if (data.health <= 0)
+        if (data.health <= 0 || curr_soul <= 0)
         {
             if (!(pAttacker != null && pAttacker != this && pAttacker.isActor() && pAttacker.isAlive()))
             {
@@ -763,7 +789,12 @@ public class CW_Actor : Actor
         data.set_element(CW_Element.get_element_for_set_data(cw_asset.prefer_element, cw_asset.prefer_element_scale));
 
         if (Constants.Others.new_creature_create_blood) create_blood();
+    }
 
+    internal void cw_finalize()
+    {
+        data.health = int.MaxValue;
+        data.set(DataS.soul, float.MaxValue);
         // 暂且不支持直接的血脉修炼体系
         uint allow_cultisys_types = 0b111;
         // 强制添加的修炼体系

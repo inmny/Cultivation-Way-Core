@@ -27,6 +27,7 @@ internal static class CW_BaseStatsLibrary
             stat_asset.main_stat_to_mod = stat_id.Substring(4);
             stat_asset.mod = true;
             stat_asset.show_as_percents = true;
+            stat_asset.tooltip_multiply_for_visual_number = 100;
         }
 
         get(CW_S.mod_cultivelo).mod = false;

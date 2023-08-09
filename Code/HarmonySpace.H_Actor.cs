@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection.Emit;
@@ -8,7 +9,7 @@ using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using HarmonyLib;
-using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Cultivation_Way.HarmonySpace;
 
@@ -108,13 +109,19 @@ internal static class H_Actor
         cw_actor.cur_spells.AddRange(cw_actor.__data_spells);
 
         // 载入阴/阳性生物的加成
-        if (cw_actor.hasTrait(CW_ActorTraits.negative_creature.id) && World.world_era.overlay_darkness)
+        if (cw_actor.hasTrait(CW_ActorTraits.negative_creature.id) && !World.world_era.overlay_darkness)
         {
             actor.stats.mergeStats(CW_ActorTraits.negative_creature.base_stats);
         }
-        else if (cw_actor.hasTrait(CW_ActorTraits.positive_creature.id) && !World.world_era.overlay_darkness)
+        else if (cw_actor.hasTrait(CW_ActorTraits.positive_creature.id) && World.world_era.overlay_darkness)
         {
             actor.stats.mergeStats(CW_ActorTraits.positive_creature.base_stats);
+        }
+
+        actor.data.get(DataS.soul, out float soul);
+        if (Math.Abs(soul - float.MaxValue) < 1e37)
+        {
+            actor.data.set(DataS.soul, actor.stats[CW_S.soul]);
         }
     }
 
@@ -160,6 +167,7 @@ internal static class H_Actor
         __instance.finalizeActor(pStatsID, actor, pTile, pZHeight);
         actor.newCreature();
         actor.cw_newCreature();
+        actor.cw_finalize();
 
         __result = actor;
         return false;
@@ -215,28 +223,7 @@ internal static class H_Actor
 
 
         actor.cw_asset = Library.Manager.actors.get(pData.asset_id);
-        // 暂且不支持直接的血脉修炼体系
-        uint allow_cultisys_types = 0b111;
-        // 强制添加的修炼体系
-        foreach (CultisysAsset cultisys in actor.cw_asset.force_cultisys)
-        {
-            if ((allow_cultisys_types & (uint)cultisys.type) == 0) continue;
-            actor.data.set(cultisys.id, 0);
-            allow_cultisys_types &= ~(uint)cultisys.type;
-        }
-
-        foreach (CultisysAsset cultisys in actor.cw_asset.allowed_cultisys)
-        {
-            if ((allow_cultisys_types & (uint)cultisys.type) == 0 || !cultisys.allow(actor, cultisys))
-                continue;
-            actor.data.set(cultisys.id, 0);
-            allow_cultisys_types &= ~(uint)cultisys.type;
-        }
-
-        foreach (string spell_id in actor.cw_asset.born_spells)
-        {
-            actor.learn_spell(Library.Manager.spells.get(spell_id));
-        }
+        actor.cw_finalize();
 
         actor.gameObject.SetActive(true);
         __instance.finalizeActor(asset.id, actor, pTile);

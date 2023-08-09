@@ -15,6 +15,11 @@ public class CW_ActorAsset : Asset
     public bool anti_time_stop = false;
 
     /// <summary>
+    ///     普攻是否额外造成元神伤害
+    /// </summary>
+    public bool addition_soul_damage = false;
+
+    /// <summary>
     ///     自带法术
     /// </summary>
     public List<string> born_spells = new();
