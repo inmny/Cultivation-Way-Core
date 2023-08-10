@@ -44,7 +44,7 @@ internal static class Actors
         asset.color = Toolbox.makeColor("#005E72");
         asset.body_separate_part_head = true;
         asset.heads = 6;
-        asset.useSkinColors = false;
+        asset.useSkinColors = true;
         AssetManager.actor_library.t = asset;
         AssetManager.actor_library.addColorSet(S_SkinColor.human_default);
         AssetManager.actor_library.loadShadow(asset);
