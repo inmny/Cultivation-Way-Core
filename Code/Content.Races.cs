@@ -16,13 +16,39 @@ internal static class Races
 
     private static void add_wu()
     {
+        Race wu = AssetManager.raceLibrary.clone(Content_Constants.wu_race, SK.human);
+        AssetManager.raceLibrary.t = wu;
+        wu.path_icon = "ui/Icons/iconWus";
+        wu.nameLocale = Content_Constants.wu_name_locale;
+        wu.nomad_kingdom_id = Content_Constants.nomad_kingdom_prefix + Content_Constants.wu_race;
+        wu.skin_citizen_male = new List<string> { "unit_male_1" };
+        wu.skin_citizen_female = new List<string> { "unit_female_1" };
+        wu.skin_warrior = new List<string> { "unit_warrior_1" };
+        if (Environment.UserName == "94508")
+        {
+            wu.name_template_kingdom = "easternhuman_kingdom";
+            wu.name_template_city = "easternhuman_city";
+            wu.name_template_clan = "easternhuman_clan";
+            wu.name_template_culture = "easternhuman_culture";
+        }
+
+        AssetManager.raceLibrary.setPreferredStatPool("diplomacy#5,warfare#5,stewardship#5,intelligence#5");
+        AssetManager.raceLibrary.setPreferredFoodPool(
+            "berries#5,bread#5,fish#5,meat#2,sushi#2,jam#1,cider#1,ale#2,burger#1,pie#1,tea#2");
+        AssetManager.raceLibrary.addPreferredWeapon("stick", 5);
+        AssetManager.raceLibrary.addPreferredWeapon("sword", 5);
+        AssetManager.raceLibrary.addPreferredWeapon("axe", 2);
+        AssetManager.raceLibrary.addPreferredWeapon("spear", 2);
+        AssetManager.raceLibrary.addPreferredWeapon("bow", 5);
+        AssetManager.raceLibrary.cloneBuildingKeys(SK.human, wu.id);
+        AssetManager.race_build_orders.clone(wu.build_order_id, "kingdom_base");
     }
 
     private static void add_ming()
     {
         Race ming = AssetManager.raceLibrary.clone(Content_Constants.ming_race, SK.human);
         AssetManager.raceLibrary.t = ming;
-        ming.path_icon = "ui/Icons/iconMing";
+        ming.path_icon = "ui/Icons/iconMings";
         ming.build_order_id = ming.id;
         ming.nameLocale = Content_Constants.ming_name_locale;
         ming.nomad_kingdom_id = Content_Constants.nomad_kingdom_prefix + Content_Constants.ming_race;

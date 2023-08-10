@@ -37,4 +37,7 @@ internal class Content_Constants
     public const string ming_id = "unit_ming";
     public const string ming_race = "ming";
     public const string ming_name_locale = "Mings";
+    public const string wu_id = "unit_wu";
+    public const string wu_race = "wu";
+    public const string wu_name_locale = "Wus";
 }

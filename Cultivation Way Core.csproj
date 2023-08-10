@@ -3559,7 +3559,7 @@
         <Content Include="GameResources\ui\cw_window\windowInnerSliced.png" />
         <Content Include="GameResources\ui\cw_window\windowNamePlate.png" />
         <Content Include="GameResources\ui\Icons\iconCurseImmune.png"/>
-        <Content Include="GameResources\ui\Icons\iconMing.png"/>
+        <Content Include="GameResources\ui\Icons\iconMings.png"/>
         <Content Include="GameResources\ui\Icons\iconNo_Auto_Save.png" />
         <Content Include="GameResources\ui\Icons\iconBee.png" />
         <Content Include="GameResources\ui\Icons\iconKnockback_Reduction.png" />
@@ -3591,6 +3591,7 @@
         <Content Include="GameResources\ui\Icons\iconCultiBook_immortal.png" />
         <Content Include="GameResources\ui\Icons\iconText.png" />
         <Content Include="GameResources\ui\Icons\iconWild_Boar.png" />
+        <Content Include="GameResources\ui\Icons\iconWus.png"/>
         <Content Include="GameResources\ui\Icons\iconYaos.png" />
         <Content Include="GameResources\ui\Icons\iconWiki.png" />
         <Content Include="GameResources\effects\water_escape\940.png" />

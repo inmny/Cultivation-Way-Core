@@ -17,6 +17,7 @@ internal static class Buildings
 
     private static void add_wu()
     {
+        clone_human_buildings(Content_Constants.wu_race);
     }
 
     private static void add_ming()
