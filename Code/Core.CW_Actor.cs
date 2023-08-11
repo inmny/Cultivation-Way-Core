@@ -349,7 +349,7 @@ public class CW_Actor : Actor
         #endregion
 
         if (pAttacker != null && pAttacker.isActor() && pAttacker.isAlive() &&
-            ((CW_Actor)pAttacker).cw_asset.addition_soul_damage)
+            ((CW_Actor)pAttacker).cw_asset.addition_soul_damage && attack_type != CW_AttackType.Soul)
         {
             getHit(pAttacker.stats[CW_S.soul_regen], pFlash, (AttackType)CW_AttackType.Soul, pAttacker, pSkipIfShake);
         }
