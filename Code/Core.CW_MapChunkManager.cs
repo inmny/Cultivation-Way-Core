@@ -201,8 +201,10 @@ public class CW_MapChunkManager
             maps.Add(energy.id, new CW_EnergyMap(energy));
         }
 
-        foreach (CW_EnergyMap map in maps.Values)
+        foreach (string map_id in maps.Keys)
         {
+            CW_EnergyMap map = maps[map_id];
+            PlayerConfig.dict[Constants.Core.energy_maps_toggle_name].stringVal = map_id;
             map.init(width, height);
         }
     }
