@@ -16,6 +16,7 @@ public static class Core
     public const string actorasset_config_window = mod_prefix + "actorasset_config_window";
     public const string cultisys_config_window = mod_prefix + "cultisys_config_window";
     public const string cultisys_level_config_window = mod_prefix + "cultisys_level_config_window";
+    public const string cultibook_library_window = mod_prefix + "cultibook_library_window";
 
     public const string power_energy_increase = mod_prefix + "energy_increase";
     public const string power_energy_decrease = mod_prefix + "energy_decrease";

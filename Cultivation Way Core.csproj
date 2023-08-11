@@ -3789,13 +3789,17 @@
         <Compile Include="Code\Content.Achievements.cs"/>
         <Compile Include="Code\Content.Actors.cs"/>
         <Compile Include="Code\Content.ActorTraits.cs"/>
+        <Compile Include="Code\Content.Bloods.cs"/>
         <Compile Include="Code\Content.Buildings.cs"/>
+        <Compile Include="Code\Content.Cultibooks.cs"/>
         <Compile Include="Code\Content.HarmonySpace.H_Achievement.cs"/>
         <Compile Include="Code\Content.Kingdoms.cs"/>
         <Compile Include="Code\Content.Races.cs"/>
         <Compile Include="Code\Content.StatusEffects.cs"/>
         <Compile Include="Code\Content.WorldLaws.cs"/>
         <Compile Include="Code\Extension.WorldTileTools.cs"/>
+        <Compile Include="Code\General.AboutBlood.StaticBlood.cs"/>
+        <Compile Include="Code\General.AboutCultibook.StaticCultibook.cs"/>
         <Compile Include="Code\General.AboutUI.FormatButtons.cs"/>
         <Compile Include="Code\General.AboutUI.WorldLaws.cs"/>
         <Compile Include="Code\HarmonySpace.H_DebugTooltip.cs"/>
@@ -3832,6 +3836,7 @@
         <Compile Include="Code\UI.Prefabs.cs"/>
         <Compile Include="Code\UI.WindowActorAssetConfig.cs"/>
         <Compile Include="Code\UI.WindowCreatureInfoHelper.cs"/>
+        <Compile Include="Code\UI.WindowCultibookLibrary.cs"/>
         <Compile Include="Code\UI.WindowCultisysConfig.cs"/>
         <Compile Include="Code\UI.WindowCultisysLevelConfig.cs"/>
         <Compile Include="Code\UI.WindowModConfig.cs"/>
