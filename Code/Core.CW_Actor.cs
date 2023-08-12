@@ -132,6 +132,7 @@ public class CW_Actor : Actor
     public CW_StatusEffectData add_status(string status_id, BaseSimObject from = null, float rewrite_effect_time = -1,
         string as_id = null)
     {
+        if (!isAlive()) return null;
         CW_StatusEffect status_asset = Manager.statuses.get(status_id);
         if (status_asset == null) return null;
         // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
@@ -351,6 +352,7 @@ public class CW_Actor : Actor
         if (pAttacker != null && pAttacker.isActor() && pAttacker.isAlive() &&
             ((CW_Actor)pAttacker).cw_asset.addition_soul_damage && attack_type != CW_AttackType.Soul)
         {
+            // 此处递归调用不会产生死循环
             getHit(pAttacker.stats[CW_S.soul_regen], pFlash, (AttackType)CW_AttackType.Soul, pAttacker, pSkipIfShake);
         }
 
@@ -468,16 +470,7 @@ public class CW_Actor : Actor
             }
 
             BattleKeeperManager.unitKilled(this);
-            try
-            {
-                pAttacker.a.newKillAction(this, kingdom);
-            }
-            catch (NullReferenceException)
-            {
-                if (pAttacker.a.data == null) Logger.Error("pAttacker.a.data==null");
-                if (pAttacker.kingdom == null) Logger.Error("pAttacker.kingdom==null");
-                Logger.Error("Kill action error");
-            }
+            pAttacker.a.newKillAction(this, kingdom);
 
             if (pAttacker.city == null)
             {
@@ -524,16 +517,7 @@ public class CW_Actor : Actor
             }
         }
 
-        try
-        {
-            startShake();
-        }
-        catch (NullReferenceException)
-        {
-            if (batch == null)
-                Logger.Error($"batch==null, isDestroyed: {object_destroyed}, Alive: {isAlive()}, Health: " +
-                             $"{(data == null ? -1 : data.health)}");
-        }
+        startShake();
 
         #endregion
     }
