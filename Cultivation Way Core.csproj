@@ -3676,7 +3676,6 @@
         <Content Include="GameResources\effects\stxh_XTDT\XTDT_6.png" />
         <Content Include="GameResources\effects\stxh_XTDT\XTDT_7.png" />
         <Content Include="GameResources\effects\wtiger_tooth\白虎之牙.png" />
-        <Content Include="GameResources\test.json" />
         <Content Include="GameResources\ui\cw_window\button1.png"/>
         <Content Include="GameResources\ui\cw_window\buttonToggleIndicator_0.png" />
         <Content Include="GameResources\ui\cw_window\buttonToggleIndicator_1.png" />
@@ -3797,6 +3796,8 @@
         <Compile Include="Code\Content.Races.cs"/>
         <Compile Include="Code\Content.StatusEffects.cs"/>
         <Compile Include="Code\Content.WorldLaws.cs"/>
+        <Compile Include="Code\Core.Elixir.cs"/>
+        <Compile Include="Code\Extension.CityDataTools.cs"/>
         <Compile Include="Code\Extension.WorldTileTools.cs"/>
         <Compile Include="Code\General.AboutBlood.StaticBlood.cs"/>
         <Compile Include="Code\General.AboutCultibook.StaticCultibook.cs"/>
@@ -3816,6 +3817,8 @@
         <Compile Include="Code\General.AboutSpell.LearnChecks.cs"/>
         <Compile Include="Code\General.AboutStatusEffect.FormatStatusEffect.cs"/>
         <Compile Include="Code\HarmonySpace.H_MapBox.cs"/>
+        <Compile Include="Code\Library.CW_ResourceAsset.cs"/>
+        <Compile Include="Code\Library.ElixirLibrary.cs"/>
         <Compile Include="Code\Library.EnergyLibrary.cs"/>
         <Compile Include="Code\Library.Manager.cs"/>
         <Compile Include="Code\Localizer.cs"/>

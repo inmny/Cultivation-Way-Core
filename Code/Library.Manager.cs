@@ -10,7 +10,9 @@ public class Manager
     public static readonly CultibookLibrary cultibooks = new();
     public static readonly CultisysLibrary cultisys = new();
     public static readonly ElementLibrary elements = new();
+    public static readonly ElixirLibrary elixirs = new();
     public static readonly EnergyLibrary energies = new();
+    public static readonly CW_ResourceLibrary resources = new();
     public static readonly CW_StatusEffectLibrary statuses = new();
     public static readonly CW_SpellLibrary spells = new();
     public static readonly Dictionary<string, BaseAssetLibrary> libraries = new();
@@ -28,7 +30,9 @@ public class Manager
         add(cultibooks, "cultibooks");
         add(cultisys, "cultisys");
         add(elements, "elements");
+        add(elixirs, "elixirs");
         add(energies, "energies");
+        add(resources, "resources");
         add(statuses, "statuses");
         add(spells, "spells");
     }

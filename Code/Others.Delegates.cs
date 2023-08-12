@@ -82,6 +82,11 @@ public delegate float SpellCheck(CW_SpellAsset spell_asset, BaseSimObject user);
 public delegate void StatusAction(CW_StatusEffectData status_effect, BaseSimObject object1, BaseSimObject object2);
 
 /// <summary>
+///     丹药效果相关行为
+/// </summary>
+public delegate void ElixirAction(CW_Actor user, Elixir elixir_instance, ElixirAsset elixir_asset);
+
+/// <summary>
 ///     用于天榜展示评估结果
 /// </summary>
 public delegate string TopValueShow(object obj);
