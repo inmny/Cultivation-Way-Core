@@ -425,9 +425,9 @@ public class WindowTops : AbstractWindow<WindowTops>
 
     private void add_cultibook_sort_keys(Transform container)
     {
-        add_sort_key("cultibook_level", "iconClock", "cw_top_cultibook_sort_key_level", o => ((Cultibook)o).level,
+        add_sort_key("cultibook_level", "iconLevels", "cw_top_cultibook_sort_key_level", o => ((Cultibook)o).level,
             o => ((Cultibook)o).level.ToString(), container);
-        add_sort_key("cultibook_curr_users", "iconSkulls", "cw_top_cultibook_sort_key_curr_users",
+        add_sort_key("cultibook_curr_users", "iconPopulation", "cw_top_cultibook_sort_key_curr_users",
             o => ((Cultibook)o).cur_users,
             o => ((Cultibook)o).cur_users.ToString(), container);
     }

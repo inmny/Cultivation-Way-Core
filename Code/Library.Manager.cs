@@ -25,6 +25,7 @@ public class Manager
         CW_GodPowers.init();
         CW_Drops.init();
         CW_Options.init();
+        CW_TooltipAssets.init();
         add(actors, "actors");
         add(bloods, "bloods");
         add(cultibooks, "cultibooks");

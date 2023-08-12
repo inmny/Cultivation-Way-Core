@@ -3818,6 +3818,7 @@
         <Compile Include="Code\General.AboutStatusEffect.FormatStatusEffect.cs"/>
         <Compile Include="Code\HarmonySpace.H_MapBox.cs"/>
         <Compile Include="Code\Library.CW_ResourceAsset.cs"/>
+        <Compile Include="Code\Library.CW_TooltipAssets.cs"/>
         <Compile Include="Code\Library.ElixirLibrary.cs"/>
         <Compile Include="Code\Library.EnergyLibrary.cs"/>
         <Compile Include="Code\Library.Manager.cs"/>

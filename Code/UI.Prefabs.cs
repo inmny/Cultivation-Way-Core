@@ -141,12 +141,21 @@ internal class SimpleCultibookInfo : SimpleInfo
     public Text author_text;
     public Text value_text;
     public Image value_icon;
+    public Button cultibook_button;
 
     public override void load_obj(object obj, string value, string icon_path = "")
     {
         Cultibook cultibook = (Cultibook)obj;
         object_name.text = cultibook.name;
         value_text.text = value;
+        cultibook_button.OnHover(() =>
+        {
+            Tooltip.show(obj, Constants.Core.mod_prefix + "cultibook", new TooltipData
+            {
+                tip_name = cultibook.id
+            });
+        });
+        cultibook_button.OnHoverOut(Tooltip.hideTooltip);
 
         if (string.IsNullOrEmpty(icon_path))
         {
@@ -227,6 +236,24 @@ internal static class Prefabs
         simple_cultibook_info_prefab.object_name.resizeTextMinSize = 1;
         simple_cultibook_info_prefab.object_name.resizeTextMaxSize = 10;
         simple_cultibook_info_prefab.object_name.horizontalOverflow = HorizontalWrapMode.Wrap;
+        // 功法图标
+        GameObject disp = new("Disp", typeof(Image), typeof(Button));
+        disp.transform.SetParent(simple_cultibook_info_prefab.transform);
+        disp.transform.localPosition = new Vector3(-78, 0);
+        disp.transform.localScale = new Vector3(1, 1);
+        disp.GetComponent<RectTransform>().sizeDelta = new Vector2(38, 38);
+        disp.GetComponent<Image>().sprite = FastVisit.get_square_frame();
+        disp.GetComponent<Image>().type = Image.Type.Sliced;
+
+        GameObject disp_icon = new("Icon", typeof(Image));
+        disp_icon.transform.SetParent(disp.transform);
+        disp_icon.transform.localPosition = new Vector3(0, 0);
+        disp_icon.transform.localScale = new Vector3(1, 1);
+        disp_icon.GetComponent<RectTransform>().sizeDelta = new Vector2(30, 30);
+        disp_icon.GetComponent<Image>().sprite = SpriteTextureLoader.getSprite("ui/icons/iconCultiBook_immortal");
+
+        simple_cultibook_info_prefab.disp = disp;
+        simple_cultibook_info_prefab.cultibook_button = disp.GetComponent<Button>();
         // 功法其他信息展示
         simple_cultibook_info_prefab.info = new GameObject("Info");
         simple_cultibook_info_prefab.info.transform.SetParent(simple_cultibook_info_prefab.transform);
