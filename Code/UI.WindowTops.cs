@@ -39,6 +39,18 @@ public class WindowTops : AbstractWindow<WindowTops>
     private readonly Dictionary<string, string> icons = new();
     private readonly Dictionary<string, TopFilterCheck> filter_funcs = new();
 
+    private readonly string[] top_ids =
+    {
+        "creature",
+        "cultibook",
+        "blood",
+        "item",
+        "pope",
+        "city",
+        "kingdom",
+        "clan"
+    };
+
     internal static void init()
     {
         base_init(Constants.Core.tops_window);
@@ -130,14 +142,10 @@ public class WindowTops : AbstractWindow<WindowTops>
             sort_key_container.SetActive(false);
         }
 
-        add_sort_key_container("creature");
-        add_sort_key_container("cultibook");
-        add_sort_key_container("blood");
-        add_sort_key_container("item");
-        add_sort_key_container("pope");
-        add_sort_key_container("city");
-        add_sort_key_container("kingdom");
-        add_sort_key_container("clan");
+        foreach (string top_id in instance.top_ids)
+        {
+            add_sort_key_container(top_id);
+        }
 
         #endregion
 
@@ -177,14 +185,10 @@ public class WindowTops : AbstractWindow<WindowTops>
             _filter.SetActive(false);
         }
 
-        add_filter_container("creature");
-        add_filter_container("cultibook");
-        add_filter_container("blood");
-        add_filter_container("item");
-        add_filter_container("pope");
-        add_filter_container("city");
-        add_filter_container("kingdom");
-        add_filter_container("clan");
+        foreach (string top_id in instance.top_ids)
+        {
+            add_filter_container(top_id);
+        }
 
         #endregion
 
@@ -213,7 +217,17 @@ public class WindowTops : AbstractWindow<WindowTops>
 
     internal static void post_init()
     {
-        instance.add_creature_sort_keys(instance.sort_key.transform.Find("creature"));
+        foreach (string top_id in instance.top_ids)
+        {
+            try
+            {
+                instance.CallMethod($"add_{top_id}_sort_keys", instance.sort_key.transform.Find(top_id));
+            }
+            catch (Exception)
+            {
+                // 忽略, 仅说明该分榜未实现
+            }
+        }
     }
 
     private void OnEnable()
@@ -222,6 +236,13 @@ public class WindowTops : AbstractWindow<WindowTops>
         clear_content();
         if (curr_value_calc != null)
         {
+            foreach (string top_id in top_ids)
+            {
+                if (!sort_key.transform.Find(top_id).gameObject.activeSelf) continue;
+                this.CallMethod($"load_{top_id}_list");
+                break;
+            }
+
             show();
         }
     }
@@ -236,13 +257,7 @@ public class WindowTops : AbstractWindow<WindowTops>
     private void switch_to_creature()
     {
         clear();
-        List<Actor> simple_list = World.world.units.getSimpleList();
-        foreach (Actor actor in simple_list)
-        {
-            if (!actor.isAlive()) continue;
-            curr_list.Add(actor);
-        }
-
+        load_creature_list();
         curr_info_prefab = Prefabs.simple_creature_info_prefab;
         instance.sort_key.transform.Find("creature").gameObject.SetActive(true);
         foreach (Transform child in instance.sort_key.transform.Find("creature"))
@@ -257,6 +272,18 @@ public class WindowTops : AbstractWindow<WindowTops>
 
     private void switch_to_cultibook()
     {
+        clear();
+        load_cultibook_list();
+        curr_info_prefab = Prefabs.simple_cultibook_info_prefab;
+        instance.sort_key.transform.Find("cultibook").gameObject.SetActive(true);
+        foreach (Transform child in instance.sort_key.transform.Find("cultibook"))
+        {
+            child.gameObject.SetActive(true);
+        }
+
+        set_sort_key("cultibook_level");
+        curr_filter = filter_funcs["default"];
+        show();
     }
 
     private void switch_to_blood()
@@ -280,6 +307,51 @@ public class WindowTops : AbstractWindow<WindowTops>
     }
 
     private void switch_to_clan()
+    {
+    }
+
+    private void load_creature_list()
+    {
+        curr_list.Clear();
+        List<Actor> simple_list = World.world.units.getSimpleList();
+        foreach (Actor actor in simple_list)
+        {
+            if (!actor.isAlive()) continue;
+            curr_list.Add(actor);
+        }
+    }
+
+    private void load_cultibook_list()
+    {
+        curr_list.Clear();
+        foreach (Cultibook cultibook in Manager.cultibooks.list)
+        {
+            if (cultibook.cur_users < 1) continue;
+            curr_list.Add(cultibook);
+        }
+    }
+
+    private void load_blood_list()
+    {
+    }
+
+    private void load_item_list()
+    {
+    }
+
+    private void load_pope_list()
+    {
+    }
+
+    private void load_city_list()
+    {
+    }
+
+    private void load_kingdom_list()
+    {
+    }
+
+    private void load_clan_list()
     {
     }
 
@@ -349,6 +421,15 @@ public class WindowTops : AbstractWindow<WindowTops>
             o => Toolbox.coloredString(
                 Localization.Get(((CW_Actor)o).data.get_element().get_type().id),
                 ((CW_Actor)o).data.get_element().get_color()), container);
+    }
+
+    private void add_cultibook_sort_keys(Transform container)
+    {
+        add_sort_key("cultibook_level", "iconClock", "cw_top_cultibook_sort_key_level", o => ((Cultibook)o).level,
+            o => ((Cultibook)o).level.ToString(), container);
+        add_sort_key("cultibook_curr_users", "iconSkulls", "cw_top_cultibook_sort_key_curr_users",
+            o => ((Cultibook)o).cur_users,
+            o => ((Cultibook)o).cur_users.ToString(), container);
     }
 
     private void show()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Cultivation_Way.Core;
+using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using DG.Tweening;
 using NCMS.Utils;
@@ -135,6 +136,32 @@ internal class SimpleCreatureInfo : SimpleInfo
     }
 }
 
+internal class SimpleCultibookInfo : SimpleInfo
+{
+    public Text author_text;
+    public Text value_text;
+    public Image value_icon;
+
+    public override void load_obj(object obj, string value, string icon_path = "")
+    {
+        Cultibook cultibook = (Cultibook)obj;
+        object_name.text = cultibook.name;
+        value_text.text = value;
+
+        if (string.IsNullOrEmpty(icon_path))
+        {
+            value_icon.sprite =
+                SpriteTextureLoader.getSprite("ui/icons/iconFavoriteStar");
+        }
+        else
+        {
+            value_icon.sprite = SpriteTextureLoader.getSprite(icon_path);
+        }
+
+        base.load_obj(obj, value, icon_path);
+    }
+}
+
 [SuppressMessage("ReSharper", "Unity.InefficientPropertyAccess")]
 internal static class Prefabs
 {
@@ -143,6 +170,7 @@ internal static class Prefabs
     public static GameObject cultisys_level_edit_prefab;
 
     public static SimpleCreatureInfo simple_creature_info_prefab;
+    public static SimpleCultibookInfo simple_cultibook_info_prefab;
 
     private static GameObject edit_bar_prefab;
     private static GameObject input_field_prefab;
@@ -160,11 +188,65 @@ internal static class Prefabs
         set_edit_bar_prefab();
 
         set_simple_creature_info_prefab();
+        set_simple_cultibook_info_prefab();
 
         add_tooltip_element_prefab();
         add_tooltip_cultibook_prefab();
         add_tooltip_blood_nodes_prefab();
         add_tooltip_cultisys_prefab();
+    }
+
+    private static void set_simple_cultibook_info_prefab()
+    {
+        // 获取原版的收藏夹的单项预制体, 便于创建类似的ui部件
+        ScrollWindow.checkWindowExist("favorites");
+        GameObject vanllia_favorites_window = Windows.GetWindow("favorites").gameObject;
+        vanllia_favorites_window.SetActive(false);
+        PrefabUnitElement vanllia_favorite_element_prefab =
+            vanllia_favorites_window.GetComponent<WindowFavorites>().element_prefab;
+
+        simple_cultibook_info_prefab =
+            new GameObject("Simple_Cultibook_Info_Prefab", typeof(SimpleCultibookInfo), typeof(Image))
+                .GetComponent<SimpleCultibookInfo>();
+        simple_cultibook_info_prefab.transform.SetParent(CW_Core.ui_prefab_library);
+        simple_cultibook_info_prefab.transform.localScale = new Vector3(1, 1, 1);
+        simple_cultibook_info_prefab.transform.localPosition = new Vector3(0, 0);
+        simple_cultibook_info_prefab.GetComponent<Image>().sprite = FastVisit.get_info_bg();
+        simple_cultibook_info_prefab.GetComponent<Image>().type = Image.Type.Sliced;
+        simple_cultibook_info_prefab.GetComponent<RectTransform>().sizeDelta = new Vector2(193, 31);
+        // 功法名称的文本组件
+        GameObject name = new("Name", typeof(Text));
+        name.transform.SetParent(simple_cultibook_info_prefab.transform);
+        name.transform.localPosition = new Vector3(0, 7);
+        name.transform.localScale = new Vector3(1, 1);
+        name.GetComponent<RectTransform>().sizeDelta = new Vector2(150, 15);
+        simple_cultibook_info_prefab.object_name = name.GetComponent<Text>();
+        simple_cultibook_info_prefab.object_name.alignment = TextAnchor.MiddleCenter;
+        simple_cultibook_info_prefab.object_name.font = LocalizedTextManager.currentFont;
+        simple_cultibook_info_prefab.object_name.resizeTextForBestFit = true;
+        simple_cultibook_info_prefab.object_name.resizeTextMinSize = 1;
+        simple_cultibook_info_prefab.object_name.resizeTextMaxSize = 10;
+        simple_cultibook_info_prefab.object_name.horizontalOverflow = HorizontalWrapMode.Wrap;
+        // 功法其他信息展示
+        simple_cultibook_info_prefab.info = new GameObject("Info");
+        simple_cultibook_info_prefab.info.transform.SetParent(simple_cultibook_info_prefab.transform);
+        simple_cultibook_info_prefab.info.transform.localPosition = new Vector3(0, -13.67f);
+        simple_cultibook_info_prefab.info.transform.localScale = new Vector3(1, 1);
+
+        // 用于接收排序值, 并进行展示
+        GameObject value_obj = Object.Instantiate(
+            vanllia_favorite_element_prefab.transform.Find("Icons/Kills").gameObject,
+            simple_cultibook_info_prefab.info.transform);
+        value_obj.transform.localPosition = new Vector3(50, 6);
+        value_obj.transform.localScale = new Vector3(1, 1);
+        value_obj.GetComponent<RectTransform>().sizeDelta = new Vector2(64, 12);
+
+        value_obj.transform.Find("Container").GetComponent<HorizontalLayoutGroup>().spacing = 2;
+
+        simple_cultibook_info_prefab.value_text = value_obj.transform.Find("Container/Text").GetComponent<Text>();
+        simple_cultibook_info_prefab.value_icon = value_obj.transform.Find("Container/Icon").GetComponent<Image>();
+
+        simple_cultibook_info_prefab.value_text.supportRichText = true;
     }
 
     private static void set_simple_creature_info_prefab()

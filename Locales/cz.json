@@ -48,6 +48,8 @@
   "cw_top_creature_sort_key_cw_cultisys_bushido": "按武道等级排序",
   "cw_top_creature_sort_key_cw_cultisys_immortal": "按仙路等级排序",
   "cw_top_creature_sort_key_element": "按灵根稀有度排序",
+  "cw_top_cultibook_sort_key_level": "按等级排序",
+  "cw_top_cultibook_sort_key_curr_users": "按当前使用人数排序",
   "cw_no_cultisys": "凡人",
   "Eastern Humans": "东方人族",
   "Eastern Humans Description": "",
