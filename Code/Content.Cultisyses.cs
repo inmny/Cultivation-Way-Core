@@ -78,7 +78,11 @@ internal static class Cultisyses
             curr_progress = (actor, culti, level) => actor.data.health,
             max_progress = (actor, asset, level) => actor.stats[S.health],
             can_levelup = (actor, asset) =>
-                asset.curr_progress(actor, asset, 0) >= asset.max_progress(actor, asset, 0) * 0.95f,
+            {
+                if (asset.curr_progress(actor, asset, 0) < asset.max_progress(actor, asset, 0) * 0.95f) return false;
+                actor.data.get(asset.id, out int level, 1);
+                return Toolbox.randomChance(1 / (level + 1));
+            },
             monthly_update_action = (actor, asset, level) =>
             {
                 // 强制控制生命恢复上限
