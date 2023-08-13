@@ -133,6 +133,15 @@ internal static class CW_TooltipAssets
         spell_idx_text.text = spell_idx_builder.ToString();
         spell_name_text.text = spell_name_builder.ToString();
 
+        if (cultibook.spells.Count == 0)
+        {
+            tooltip.transform.Find("Spells").gameObject.SetActive(false);
+        }
+        else
+        {
+            tooltip.transform.Find("Spells").gameObject.SetActive(true);
+        }
+
 
         tooltip.showBaseStats(cultibook.bonus_stats);
     }

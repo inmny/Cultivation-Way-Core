@@ -56,6 +56,16 @@ public class Cultibook : Asset
     public int max_users { get; internal set; }
 
     /// <summary>
+    ///     功法创造时间
+    /// </summary>
+    public float creation_time { get; private set; }
+
+    public Cultibook()
+    {
+        creation_time = (float)World.world.getCreationTime();
+    }
+
+    /// <summary>
     ///     从from深拷贝基础数据（除使用人数与id)
     /// </summary>
     public void copy_from(Cultibook from, bool with_spells = true)
@@ -65,6 +75,7 @@ public class Cultibook : Asset
         author_name = from.author_name;
         editor_name = from.editor_name;
         level = from.level;
+        creation_time = from.creation_time;
         bonus_stats.mergeStats(from.bonus_stats);
         if (with_spells)
         {

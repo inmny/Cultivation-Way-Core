@@ -549,9 +549,15 @@ public class CW_Actor : Actor
     public void create_cultibook()
     {
         Cultibook old_cultibook = data.get_cultibook();
+
         Cultibook new_cultibook = new();
         if (old_cultibook != null)
         {
+            if (!Toolbox.randomChance((1 + data.intelligence) / (old_cultibook.level + 5)))
+            {
+                return;
+            }
+
             new_cultibook.copy_from(old_cultibook);
 
             new_cultibook.max_spell_nr = old_cultibook.max_spell_nr +

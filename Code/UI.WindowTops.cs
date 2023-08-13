@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
@@ -430,6 +431,15 @@ public class WindowTops : AbstractWindow<WindowTops>
         add_sort_key("cultibook_curr_users", "iconPopulation", "cw_top_cultibook_sort_key_curr_users",
             o => ((Cultibook)o).cur_users,
             o => ((Cultibook)o).cur_users.ToString(), container);
+        add_sort_key("cultibook_spells_nr", "iconPopulation", "cw_top_cultibook_sort_key_spells_nr",
+            o => ((Cultibook)o).spells.Count,
+            o => ((Cultibook)o).spells.Count.ToString(), container);
+        add_sort_key("cultibook_cultivelo", "iconCultiSys", "cw_top_cultibook_sort_key_cultivelo",
+            o => ((Cultibook)o).bonus_stats[CW_S.mod_cultivelo],
+            o => (int)(100 * ((Cultibook)o).bonus_stats[CW_S.mod_cultivelo]) + "%", container);
+        add_sort_key("cultibook_histroy", "iconClock", "cw_top_cultibook_sort_key_histroy",
+            o => -((Cultibook)o).creation_time,
+            o => World.world.getYearsSince(((Cultibook)o).creation_time).ToString(), container);
     }
 
     private void show()

@@ -14,8 +14,8 @@ internal static class CW_ActorTraits
         trait.only_active_on_era_flag = true;
         trait.era_active_moon = false;
         trait.era_active_night = false;
-        trait.base_stats[S.mod_speed] = -0.5f;
-        trait.base_stats[S.mod_attack_speed] = -0.5f;
+        trait.base_stats[S.mod_speed] = -0.2f;
+        trait.base_stats[S.mod_attack_speed] = -0.2f;
         trait.base_stats[S.mod_crit] = -0.2f;
         trait.path_icon = "ui/icons/iconYang";
         positive_creature = trait;
@@ -29,8 +29,8 @@ internal static class CW_ActorTraits
         trait.era_active_night = false;
         trait.base_stats[S.mod_health] = -0.3f;
         trait.base_stats[S.mod_damage] = -0.3f;
-        trait.base_stats[S.mod_speed] = -0.4f;
-        trait.base_stats[S.mod_attack_speed] = -0.3f;
+        trait.base_stats[S.mod_speed] = -0.15f;
+        trait.base_stats[S.mod_attack_speed] = -0.1f;
         trait.base_stats[S.mod_crit] = -0.2f;
         trait.base_stats[S.mod_armor] = -0.4f;
         trait.path_icon = "ui/icons/iconYin";

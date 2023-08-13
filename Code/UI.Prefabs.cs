@@ -141,12 +141,14 @@ internal class SimpleCultibookInfo : SimpleInfo
     public Text author_text;
     public Text value_text;
     public Image value_icon;
+    public Text pop_text;
     public Button cultibook_button;
 
     public override void load_obj(object obj, string value, string icon_path = "")
     {
         Cultibook cultibook = (Cultibook)obj;
         object_name.text = cultibook.name;
+        pop_text.text = Toolbox.formatNumber(cultibook.cur_users);
         value_text.text = value;
         cultibook_button.OnHover(() =>
         {
@@ -270,6 +272,14 @@ internal static class Prefabs
 
         value_obj.transform.Find("Container").GetComponent<HorizontalLayoutGroup>().spacing = 2;
 
+        GameObject curr_user_obj = Object.Instantiate(value_obj, simple_cultibook_info_prefab.info.transform);
+        curr_user_obj.transform.localPosition = new Vector3(-40, 6);
+        curr_user_obj.transform.localScale = new Vector3(1, 1);
+        curr_user_obj.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 12);
+        curr_user_obj.transform.Find("Container/Icon").GetComponent<Image>().sprite =
+            SpriteTextureLoader.getSprite("ui/icons/iconPopulation");
+
+        simple_cultibook_info_prefab.pop_text = curr_user_obj.transform.Find("Container/Text").GetComponent<Text>();
         simple_cultibook_info_prefab.value_text = value_obj.transform.Find("Container/Text").GetComponent<Text>();
         simple_cultibook_info_prefab.value_icon = value_obj.transform.Find("Container/Icon").GetComponent<Image>();
 
