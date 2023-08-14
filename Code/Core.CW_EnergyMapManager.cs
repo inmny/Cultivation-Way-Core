@@ -38,8 +38,8 @@ public class CW_EnergyMapTile
             Math.Abs(new_color.b - color.b) >= 0.02f)
         {
             color = new_color;
-            var tiles_to_redraw = CW_Core.mod_state.map_chunk_manager
-                .maps[CW_Core.mod_state.map_chunk_manager.current_map_id].tiles_to_redraw;
+            var tiles_to_redraw = CW_Core.mod_state.energy_map_manager
+                .maps[CW_Core.mod_state.energy_map_manager.current_map_id].tiles_to_redraw;
             Monitor.Enter(tiles_to_redraw);
             tiles_to_redraw.Add(this);
             Monitor.Exit(tiles_to_redraw);
@@ -55,7 +55,7 @@ public class CW_EnergyMap
     /// <summary>
     ///     表示能量的Asset
     /// </summary>
-    private EnergyAsset energy;
+    internal EnergyAsset energy;
 
     public CW_EnergyMap(EnergyAsset energy)
     {
@@ -179,7 +179,7 @@ public class CW_EnergyMap
 }
 
 // TODO: 更多注释，懒得写了
-public class CW_MapChunkManager
+public class CW_EnergyMapManager
 {
     public readonly Dictionary<string, CW_EnergyMap> maps = new();
 

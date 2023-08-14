@@ -3869,7 +3869,7 @@
         <Compile Include="Code\Content.Spells.cs"/>
         <Compile Include="Code\Core.CW_Actor.cs"/>
         <Compile Include="Code\Core.CW_Element.cs"/>
-        <Compile Include="Code\Core.CW_MapChunkManager.cs"/>
+        <Compile Include="Code\Core.CW_EnergyMapManager.cs"/>
         <Compile Include="Code\Core.CW_StatusEffectData.cs"/>
         <Compile Include="Code\CW_Core.cs"/>
         <Compile Include="Code\Extension.ActorDataTools.cs"/>

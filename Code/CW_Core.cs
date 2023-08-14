@@ -36,7 +36,7 @@ public class CW_Core : MonoBehaviour
         anim_manager = null,
         spell_manager = null,
         library_manager = null,
-        map_chunk_manager = null
+        energy_map_manager = null
     };
 
     private void Awake()
@@ -81,7 +81,7 @@ public class CW_Core : MonoBehaviour
                     CWTab.post_init();
                     action_on_windows("post_init");
                     state.library_manager.post_init();
-                    state.map_chunk_manager.init(World.world.tilesMap.GetLength(0),
+                    state.energy_map_manager.init(World.world.tilesMap.GetLength(0),
                         World.world.tilesMap.GetLength(1));
                     Localizer.apply_localization(LocalizedTextManager.instance.localizedText,
                         LocalizedTextManager.instance.language);
@@ -93,10 +93,10 @@ public class CW_Core : MonoBehaviour
             return;
         }
 
-        if (World.world.tilesMap != null && (World.world.tilesMap.GetLength(0) != state.map_chunk_manager.width
-                                             || World.world.tilesMap.GetLength(1) != state.map_chunk_manager.height))
+        if (World.world.tilesMap != null && (World.world.tilesMap.GetLength(0) != state.energy_map_manager.width
+                                             || World.world.tilesMap.GetLength(1) != state.energy_map_manager.height))
         {
-            state.map_chunk_manager.reset(World.world.tilesMap.GetLength(0),
+            state.energy_map_manager.reset(World.world.tilesMap.GetLength(0),
                 World.world.tilesMap.GetLength(1));
         }
 
@@ -148,7 +148,7 @@ public class CW_Core : MonoBehaviour
         state.anim_manager = gameObject.AddComponent<EffectManager>();
         state.spell_manager = new SpellManager();
         state.library_manager = new Manager();
-        state.map_chunk_manager = new CW_MapChunkManager();
+        state.energy_map_manager = new CW_EnergyMapManager();
 
         GameObject ui_prefab_library_obj = new("UI_PrefabLibrary");
         GameObject actor_prefab_library_obj = new("Actor_PrefabLibrary");
@@ -179,8 +179,8 @@ public class CW_Core : MonoBehaviour
         {
             while (true)
             {
-                if (!state.map_chunk_manager.paused && mod_state.all_initialized)
-                    state.map_chunk_manager.update_per_year();
+                if (!state.energy_map_manager.paused && mod_state.all_initialized)
+                    state.energy_map_manager.update_per_year();
                 Thread.Sleep((int)(500 / Math.Min(Config.timeScale, 1)));
             }
         }).Start();
@@ -227,7 +227,7 @@ public class CW_Core : MonoBehaviour
         public bool core_initialized;
         internal bool editor_inmny;
         public Manager library_manager;
-        public CW_MapChunkManager map_chunk_manager;
+        public CW_EnergyMapManager energy_map_manager;
         internal Info mod_info;
         internal SpellManager spell_manager;
         internal long update_nr;

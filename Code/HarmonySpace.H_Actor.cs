@@ -9,6 +9,7 @@ using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using HarmonyLib;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace Cultivation_Way.HarmonySpace;
@@ -247,9 +248,52 @@ internal static class H_Actor
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(ActorManager), nameof(ActorManager.loadObject))]
-    public static void loadObject_patch(ActorManager __instance, ActorData pData, Actor pPrefab)
+    public static bool loadObject_patch(ActorManager __instance, ActorData pData, Actor pPrefab, ref Actor __result)
     {
-        // TODO:
+        __result = null;
+        if (__instance.dict.ContainsKey(pData.id))
+        {
+            Logger.Log("Trying to load unit with same ID, that already is loaded. " + pData.id);
+            return false;
+        }
+
+        WorldTile tile = World.world.GetTile(pData.x, pData.y);
+        if (tile == null)
+        {
+            return false;
+        }
+
+        ActorAsset actorAsset = AssetManager.actor_library.get(pData.asset_id);
+        if (actorAsset == null)
+        {
+            return false;
+        }
+
+        int num = pData.health;
+        CW_Actor actor_prefab = FastVisit.get_actor_prefab("actors/" + actorAsset.prefab).GetComponent<CW_Actor>();
+        Actor actor2 = ActorManager_base_loadObject(__instance, pData, actor_prefab);
+        CW_Actor cw_actor = (CW_Actor)actor2;
+        cw_actor.cw_asset = Library.Manager.actors.get(actorAsset.id);
+
+        actor2.setData(pData);
+        actor2.gameObject.SetActive(true);
+
+        __instance.finalizeActor(actorAsset.id, actor2, tile);
+        if (actor2.asset.use_items)
+        {
+            actor2.equipment.load(pData.items);
+        }
+
+        if (actor2.asset.unit)
+        {
+            actor2.reloadInventory();
+        }
+
+        actor2.loadFromSave();
+        actor2.updateStats();
+        num = Mathf.Clamp(num, 1, actor2.getMaxHealth());
+        actor2.data.health = num;
+        return actor2;
     }
 
     #endregion

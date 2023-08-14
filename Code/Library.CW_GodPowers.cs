@@ -128,10 +128,10 @@ internal static class CW_GodPowers
         power.click_action = (tile, id) =>
         {
             if (!PlayerConfig.optionBoolEnabled(Constants.Core.energy_maps_toggle_name)
-                || string.IsNullOrEmpty(CW_Core.mod_state.map_chunk_manager.current_map_id))
+                || string.IsNullOrEmpty(CW_Core.mod_state.energy_map_manager.current_map_id))
                 return false;
             if (tile == null) return false;
-            EnergyAsset energy_asset = Manager.energies.get(CW_Core.mod_state.map_chunk_manager.current_map_id);
+            EnergyAsset energy_asset = Manager.energies.get(CW_Core.mod_state.energy_map_manager.current_map_id);
             CW_EnergyMapTile energy_tile = tile.get_energy_tile(energy_asset.id);
             if (energy_tile.value is <= 1 or float.NaN)
             {

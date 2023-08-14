@@ -75,7 +75,7 @@ internal static class H_ZoneCalculator
 
         #region 选择性渲染
 
-        if (string.IsNullOrEmpty(CW_Core.mod_state.map_chunk_manager.current_map_id))
+        if (string.IsNullOrEmpty(CW_Core.mod_state.energy_map_manager.current_map_id))
         {
             if (__instance._toCleanUp.Any()) __instance.clearDrawnZones();
             if (!__instance._dirty) return false;
@@ -84,14 +84,14 @@ internal static class H_ZoneCalculator
         }
 
         CW_EnergyMap map =
-            CW_Core.mod_state.map_chunk_manager.maps[
-                CW_Core.mod_state.map_chunk_manager.current_map_id
+            CW_Core.mod_state.energy_map_manager.maps[
+                CW_Core.mod_state.energy_map_manager.current_map_id
             ];
         if (all_redraw)
         {
-            for (int x = 0; x < CW_Core.mod_state.map_chunk_manager.width; x++)
+            for (int x = 0; x < CW_Core.mod_state.energy_map_manager.width; x++)
             {
-                for (int y = 0; y < CW_Core.mod_state.map_chunk_manager.height; y++)
+                for (int y = 0; y < CW_Core.mod_state.energy_map_manager.height; y++)
                 {
                     __instance.pixels[World.world.tilesMap[x, y].data.tile_id] = map.map[x, y].color;
                     __instance._dirty = true;
