@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using Cultivation_Way.Constants;
+﻿using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
@@ -33,13 +31,15 @@ internal class CultiProgress : MonoBehaviour
 
     public void clear()
     {
-        bar_image.enabled = false;
+        if (bar_image != null) bar_image.enabled = false;
         transform.Find("Background").gameObject.SetActive(false);
         transform.Find("Text").gameObject.SetActive(false);
         transform.Find("Icon").gameObject.SetActive(false);
-
-        tip_button = GetComponent<TipButton>();
-        tip_button.hoverAction = null;
+        if (tip_button != null)
+        {
+            tip_button = GetComponent<TipButton>();
+            tip_button.hoverAction = null;
+        }
     }
 
     public void load_cultisys(CultisysAsset cultisys, int cultisys_level, CultisysType type, CW_Actor actor)
