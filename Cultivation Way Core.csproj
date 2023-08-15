@@ -3804,6 +3804,7 @@
         <Compile Include="Code\General.AboutUI.FormatButtons.cs"/>
         <Compile Include="Code\General.AboutUI.WorldLaws.cs"/>
         <Compile Include="Code\HarmonySpace.H_DebugTooltip.cs"/>
+        <Compile Include="Code\HarmonySpace.H_SaveManager.cs"/>
         <Compile Include="Code\HarmonySpace.H_ZoneCalculator.cs"/>
         <Compile Include="Code\HarmonySpace.H_WorldLaws.cs"/>
         <Compile Include="Code\Library.CW_ActorTraits.cs"/>

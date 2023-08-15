@@ -1,5 +1,5 @@
 namespace Cultivation_Way.HarmonySpace;
 
-public static class H_MapBox
+internal static class H_MapBox
 {
 }
