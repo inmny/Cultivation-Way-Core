@@ -26,6 +26,7 @@ internal static class ActorTraits
             path_icon = "ui/icons/iconElement",
             achievement_id = Constants.Core.mod_prefix + "achievementComplete",
             unlocked_with_achievement = true,
+            can_be_removed = false,
             action_special_effect = (actor, tile) =>
             {
                 if (!actor.isAlive()) return false;
