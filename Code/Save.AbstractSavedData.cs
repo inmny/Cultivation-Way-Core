@@ -1,3 +1,4 @@
+using Cultivation_Way.Animation;
 using Cultivation_Way.Library;
 
 namespace Cultivation_Way.Save;
@@ -12,5 +13,7 @@ internal abstract class AbstractSavedData
     {
         Manager.cultibooks.reset();
         Manager.bloods.reset();
+        EffectManager.instance.clear();
+        CW_Core.mod_state.spell_manager.clear();
     }
 }
