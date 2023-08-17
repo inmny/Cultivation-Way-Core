@@ -10,7 +10,7 @@ namespace Cultivation_Way.Core;
 public class CW_Element : FactoryItem<CW_Element>
 {
     private static readonly BaseStats tmp_stats = new();
-    public readonly int[] base_elements = new int[Constants.Core.element_type_nr];
+    public int[] base_elements = new int[Constants.Core.element_type_nr];
     private string type_id;
 
     public CW_Element()

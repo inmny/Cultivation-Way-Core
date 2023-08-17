@@ -146,7 +146,6 @@ internal class SavedDataVer1 : AbstractSavedData
         if (save_manager.data.saveVersion < 12)
         {
             save_manager.convertOldAges();
-            load_cw_actor_data(converted_data.actors_data);
         }
 
         if (save_manager.data.saveVersion < 13)
@@ -154,6 +153,7 @@ internal class SavedDataVer1 : AbstractSavedData
             save_manager.checkOldBuildingID();
         }
 
+        load_cw_actor_data(converted_data.actors_data);
         World.world.addClearWorld(origin_data.width, origin_data.height);
         SmoothLoader.add(delegate { clear_cw_world(); }, "Clearing CW Map");
         SmoothLoader.add(delegate
@@ -251,6 +251,9 @@ internal class SavedDataVer1 : AbstractSavedData
         {
             ActorData actor_data = actors_data[i];
             CW_ActorData cw_actor_data = cw_actor_datas[i];
+            cw_actor_data.element.comp_type();
+            //Logger.Log(
+            //    $"{cw_actor_data.element.comp_type()}: {cw_actor_data.element.base_elements[0]},{cw_actor_data.element.base_elements[1]},{cw_actor_data.element.base_elements[2]},{cw_actor_data.element.base_elements[3]},{cw_actor_data.element.base_elements[4]}");
             actor_data.set_element(cw_actor_data.element);
             if (cw_actor_data.spells != null)
             {
@@ -275,11 +278,9 @@ internal class SavedDataVer1 : AbstractSavedData
                 for (int cultisys_idx = 0; cultisys_idx < cw_actor_data.cultisys_level.Length; cultisys_idx++)
                 {
                     if (cultisys_idx >= Manager.cultisys.size) break;
-                    cw_actor_data.cultisys = (uint)cw_actor_data.cultisys_to_save;
-                    if ((cw_actor_data.cultisys & (1 << cultisys_idx)) == 0) continue;
                     CultisysAsset cultisys = Manager.cultisys.list[cultisys_idx];
                     actor_data.set(cultisys.id,
-                        Math.Min(cultisys.max_level - 1, cw_actor_data.cultisys_level[cultisys_idx]));
+                        Math.Min(cultisys.max_level - 1, cw_actor_data.cultisys_level[cultisys_idx] - 1));
                 }
             }
         }
