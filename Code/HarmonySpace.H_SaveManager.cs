@@ -16,7 +16,7 @@ internal static class H_SaveManager
     {
         _saved_data = null;
         if (__result == null) return;
-        string dir_path = SaveManager.getSavePath(pMainPath);
+        string dir_path = SaveManager.folderPath(pMainPath);
 
         string file_path;
 

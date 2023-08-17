@@ -58,12 +58,7 @@ public class Cultibook : Asset
     /// <summary>
     ///     功法创造时间
     /// </summary>
-    public float creation_time { get; private set; }
-
-    public Cultibook()
-    {
-        creation_time = (float)World.world.getCreationTime();
-    }
+    public float creation_time { get; private set; } = (float)World.world.getCreationTime();
 
     /// <summary>
     ///     从from深拷贝基础数据（除使用人数与id)
