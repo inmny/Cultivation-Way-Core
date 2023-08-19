@@ -18,6 +18,15 @@ internal static class ActorTraits
             path_icon = "ui/icons/iconCurseImmune"
         };
         add(trait);
+        trait = AssetManager.traits.get("cursed");
+        if (string.IsNullOrEmpty(trait.opposite))
+        {
+            trait.opposite = Constants.Core.mod_prefix + "curse_immune";
+        }
+        else
+        {
+            trait.opposite += "," + Constants.Core.mod_prefix + "curse_immune";
+        }
 
         trait = new ActorTrait
         {
