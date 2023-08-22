@@ -276,6 +276,11 @@ internal static class H_Actor
         cw_actor.cw_asset = Library.Manager.actors.get(actorAsset.id);
 
         actor2.setData(pData);
+        if (actor2.data.get_element().base_elements[0] < 0)
+        {
+            cw_actor.cw_newCreature();
+        }
+
         actor2.gameObject.SetActive(true);
 
         __instance.finalizeActor(actorAsset.id, actor2, tile);
