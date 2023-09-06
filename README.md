@@ -14,7 +14,7 @@
 - [x] 
   将base14中W_Content_Spell内容迁移至main中Content.Spells([详细](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/spell.md))
 - [ ] 配置Content.Spells中各个法术的灵气消耗, 等级要求, 消耗与伤害的关系
-- [ ] 设置仙路各个等级属性
+- [ ] 各修炼体系数值调整
 - [ ] 添加雷劫
 - [x] 实装武道, 魂道, 血脉
 - [ ] 完善武道, 魂道细节
@@ -29,9 +29,7 @@
 - [x] 世界法则基本内容
 - [ ] 修炼体系各个等级人数限制
 - [x] 实装各类属性(较为繁琐)
-- [ ] 存档([详细](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/contents_index/save.md))
+- [ ] 存档
 - [ ] 名字生成器([详细](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/contents_index/name_generator.md))
 
 ## Attention
-
-统一采用CWA进行开发, 即无法判定则认为是False
