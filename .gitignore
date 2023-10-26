@@ -8,7 +8,10 @@
 *.suo
 *.user
 *.userosscache
+*.sln
 *.sln.docstates
+*.csproj
+*.csproj.DotSettings
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -371,3 +374,6 @@ FodyWeavers.xsd
 *.swp
 /Code/OpenAIWrapper.cs
 /build/
+.*
+!.gitignore
+!.gitattributes
