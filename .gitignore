@@ -377,3 +377,4 @@ FodyWeavers.xsd
 .*
 !.gitignore
 !.gitattributes
+Code/LK_*.cs
