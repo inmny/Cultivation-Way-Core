@@ -7,7 +7,7 @@ namespace Cultivation_Way.Content.HarmonySpace;
 internal static class H_Achievement
 {
     [HarmonyPostfix]
-    [HarmonyPatch(typeof(Console), nameof(Console.HandleLog))]
+    [HarmonyPatch(typeof(WorldBoxConsole.Console), nameof(WorldBoxConsole.Console.HandleLog))]
     public static void unlock_lost(LogType type)
     {
         if (type != LogType.Error && type != LogType.Exception && type != LogType.Assert) return;

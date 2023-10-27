@@ -159,9 +159,9 @@ internal static class FastVisit
                 continue;
             }
 
-            GameObject new_prefab = Object.Instantiate(old_prefab, CW_Core.actor_prefab_library);
+            GameObject new_prefab = GameObject.Instantiate(old_prefab, CW_Core.actor_prefab_library);
             new_prefab.SetActive(false);
-            Object.Destroy(new_prefab.GetComponent<Actor>());
+            GameObject.Destroy(new_prefab.GetComponent<Actor>());
             new_prefab.AddComponent<CW_Actor>();
             actor_prefabs[actor_prefab_paths[i]] = new_prefab;
         }

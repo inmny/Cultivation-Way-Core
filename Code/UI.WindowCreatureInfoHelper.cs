@@ -116,7 +116,7 @@ internal class WindowCreatureInfoHelper
         grid_layout_group.constraintCount = 9;
 
         GameObject new_stats;
-        new_stats = Object.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
+        new_stats = GameObject.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
         new_stats.name = "spell_armor";
         spell_armor = new_stats.GetComponent<CityIcon>();
         spell_armor.transform.Find("Icon").GetComponent<Image>().sprite =
@@ -124,7 +124,7 @@ internal class WindowCreatureInfoHelper
         new_stats.GetComponent<TipButton>().textOnClick =
             AssetManager.base_stats_library.get(CW_S.spell_armor).translation_key;
 
-        new_stats = Object.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
+        new_stats = GameObject.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
         new_stats.name = "crit_damage_mod";
         crit_damage_mod = new_stats.GetComponent<CityIcon>();
         crit_damage_mod.transform.Find("Icon").GetComponent<Image>().sprite =
@@ -132,14 +132,14 @@ internal class WindowCreatureInfoHelper
         new_stats.GetComponent<TipButton>().textOnClick =
             AssetManager.base_stats_library.get(S.critical_damage_multiplier).translation_key;
 
-        new_stats = Object.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
+        new_stats = GameObject.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
         new_stats.name = "anti_injury";
         throns = new_stats.GetComponent<CityIcon>();
         throns.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconAnti_Injury");
         new_stats.GetComponent<TipButton>().textOnClick =
             AssetManager.base_stats_library.get(CW_S.throns).translation_key;
 
-        new_stats = Object.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
+        new_stats = GameObject.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
         new_stats.name = "knockback_reduction";
         knockback_reduction = new_stats.GetComponent<CityIcon>();
         knockback_reduction.transform.Find("Icon").GetComponent<Image>().sprite =
@@ -147,7 +147,7 @@ internal class WindowCreatureInfoHelper
         new_stats.GetComponent<TipButton>().textOnClick =
             AssetManager.base_stats_library.get(S.knockback_reduction).translation_key;
 
-        new_stats = Object.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
+        new_stats = GameObject.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
         new_stats.name = "health_regen";
         health_regen = new_stats.GetComponent<CityIcon>();
         health_regen.transform.Find("Icon").GetComponent<Image>().sprite =
@@ -155,7 +155,7 @@ internal class WindowCreatureInfoHelper
         new_stats.GetComponent<TipButton>().textOnClick =
             AssetManager.base_stats_library.get(CW_S.health_regen).translation_key;
 
-        new_stats = Object.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
+        new_stats = GameObject.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
         new_stats.name = "shield_regen";
         shield_regen = new_stats.GetComponent<CityIcon>();
         shield_regen.transform.Find("Icon").GetComponent<Image>().sprite =
@@ -163,14 +163,14 @@ internal class WindowCreatureInfoHelper
         new_stats.GetComponent<TipButton>().textOnClick =
             AssetManager.base_stats_library.get(CW_S.shield_regen).translation_key;
 
-        new_stats = Object.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
+        new_stats = GameObject.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
         new_stats.name = "wakan_regen";
         wakan_regen = new_stats.GetComponent<CityIcon>();
         wakan_regen.transform.Find("Icon").GetComponent<Image>().sprite = Resources.Load<Sprite>("ui/Icons/iconWakan");
         new_stats.GetComponent<TipButton>().textOnClick =
             AssetManager.base_stats_library.get(CW_S.wakan_regen).translation_key;
 
-        new_stats = Object.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
+        new_stats = GameObject.Instantiate(stat_icons_transform.Find("damage").gameObject, stat_icons_transform);
         new_stats.name = "culti_velo_co";
         culti_velo_co = new_stats.GetComponent<CityIcon>();
         culti_velo_co.transform.Find("Icon").GetComponent<Image>().sprite =
@@ -199,9 +199,9 @@ internal class WindowCreatureInfoHelper
         left_part.GetComponent<Image>().sprite = FastVisit.get_square_frame();
         left_part.GetComponent<Image>().type = Image.Type.Sliced;
         left_part.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 128);
-        element = Object.Instantiate(Prefabs.tip_button_prefab, left_part.transform);
-        cultibook = Object.Instantiate(Prefabs.tip_button_prefab, left_part.transform);
-        blood = Object.Instantiate(Prefabs.tip_button_prefab, left_part.transform);
+        element = GameObject.Instantiate(Prefabs.tip_button_prefab, left_part.transform);
+        cultibook = GameObject.Instantiate(Prefabs.tip_button_prefab, left_part.transform);
+        blood = GameObject.Instantiate(Prefabs.tip_button_prefab, left_part.transform);
         element.name = "element";
         cultibook.name = "cultibook";
         blood.name = "blood";
@@ -214,7 +214,7 @@ internal class WindowCreatureInfoHelper
 
         #endregion
 
-        body_progress = Object.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
+        body_progress = GameObject.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
             .AddComponent<CultiProgress>();
         body_progress.name = "BodyCultiProgress";
         body_progress.transform.localPosition = new Vector3(-165, 50, 0);
@@ -224,7 +224,7 @@ internal class WindowCreatureInfoHelper
         body_progress.transform.Find("Mask").localPosition += new Vector3(7, 0);
         body_progress.transform.Find("Icon").localPosition += new Vector3(7, 0);
         //body_progress.transform.Find("Text").localPosition += new Vector3(7, 0);
-        wakan_progress = Object.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
+        wakan_progress = GameObject.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
             .AddComponent<CultiProgress>();
         wakan_progress.name = "WakanCultiProgress";
         wakan_progress.transform.localPosition = new Vector3(-165, 0, 0);
@@ -234,7 +234,7 @@ internal class WindowCreatureInfoHelper
         wakan_progress.transform.Find("Mask").localPosition += new Vector3(7, 0);
         wakan_progress.transform.Find("Icon").localPosition += new Vector3(7, 0);
         //wakan_progress.transform.Find("Text").localPosition += new Vector3(7, 0);
-        soul_progress = Object.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
+        soul_progress = GameObject.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
             .AddComponent<CultiProgress>();
         soul_progress.name = "SoulCultiProgress";
         soul_progress.transform.localPosition = new Vector3(-165, -50, 0);
