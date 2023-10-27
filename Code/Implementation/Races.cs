@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Cultivation_Way.Content;
+namespace Cultivation_Way.Implementation;
 
 internal static class Races
 {

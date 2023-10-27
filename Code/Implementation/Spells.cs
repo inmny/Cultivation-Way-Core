@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
 
-namespace Cultivation_Way.Content;
+namespace Cultivation_Way.Implementation;
 
 internal static class Spells
 {

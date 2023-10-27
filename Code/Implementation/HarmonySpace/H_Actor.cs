@@ -3,7 +3,7 @@ using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using HarmonyLib;
 
-namespace Cultivation_Way.Content.HarmonySpace;
+namespace Cultivation_Way.Implementation.HarmonySpace;
 
 internal static class H_Actor
 {

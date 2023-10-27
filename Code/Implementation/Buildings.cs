@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cultivation_Way.Content;
+namespace Cultivation_Way.Implementation;
 
 internal static class Buildings
 {

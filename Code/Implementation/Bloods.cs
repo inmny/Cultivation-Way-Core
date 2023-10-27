@@ -1,4 +1,4 @@
-namespace Cultivation_Way.Content;
+namespace Cultivation_Way.Implementation;
 
 internal static class Bloods
 {

@@ -123,11 +123,11 @@ public class CW_Core : MonoBehaviour
     }
 
     /// <summary>
-    ///     为了保证Content可拆卸, 通过反射调用Content的初始化方法
+    ///     为了保证Implementation可拆卸, 通过反射调用Implementation的初始化方法
     /// </summary>
     private void try_to_load_core_content()
     {
-        Type.GetType("Cultivation_Way.Content.Manager")
+        Type.GetType("Cultivation_Way.Implementation.Manager")
             ?.GetMethod("init", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)
             ?.Invoke(null, new object[] { });
     }

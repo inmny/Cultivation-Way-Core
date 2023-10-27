@@ -2,7 +2,7 @@
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 
-namespace Cultivation_Way.Content;
+namespace Cultivation_Way.Implementation;
 
 internal static class Cultisyses
 {

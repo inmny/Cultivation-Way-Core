@@ -2,7 +2,7 @@ using Cultivation_Way.Constants;
 using Cultivation_Way.General.AboutCultibook;
 using Cultivation_Way.Library;
 
-namespace Cultivation_Way.Content;
+namespace Cultivation_Way.Implementation;
 
 internal static class Cultibooks
 {

@@ -2,7 +2,7 @@
 using Cultivation_Way.Library;
 using UnityEngine;
 
-namespace Cultivation_Way.Content;
+namespace Cultivation_Way.Implementation;
 
 internal static class Energies
 {
