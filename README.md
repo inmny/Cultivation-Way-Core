@@ -2,34 +2,42 @@
 
 努力为Worldbox提供幻想系拓展支持。
 
-|                                      中                                      |                           英（中文版都没写完）                            |
-|:---------------------------------------------------------------------------:|:---------------------------------------------------------------:|
-|        [百科](https://github.com/inmny/Cultivation-Way-Core/wiki/Home)        |     [Wiki](https://github.com/inmny/Cultivation-Way-Core/)      |   
-| [文档](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/index.md) | [Documentation](https://github.com/inmny/Cultivation-Way-Core/) |	
+## 如何提供其他语言支持
 
-## 附属
+参考[简体中文](./Locales/cz.json)在[Locales](./Locales)添加/补充对应文件
+
+## 如何从源码安装该模组
+
+1. 安装NCMS
+2. 将源码文件夹作为模组放入Mods文件夹
+3. 运行以下命令将代码文件展开
+
+``` bash
+cd <prepare_run.py所在目录>
+python prepare_run.py
+```
+
+## 如何贡献代码
+
+两种方式:
+
+1. 当代码量较少且局限于bug修复和性能优化时, 提出 Pull Request 等待回复即可。当不满足该条件时, 在 Pull Request Description 中详细描述.
+2. 当代码量较多或尝试添加新的内容/功能时, 邮件联系 1342885270@qq.com 沟通或提出 [Issue](https://github.com/inmny/Cultivation-Way-Core/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=) 讨论通过后再Coding, 以免浪费时间.
 
 ## TODO
 
-- [x] 
-  将base14中W_Content_Spell内容迁移至main中Content.Spells([详细](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/spell.md))
+仅供参考
+
 - [ ] 配置Content.Spells中各个法术的灵气消耗, 等级要求, 消耗与伤害的关系
 - [ ] 各修炼体系数值调整
 - [ ] 添加雷劫
-- [x] 实装武道, 魂道, 血脉
 - [ ] 完善武道, 魂道细节
 - [ ] 不同纪元阴阳性生物的属性加成应当不同
-- [x] 迁移妖族(较为繁琐)
-- [x] 添加冥族(较为繁琐)
 - [ ] 添加巫族(较为繁琐)
-- [ ] 添加法宝与炼器(具体群内详聊)
-- [ ] 添加丹药与炼丹(具体群内详聊)
+- [ ] 法宝与炼器
+- [ ] 丹药与炼丹
 - [ ] 天榜([详细](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/contents_index/world_top.md))
 - [ ] 模组设置
-- [x] 世界法则基本内容
 - [ ] 修炼体系各个等级人数限制
-- [x] 实装各类属性(较为繁琐)
 - [ ] 存档
 - [ ] 名字生成器([详细](https://github.com/inmny/Cultivation-Way-Core/blob/main/docs/contents_index/name_generator.md))
-
-## Attention
