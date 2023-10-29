@@ -1,28 +1,28 @@
-# CW_Core 修真之路核心
+# Cultivation Way Core
 
 [![zh](https://img.shields.io/badge/zh-简体中文-red.svg)](README.md)
 [![en](https://img.shields.io/badge/en-English-green.svg)](README.en.md)
 
-努力为Worldbox提供幻想系拓展支持。
+Working for support fantasy addon for game WorldBox.
 
-## 如何提供其他语言支持
+## How to support other languages
 
-参考[简体中文](./Locales/cz.json)在[Locales](./Locales)添加/补充对应文件
+Refer to [简体中文](./Locales/cz.json) at [Locales](./Locales) for translation.
 
-## 如何从源码安装该模组
+## How to install the mod from source code
 
-1. 安装[NCMS](https://denq04.github.io/ncms/)
-2. 将源码文件夹作为模组放入Mods文件夹
-3. 运行以下命令将代码文件展开
+1. Install [NCMS](https://denq04.github.io/ncms/) for your WorldBox
+2. Place source code folder into "Mods" folder
+3. Run the following command to flat code files.
 
 ``` bash
 cd <prepare_run.py所在目录>
 python prepare_run.py
 ```
 
-## 如何贡献代码
+## How to contribute code
 
-两种方式:
+Two approaches: ( Wait for translation here )
 
 1. 当代码量较少且局限于bug修复和性能优化时, 提出 Pull Request 等待回复即可。当不满足该条件时, 在 Pull Request Description 中详细描述.
 2. 当代码量较多或尝试添加新的内容/功能时, 邮件联系 <1342885270@qq.com> 沟通或提出 [Issue](https://github.com/inmny/Cultivation-Way-Core/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=) 讨论通过后再Coding, 以免浪费时间.
