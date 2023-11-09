@@ -47,6 +47,7 @@ public delegate float EnergySpreadGradCalc(
     WorldTile curr_tile, WorldTile target_tile
 );
 
+public delegate void EnergyMapInitialize(CW_EnergyMapTile tiles, int x, int y, int width, int height);
 /// <summary>
 ///     动画结束时的委托
 /// </summary>

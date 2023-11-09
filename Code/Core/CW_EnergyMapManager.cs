@@ -91,11 +91,12 @@ public class CW_EnergyMap
             {
                 map[x, y] = new CW_EnergyMapTile
                 {
-                    value = Toolbox.randomFloat(0, 10000),
-                    density = Toolbox.randomFloat(1, 3),
+                    value = 0,
+                    density = 0,
                     x = x,
                     y = y
                 };
+                energy.initializer?.Invoke(map[x, y], x, y, width, height);
                 map[x, y].update(energy);
                 _tmp_map[x, y] = new CW_EnergyMapTile();
             }

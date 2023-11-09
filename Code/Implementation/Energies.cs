@@ -106,7 +106,16 @@ internal static class Energies
             spread_grad_calc = (value, density, target_value, target_density, tile, target_tile) =>
             {
                 return (target_value - value) * 0.2f;
-            }
+            },
+            initializer = ((tiles, x, y, width, height) =>
+            {
+                float x_center = width / 2f;
+                float y_center = height / 2f;
+                float dx = x - x_center;
+                float dy = y - y_center;
+                tiles.value = Mathf.Max(0, x_center * y_center - dx * dx - dy * dy);
+                //CW_Core.LogInfo($"({x},{y}): {tiles.value}");
+            })
         };
         Library.Manager.energies.add(energy);
     }

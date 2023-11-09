@@ -21,6 +21,10 @@ public class EnergyAsset : Asset
     ///     扩散计算
     /// </summary>
     public EnergySpreadGradCalc spread_grad_calc;
+    /// <summary>
+    ///     分布初始化器
+    /// </summary>
+    public EnergyMapInitialize initializer;
 
     /// <summary>
     ///     是否游离, 游离能量将会显示在地图上
