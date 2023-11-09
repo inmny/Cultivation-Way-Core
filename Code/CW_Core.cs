@@ -231,7 +231,7 @@ public class CW_Core : BasicMod<CW_Core>
         internal long update_nr;
     }
 
-    protected override void OnLoaded()
+    protected override void OnModLoad()
     {
         
     }

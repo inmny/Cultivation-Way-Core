@@ -233,11 +233,8 @@ internal static class CWTab
         );
         if (button_type == ButtonType.Toggle)
         {
-            ret.transform.Find("toggleIcon").gameObject.name = "ToggleIcon";
             ret.godPower = AssetManager.powers.get(id);
-            ToggleIcon toggle_icon = ret.transform.Find("ToggleIcon").gameObject.AddComponent<ToggleIcon>();
-            toggle_icon.spriteON = SpriteTextureLoader.getSprite("ui/cw_window/buttonToggleIndicator_0");
-            toggle_icon.spriteOFF = SpriteTextureLoader.getSprite("ui/cw_window/buttonToggleIndicator_1");
+            ToggleIcon toggle_icon = ret.transform.Find("ToggleIcon").gameObject.GetComponent<ToggleIcon>();
             Button button = ret.GetComponent<Button>();
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(

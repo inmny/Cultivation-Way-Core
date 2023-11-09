@@ -18,7 +18,7 @@ internal static class Localizer
     public static void init()
     {
         load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/cz.json"), "cz");
-        load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/tc.json"), "tc");
+        load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/ch.json"), "ch");
         load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/en.json"), "en");
     }
 
@@ -43,9 +43,11 @@ internal static class Localizer
 
     public static void apply_localization(Dictionary<string, string> target_dict, string language)
     {
-        if (language != "cz" && language != "tc" && language != "en")
+        if (!languages_key_text.ContainsKey(language))
         {
-            load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "GameResources/cw_locales/en.json"), language);
+            CW_Core.LogInfo($"Language {language} not found, fallback to Chinese.");
+            language = "cz";
+            //load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/cz.json"), language);
         }
 
         foreach (CW_Addon addon in CW_Core.mod_state.addons)
@@ -68,11 +70,11 @@ internal static class Localizer
                 break;
             }
 
-            // 如果对应语言的本地化文件不存在，则尝试加载英文的本地化文件
+            // 如果对应语言的本地化文件不存在，则尝试加载简中的本地化文件
             if (language_locale_file_found) continue;
             foreach (FileInfo locale_file in files)
             {
-                if (locale_file.Name != "en.json") continue;
+                if (locale_file.Name != "cz.json") continue;
                 load_json(locale_file.FullName, language);
                 break;
             }
