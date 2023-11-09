@@ -58,7 +58,10 @@ internal static class Cultisyses
             cultisys.power_level[i] = 1 + i * 0.1f;
             cultisys.bonus_stats[i][CW_S.wakan] = 1 + i * 99;
             cultisys.bonus_stats[i][CW_S.wakan_regen] = i * 0.1f;
+            cultisys.bonus_stats[i][S.armor] = i * 10;
+            cultisys.bonus_stats[i][S.mod_armor] = i;
             cultisys.bonus_stats[i][S.health] = i * 99;
+            cultisys.bonus_stats[i][S.mod_health] = i;
             cultisys.bonus_stats[i][S.damage] = i * 9;
             cultisys.bonus_stats[i][S.max_age] = i * i * 10;
         }
@@ -113,7 +116,7 @@ internal static class Cultisyses
             external_levelup_bonus = (actor, asset, level) =>
             {
                 actor.data.get(Content_Constants.data_bushido_cultivelo, out float cultivelo, 1);
-                cultivelo *= Toolbox.randomFloat(1, 2);
+                cultivelo *= Toolbox.randomFloat(level-1, level);
                 actor.data.set(Content_Constants.data_bushido_cultivelo, cultivelo);
                 return 0;
             }
@@ -123,8 +126,12 @@ internal static class Cultisyses
             cultisys.power_level[i] = 1 + i * 0.1f;
             cultisys.bonus_stats[i][S.mod_health] = i * 0.2f;
             cultisys.bonus_stats[i][CW_S.health_regen] = i;
+            cultisys.bonus_stats[i][S.armor] = i * 10;
             cultisys.bonus_stats[i][S.health] = i * 99;
+            cultisys.bonus_stats[i][S.mod_armor] = i * 3;
+            cultisys.bonus_stats[i][S.mod_health] = i;
             cultisys.bonus_stats[i][S.damage] = i * 9;
+            cultisys.bonus_stats[i][S.max_age] = (i + 1) * (i + 1);
         }
 
         Library.Manager.cultisys.add(cultisys);
@@ -151,7 +158,9 @@ internal static class Cultisyses
         {
             cultisys.power_level[i] = 1 + i * 0.1f;
             cultisys.bonus_stats[i][CW_S.soul] = 1 + i * i * 99;
-            cultisys.bonus_stats[i][CW_S.soul_regen] = 0.1f + 0.1f * i;
+            cultisys.bonus_stats[i][CW_S.soul_regen] = 0.1f + 0.1f * (i + 1) * (i + 1);
+            cultisys.bonus_stats[i][S.max_age] = (i + 1) * (i + 1) / 2;
+            cultisys.bonus_stats[i][S.health] = i * 30;
         }
 
         Library.Manager.cultisys.add(cultisys);
