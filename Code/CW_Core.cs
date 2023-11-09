@@ -12,13 +12,12 @@ using Cultivation_Way.UI;
 using ModDeclaration;
 using NCMS;
 using UnityEngine;
+using NeoModLoader.api;
 
 namespace Cultivation_Way;
 
-[ModEntry]
-public class CW_Core : MonoBehaviour
+public class CW_Core : BasicMod<CW_Core>
 {
-    public static CW_Core instance;
     public static ModState mod_state;
     public static Transform ui_prefab_library;
     public static Transform actor_prefab_library;
@@ -41,7 +40,6 @@ public class CW_Core : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
         mod_state = state;
     }
 
@@ -231,5 +229,10 @@ public class CW_Core : MonoBehaviour
         internal Info mod_info;
         internal SpellManager spell_manager;
         internal long update_nr;
+    }
+
+    protected override void OnLoaded()
+    {
+        
     }
 }
