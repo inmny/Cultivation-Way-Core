@@ -37,11 +37,14 @@ internal static class H_Actor
             if (wakan >= max_wakan)
             {
                 actor.check_level_up(Content_Constants.immortal_id);
-                return;
+                goto BUSHIDO_CHECK;
             }
 
             CW_EnergyMapTile energy_tile = actor.currentTile.get_energy_tile(Content_Constants.energy_wakan_id);
-            if (energy_tile == null) return;
+            if (energy_tile == null)
+            {
+                goto BUSHIDO_CHECK;
+            }
 
             float culti_wakan = actor.cw_asset.culti_velo * energy_tile.density *
                                 (1 + actor.stats[CW_S.mod_cultivelo]) *
@@ -64,7 +67,7 @@ internal static class H_Actor
 
             actor.data.set(DataS.wakan, wakan);
         }
-
+        BUSHIDO_CHECK:
         actor.data.get(Content_Constants.bushido_id, out level, -1);
         if (level >= 0)
         {
@@ -74,7 +77,7 @@ internal static class H_Actor
             if (health >= max_health * 0.95f)
             {
                 actor.check_level_up(Content_Constants.bushido_id);
-                return;
+                goto SOUL_CHECK;
             }
 
             actor.data.get(Content_Constants.data_bushido_cultivelo, out float culti_health, 1);
@@ -94,7 +97,7 @@ internal static class H_Actor
 
             actor.check_level_up(Content_Constants.bushido_id);
         }
-
+        SOUL_CHECK:
         actor.check_level_up(Content_Constants.soul_id);
     }
 
