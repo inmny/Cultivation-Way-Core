@@ -17,9 +17,9 @@ internal static class Localizer
 
     public static void init()
     {
-        load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/cz.json"), "cz");
-        load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/ch.json"), "ch");
-        load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/en.json"), "en");
+        //load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/cz.json"), "cz");
+        //load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/ch.json"), "ch");
+        //load_json(Path.Combine(CW_Core.mod_state.mod_info.Path, "Locales/en.json"), "en");
     }
 
     private static void load_json(string path, string language)
@@ -43,6 +43,7 @@ internal static class Localizer
 
     public static void apply_localization(Dictionary<string, string> target_dict, string language)
     {
+        return;
         if (!languages_key_text.ContainsKey(language))
         {
             CW_Core.LogInfo($"Language {language} not found, fallback to Chinese.");
