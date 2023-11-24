@@ -79,8 +79,7 @@ public class CW_Core : BasicMod<CW_Core>
                     CWTab.post_init();
                     action_on_windows("post_init");
                     state.library_manager.post_init();
-                    state.energy_map_manager.init(World.world.tilesMap.GetLength(0),
-                        World.world.tilesMap.GetLength(1));
+                    state.energy_map_manager.init(256, 256);
                     Localizer.apply_localization(LocalizedTextManager.instance.localizedText,
                         LocalizedTextManager.instance.language);
 
