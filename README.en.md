@@ -11,9 +11,8 @@ Refer to [简体中文](./Locales/cz.json) at [Locales](./Locales) for translati
 
 ## How to install the mod from source code
 
-1. Install [NCMS](https://denq04.github.io/ncms/) for your WorldBox
+1. Install [NeoModLoader](https://github.com/WorldBoxOpenMods/ModLoader/blob/master/README.en.md#how-to-install) for your WorldBox
 2. Place source code folder into "Mods" folder
-3. Run the following command to flat code files.
 
 ``` bash
 cd <prepare_run.py所在目录>

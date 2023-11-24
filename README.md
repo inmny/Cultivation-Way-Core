@@ -11,14 +11,8 @@
 
 ## 如何从源码安装该模组
 
-1. 安装[NCMS](https://denq04.github.io/ncms/)
+1. 安装[NeoModLoader](https://github.com/WorldBoxOpenMods/ModLoader#%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95)
 2. 将源码文件夹作为模组放入Mods文件夹
-3. 运行以下命令将代码文件展开
-
-``` bash
-cd <prepare_run.py所在目录>
-python prepare_run.py
-```
 
 ## 如何贡献代码
 
