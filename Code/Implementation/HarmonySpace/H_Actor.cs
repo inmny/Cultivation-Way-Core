@@ -56,7 +56,6 @@ internal static class H_Actor
             {
                 wakan = max_wakan;
                 culti_wakan = max_wakan - wakan;
-                actor.check_level_up(Content_Constants.immortal_id);
             }
             else
             {
@@ -66,6 +65,7 @@ internal static class H_Actor
             energy_tile.value -= culti_wakan;
 
             actor.data.set(DataS.wakan, wakan);
+            actor.check_level_up(Content_Constants.immortal_id);
         }
         BUSHIDO_CHECK:
         actor.data.get(Content_Constants.bushido_id, out level, -1);
