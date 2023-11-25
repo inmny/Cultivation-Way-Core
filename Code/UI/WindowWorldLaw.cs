@@ -66,6 +66,7 @@ public class WindowWorldLaw : AbstractWindow<WindowWorldLaw>
             ScrollWindow.showWindow(window_id);
         });
         button.transform.SetParent(grid.Find("Grid"));
+        button.transform.localScale = Vector3.one;
     }
 
     internal void create_grid(string id)
