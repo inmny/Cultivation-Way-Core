@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cultivation_Way.Constants;
 
 namespace Cultivation_Way.Library;
 
@@ -88,7 +89,8 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
         base.init();
         foreach (ActorAsset vanllia_asset in AssetManager.actor_library.list)
         {
-            add(new CW_ActorAsset(vanllia_asset));
+            var asset = add(new CW_ActorAsset(vanllia_asset));
+            asset.vanllia_asset.base_stats[CW_S.soul] = 10;
         }
     }
 

@@ -38,6 +38,7 @@ internal static class Actors
             asset.nameTemplate = "easternhuman_name";
         }
 
+        asset.base_stats[CW_S.soul] = 10;
         asset.nameLocale = Content_Constants.wu_name_locale;
         asset.race = Content_Constants.wu_race;
         asset.icon = "iconWus";
@@ -94,6 +95,8 @@ internal static class Actors
             asset.nameTemplate = "easternhuman_name";
         }
 
+        asset.base_stats[CW_S.soul] = 50;
+        asset.base_stats[CW_S.mod_soul] = 0.5f;
         asset.nameLocale = Content_Constants.ming_name_locale;
         asset.race = Content_Constants.ming_race;
         asset.icon = "iconMings";
@@ -223,6 +226,7 @@ internal static class Actors
         CW_ActorAsset cw_yao_asset =
             Library.Manager.actors.clone(id + Content_Constants.yao_postfix, Content_Constants.yao_postfix);
 
+        cw_yao_asset.vanllia_asset.base_stats[CW_S.soul] = 10;
         cw_yao_asset.vanllia_asset.texture_path = $"yaos/t_{cw_yao_asset.id}";
         cw_yao_asset.vanllia_asset.icon = AssetManager.actor_library.dict.ContainsKey(id)
             ? AssetManager.actor_library.get(id).icon
@@ -260,6 +264,7 @@ internal static class Actors
             asset.nameTemplate = "easternhuman_name";
         }
 
+        asset.base_stats[CW_S.soul] = 10;
         asset.nameLocale = Content_Constants.eastern_human_name_locale;
         asset.race = Content_Constants.eastern_human_race;
         asset.icon = "iconEastern_Humans";
