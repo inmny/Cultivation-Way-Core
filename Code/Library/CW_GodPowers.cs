@@ -4,6 +4,7 @@ using System.Linq;
 using Cultivation_Way.Animation;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
+using NeoModLoader.General;
 using UnityEngine;
 
 namespace Cultivation_Way.Library;
@@ -75,7 +76,7 @@ internal static class CW_GodPowers
                 }
             }
 
-            WorldTip.instance.showToolbarText(data.stringVal);
+            WorldTip.instance.showToolbarText(LM.Get(data.stringVal));
             PlayerConfig.saveData();
         };
         add(global_switch);
