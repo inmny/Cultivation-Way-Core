@@ -17,7 +17,7 @@ namespace Cultivation_Way.Core;
 ///     <para>在没有模组冲突的情况下, 运行过程中所有Actor均能强制转换成CW_Actor</para>
 ///     <para>由Actor转CW_Actor见<see cref="Cultivation_Way.HarmonySpace.H_Actor" /></para>
 /// </summary>
-public class CW_Actor : Actor
+public partial class CW_Actor : Actor
 {
     /// <summary>
     ///     当前可用的法术
