@@ -84,7 +84,7 @@ internal static class Cultisyses
             {
                 if (asset.curr_progress(actor, asset, 0) < asset.max_progress(actor, asset, 0) * 0.95f) return false;
                 actor.data.get(asset.id, out int level, 1);
-                return Toolbox.randomChance(1 / (level + 1));
+                return Toolbox.randomChance(1f / (level + 1));
             },
             monthly_update_action = (actor, asset, level) =>
             {
@@ -151,7 +151,11 @@ internal static class Cultisyses
             },
             max_progress = (actor, asset, level) => actor.stats[CW_S.soul],
             can_levelup = (actor, asset) =>
-                asset.curr_progress(actor, asset, 0) >= asset.max_progress(actor, asset, 0),
+            {
+                if (asset.curr_progress(actor, asset, 0) < asset.max_progress(actor, asset, 0) * 0.95f) return false;
+                actor.data.get(asset.id, out int level, 1);
+                return Toolbox.randomChance(1f / (level + 1));
+            },
             allow = (actor, asset) => { return true; }
         };
         for (int i = 0; i < Content_Constants.soul_max_level; i++)
