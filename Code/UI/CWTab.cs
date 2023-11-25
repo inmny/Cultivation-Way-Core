@@ -100,7 +100,7 @@ internal static class CWTab
     public static PowerButton create_and_add_button(string id, string sprite_path, UnityAction action,
         ButtonType button_type = ButtonType.Click, ButtonContainerType container_type = ButtonContainerType.OTHERS)
     {
-        var ret = create_button_new(id, sprite_path, action, button_type);
+        var ret = create_button(id, sprite_path, action, button_type);
         add_button(ret, container_type);
         return ret;
     }
@@ -122,7 +122,7 @@ internal static class CWTab
     /// <param name="action"></param>
     /// <param name="button_type"></param>
     /// <returns></returns>
-    public static PowerButton create_button_new(string id, string sprite_path, UnityAction action,
+    public static PowerButton create_button(string id, string sprite_path, UnityAction action,
         ButtonType button_type = ButtonType.Click)
     {
         PowerButton ret = null;
@@ -137,50 +137,6 @@ internal static class CWTab
             case ButtonType.Toggle:
                 ret = PowerButtonCreator.CreateToggleButton(id, SpriteTextureLoader.getSprite(sprite_path), pNoAutoSetToggleAction: true);
                 break;
-        }
-
-        return ret;
-    }
-    /// <summary>
-    ///     创建按钮
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="sprite_path"></param>
-    /// <param name="action"></param>
-    /// <param name="button_type"></param>
-    /// <returns></returns>
-    public static PowerButton create_button(string id, string sprite_path, UnityAction action,
-        ButtonType button_type = ButtonType.Click)
-    {
-        PowerButton ret = PowerButtons.CreateButton(
-            id,
-            Resources.Load<Sprite>(sprite_path),
-            LocalizedTextManager.stringExists(id + Constants.Core.title_suffix)
-                ? LocalizedTextManager.getText(id + Constants.Core.title_suffix)
-                : id,
-            LocalizedTextManager.stringExists(id + Constants.Core.desc_suffix)
-                ? LocalizedTextManager.getText(id + Constants.Core.desc_suffix)
-                : "",
-            Vector2.zero,
-            button_type,
-            _tab.transform,
-            action ??
-            (button_type == ButtonType.Click ? () => { } : null)
-        );
-        if (button_type == ButtonType.Toggle)
-        {
-            ret.godPower = AssetManager.powers.get(id);
-            ToggleIcon toggle_icon = ret.transform.Find("ToggleIcon").gameObject.GetComponent<ToggleIcon>();
-            Button button = ret.GetComponent<Button>();
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(
-                () =>
-                {
-                    ret.godPower?.toggle_action(ret.godPower.id);
-                    toggle_icon.updateIcon(PlayerConfig.optionBoolEnabled(id));
-                }
-            );
-            PowerButton.toggleButtons.Add(ret);
         }
 
         return ret;
