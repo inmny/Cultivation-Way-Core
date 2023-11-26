@@ -166,7 +166,10 @@ public partial class CW_Actor : Actor
         status_asset.action_on_get?.Invoke(status, from, this);
 
         activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
+        batch.c_status_effects.Add(this);
+
         setStatsDirty();
+        
         return status;
     }
 
@@ -213,9 +216,6 @@ public partial class CW_Actor : Actor
         }
 
         add_status(pID, null, pOverrideTimer);
-        if (!has_any_status_effect()) return;
-        activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
-        batch.c_status_effects.Add(this);
     }
 
     /// <summary>
