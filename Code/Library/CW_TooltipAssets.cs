@@ -53,7 +53,7 @@ internal static class CW_TooltipAssets
         StringBuilder str_builder = new();
         str_builder.AppendLine($"{LocalizedTextManager.getText($"{cultisys_asset.id}_{level}")}({level + 1}境)");
         str_builder.AppendLine(
-            $"{cultisys_asset.curr_progress(actor, cultisys_asset, level)}/{cultisys_asset.max_progress(actor, cultisys_asset, level)}");
+            $"{(int)cultisys_asset.curr_progress(actor, cultisys_asset, level)}/{(int)cultisys_asset.max_progress(actor, cultisys_asset, level)}");
 
         HashSet<string> spells = actor.data.get_spells();
         spells ??= new HashSet<string>();

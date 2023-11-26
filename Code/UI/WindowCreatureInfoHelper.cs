@@ -50,8 +50,8 @@ internal class CultiProgress : MonoBehaviour
         transform.Find("Icon").gameObject.SetActive(true);
         transform.Find("Icon").GetComponent<Image>().sprite = SpriteTextureLoader.getSprite(cultisys.sprite_path);
 
-        float max = cultisys.max_progress(actor, cultisys, cultisys_level);
-        float curr = cultisys.curr_progress(actor, cultisys, cultisys_level);
+        float max = (int)cultisys.max_progress(actor, cultisys, cultisys_level);
+        float curr = (int)cultisys.curr_progress(actor, cultisys, cultisys_level);
         bar.setBar(curr, max, $"/{max}");
 
         bar_image.color = type switch
