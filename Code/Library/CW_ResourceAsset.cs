@@ -22,6 +22,7 @@ public class CW_ResourceAsset : Asset
 
     internal CW_ResourceAsset(ResourceAsset vanllia_asset)
     {
+        this.id = vanllia_asset.id;
         this.vanllia_asset = vanllia_asset;
         element = new CW_Element(new[] { 20, 20, 20, 20, 20 });
         yin_yang = 0.5f;

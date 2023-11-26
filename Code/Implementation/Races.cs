@@ -41,7 +41,6 @@ internal static class Races
         AssetManager.raceLibrary.addPreferredWeapon("spear", 2);
         AssetManager.raceLibrary.addPreferredWeapon("bow", 5);
         AssetManager.raceLibrary.cloneBuildingKeys(SK.human, wu.id);
-        AssetManager.race_build_orders.clone(wu.build_order_id, "kingdom_base");
     }
 
     private static void add_ming()
