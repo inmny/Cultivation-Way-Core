@@ -1,7 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using Cultivation_Way.Constants;
+using HarmonyLib;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -16,6 +21,28 @@ public static class GeneralHelper
         new int[2] { 0, 3 }, //左上
         new int[2] { 0, 2 } //左下
     };
+
+    private static void SelfUpload(string changelog)
+    {
+        var mod_info = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(
+            File.ReadAllText(Path.Combine(CW_Core.Instance.GetDeclaration().FolderPath, "mod.json")));
+        string version = (string)mod_info["version"];
+        mod_info["version"] = next_version(version);
+        File.WriteAllText(Path.Combine(CW_Core.Instance.GetDeclaration().FolderPath, "mod.json"),
+            Newtonsoft.Json.JsonConvert.SerializeObject(mod_info, Formatting.Indented));
+
+        Type type = AccessTools.TypeByName("ModWorkshopService");
+        MethodInfo method = type.GetMethod("TryEditMod");
+        method.Invoke(null, new object[] { 3072913057, CW_Core.Instance, changelog });
+        
+        return;
+
+        string next_version(string pVersion)
+        {
+            string[] version = pVersion.Split('.');
+            return $"{version[0]}.{version[1]}.{int.Parse(version[2]) + 1}";
+        }
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string to_json(object obj)
