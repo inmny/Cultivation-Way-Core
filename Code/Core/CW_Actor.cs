@@ -473,7 +473,7 @@ public partial class CW_Actor : Actor
         if (__data_spells.Count > 0)
         {
             CW_SpellAsset spell = Manager.spells.get(__data_spells.GetRandom());
-            if ((pAttacker != null && spell.can_trigger(SpellTriggerTag.NAMED_DEFEND)) ||
+            if ((pAttacker != null && (spell.can_trigger(SpellTriggerTag.NAMED_DEFEND) || (spell.can_trigger(SpellTriggerTag.ATTACK) && Toolbox.randomChance(0.3f)))) ||
                 (pAttacker == null && spell.can_trigger(SpellTriggerTag.UNNAMED_DEFEND)))
             {
                 cast_spell(spell, pAttacker, pAttacker == null ? null : pAttacker.currentTile);
