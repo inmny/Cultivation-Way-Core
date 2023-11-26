@@ -125,10 +125,33 @@ internal static class StatusEffects
         AnimationSetting anim_setting = new()
         {
             loop_limit_type = AnimationLoopLimitType.TIME_LIMIT,
-            loop_time_limit = 120,
+            loop_time_limit = 3,
             loop_nr_limit = -1,
             anim_froze_frame_idx = 4,
             frame_interval = 0.05f
+        };
+        anim_setting.frame_action = (int pIdx, ref Vector2 pVec, ref Vector2 pDstVec,
+            Animation.SpriteAnimation pAnim) =>
+        {
+            if (pAnim.src_object == null || !pAnim.src_object.isAlive())
+            {
+                pAnim.force_stop(false);
+                return;
+            }
+            if (!pAnim.src_object.isActor())
+            {
+                return;
+            }
+            CW_Actor actor = (CW_Actor)pAnim.src_object;
+            pAnim.set_scale(actor.stats[S.scale]);
+            if (actor.statuses != null && actor.statuses.TryGetValue("status_vine_bound", out var status))
+            {
+                pAnim.play_time = Mathf.Max(0, 3 - status.left_time);
+            }
+            else
+            {
+                pAnim.force_stop(true);
+            }
         };
         anim_setting.set_trace(AnimationTraceType.ATTACH);
         bound_stats = new BaseStats();
@@ -147,8 +170,7 @@ internal static class StatusEffects
         status_effect.anim_id = "status_vine_bound_anim";
         status_effect.action_on_update = (effect, object1, object2) =>
         {
-            if (object2.a.data.hasFlag(DataS.is_bound)) return;
-            object2.a.data.addFlag(DataS.is_bound);
+            object2.a.has_status_frozen = true;
         };
         // 石化
         bound_stats = new BaseStats();
@@ -164,8 +186,7 @@ internal static class StatusEffects
         );
         status_effect.action_on_update = (effect, object1, object2) =>
         {
-            if (object2.a.data.hasFlag(DataS.is_bound)) return;
-            object2.a.data.addFlag(DataS.is_bound);
+            object2.a.has_status_frozen = true;
             ((CW_Actor)object2).start_color_effect("gray", 1);
         };
         // 冰封
@@ -174,6 +195,30 @@ internal static class StatusEffects
         bound_stats[S.attack_speed] = -999999;
         anim_setting = anim_setting.__deepcopy();
         anim_setting.frame_interval = 1f;
+        
+        anim_setting.frame_action = (int pIdx, ref Vector2 pVec, ref Vector2 pDstVec,
+            Animation.SpriteAnimation pAnim) =>
+        {
+            if (pAnim.src_object == null || !pAnim.src_object.isAlive())
+            {
+                pAnim.force_stop(false);
+                return;
+            }
+            if (!pAnim.src_object.isActor())
+            {
+                return;
+            }
+            CW_Actor actor = (CW_Actor)pAnim.src_object;
+            pAnim.set_scale(actor.stats[S.scale]);
+            if (actor.statuses != null && actor.statuses.TryGetValue("status_ice_bound", out var status))
+            {
+                pAnim.play_time = Mathf.Max(0, 3 - status.left_time);
+            }
+            else
+            {
+                pAnim.force_stop(true);
+            }
+        };
         anim_setting.set_trace(AnimationTraceType.ATTACH);
         for (int i = 0; i < 5; i++)
         {
@@ -197,8 +242,7 @@ internal static class StatusEffects
         };
         status_effect.action_on_update = (effect, object1, object2) =>
         {
-            if (object2.a.data.hasFlag(DataS.is_bound)) return;
-            object2.a.data.addFlag(DataS.is_bound);
+            object2.a.has_status_frozen = true;
         };
     }
 

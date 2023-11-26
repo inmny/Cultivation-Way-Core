@@ -1,7 +1,9 @@
 using System;
 using Cultivation_Way.Animation;
 using Cultivation_Way.Constants;
+using Cultivation_Way.Core;
 using Cultivation_Way.Library;
+using UnityEngine;
 
 namespace Cultivation_Way.General.AboutStatusEffect;
 
@@ -54,8 +56,32 @@ public static class FormatStatusEffect
             {
                 AnimationSetting anim_setting = new()
                 {
-                    loop_limit_type = AnimationLoopLimitType.NO_LIMIT,
-                    layer_name = "EffectsBack"
+                    loop_limit_type = AnimationLoopLimitType.TIME_LIMIT,
+                    layer_name = "EffectsBack",
+                    loop_time_limit = duration
+                };
+                anim_setting.frame_action = (int pIdx, ref Vector2 pVec, ref Vector2 pDstVec,
+                    Animation.SpriteAnimation pAnim) =>
+                {
+                    if (pAnim.src_object == null || !pAnim.src_object.isAlive())
+                    {
+                        pAnim.force_stop(false);
+                        return;
+                    }
+                    if (!pAnim.src_object.isActor())
+                    {
+                        return;
+                    }
+                    CW_Actor actor = (CW_Actor)pAnim.src_object;
+                    pAnim.set_scale(actor.stats[S.scale]);
+                    if (actor.statuses != null && actor.statuses.TryGetValue(id, out var status))
+                    {
+                        pAnim.play_time = Math.Max(0, anim_setting.loop_time_limit - status.left_time);
+                    }
+                    else
+                    {
+                        pAnim.force_stop(true);
+                    }
                 };
                 anim_setting.set_trace(AnimationTraceType.ATTACH);
 

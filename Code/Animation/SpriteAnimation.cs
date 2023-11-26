@@ -104,6 +104,10 @@ public class SpriteAnimation
     ///     路径长度
     /// </summary>
     public float trace_length;
+    /// <summary>
+    ///     创建时设定的大小
+    /// </summary>
+    public float default_scale { get; private set; }
 
     internal SpriteAnimation(AnimationSetting setting, Sprite[] sprites, GameObject prefab, Vector2 src_vec,
         Vector2 dst_vec, BaseSimObject src_object, BaseSimObject dst_object)
@@ -117,6 +121,7 @@ public class SpriteAnimation
 
         gameObject = Object.Instantiate(prefab, EffectManager.instance.transform);
         gameObject.layer = 0;
+        default_scale = gameObject.transform.localScale.x;
         renderer = gameObject.GetComponent<SpriteRenderer>();
 
         apply_setting(src_vec, dst_vec, src_object, dst_object);
@@ -379,12 +384,12 @@ public class SpriteAnimation
     }
 
     /// <summary>
-    ///     设置大小
+    ///     设置大小, 相较于预制体的大小
     /// </summary>
     /// <param name="scale">大小系数</param>
     public void set_scale(float scale)
     {
-        gameObject.transform.localScale = new Vector3(scale, scale, gameObject.transform.localScale.z);
+        gameObject.transform.localScale = new Vector3(scale * default_scale, scale * default_scale, gameObject.transform.localScale.z);
     }
 
     /// <summary>

@@ -107,7 +107,7 @@ public partial class CW_Actor : Actor
             (spell.target_type == SpellTargetType.BUILDING &&
              (target == null || target.objectType == MapObjectType.Actor)))
             return false;
-        if (data.hasFlag(DataS.is_bound)) return false;
+        if (has_status_frozen) return false;
 
         bool is_enemy = kingdom == null || kingdom.isEnemy(target.kingdom);
 
