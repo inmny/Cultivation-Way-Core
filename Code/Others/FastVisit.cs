@@ -43,7 +43,7 @@ internal static class FastVisit
         mat = new Material(LibraryMaterials.instance.matHighLighted.shader);
         mat.CopyPropertiesFromMaterial(LibraryMaterials.instance.matHighLighted);
         mat.color = new Color(0.2617f, 0.2617f, 0.2617f, 1f);
-        color_materials.Add("grey", mat);
+        color_materials.Add("gray", mat);
     }
 
     public static Material get_color_material(string color_id)
