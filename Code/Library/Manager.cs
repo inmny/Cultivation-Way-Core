@@ -12,6 +12,7 @@ public class Manager
     public static readonly ElementLibrary elements = new();
     public static readonly ElixirLibrary elixirs = new();
     public static readonly EnergyLibrary energies = new();
+    public static readonly CW_ItemLibrary items = new();
     public static readonly CW_ResourceLibrary resources = new();
     public static readonly CW_StatusEffectLibrary statuses = new();
     public static readonly CW_SpellLibrary spells = new();
@@ -33,6 +34,7 @@ public class Manager
         add(elements, "elements");
         add(elixirs, "elixirs");
         add(energies, "energies");
+        add(items, "items");
         add(resources, "resources");
         add(statuses, "statuses");
         add(spells, "spells");
