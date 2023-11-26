@@ -292,7 +292,7 @@ internal static class Spells
             "gold_blade", 3, new[] { 0, 0, 100, 0, 0 },
             "gold_blade_anim", "effects/gold_blade", new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 3f)
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
@@ -317,7 +317,7 @@ internal static class Spells
             "water_blade", 3, new[] { 100, 0, 0, 0, 0 },
             "water_blade_anim", "effects/water_blade", new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 3f)
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
@@ -352,7 +352,7 @@ internal static class Spells
             "fire_blade", 3, new[] { 0, 100, 0, 0, 0 },
             "fire_blade_anim", "effects/fire_blade", new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 3f)
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
@@ -377,7 +377,7 @@ internal static class Spells
             "wind_blade", 3, new[] { 40, 40, 20, 0, 0 },
             "wind_blade_anim", "effects/wind_blade", new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 3f)
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
@@ -419,7 +419,7 @@ internal static class Spells
             trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
             }
         );
         // 青龙之鳞
@@ -429,7 +429,7 @@ internal static class Spells
             trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
             }
         );
         // 朱雀之羽
@@ -439,7 +439,7 @@ internal static class Spells
             trigger_tags: new[] { SpellTriggerTag.ATTACK },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
             }
         );
         // 麒麟之角
@@ -449,7 +449,7 @@ internal static class Spells
             trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
             }
         );
         // 白虎之牙
@@ -459,7 +459,7 @@ internal static class Spells
             trigger_tags: new[] { SpellTriggerTag.ATTACK },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
             }
         );
         // 金刚护体
@@ -469,7 +469,7 @@ internal static class Spells
             trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
             }
         );
         // 水甲
@@ -479,7 +479,7 @@ internal static class Spells
             trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
             }
         );
         // 兽化
@@ -488,10 +488,7 @@ internal static class Spells
             rarity: 1, element_container: new[] { 20, 20, 20, 20, 20 },
             trigger_tags: new[]
                 { SpellTriggerTag.ATTACK, SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND },
-            spell_cost_list: new KeyValuePair<string, float>[]
-            {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
-            }
+            spell_cost_list: new KeyValuePair<string, float>[0]
         );
         spell_asset.spell_learn_check = (asset, user) => -1;
     }
@@ -511,7 +508,7 @@ internal static class Spells
             rarity: 3,
             spell_cost_list: new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 6f)
             },
             element_container: new[] { 0, 0, 0, 100, 0 }
         );
@@ -531,7 +528,7 @@ internal static class Spells
             rarity: 3,
             spell_cost_list: new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 6f)
             },
             element_container: new[] { 0, 0, 100, 0, 0 }
         );
@@ -552,7 +549,7 @@ internal static class Spells
             rarity: 3,
             spell_cost_list: new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, Content_Constants.default_spell_cost / 6f)
             },
             element_container: new[] { 100, 0, 0, 0, 0 }
         );
@@ -646,7 +643,7 @@ internal static class Spells
             target_type = SpellTargetType.TILE,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost * 2f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -669,7 +666,7 @@ internal static class Spells
             target_type = SpellTargetType.ACTOR,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost / 6f)
             }),
             spell_learn_check = LearnChecks.default_learn_check,
             spell_action = (asset, user, target, tile, cost) => { ((CW_Actor)user).regen(S.health, cost); }
@@ -728,7 +725,7 @@ internal static class Spells
             target_type = SpellTargetType.TILE,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost / 3f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -782,7 +779,7 @@ internal static class Spells
             target_type = SpellTargetType.TILE,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost / 3f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -924,7 +921,7 @@ internal static class Spells
             target_type = SpellTargetType.ACTOR,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost * 1.5f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -947,7 +944,7 @@ internal static class Spells
             target_type = SpellTargetType.ACTOR,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost * 1.5f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -970,7 +967,7 @@ internal static class Spells
             target_type = SpellTargetType.ACTOR,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost * 1.5f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -1019,7 +1016,7 @@ internal static class Spells
             target_type = SpellTargetType.TILE,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost / 10f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -1065,7 +1062,7 @@ internal static class Spells
             target_type = SpellTargetType.TILE,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost / 5f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -1117,7 +1114,7 @@ internal static class Spells
             target_type = SpellTargetType.TILE,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost / 10f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -1172,7 +1169,7 @@ internal static class Spells
             target_type = SpellTargetType.TILE,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost / 7f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -1222,7 +1219,7 @@ internal static class Spells
             target_type = SpellTargetType.TILE,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost * 5f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -1269,7 +1266,7 @@ internal static class Spells
             target_type = SpellTargetType.TILE,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost * 5f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -1313,7 +1310,7 @@ internal static class Spells
             target_type = SpellTargetType.TILE,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost * 2f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -1396,7 +1393,7 @@ internal static class Spells
             target_type = SpellTargetType.ACTOR,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost * 10f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -1440,7 +1437,7 @@ internal static class Spells
             target_type = SpellTargetType.ACTOR,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost * 10f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -1487,7 +1484,7 @@ internal static class Spells
             target_type = SpellTargetType.ACTOR,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost * 10f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -1531,7 +1528,7 @@ internal static class Spells
             target_type = SpellTargetType.ACTOR,
             spell_cost_action = CostChecks.generate_spell_cost_action(new[]
             {
-                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost)
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost * 10f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
