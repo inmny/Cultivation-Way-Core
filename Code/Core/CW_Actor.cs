@@ -261,6 +261,7 @@ public partial class CW_Actor : Actor
         {
             status.status_asset.action_on_end?.Invoke(status, status.source, this);
             statuses.Remove(status.id);
+            setStatsDirty();
         }
 
         list.Clear();
