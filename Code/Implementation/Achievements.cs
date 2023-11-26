@@ -77,7 +77,7 @@ internal static class Achievements
                 hash = md5_service.ComputeHash(Encoding.UTF8.GetBytes(str));
                 result_str.Append(BitConverter.ToString(hash).Replace("-", ""));
 
-                int[] cultisys_level = cw_actor.data.get_cultisys_level();
+                int[] cultisys_level = cw_actor.data.get_all_cultisys_levels();
                 str = "";
                 for (int idx = 0; idx < 3; idx++)
                 {

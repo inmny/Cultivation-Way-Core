@@ -63,7 +63,7 @@ internal static class H_Actor
     private static void cw_updateStats(Actor actor)
     {
         // 载入修炼体系的加成
-        int[] cultisys_levels = actor.data.get_cultisys_level();
+        int[] cultisys_levels = actor.data.get_all_cultisys_levels();
         bool has_cultisys = false;
 
         for (int i = 0; i < cultisys_levels.Length; i++)

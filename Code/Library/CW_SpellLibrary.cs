@@ -68,6 +68,10 @@ public class CW_SpellAsset : Asset
     ///     法术消耗行为, 在申请释放法术时调用以检查法术是否可释放
     /// </summary>
     public SpellCheck spell_cost_action;
+    /// <summary>
+    ///     最低消耗, 在申请释放法术时检查法术是否可释放
+    /// </summary>
+    public float minimum_cost = 1;
 
     /// <summary>
     ///     法术修习检查, 在申请修习法术时调用以检查法术修习可行性
@@ -138,7 +142,7 @@ public class CW_SpellAsset : Asset
     {
         if (given_cultisys == 0)
         {
-            int[] cultisys_level = actor.data.get_cultisys_level();
+            int[] cultisys_level = actor.data.get_all_cultisys_levels();
             for (int i = 0; i < Manager.cultisys.size; i++)
             {
                 if (cultisys_level[i] == -1) continue;

@@ -39,7 +39,7 @@ public class CultisysAsset : Asset
     /// <summary>
     ///     最大等级
     /// </summary>
-    [NonSerialized] public int max_level;
+    public int max_level;
 
     /// <summary>
     ///     当前境界最大修炼进度
@@ -54,12 +54,17 @@ public class CultisysAsset : Asset
     /// <summary>
     ///     力量基数, b^l
     /// </summary>
-    [NonSerialized] public float power_base = 1;
+    public float power_base = 1;
+
+    /// <summary>
+    ///     力量层次, b^l
+    /// </summary>
+    public float[] power_level { get; internal set; }
 
     /// <summary>
     ///     体系图标路径, 从根目录开始
     /// </summary>
-    [NonSerialized] public string sprite_path;
+    public string sprite_path;
 
     /// <summary>
     ///     获取额外的属性加成数据
@@ -95,11 +100,6 @@ public class CultisysAsset : Asset
     ///     临时存储的修炼能量ID
     /// </summary>
     internal string culti_energy_id { get; }
-
-    /// <summary>
-    ///     力量层次, b^l
-    /// </summary>
-    public float[] power_level { get; internal set; }
 
     /// <summary>
     ///     基础属性加成, 单境界, 不累加

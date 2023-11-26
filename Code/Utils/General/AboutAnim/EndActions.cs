@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Cultivation_Way.Constants;
+using Cultivation_Way.General.AboutSpell;
 using Cultivation_Way.Utils;
 using UnityEngine;
 
@@ -42,6 +43,7 @@ public static class EndActions
         {
             if (!GeneralHelper.is_enemy(b_obj, a_obj)) return;
             anim.data.get(DataS.spell_cost, out float spell_cost, 1);
+            spell_cost = MiscUtils.WakanCostToDamage(spell_cost, a_obj);
             b_obj.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell, pAttacker: a_obj);
         }
     }
@@ -56,6 +58,7 @@ public static class EndActions
         // anim.data中应当保存范围
         anim.data.get(DataS.spell_range, out float radius, 1);
         anim.data.get(DataS.spell_cost, out float spell_cost, 1);
+        spell_cost = MiscUtils.WakanCostToDamage(spell_cost, a_obj);
 
         List<WorldTile> tiles = GeneralHelper.get_tiles_in_circle(center_tile, radius);
         foreach (WorldTile tile in tiles)

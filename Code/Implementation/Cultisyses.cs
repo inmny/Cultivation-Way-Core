@@ -23,6 +23,7 @@ internal static class Cultisyses
             Content_Constants.immortal_max_level)
         {
             sprite_path = "ui/Icons/iconCultiBook_immortal",
+            power_base = 1000,
             curr_progress = (actor, culti, level) =>
             {
                 actor.data.get(DataS.wakan, out float wakan);

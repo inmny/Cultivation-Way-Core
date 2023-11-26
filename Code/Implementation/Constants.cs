@@ -24,7 +24,7 @@ internal class Content_Constants
     public const string energy_soul_id = energy_prefix + "soul";
     public const int soul_max_level = 20;
 
-    public const float default_spell_cost = 30f;
+    public const float default_spell_cost = 0.03f;
     public const float call_ancestor_min_purity = 0.75f;
 
     public const string nomad_kingdom_prefix = "nomads_";

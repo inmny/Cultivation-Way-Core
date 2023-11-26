@@ -57,11 +57,11 @@ public static class CostChecks
                 switch (key_cost_pair.Key)
                 {
                     case "health":
-                        if (user.base_data.health < key_cost_pair.Value) return -1;
+                        if (user.base_data.health * key_cost_pair.Value < spell_asset.minimum_cost) return -1;
                         break;
                     default:
                         user.base_data.get(key_cost_pair.Key, out float _value, -1);
-                        if (_value < key_cost_pair.Value) return -1;
+                        if (_value * key_cost_pair.Value < spell_asset.minimum_cost) return -1;
                         break;
                 }
             }
@@ -73,11 +73,11 @@ public static class CostChecks
                 switch (key_cost_pair.Key)
                 {
                     case "health":
-                        user.base_data.health -= (int)key_cost_pair.Value;
+                        user.base_data.health -= (int)(key_cost_pair.Value * user.base_data.health);
                         break;
                     default:
                         user.base_data.get(key_cost_pair.Key, out float _value, -1);
-                        user.base_data.set(key_cost_pair.Key, _value - key_cost_pair.Value);
+                        user.base_data.set(key_cost_pair.Key, _value * (1 - key_cost_pair.Value));
                         break;
                 }
             }

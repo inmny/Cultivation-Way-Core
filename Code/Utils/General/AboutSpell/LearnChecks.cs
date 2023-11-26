@@ -11,7 +11,7 @@ public static class LearnChecks
 
     public static float default_learn_check(CW_SpellAsset spell_asset, BaseSimObject user)
     {
-        int[] cultisys_levels = user.a.data.get_cultisys_level();
+        int[] cultisys_levels = user.a.data.get_all_cultisys_levels();
         foreach (KeyValuePair<string, int> cultisys_level_require in spell_asset.spell_cultisys_level_require)
         {
             CultisysAsset cultisys = Manager.cultisys.get(cultisys_level_require.Key);

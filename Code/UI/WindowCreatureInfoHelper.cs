@@ -302,7 +302,7 @@ internal class WindowCreatureInfoHelper
         body_progress.clear();
         wakan_progress.clear();
         soul_progress.clear();
-        int[] cultisys_level = actor.data.get_cultisys_level();
+        int[] cultisys_level = actor.data.get_all_cultisys_levels();
         for (int i = 0; i < Manager.cultisys.size; i++)
         {
             if (cultisys_level[i] < 0) continue;

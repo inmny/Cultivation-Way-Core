@@ -7,6 +7,7 @@ using Cultivation_Way.Constants;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
+using NeoModLoader.services;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -359,11 +360,27 @@ public partial class CW_Actor : Actor
         #region 伤害计算
 
         float num = 1f;
+        CultisysAsset cultisys = null;
         switch (attack_type)
         {
             case CW_AttackType.Other:
             case CW_AttackType.Weapon:
                 num = 1f - stats[S.armor] / (stats[S.armor] + 100);
+                
+                float best_reduce = 1;
+                cultisys = data.GetCultisys(CultisysType.BODY);
+                if (cultisys != null)
+                {
+                    data.get(cultisys.id, out int level, 0);
+                    best_reduce = Mathf.Max(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                }
+                cultisys = data.GetCultisys(CultisysType.WAKAN);
+                if (cultisys != null)
+                {
+                    data.get(cultisys.id, out int level, 0);
+                    best_reduce = Mathf.Max(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                }
+                num /= best_reduce;
                 break;
             case CW_AttackType.Acid:
             case CW_AttackType.Eaten:
@@ -376,6 +393,13 @@ public partial class CW_Actor : Actor
             case CW_AttackType.AshFever:
             case CW_AttackType.Spell:
                 num = 1f - stats[CW_S.spell_armor] / (stats[CW_S.spell_armor] + 100);
+                cultisys = data.GetCultisys(CultisysType.WAKAN);
+                if (cultisys != null)
+                {
+                    data.get(cultisys.id, out int level, 0);
+                    num /= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
+                }
+                // LogService.LogInfoConcurrent($"Actor {data.id} get hit by spell, damage: {pDamage}, reduce: {num}");
                 break;
             case CW_AttackType.Soul:
                 if (pAttacker != null && pAttacker.isActor() && pAttacker.isAlive())
@@ -385,6 +409,13 @@ public partial class CW_Actor : Actor
                 else
                 {
                     num = 0;
+                }
+                
+                cultisys = data.GetCultisys(CultisysType.SOUL);
+                if (cultisys != null)
+                {
+                    data.get(cultisys.id, out int level, 0);
+                    num /= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
                 }
 
                 break;
@@ -646,7 +677,7 @@ public partial class CW_Actor : Actor
             return;
         }
 
-        int[] cultisys_levels = data.get_cultisys_level();
+        int[] cultisys_levels = data.get_all_cultisys_levels();
         for (int i = 0; i < Manager.cultisys.size; i++)
         {
             if (cultisys_levels[i] < 0) continue;
@@ -682,7 +713,7 @@ public partial class CW_Actor : Actor
     /// </summary>
     private void __learn_spell_generally()
     {
-        int[] cultisys_levels = data.get_cultisys_level();
+        int[] cultisys_levels = data.get_all_cultisys_levels();
         uint cultisys_types = 0;
         for (int i = 0; i < Manager.cultisys.size; i++)
         {
@@ -724,7 +755,7 @@ public partial class CW_Actor : Actor
 
         if (cultibook.spells.Count == 0) return false;
 
-        int[] cultisys_levels = data.get_cultisys_level();
+        int[] cultisys_levels = data.get_all_cultisys_levels();
         uint cultisys_types = 0;
         for (int i = 0; i < Manager.cultisys.size; i++)
         {
@@ -791,6 +822,7 @@ public partial class CW_Actor : Actor
         foreach (CultisysAsset cultisys in cw_asset.force_cultisys)
         {
             if ((allow_cultisys_types & (uint)cultisys.type) == 0) continue;
+            data.set(cultisys.type.ToString(), cultisys.id);
             data.set(cultisys.id, 0);
             allow_cultisys_types &= ~(uint)cultisys.type;
         }
@@ -799,6 +831,7 @@ public partial class CW_Actor : Actor
         {
             if ((allow_cultisys_types & (uint)cultisys.type) == 0 || !cultisys.allow(this, cultisys))
                 continue;
+            data.set(cultisys.type.ToString(), cultisys.id);
             data.set(cultisys.id, 0);
             allow_cultisys_types &= ~(uint)cultisys.type;
         }

@@ -67,7 +67,7 @@ public static class ActorDataTools
     ///     读取所有修炼体系的等级
     /// </summary>
     /// <returns>所有修炼体系等级的数组的拷贝</returns>
-    public static int[] get_cultisys_level(this ActorData data)
+    public static int[] get_all_cultisys_levels(this ActorData data)
     {
         int[] result = new int[Manager.cultisys.size];
         for (int i = 0; i < result.Length; i++)
@@ -76,6 +76,19 @@ public static class ActorDataTools
         }
 
         return result;
+    }
+
+    public static CultisysAsset GetCultisys(this ActorData pData, CultisysType pType)
+    {
+        string pTypeStr = pType switch
+        {
+            CultisysType.BODY => "BODY",
+            CultisysType.SOUL => "SOUL",
+            CultisysType.WAKAN => "WAKAN",
+            _ => throw new ArgumentOutOfRangeException(nameof(pType), pType, null)
+        };
+        pData.get(pTypeStr, out string cultisys_id, null);
+        return cultisys_id == null ? null : Manager.cultisys.get(cultisys_id);
     }
 
     /// <summary>
