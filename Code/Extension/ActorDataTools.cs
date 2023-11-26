@@ -4,6 +4,7 @@ using System.Linq;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Library;
+using UnityEngine;
 
 namespace Cultivation_Way.Extension;
 
@@ -77,7 +78,32 @@ public static class ActorDataTools
 
         return result;
     }
-
+    public static float GetMaxPower(this ActorData pData)
+    {
+        float max_power = 1;
+        var cultisys = pData.GetCultisys(CultisysType.WAKAN);
+        if (cultisys != null)
+        {
+            pData.get(cultisys.id, out int level);
+            max_power = Math.Max(max_power, Mathf.Pow(cultisys.power_base, cultisys.power_level[level]));
+        }
+        
+        cultisys = pData.GetCultisys(CultisysType.BODY);
+        if (cultisys != null)
+        {
+            pData.get(cultisys.id, out int level);
+            max_power = Math.Max(max_power, Mathf.Pow(cultisys.power_base, cultisys.power_level[level]));
+        }
+        
+        cultisys = pData.GetCultisys(CultisysType.SOUL);
+        if (cultisys != null)
+        {
+            pData.get(cultisys.id, out int level);
+            max_power = Math.Max(max_power, Mathf.Pow(cultisys.power_base, cultisys.power_level[level]));
+        }
+        
+        return max_power;
+    }
     public static CultisysAsset GetCultisys(this ActorData pData, CultisysType pType)
     {
         string pTypeStr = pType switch

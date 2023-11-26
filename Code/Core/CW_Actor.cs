@@ -150,7 +150,18 @@ public partial class CW_Actor : Actor
         {
             id = as_id
         };
-        if (rewrite_effect_time > 0) status.left_time = rewrite_effect_time;
+        if (rewrite_effect_time < 0)
+        {
+            rewrite_effect_time = status.left_time;
+            if (from != null && from.isActor())
+            {
+                float reduce = from.a.data.GetMaxPower() / data.GetMaxPower();
+                reduce *= reduce;
+                rewrite_effect_time *= reduce;
+            }
+        }
+
+        status.left_time = rewrite_effect_time;
 
         if (!string.IsNullOrEmpty(status_asset.anim_id))
         {
