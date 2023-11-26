@@ -41,9 +41,9 @@ internal static class ActorTraits
             {
                 if (!actor.isAlive()) return false;
                 CW_Actor self = (CW_Actor)actor;
-                CW_Element element = self.data.get_element();
-                if (element.comp_type() == Constants.Core.mod_prefix + "uniform") return false;
-                self.data.set_element(new CW_Element(new[] { 20, 20, 20, 20, 20 }));
+                CW_Element element = self.data.GetElement();
+                if (element.ComputeType() == Constants.Core.mod_prefix + "uniform") return false;
+                self.data.SetElement(new CW_Element(new[] { 20, 20, 20, 20, 20 }));
 
                 uint allow_cultisys_types = 0b111;
                 foreach (CultisysAsset cultisys in self.cw_asset.allowed_cultisys)

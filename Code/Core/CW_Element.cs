@@ -10,12 +10,12 @@ namespace Cultivation_Way.Core;
 public class CW_Element : FactoryItem<CW_Element>
 {
     private static readonly BaseStats tmp_stats = new();
-    public int[] base_elements = new int[Constants.Core.element_type_nr];
+    public readonly int[] BaseElements = new int[Constants.Core.element_type_nr];
     private string type_id;
 
     public CW_Element()
     {
-        base_elements = new int[Constants.Core.element_type_nr];
+        BaseElements = new int[Constants.Core.element_type_nr];
         __uniform_generate();
         type_id = Constants.Core.uniform_type;
     }
@@ -31,7 +31,7 @@ public class CW_Element : FactoryItem<CW_Element>
     {
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            this.base_elements[i] = base_elements[i];
+            this.BaseElements[i] = base_elements[i];
         }
 
         if (normalize) __normalize(normalize_ceil);
@@ -50,7 +50,7 @@ public class CW_Element : FactoryItem<CW_Element>
     internal CW_Element(bool random_generate = true, bool normalize = true, int normalize_ceil = 100,
         bool comp_type = true, int[] prefer_elements = null, float prefer_scale = 0f)
     {
-        base_elements = new int[Constants.Core.element_type_nr];
+        BaseElements = new int[Constants.Core.element_type_nr];
         if (random_generate)
         {
             __random_generate(normalize_ceil);
@@ -65,21 +65,21 @@ public class CW_Element : FactoryItem<CW_Element>
         }
     }
 
-    public void set(CW_Element item)
+    public void Set(CW_Element item)
     {
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            base_elements[i] = item.base_elements[i];
+            BaseElements[i] = item.BaseElements[i];
         }
 
         type_id = item.type_id;
     }
 
-    public void clear()
+    public void Clear()
     {
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            base_elements[i] = 20;
+            BaseElements[i] = 20;
         }
 
         type_id = Constants.Core.uniform_type;
@@ -94,7 +94,7 @@ public class CW_Element : FactoryItem<CW_Element>
     internal static CW_Element get_element_for_set_data(int[] prefer_elements = null, float prefer_scale = 0f)
     {
         CW_Element tmp_elm_for_set_data = Factories.element_factory.get_item_to_fill();
-        tmp_elm_for_set_data.re_random(true, 100, true, prefer_elements, prefer_scale);
+        tmp_elm_for_set_data.ReRandom(true, 100, true, prefer_elements, prefer_scale);
         return Factories.element_factory.get_next(tmp_elm_for_set_data);
     }
 
@@ -104,37 +104,37 @@ public class CW_Element : FactoryItem<CW_Element>
     /// <param name="element_a"></param>
     /// <param name="element_b"></param>
     /// <returns></returns>
-    public static CW_Element get_middle(CW_Element element_a, CW_Element element_b)
+    public static CW_Element GetMean(CW_Element element_a, CW_Element element_b)
     {
         CW_Element middle = new();
         int i;
-        for (i = 0; i < middle.base_elements.Length; i++)
+        for (i = 0; i < middle.BaseElements.Length; i++)
         {
-            middle.base_elements[i] = (element_a.base_elements[i] + element_b.base_elements[i]) >> 1;
+            middle.BaseElements[i] = (element_a.BaseElements[i] + element_b.BaseElements[i]) >> 1;
         }
 
-        middle.normalize();
+        middle.Normalize();
         return middle;
     }
 
-    public CW_Element deepcopy()
+    public CW_Element Deepcopy()
     {
         CW_Element copy = new();
-        for (int i = 0; i < base_elements.Length; i++)
+        for (int i = 0; i < BaseElements.Length; i++)
         {
-            copy.base_elements[i] = base_elements[i];
+            copy.BaseElements[i] = BaseElements[i];
         }
 
         copy.type_id = type_id;
         return copy;
     }
 
-    public void deepcopy_to(CW_Element element)
+    public void DeepcopyTo(CW_Element element)
     {
         int i;
-        for (i = 0; i < base_elements.Length; i++)
+        for (i = 0; i < BaseElements.Length; i++)
         {
-            element.base_elements[i] = base_elements[i];
+            element.BaseElements[i] = BaseElements[i];
         }
 
         element.type_id = type_id;
@@ -143,7 +143,7 @@ public class CW_Element : FactoryItem<CW_Element>
     /// <summary>
     ///     计算类别，未来将支持自定义算法
     /// </summary>
-    public string comp_type()
+    public string ComputeType()
     {
         __comp_type();
         return type_id;
@@ -153,7 +153,7 @@ public class CW_Element : FactoryItem<CW_Element>
     ///     获取该元素组合的类别
     /// </summary>
     /// <returns>类别对应的Asset</returns>
-    public ElementAsset get_type()
+    public ElementAsset GetElementType()
     {
         if (string.IsNullOrEmpty(type_id)) __comp_type();
         return Manager.elements.get(type_id);
@@ -167,7 +167,7 @@ public class CW_Element : FactoryItem<CW_Element>
     /// <param name="comp_type">是否即时确定元素类型</param>
     /// <param name="prefer_elements">偏好元素</param>
     /// <param name="prefer_scale">偏好系数</param>
-    public void re_random(bool normalize = true, int normalize_ceil = 100, bool comp_type = true,
+    public void ReRandom(bool normalize = true, int normalize_ceil = 100, bool comp_type = true,
         int[] prefer_elements = null, float prefer_scale = 0f)
     {
         __random_generate(normalize_ceil);
@@ -180,14 +180,14 @@ public class CW_Element : FactoryItem<CW_Element>
     ///     将元素含量规格化
     /// </summary>
     /// <param name="normalize_ceil">规格化上界</param>
-    public void normalize(int normalize_ceil = 100)
+    public void Normalize(int normalize_ceil = 100)
     {
         __normalize(normalize_ceil);
     }
 
-    public BaseStats comp_bonus_stats()
+    public BaseStats ComputeBonusStats()
     {
-        ElementAsset asset = get_type();
+        ElementAsset asset = GetElementType();
         float promot = asset.promot;
         BaseStats combine_bonus = tmp_stats;
         combine_bonus.clear();
@@ -195,29 +195,29 @@ public class CW_Element : FactoryItem<CW_Element>
         // 添加五元素的加成
         float real_content;
         // 火
-        real_content = base_elements[Constants.Core.BASE_TYPE_FIRE] + base_elements[Constants.Core.BASE_TYPE_WOOD] -
-                       base_elements[Constants.Core.BASE_TYPE_WATER];
+        real_content = BaseElements[Constants.Core.BASE_TYPE_FIRE] + BaseElements[Constants.Core.BASE_TYPE_WOOD] -
+                       BaseElements[Constants.Core.BASE_TYPE_WATER];
         combine_bonus[S.critical_chance] += real_content * 0.2f * promot / 100;
         combine_bonus[S.mod_crit] += real_content * promot / 100;
         combine_bonus[S.critical_damage_multiplier] += real_content * 1.5f * promot / 100;
         // 土
-        real_content = base_elements[Constants.Core.BASE_TYPE_GROUND] + base_elements[Constants.Core.BASE_TYPE_FIRE] -
-                       base_elements[Constants.Core.BASE_TYPE_WOOD];
+        real_content = BaseElements[Constants.Core.BASE_TYPE_GROUND] + BaseElements[Constants.Core.BASE_TYPE_FIRE] -
+                       BaseElements[Constants.Core.BASE_TYPE_WOOD];
         combine_bonus[S.mod_armor] += real_content * promot / 100;
         combine_bonus[CW_S.mod_spell_armor] += real_content * promot / 100;
         // 金
-        real_content = base_elements[Constants.Core.BASE_TYPE_IRON] + base_elements[Constants.Core.BASE_TYPE_GROUND] -
-                       base_elements[Constants.Core.BASE_TYPE_FIRE];
+        real_content = BaseElements[Constants.Core.BASE_TYPE_IRON] + BaseElements[Constants.Core.BASE_TYPE_GROUND] -
+                       BaseElements[Constants.Core.BASE_TYPE_FIRE];
         combine_bonus[S.mod_damage] += real_content * 2 * promot / 100;
         // 水
-        real_content = base_elements[Constants.Core.BASE_TYPE_WATER] + base_elements[Constants.Core.BASE_TYPE_IRON] -
-                       base_elements[Constants.Core.BASE_TYPE_GROUND];
+        real_content = BaseElements[Constants.Core.BASE_TYPE_WATER] + BaseElements[Constants.Core.BASE_TYPE_IRON] -
+                       BaseElements[Constants.Core.BASE_TYPE_GROUND];
         combine_bonus[CW_S.mod_shield] += real_content * 2f * promot / 100;
         combine_bonus[CW_S.mod_shield_regen] += real_content * promot / 100;
         combine_bonus[S.knockback_reduction] += real_content * promot / 100;
         // 木
-        real_content = base_elements[Constants.Core.BASE_TYPE_WOOD] + base_elements[Constants.Core.BASE_TYPE_WATER] -
-                       base_elements[Constants.Core.BASE_TYPE_IRON];
+        real_content = BaseElements[Constants.Core.BASE_TYPE_WOOD] + BaseElements[Constants.Core.BASE_TYPE_WATER] -
+                       BaseElements[Constants.Core.BASE_TYPE_IRON];
         combine_bonus[S.mod_health] += real_content * promot / 100;
         combine_bonus[CW_S.mod_health_regen] += real_content * 1.5f * promot / 100;
 
@@ -240,7 +240,7 @@ public class CW_Element : FactoryItem<CW_Element>
         {
             // 如果完全不同，那么tmp为1，完全一致则为0
             // 加上稀有度影响
-            tmp_no_similarity = (1 - __get_similarity(asset_list[i].base_elements, base_elements)) *
+            tmp_no_similarity = (1 - __get_similarity(asset_list[i].base_elements, BaseElements)) *
                                 asset_list[i].rarity;
             if (tmp_no_similarity < min_no_similarity || (tmp_no_similarity == min_no_similarity &&
                                                           asset_list[i].rarity > Manager.elements.get(type_id).rarity))
@@ -269,7 +269,7 @@ public class CW_Element : FactoryItem<CW_Element>
 
     public static float get_similarity(CW_Element e1, CW_Element e2)
     {
-        return __get_similarity(e1.base_elements, e2.base_elements);
+        return __get_similarity(e1.BaseElements, e2.BaseElements);
     }
 
     private void __normalize(int normalize_ceil)
@@ -278,20 +278,20 @@ public class CW_Element : FactoryItem<CW_Element>
         int i;
         for (i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            co += base_elements[i];
+            co += BaseElements[i];
         }
 
         co = normalize_ceil / co;
         for (i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            base_elements[i] = (int)(base_elements[i] * co + 0.5f);
-            normalize_ceil -= base_elements[i];
+            BaseElements[i] = (int)(BaseElements[i] * co + 0.5f);
+            normalize_ceil -= BaseElements[i];
         }
 
         if (normalize_ceil > 0)
         {
             i = Toolbox.randomInt(0, Constants.Core.element_type_nr);
-            base_elements[i] += normalize_ceil;
+            BaseElements[i] += normalize_ceil;
         }
     }
 
@@ -299,7 +299,7 @@ public class CW_Element : FactoryItem<CW_Element>
     {
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            base_elements[i] = Toolbox.randomInt(0, ceil + 1);
+            BaseElements[i] = Toolbox.randomInt(0, ceil + 1);
         }
     }
 
@@ -308,7 +308,7 @@ public class CW_Element : FactoryItem<CW_Element>
         int uniform_val = sum / Constants.Core.element_type_nr;
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            base_elements[i] = uniform_val;
+            BaseElements[i] = uniform_val;
         }
     }
 
@@ -320,9 +320,9 @@ public class CW_Element : FactoryItem<CW_Element>
         int[] delta_vals = new int[Constants.Core.element_type_nr];
         for (j = 0; j < Constants.Core.element_type_nr; j++)
         {
-            delta_vals[j] = prefer_elements[j] - base_elements[j];
+            delta_vals[j] = prefer_elements[j] - BaseElements[j];
             delta_abs += Math.Abs(delta_vals[j]);
-            origin_total_val += base_elements[j];
+            origin_total_val += BaseElements[j];
         }
 
         if (delta_abs == 0) return;
@@ -330,31 +330,31 @@ public class CW_Element : FactoryItem<CW_Element>
         {
             //Debug.Log($"Begin:[{j}]:{this.base_elements[j]},delta_val:{delta_vals[j]},scale:{scale},delta_abs:{delta_abs}");
             //this.base_elements[j] += (int)(Math.Sign(delta_vals[j]) * delta_vals[j] * delta_vals[j] * scale / delta_abs);
-            base_elements[j] += (int)(delta_vals[j] * scale);
+            BaseElements[j] += (int)(delta_vals[j] * scale);
             //Debug.Log($"Then:[{j}]:{this.base_elements[j]}");
         }
 
         __normalize(origin_total_val);
     }
 
-    public void set(int[] base_elements, bool normalize = false, int normalize_ceil = 100, bool comp_type = true)
+    public void Set(int[] base_elements, bool normalize = false, int normalize_ceil = 100, bool comp_type = true)
     {
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            this.base_elements[i] = base_elements[i];
+            this.BaseElements[i] = base_elements[i];
         }
 
         if (normalize) __normalize(normalize_ceil);
         if (comp_type) __comp_type();
     }
 
-    public void set(ActorData data)
+    public void Set(ActorData data)
     {
         int data_receiver;
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
             data.get(DataS.element_list[i], out data_receiver, -1);
-            base_elements[i] = data_receiver;
+            BaseElements[i] = data_receiver;
         }
 
         data.get(DataS.element_type_id, out type_id, Constants.Core.uniform_type);
@@ -367,7 +367,7 @@ public class CW_Element : FactoryItem<CW_Element>
     private static readonly Color ground = Toolbox.makeColor("#603700");
     private static readonly Color[] element_colors = { water, fire, wood, iron, ground };
 
-    public Color get_color()
+    public Color GetColor()
     {
         float r = 0;
         float b = 0;
@@ -375,9 +375,9 @@ public class CW_Element : FactoryItem<CW_Element>
         float a = 1;
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            r += base_elements[i] * element_colors[i].r / 100;
-            g += base_elements[i] * element_colors[i].g / 100;
-            b += base_elements[i] * element_colors[i].b / 100;
+            r += BaseElements[i] * element_colors[i].r / 100;
+            g += BaseElements[i] * element_colors[i].g / 100;
+            b += BaseElements[i] * element_colors[i].b / 100;
         }
 
         return new Color(r, g, b, a);

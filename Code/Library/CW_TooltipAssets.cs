@@ -55,7 +55,7 @@ internal static class CW_TooltipAssets
         str_builder.AppendLine(
             $"{(int)cultisys_asset.curr_progress(actor, cultisys_asset, level)}/{(int)cultisys_asset.max_progress(actor, cultisys_asset, level)}");
 
-        HashSet<string> spells = actor.data.get_spells();
+        HashSet<string> spells = actor.data.GetSpells();
         spells ??= new HashSet<string>();
         foreach (string spell_id in spells)
         {
@@ -74,20 +74,20 @@ internal static class CW_TooltipAssets
     {
         CW_Actor actor = (CW_Actor)data.actor;
         // 可以确定actor的element不为空
-        CW_Element element = actor.data.get_element();
+        CW_Element element = actor.data.GetElement();
 
-        tooltip.name.text = LocalizedTextManager.getText(element.get_type().id);
+        tooltip.name.text = LocalizedTextManager.getText(element.GetElementType().id);
 
         StringBuilder str_builder = new();
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
             str_builder.AppendLine(
-                $"{LocalizedTextManager.getText(Constants.Core.element_str[i])}\t{element.base_elements[i]}%");
+                $"{LocalizedTextManager.getText(Constants.Core.element_str[i])}\t{element.BaseElements[i]}%");
         }
 
         tooltip.addDescription(str_builder.ToString());
 
-        tooltip.showBaseStats(element.comp_bonus_stats());
+        tooltip.showBaseStats(element.ComputeBonusStats());
     }
 
     private static void show_cultibook(Tooltip tooltip, string type, TooltipData data = default)
@@ -95,7 +95,7 @@ internal static class CW_TooltipAssets
         Cultibook cultibook;
         if (data.actor != null)
         {
-            cultibook = data.actor.data.get_cultibook();
+            cultibook = data.actor.data.GetCultibook();
         }
         else
         {
@@ -119,7 +119,7 @@ internal static class CW_TooltipAssets
         foreach (string spell_id in cultibook.spells)
         {
             idx++;
-            Color color = Manager.spells.get(spell_id).element.get_color();
+            Color color = Manager.spells.get(spell_id).element.GetColor();
             spell_idx_builder.Append(Toolbox.coloredString($"[{idx}]", color));
             spell_name_builder.Append(Toolbox.coloredString(LocalizedTextManager.getText("spell_" + spell_id),
                 color));
@@ -150,8 +150,8 @@ internal static class CW_TooltipAssets
     {
         CW_Actor actor = (CW_Actor)data.actor;
         // 可以确定actor的blood_nodes不为空
-        Dictionary<string, float> blood_nodes = actor.data.get_blood_nodes();
-        BloodNodeAsset main_blood = actor.data.get_main_blood();
+        Dictionary<string, float> blood_nodes = actor.data.GetBloodNodes();
+        BloodNodeAsset main_blood = actor.data.GetMainBlood();
 
         tooltip.name.text = "血脉";
         StringBuilder str_builder = new();

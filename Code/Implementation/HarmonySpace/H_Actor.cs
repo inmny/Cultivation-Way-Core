@@ -36,11 +36,11 @@ internal static class H_Actor
 
             if (wakan >= max_wakan)
             {
-                actor.check_level_up(Content_Constants.immortal_id);
+                actor.CheckLevelUp(Content_Constants.immortal_id);
                 goto BUSHIDO_CHECK;
             }
 
-            CW_EnergyMapTile energy_tile = actor.currentTile.get_energy_tile(Content_Constants.energy_wakan_id);
+            CW_EnergyMapTile energy_tile = actor.currentTile.GetEnergyTile(Content_Constants.energy_wakan_id);
             if (energy_tile == null)
             {
                 goto BUSHIDO_CHECK;
@@ -48,7 +48,7 @@ internal static class H_Actor
 
             float culti_wakan = actor.cw_asset.culti_velo * energy_tile.density *
                                 (1 + actor.stats[CW_S.mod_cultivelo]) *
-                                Content_Constants.immortal_base_cultivelo * actor.data.get_element().get_type().rarity;
+                                Content_Constants.immortal_base_cultivelo * actor.data.GetElement().GetElementType().rarity;
 
             culti_wakan = culti_wakan > energy_tile.value ? energy_tile.value : culti_wakan;
 
@@ -65,7 +65,7 @@ internal static class H_Actor
             energy_tile.value -= culti_wakan;
 
             actor.data.set(DataS.wakan, wakan);
-            actor.check_level_up(Content_Constants.immortal_id);
+            actor.CheckLevelUp(Content_Constants.immortal_id);
         }
         BUSHIDO_CHECK:
         actor.data.get(Content_Constants.bushido_id, out level, -1);
@@ -76,7 +76,7 @@ internal static class H_Actor
 
             if (health >= max_health * 0.95f)
             {
-                actor.check_level_up(Content_Constants.bushido_id);
+                actor.CheckLevelUp(Content_Constants.bushido_id);
                 goto SOUL_CHECK;
             }
 
@@ -95,10 +95,10 @@ internal static class H_Actor
 
             actor.data.health = (int)health;
 
-            actor.check_level_up(Content_Constants.bushido_id);
+            actor.CheckLevelUp(Content_Constants.bushido_id);
         }
         SOUL_CHECK:
-        actor.check_level_up(Content_Constants.soul_id);
+        actor.CheckLevelUp(Content_Constants.soul_id);
     }
 
     [HarmonyPrefix]

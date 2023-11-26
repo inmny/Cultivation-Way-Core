@@ -13,67 +13,67 @@ public static class ActorDataTools
     /// <summary>
     ///     设置灵根比例
     /// </summary>
-    public static void set_element(this ActorData data, CW_Element element)
+    public static void SetElement(this ActorData pData, CW_Element pElement)
     {
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            data.set(Constants.Core.element_str[i], element.base_elements[i]);
+            pData.set(Constants.Core.element_str[i], pElement.BaseElements[i]);
         }
 
-        data.set(DataS.element_type_id, element.comp_type());
+        pData.set(DataS.element_type_id, pElement.ComputeType());
     }
 
     /// <summary>
     ///     读取灵根
     /// </summary>
     /// <returns>灵根的拷贝</returns>
-    public static CW_Element get_element(this ActorData data)
+    public static CW_Element GetElement(this ActorData pData)
     {
         CW_Element element = Factories.element_factory.get_item_to_fill();
-        element.set(data);
+        element.Set(pData);
         return Factories.element_factory.get_next(element);
     }
 
     /// <summary>
     ///     读取修炼功法
     /// </summary>
-    public static Cultibook get_cultibook(this ActorData data)
+    public static Cultibook GetCultibook(this ActorData pData)
     {
-        data.get(DataS.cultibook_id, out string cultibook_id, "");
+        pData.get(DataS.cultibook_id, out string cultibook_id, "");
         return Manager.cultibooks.get(cultibook_id);
     }
 
     /// <summary>
     ///     设置修炼功法, 自动增加/减少 新/旧修炼功法的引用计数
     /// </summary>
-    public static void set_cultibook(this ActorData data, Cultibook cultibook)
+    public static void SetCultibook(this ActorData pData, Cultibook pCultibook)
     {
-        Cultibook old_cultibook = data.get_cultibook();
+        Cultibook old_cultibook = pData.GetCultibook();
         old_cultibook?.decrease();
-        cultibook.increase();
-        data.set(DataS.cultibook_id, cultibook.id);
+        pCultibook.increase();
+        pData.set(DataS.cultibook_id, pCultibook.id);
     }
 
     /// <summary>
     ///     清除修炼功法, 自动减少旧修炼功法的引用计数
     /// </summary>
-    public static void clear_cultibook(this ActorData data)
+    public static void ClearCultibook(this ActorData pData)
     {
-        Cultibook old_cultibook = data.get_cultibook();
+        Cultibook old_cultibook = pData.GetCultibook();
         old_cultibook?.decrease();
-        data.removeString(DataS.cultibook_id);
+        pData.removeString(DataS.cultibook_id);
     }
 
     /// <summary>
     ///     读取所有修炼体系的等级
     /// </summary>
     /// <returns>所有修炼体系等级的数组的拷贝</returns>
-    public static int[] get_all_cultisys_levels(this ActorData data)
+    public static int[] GetAllCultisysLevels(this ActorData pData)
     {
         int[] result = new int[Manager.cultisys.size];
         for (int i = 0; i < result.Length; i++)
         {
-            data.get(Manager.cultisys.list[i].id, out result[i], -1);
+            pData.get(Manager.cultisys.list[i].id, out result[i], -1);
         }
 
         return result;
@@ -121,45 +121,45 @@ public static class ActorDataTools
     ///     读取所有法术, 注意!无法术时返回null
     /// </summary>
     /// <returns>读取所有法术的集合的拷贝</returns>
-    public static HashSet<string> get_spells(this ActorData data)
+    public static HashSet<string> GetSpells(this ActorData pData)
     {
-        return data.read_obj<HashSet<string>>(DataS.spells);
+        return pData.ReadObj<HashSet<string>>(DataS.spells);
     }
 
     /// <summary>
     ///     写入一个法术集合
     /// </summary>
-    public static void set_spells(this ActorData data, HashSet<string> spells)
+    public static void SetSpells(this ActorData pData, HashSet<string> pSpells)
     {
-        data.write_obj(DataS.spells, spells);
+        pData.WriteObj(DataS.spells, pSpells);
     }
 
     /// <summary>
     ///     添加一个法术
     /// </summary>
-    public static void add_spell(this ActorData data, string spell)
+    public static void AddSpell(this ActorData pData, string pSpell)
     {
-        HashSet<string> curr_spells = data.get_spells();
+        HashSet<string> curr_spells = pData.GetSpells();
         curr_spells ??= new HashSet<string>();
-        curr_spells.Add(spell);
-        data.write_obj(DataS.spells, curr_spells);
+        curr_spells.Add(pSpell);
+        pData.WriteObj(DataS.spells, curr_spells);
     }
 
     /// <summary>
     ///     读取所有血脉节点
     /// </summary>
     /// <returns>血脉节点词典拷贝</returns>
-    public static Dictionary<string, float> get_blood_nodes(this ActorData data)
+    public static Dictionary<string, float> GetBloodNodes(this ActorData pData)
     {
-        return data.read_obj<Dictionary<string, float>>(DataS.blood_nodes);
+        return pData.ReadObj<Dictionary<string, float>>(DataS.blood_nodes);
     }
 
     /// <summary>
     ///     设置所有血脉节点, 并设置占优血脉
     /// </summary>
-    public static void set_blood_nodes(this ActorData data, Dictionary<string, float> blood_nodes)
+    public static void SetBloodNodes(this ActorData pData, Dictionary<string, float> pBloodNodes)
     {
-        Dictionary<string, float> old_blood_nodes = data.get_blood_nodes();
+        Dictionary<string, float> old_blood_nodes = pData.GetBloodNodes();
         if (old_blood_nodes != null)
         {
             foreach (string key in old_blood_nodes.Keys)
@@ -169,25 +169,25 @@ public static class ActorDataTools
         }
 
         /* 删除低占比血脉, 并normalize至其和为1 */
-        List<string> keys = blood_nodes.Keys.ToList();
+        List<string> keys = pBloodNodes.Keys.ToList();
 
-        float sum_at_first = keys.Sum(key => blood_nodes[key]);
+        float sum_at_first = keys.Sum(key => pBloodNodes[key]);
 
         float curr_sum = sum_at_first;
 
 
         foreach (string key in keys
-                     .Where(key => !(blood_nodes[key] / sum_at_first >= Constants.Others.blood_ignore_line)))
+                     .Where(key => !(pBloodNodes[key] / sum_at_first >= Constants.Others.blood_ignore_line)))
         {
-            curr_sum -= blood_nodes[key];
-            blood_nodes.Remove(key);
+            curr_sum -= pBloodNodes[key];
+            pBloodNodes.Remove(key);
         }
 
         keys.Clear();
-        keys.AddRange(blood_nodes.Keys);
+        keys.AddRange(pBloodNodes.Keys);
         foreach (string key in keys)
         {
-            blood_nodes[key] /= curr_sum;
+            pBloodNodes[key] /= curr_sum;
         }
 
 
@@ -199,19 +199,19 @@ public static class ActorDataTools
 /*
         foreach (string key in keys)
         {
-            Logger.Log($"{key}: {blood_nodes[key]}");
+            Logger.Log($"{key}: {pBloodNodes[key]}");
         }
 */
-        data.write_obj(DataS.blood_nodes, blood_nodes);
-        if (blood_nodes.Count > 0)
+        pData.WriteObj(DataS.blood_nodes, pBloodNodes);
+        if (pBloodNodes.Count > 0)
         {
-            var main_blood = blood_nodes.Aggregate((max, cur) => max.Value > cur.Value ? max : cur);
-            data.set(DataS.main_blood_id, main_blood.Key);
-            data.set(DataS.main_blood_purity, main_blood.Value);
+            var main_blood = pBloodNodes.Aggregate((max, cur) => max.Value > cur.Value ? max : cur);
+            pData.set(DataS.main_blood_id, main_blood.Key);
+            pData.set(DataS.main_blood_purity, main_blood.Value);
         }
         else
         {
-            data.set(DataS.main_blood_id, "");
+            pData.set(DataS.main_blood_id, "");
         }
     }
 
@@ -220,7 +220,7 @@ public static class ActorDataTools
     /// </summary>
     internal static void set_blood_nodes_only_save(this ActorData data, Dictionary<string, float> blood_nodes)
     {
-        Dictionary<string, float> old_blood_nodes = data.get_blood_nodes();
+        Dictionary<string, float> old_blood_nodes = data.GetBloodNodes();
         if (old_blood_nodes is { Keys.Count: > 0 } && Constants.Others.strict_mode)
             throw new Exception("only_save should not be true when old blood nodes exist");
 
@@ -251,7 +251,7 @@ public static class ActorDataTools
             blood_nodes[key] /= curr_sum;
         }
 
-        data.write_obj(DataS.blood_nodes, blood_nodes);
+        data.WriteObj(DataS.blood_nodes, blood_nodes);
         var main_blood = blood_nodes.Aggregate((max, cur) => max.Value > cur.Value ? max : cur);
         data.set(DataS.main_blood_id, main_blood.Key);
         data.set(DataS.main_blood_purity, main_blood.Value);
@@ -262,7 +262,7 @@ public static class ActorDataTools
     /// </summary>
     internal static void clear_blood_nodes(this ActorData data)
     {
-        Dictionary<string, float> old_blood_nodes = data.get_blood_nodes();
+        Dictionary<string, float> old_blood_nodes = data.GetBloodNodes();
         if (old_blood_nodes == null || old_blood_nodes.Keys.Count == 0) return;
 
         foreach (string key in old_blood_nodes.Keys)
@@ -277,17 +277,17 @@ public static class ActorDataTools
     /// <summary>
     ///     读取占优血脉节点id
     /// </summary>
-    public static string get_main_blood_id(this ActorData data)
+    public static string GetMainBloodID(this ActorData pData)
     {
-        data.get(DataS.main_blood_id, out string result, "");
+        pData.get(DataS.main_blood_id, out string result, "");
         return result;
     }
 
     /// <summary>
     ///     读取占优血脉节点
     /// </summary>
-    public static BloodNodeAsset get_main_blood(this ActorData data)
+    public static BloodNodeAsset GetMainBlood(this ActorData pData)
     {
-        return Manager.bloods.get(data.get_main_blood_id());
+        return Manager.bloods.get(pData.GetMainBloodID());
     }
 }

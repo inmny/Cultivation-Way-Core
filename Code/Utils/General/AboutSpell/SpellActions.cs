@@ -24,7 +24,7 @@ public static class SpellActions
             switch (target.objectType)
             {
                 case MapObjectType.Actor:
-                    ((CW_Actor)target).add_status(status_id, user);
+                    ((CW_Actor)target).AddStatus(status_id, user);
                     break;
                 case MapObjectType.Building:
                     throw new RowNotInTableException();

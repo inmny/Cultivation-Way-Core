@@ -142,7 +142,7 @@ public class CW_SpellAsset : Asset
     {
         if (given_cultisys == 0)
         {
-            int[] cultisys_level = actor.data.get_all_cultisys_levels();
+            int[] cultisys_level = actor.data.GetAllCultisysLevels();
             for (int i = 0; i < Manager.cultisys.size; i++)
             {
                 if (cultisys_level[i] == -1) continue;

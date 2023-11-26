@@ -80,8 +80,6 @@ public class CW_Core : BasicMod<CW_Core>
                     action_on_windows("post_init");
                     state.library_manager.post_init();
                     state.energy_map_manager.init(256, 256);
-                    Localizer.apply_localization(LocalizedTextManager.instance.localizedText,
-                        LocalizedTextManager.instance.language);
 
                     state.all_initialized = true;
                 }
@@ -160,10 +158,6 @@ public class CW_Core : BasicMod<CW_Core>
         configure();
 
         Factories.init();
-        Localizer.init();
-        // 首先进行一次加载, 以便于在内容初始化时, 可以使用翻译文本
-        Localizer.apply_localization(LocalizedTextManager.instance.localizedText,
-            LocalizedTextManager.instance.language);
         Fonts.init();
         Prefabs.init();
         FastVisit.init();

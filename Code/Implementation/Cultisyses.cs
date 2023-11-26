@@ -30,7 +30,7 @@ internal static class Cultisyses
                 return wakan;
             },
             max_progress = (actor, culti, level) => actor.stats[CW_S.wakan],
-            allow = (actor, culti) => actor.data.get_element().get_type().id != "cw_common",
+            allow = (actor, culti) => actor.data.GetElement().GetElementType().id != "cw_common",
             can_levelup = (actor, culti) =>
                 immortal.curr_progress(actor, immortal, 0) >= immortal.max_progress(actor, immortal, 0),
             monthly_update_action = (actor, culti, level) =>
@@ -61,6 +61,8 @@ internal static class Cultisyses
             cultisys.bonus_stats[i][CW_S.wakan_regen] = i * 0.1f;
             cultisys.bonus_stats[i][S.armor] = i * 10;
             cultisys.bonus_stats[i][S.mod_armor] = i;
+            cultisys.bonus_stats[i][CW_S.spell_armor] = i * 20;
+            cultisys.bonus_stats[i][CW_S.mod_spell_armor] = i * 3;
             cultisys.bonus_stats[i][S.health] = i * 99;
             cultisys.bonus_stats[i][S.mod_health] = i;
             cultisys.bonus_stats[i][S.damage] = i * 9;
@@ -130,6 +132,8 @@ internal static class Cultisyses
             cultisys.bonus_stats[i][S.armor] = i * 10;
             cultisys.bonus_stats[i][S.health] = i * 99;
             cultisys.bonus_stats[i][S.mod_armor] = i * 3;
+            cultisys.bonus_stats[i][CW_S.spell_armor] = i * 10;
+            cultisys.bonus_stats[i][CW_S.mod_spell_armor] = i;
             cultisys.bonus_stats[i][S.mod_health] = i;
             cultisys.bonus_stats[i][S.damage] = i * 9;
             cultisys.bonus_stats[i][S.max_age] = (i + 1) * (i + 1);

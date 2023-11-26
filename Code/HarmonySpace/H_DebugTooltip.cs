@@ -12,11 +12,11 @@ internal static class H_DebugTooltip
     {
         CW_Actor actor = (CW_Actor)pData.actor;
 
-        CW_Element element = actor.data.get_element();
+        CW_Element element = actor.data.GetElement();
         if (element != null)
         {
-            pTooltip.addLineText("cw_element", LocalizedTextManager.getText(element.get_type().id),
-                Toolbox.colorToHex(element.get_color()));
+            pTooltip.addLineText("cw_element", LocalizedTextManager.getText(element.GetElementType().id),
+                Toolbox.colorToHex(element.GetColor()));
         }
     }
 }

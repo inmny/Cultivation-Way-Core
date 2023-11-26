@@ -72,7 +72,7 @@ internal static class Spells
                 cw_actor.data.get(DataS.main_blood_purity, out float purity);
 
                 if (purity < Content_Constants.call_ancestor_min_purity) return;
-                BloodNodeAsset main_blood = cw_actor.data.get_main_blood();
+                BloodNodeAsset main_blood = cw_actor.data.GetMainBlood();
                 if (main_blood.id == cw_actor.data.id) return;
                 CW_Actor ancestor_actor = (CW_Actor)World.world.units.get(main_blood.id);
                 if (ancestor_actor != null)
@@ -93,7 +93,7 @@ internal static class Spells
 
                     ancestor_actor.cw_asset = cw_asset;
                     World.world.units.finalizeActor(asset.id, ancestor_actor, cw_actor.currentTile);
-                    ancestor_actor.add_status("status_ancestor_called", user);
+                    ancestor_actor.AddStatus("status_ancestor_called", user);
                 }
 
                 cw_actor.city.addNewUnit(ancestor_actor);
@@ -670,7 +670,7 @@ internal static class Spells
                 new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost / 6f)
             }),
             spell_learn_check = LearnChecks.default_learn_check,
-            spell_action = (asset, user, target, tile, cost) => { ((CW_Actor)user).regen(S.health, cost); }
+            spell_action = (asset, user, target, tile, cost) => { ((CW_Actor)user).Regenerate(S.health, cost); }
         };
         spell.add_trigger_tag(SpellTriggerTag.UNNAMED_DEFEND);
         spell.add_trigger_tag(SpellTriggerTag.NAMED_DEFEND);
@@ -1430,7 +1430,7 @@ internal static class Spells
             {
                 if (anim.dst_object == null || !anim.dst_object.isAlive()) return;
                 CW_StatusEffectData status_data = ((CW_Actor)anim.dst_object)
-                    .add_status("status_samadhi_fire", anim.src_object);
+                    .AddStatus("status_samadhi_fire", anim.src_object);
                 if (status_data == null) return;
                 anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                 status_data.effect_val = spell_cost;
@@ -1475,7 +1475,7 @@ internal static class Spells
                 if (anim.dst_object == null || !anim.dst_object.isAlive()) return;
                 CW_Actor src_obj = (CW_Actor)anim.src_object;
                 CW_StatusEffectData status_data = src_obj
-                    .add_status("status_loltus_fire", anim.src_object,
+                    .AddStatus("status_loltus_fire", anim.src_object,
                         Library.Manager.statuses.get("status_loltus_fire").duration *
                         (0.1f + src_obj.data.kills / 10f));
                 if (status_data == null) return;
@@ -1521,7 +1521,7 @@ internal static class Spells
             {
                 if (anim.dst_object == null || !anim.dst_object.isAlive()) return;
                 CW_StatusEffectData status_data = ((CW_Actor)anim.dst_object)
-                    .add_status("status_fen_fire", anim.src_object);
+                    .AddStatus("status_fen_fire", anim.src_object);
                 if (status_data == null) return;
                 anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                 status_data.effect_val = spell_cost;

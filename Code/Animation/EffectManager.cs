@@ -53,7 +53,7 @@ public class EffectManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.LogError(string.Format("An error happen in update '{0}'", controllers[i].id));
+            Debug.LogError(string.Format("An error happen in Update '{0}'", controllers[i].id));
             Debug.LogError(e.Message);
             Debug.LogError(e.StackTrace);
         }

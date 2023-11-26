@@ -188,7 +188,7 @@ public class SpriteAnimation
         src_vec.x = 0;
         src_vec.y = 0;
         trace_length = 0;
-        data.clear();
+        data.Clear();
     }
 
     private void hide()

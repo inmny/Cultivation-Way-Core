@@ -187,7 +187,7 @@ internal static class StatusEffects
         status_effect.action_on_update = (effect, object1, object2) =>
         {
             object2.a.has_status_frozen = true;
-            ((CW_Actor)object2).start_color_effect("gray", 1);
+            ((CW_Actor)object2).StartColorEffect("gray", 1);
         };
         // 冰封
         bound_stats = new BaseStats();

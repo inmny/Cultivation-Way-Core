@@ -5,31 +5,31 @@ namespace Cultivation_Way.Extension;
 
 public static class BaseSystemDataTools
 {
-    public static void clear(this BaseSystemData data)
+    public static void Clear(this BaseSystemData pData)
     {
-        data.custom_data_bool?.dict?.Clear();
-        data.custom_data_float?.dict?.Clear();
-        data.custom_data_int?.dict?.Clear();
-        data.custom_data_string?.dict?.Clear();
-        data.custom_data_flags?.Clear();
+        pData.custom_data_bool?.dict?.Clear();
+        pData.custom_data_float?.dict?.Clear();
+        pData.custom_data_int?.dict?.Clear();
+        pData.custom_data_string?.dict?.Clear();
+        pData.custom_data_flags?.Clear();
     }
 
     /// <summary>
-    ///     以key为key, 将@object JSON序列化后写入data
+    ///     以key为key, 将pObject JSON序列化后写入data
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void write_obj<T>(this BaseSystemData data, string key, T @object)
+    public static void WriteObj<T>(this BaseSystemData pData, string pKey, T pObject)
     {
-        data.set(key, GeneralHelper.to_json(@object));
+        pData.set(pKey, GeneralHelper.to_json(pObject));
     }
 
     /// <summary>
     ///     以key为key, 从data中读取JSON, 并反序列化为T, 若不存在则会返回default(T)
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T read_obj<T>(this BaseSystemData data, string key)
+    public static T ReadObj<T>(this BaseSystemData pData, string pKey)
     {
-        data.get(key, out string obj_str);
+        pData.get(pKey, out string obj_str);
 
         if (string.IsNullOrEmpty(obj_str)) return default;
 

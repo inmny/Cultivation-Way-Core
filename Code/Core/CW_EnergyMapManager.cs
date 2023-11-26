@@ -27,7 +27,7 @@ public class CW_EnergyMapTile
     internal int x;
     internal int y;
 
-    public void update(EnergyAsset energy_asset)
+    public void Update(EnergyAsset energy_asset)
     {
         density = Mathf.Log(Mathf.Max(value, energy_asset.power_base_value),
             energy_asset.power_base_value);
@@ -97,7 +97,7 @@ public class CW_EnergyMap
                     y = y
                 };
                 energy.initializer?.Invoke(map[x, y], x, y, width, height);
-                map[x, y].update(energy);
+                map[x, y].Update(energy);
                 _tmp_map[x, y] = new CW_EnergyMapTile();
             }
         }
@@ -173,7 +173,7 @@ public class CW_EnergyMap
             for (int y = 0; y < height; y++)
             {
                 map[x, y].value = _tmp_map[x, y].value;
-                map[x, y].update(energy);
+                map[x, y].Update(energy);
             }
         }
     }

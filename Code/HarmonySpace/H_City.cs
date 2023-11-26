@@ -101,8 +101,8 @@ internal static class H_City
         ActorAsset asset = null;
 
         // 设置血脉
-        Dictionary<string, float> parent_1_blood = parent_1.data.get_blood_nodes();
-        Dictionary<string, float> parent_2_blood = parent_2.data.get_blood_nodes();
+        Dictionary<string, float> parent_1_blood = parent_1.data.GetBloodNodes();
+        Dictionary<string, float> parent_2_blood = parent_2.data.GetBloodNodes();
 
         if (parent_1_blood == null && parent_2_blood != null)
         {
@@ -129,7 +129,7 @@ internal static class H_City
             child_data.set_blood_nodes_only_save(parent_1_blood);
         }
 
-        BloodNodeAsset main_blood = child_data.get_main_blood();
+        BloodNodeAsset main_blood = child_data.GetMainBlood();
         if (main_blood != null) asset = AssetManager.actor_library.get(main_blood.ancestor_data.asset_id);
 
         asset ??= parent_1.asset;
@@ -144,14 +144,14 @@ internal static class H_City
 
         CW_ActorAsset cw_asset = Library.Manager.actors.get(asset.id);
         // 设置灵根
-        child_data.set_element(
+        child_data.SetElement(
             Toolbox.randomChance(Constants.Others.random_element_when_inherit_chance)
                 ? CW_Element.get_element_for_set_data(cw_asset.prefer_element, cw_asset.prefer_element_scale)
-                : CW_Element.get_middle(parent_1.data.get_element(), parent_2.data.get_element()));
+                : CW_Element.GetMean(parent_1.data.GetElement(), parent_2.data.GetElement()));
 
         // 准备传承功法
-        Cultibook parent_1_cultibook = parent_1.data.get_cultibook();
-        Cultibook parent_2_cultibook = parent_2.data.get_cultibook();
+        Cultibook parent_1_cultibook = parent_1.data.GetCultibook();
+        Cultibook parent_2_cultibook = parent_2.data.GetCultibook();
         if (parent_1_cultibook != null && parent_2_cultibook != null)
         {
             child_data.set(DataS.cultibook_id,

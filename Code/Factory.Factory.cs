@@ -4,8 +4,8 @@ namespace Cultivation_Way.Factory;
 
 public interface FactoryItem<T>
 {
-    public abstract void set(T item);
-    public abstract void clear();
+    public abstract void Set(T item);
+    public abstract void Clear();
 }
 
 public abstract class BaseFactory
@@ -70,7 +70,7 @@ public class Factory<T> : BaseFactory where T : FactoryItem<T>, new()
 
     public T get_item_to_fill()
     {
-        tmp_item_to_fill.clear();
+        tmp_item_to_fill.Clear();
         return tmp_item_to_fill;
     }
 
@@ -84,10 +84,10 @@ public class Factory<T> : BaseFactory where T : FactoryItem<T>, new()
         else
         {
             item_created = new T();
-            item_created.clear();
+            item_created.Clear();
         }
 
-        item_created.set(filled_item);
+        item_created.Set(filled_item);
 
         items.Push(item_created);
 
@@ -104,7 +104,7 @@ public class Factory<T> : BaseFactory where T : FactoryItem<T>, new()
         else
         {
             item_created = new T();
-            item_created.clear();
+            item_created.Clear();
         }
 
         items.Push(item_created);
@@ -117,7 +117,7 @@ public class Factory<T> : BaseFactory where T : FactoryItem<T>, new()
         while (items.Count > 0)
         {
             empty_items.Push(items.Pop());
-            empty_items.Peek().clear();
+            empty_items.Peek().Clear();
         }
     }
 

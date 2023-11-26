@@ -404,24 +404,24 @@ public class WindowTops : AbstractWindow<WindowTops>
         {
             add_sort_key("actor_" + cultisys.id, "../../" + cultisys.sprite_path,
                 $"cw_top_creature_sort_key_{cultisys.id}",
-                o => ((CW_Actor)o).data.get_all_cultisys_levels()[cultisys.pid],
+                o => ((CW_Actor)o).data.GetAllCultisysLevels()[cultisys.pid],
                 o =>
                 {
-                    if (((CW_Actor)o).data.get_all_cultisys_levels()[cultisys.pid] < 0)
+                    if (((CW_Actor)o).data.GetAllCultisysLevels()[cultisys.pid] < 0)
                     {
                         return Localization.Get("cw_no_cultisys");
                     }
 
-                    return Localization.Get($"{cultisys.id}_{((CW_Actor)o).data.get_all_cultisys_levels()[cultisys.pid]}");
+                    return Localization.Get($"{cultisys.id}_{((CW_Actor)o).data.GetAllCultisysLevels()[cultisys.pid]}");
                 }, container);
         }
 
         add_sort_key("actor_element", "iconElement",
             "cw_top_creature_sort_key_element",
-            o => ((CW_Actor)o).data.get_element().get_type().rarity,
+            o => ((CW_Actor)o).data.GetElement().GetElementType().rarity,
             o => Toolbox.coloredString(
-                Localization.Get(((CW_Actor)o).data.get_element().get_type().id),
-                ((CW_Actor)o).data.get_element().get_color()), container);
+                Localization.Get(((CW_Actor)o).data.GetElement().GetElementType().id),
+                ((CW_Actor)o).data.GetElement().GetColor()), container);
     }
 
     private void add_cultibook_sort_keys(Transform container)

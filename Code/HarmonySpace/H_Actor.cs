@@ -63,7 +63,7 @@ internal static class H_Actor
     private static void cw_updateStats(Actor actor)
     {
         // 载入修炼体系的加成
-        int[] cultisys_levels = actor.data.get_all_cultisys_levels();
+        int[] cultisys_levels = actor.data.GetAllCultisysLevels();
         bool has_cultisys = false;
 
         for (int i = 0; i < cultisys_levels.Length; i++)
@@ -75,12 +75,12 @@ internal static class H_Actor
         }
 
         // 载入功法的加成
-        Cultibook cultibook = actor.data.get_cultibook();
+        Cultibook cultibook = actor.data.GetCultibook();
         if (cultibook != null && has_cultisys) actor.stats.mergeStats(cultibook.bonus_stats);
         // 载入灵根的加成
-        actor.stats.mergeStats(actor.data.get_element().comp_bonus_stats());
+        actor.stats.mergeStats(actor.data.GetElement().ComputeBonusStats());
         // 载入血脉的加成
-        BloodNodeAsset main_blood_node = actor.data.get_main_blood();
+        BloodNodeAsset main_blood_node = actor.data.GetMainBlood();
         if (main_blood_node == null) return;
         if (main_blood_node.id == actor.data.id)
         {
@@ -91,7 +91,7 @@ internal static class H_Actor
         else
         {
             actor.data.get(DataS.main_blood_purity, out float purity);
-            actor.stats.max(main_blood_node.ancestor_stats, purity * purity);
+            actor.stats.Max(main_blood_node.ancestor_stats, purity * purity);
         }
 
         CW_Actor cw_actor = (CW_Actor)actor;
@@ -191,7 +191,7 @@ internal static class H_Actor
         actor.setData(pData);
 
         // 修正血脉，移除不存在的血脉, 由City produce new unit产生.
-        Dictionary<string, float> blood_nodes = actor.data.get_blood_nodes();
+        Dictionary<string, float> blood_nodes = actor.data.GetBloodNodes();
         actor.data.set(DataS.blood_nodes, "");
         if (blood_nodes != null)
         {
@@ -205,7 +205,7 @@ internal static class H_Actor
                 }
             }
 
-            actor.data.set_blood_nodes(blood_nodes);
+            actor.data.SetBloodNodes(blood_nodes);
         }
 
         // 传承功法
@@ -276,7 +276,7 @@ internal static class H_Actor
         cw_actor.cw_asset = Library.Manager.actors.get(actorAsset.id);
 
         actor2.setData(pData);
-        if (actor2.data.get_element().base_elements[0] < 0)
+        if (actor2.data.GetElement().BaseElements[0] < 0)
         {
             cw_actor.cw_newCreature();
         }
@@ -311,7 +311,7 @@ internal static class H_Actor
     {
         if (__instance.a != null)
         {
-            __result = ((CW_Actor)__instance.a).has_status(pID);
+            __result = ((CW_Actor)__instance.a).HasStatus(pID);
         }
         else if (__instance.b != null)
         {
@@ -327,7 +327,7 @@ internal static class H_Actor
     {
         if (__instance.a != null)
         {
-            __result = ((CW_Actor)__instance.a).has_any_status_effect();
+            __result = ((CW_Actor)__instance.a).HasAnyStatusEffect();
         }
         else if (__instance.b != null)
         {
@@ -372,7 +372,7 @@ internal static class H_Actor
         CW_Actor actor = (CW_Actor)__instance;
         CW_SpellAsset spell = Library.Manager.spells.get(actor.__data_spells.GetRandom());
 
-        if (spell.can_trigger(SpellTriggerTag.ATTACK) && actor.cast_spell(spell, pTarget, pTarget.currentTile))
+        if (spell.can_trigger(SpellTriggerTag.ATTACK) && actor.CastSpell(spell, pTarget, pTarget.currentTile))
         {
             actor.timer_action = actor.s_attackSpeed_seconds;
             actor.attackTimer = actor.s_attackSpeed_seconds;

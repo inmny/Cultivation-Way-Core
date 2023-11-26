@@ -46,13 +46,13 @@ internal static class Achievements
 
                 CW_Actor cw_actor = (CW_Actor)Config.selectedUnit;
 
-                CW_Element element = cw_actor.data.get_element();
+                CW_Element element = cw_actor.data.GetElement();
                 string str = "";
-                for (int idx = 0; idx < element.base_elements.Length; idx++)
+                for (int idx = 0; idx < element.BaseElements.Length; idx++)
                 {
-                    if (element.base_elements[idx] > 0)
+                    if (element.BaseElements[idx] > 0)
                     {
-                        str += element.base_elements[idx] + ",";
+                        str += element.BaseElements[idx] + ",";
                     }
                 }
 
@@ -64,7 +64,7 @@ internal static class Achievements
                 StringBuilder result_str = new();
                 result_str.Append(BitConverter.ToString(hash).Replace("-", ""));
 
-                Cultibook cultibook = cw_actor.data.get_cultibook();
+                Cultibook cultibook = cw_actor.data.GetCultibook();
                 if (cultibook == null)
                 {
                     str = "";
@@ -77,7 +77,7 @@ internal static class Achievements
                 hash = md5_service.ComputeHash(Encoding.UTF8.GetBytes(str));
                 result_str.Append(BitConverter.ToString(hash).Replace("-", ""));
 
-                int[] cultisys_level = cw_actor.data.get_all_cultisys_levels();
+                int[] cultisys_level = cw_actor.data.GetAllCultisysLevels();
                 str = "";
                 for (int idx = 0; idx < 3; idx++)
                 {
@@ -92,7 +92,7 @@ internal static class Achievements
                 hash = md5_service.ComputeHash(Encoding.UTF8.GetBytes(str));
                 result_str.Append(BitConverter.ToString(hash).Replace("-", ""));
 
-                BloodNodeAsset main_blood = cw_actor.data.get_main_blood();
+                BloodNodeAsset main_blood = cw_actor.data.GetMainBlood();
                 if (main_blood == null)
                 {
                     str = "";

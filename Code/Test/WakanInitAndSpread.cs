@@ -13,7 +13,7 @@ internal static class WakanInitAndSpread
             for (int j = 0; j < map.map.GetLength(1); j++)
             {
                 map.map[i, j].value = 0;
-                map.map[i, j].update(map.energy);
+                map.map[i, j].Update(map.energy);
             }
         }
     }

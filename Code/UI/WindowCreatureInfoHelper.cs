@@ -292,17 +292,17 @@ internal class WindowCreatureInfoHelper
         blood.gameObject.SetActive(false);
 
 
-        if (actor.data.get_element() != null) load_element(actor);
+        if (actor.data.GetElement() != null) load_element(actor);
 
-        if (actor.data.get_cultibook() != null) load_cultibook(actor);
+        if (actor.data.GetCultibook() != null) load_cultibook(actor);
 
-        if (actor.data.get_blood_nodes() != null) load_blood(actor);
+        if (actor.data.GetBloodNodes() != null) load_blood(actor);
 
         //body_progress.load_cultisys(null, 0, CultisysType.BODY, actor);
         body_progress.clear();
         wakan_progress.clear();
         soul_progress.clear();
-        int[] cultisys_level = actor.data.get_all_cultisys_levels();
+        int[] cultisys_level = actor.data.GetAllCultisysLevels();
         for (int i = 0; i < Manager.cultisys.size; i++)
         {
             if (cultisys_level[i] < 0) continue;

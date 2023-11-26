@@ -251,17 +251,17 @@ internal class SavedDataVer1 : AbstractSavedData
         {
             ActorData actor_data = actors_data[i];
             CW_ActorData cw_actor_data = cw_actor_datas[i];
-            cw_actor_data.element.comp_type();
+            cw_actor_data.element.ComputeType();
             //Logger.Log(
             //    $"{cw_actor_data.element.comp_type()}: {cw_actor_data.element.base_elements[0]},{cw_actor_data.element.base_elements[1]},{cw_actor_data.element.base_elements[2]},{cw_actor_data.element.base_elements[3]},{cw_actor_data.element.base_elements[4]}");
-            actor_data.set_element(cw_actor_data.element);
+            actor_data.SetElement(cw_actor_data.element);
             if (cw_actor_data.spells != null)
             {
                 foreach (string spell_id in cw_actor_data.spells)
                 {
                     if (Manager.spells.contains(spell_id))
                     {
-                        actor_data.add_spell(spell_id);
+                        actor_data.AddSpell(spell_id);
                     }
                 }
             }
@@ -270,7 +270,7 @@ internal class SavedDataVer1 : AbstractSavedData
                 Manager.cultibooks.contains(cw_actor_data.cultibook_id))
             {
                 // 由于前面将Cultibook的当前人数都设置为0, 在这里重新设置
-                actor_data.set_cultibook(Manager.cultibooks.get(cw_actor_data.cultibook_id));
+                actor_data.SetCultibook(Manager.cultibooks.get(cw_actor_data.cultibook_id));
             }
 
             if (cw_actor_data.cultisys_level != null)

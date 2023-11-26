@@ -40,7 +40,7 @@ public partial class CW_Actor : Actor
     /// </summary>
     internal Dictionary<string, CW_StatusEffectData> statuses;
 
-    public void start_color_effect(string color_id, float rewrtie_timer = -1)
+    public void StartColorEffect(string pColorID, float pRewrtieTimer = -1)
     {
         if (!asset.effectDamage)
         {
@@ -53,11 +53,11 @@ public partial class CW_Actor : Actor
         }
 
         batch.c_color_effect.Add(this);
-        colorEffect = rewrtie_timer < 0 ? 0.3f : rewrtie_timer;
-        Material material = FastVisit.get_color_material(color_id);
+        colorEffect = pRewrtieTimer < 0 ? 0.3f : pRewrtieTimer;
+        Material material = FastVisit.get_color_material(pColorID);
         if (material == null)
         {
-            Logger.Warn($"No found color material: {color_id}");
+            Logger.Warn($"No found color material: {pColorID}");
             return;
         }
 
@@ -69,55 +69,55 @@ public partial class CW_Actor : Actor
     /// </summary>
     internal void leave_data()
     {
-        BloodNodeAsset blood = data.get_main_blood();
+        BloodNodeAsset blood = data.GetMainBlood();
         if (blood != null && blood.id == data.id && blood.ancestor_data == data)
         {
             blood.ancestor_data = JsonConvert.DeserializeObject<ActorData>(JsonConvert.SerializeObject(data));
         }
 
         data.clear_blood_nodes();
-        data.clear_cultibook();
+        data.ClearCultibook();
     }
 
     /// <summary>
     ///     申请释放法术
     /// </summary>
-    /// <param name="spell_id">法术id</param>
-    /// <param name="target">法术目标, 可为null</param>
-    /// <param name="target_tile">法术目标区域, 可为null</param>
+    /// <param name="pSpellID">法术id</param>
+    /// <param name="pTarget">法术目标, 可为null</param>
+    /// <param name="pTargetTile">法术目标区域, 可为null</param>
     /// <returns>法术是否合法</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool cast_spell(string spell_id, BaseSimObject target, WorldTile target_tile)
+    public bool CastSpell(string pSpellID, BaseSimObject pTarget, WorldTile pTargetTile)
     {
-        return cast_spell(Manager.spells.get(spell_id), target, target_tile);
+        return CastSpell(Manager.spells.get(pSpellID), pTarget, pTargetTile);
     }
 
     /// <summary>
     ///     申请释放法术
     /// </summary>
-    /// <param name="spell">法术asset</param>
-    /// <param name="target">法术目标, 可为null</param>
-    /// <param name="target_tile">法术目标区域, 可为null</param>
+    /// <param name="pSpell">法术asset</param>
+    /// <param name="pTarget">法术目标, 可为null</param>
+    /// <param name="pTargetTile">法术目标区域, 可为null</param>
     /// <returns>法术是否合法</returns>
-    public bool cast_spell(CW_SpellAsset spell, BaseSimObject target, WorldTile target_tile)
+    public bool CastSpell(CW_SpellAsset pSpell, BaseSimObject pTarget, WorldTile pTargetTile)
     {
-        if ((spell.target_type == SpellTargetType.TILE && target_tile == null) ||
-            (spell.target_type == SpellTargetType.ACTOR &&
-             (target == null || target.objectType == MapObjectType.Building)) ||
-            (spell.target_type == SpellTargetType.BUILDING &&
-             (target == null || target.objectType == MapObjectType.Actor)))
+        if ((pSpell.target_type == SpellTargetType.TILE && pTargetTile == null) ||
+            (pSpell.target_type == SpellTargetType.ACTOR &&
+             (pTarget == null || pTarget.objectType == MapObjectType.Building)) ||
+            (pSpell.target_type == SpellTargetType.BUILDING &&
+             (pTarget == null || pTarget.objectType == MapObjectType.Actor)))
             return false;
         if (has_status_frozen) return false;
 
-        bool is_enemy = kingdom == null || kingdom.isEnemy(target.kingdom);
+        bool is_enemy = kingdom == null || kingdom.isEnemy(pTarget.kingdom);
 
-        if ((spell.target_camp == SpellTargetCamp.ALIAS && is_enemy) ||
-            (spell.target_camp == SpellTargetCamp.ENEMY && !is_enemy)) return false;
+        if ((pSpell.target_camp == SpellTargetCamp.ALIAS && is_enemy) ||
+            (pSpell.target_camp == SpellTargetCamp.ENEMY && !is_enemy)) return false;
 
-        float cost = spell.spell_cost_action(spell, this);
+        float cost = pSpell.spell_cost_action(pSpell, this);
         if (cost < 0) return false;
 
-        CW_Core.mod_state.spell_manager.enqueue_spell(spell, this, target, target_tile, cost);
+        CW_Core.mod_state.spell_manager.enqueue_spell(pSpell, this, pTarget, pTargetTile, cost);
         return true;
     }
 
@@ -125,56 +125,56 @@ public partial class CW_Actor : Actor
     ///     添加状态并返回状态数据, 如果已经存在则返回存在的状态数据
     ///     <para>仅作用于模组内状态效果</para>
     /// </summary>
-    /// <param name="status_id">添加的状态Asset的id</param>
-    /// <param name="from">状态来源</param>
-    /// <param name="rewrite_effect_time">重写状态持续时间</param>
-    /// <param name="as_id">加入状态表的key</param>
+    /// <param name="pStatusID">添加的状态Asset的id</param>
+    /// <param name="pFrom">状态来源</param>
+    /// <param name="pRewriteEffectTime">重写状态持续时间</param>
+    /// <param name="pAsID">加入状态表的key</param>
     /// <returns></returns>
-    public CW_StatusEffectData add_status(string status_id, BaseSimObject from = null, float rewrite_effect_time = -1,
-        string as_id = null)
+    public CW_StatusEffectData AddStatus(string pStatusID, BaseSimObject pFrom = null, float pRewriteEffectTime = -1,
+        string pAsID = null)
     {
         if (!isAlive()) return null;
-        CW_StatusEffect status_asset = Manager.statuses.get(status_id);
+        CW_StatusEffect status_asset = Manager.statuses.get(pStatusID);
         if (status_asset == null) return null;
         // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
         foreach (string op_status_id in status_asset.opposite_statuses)
         {
-            if (has_status(op_status_id)) return null;
+            if (HasStatus(op_status_id)) return null;
         }
 
-        as_id ??= status_id;
+        pAsID ??= pStatusID;
         statuses ??= new Dictionary<string, CW_StatusEffectData>();
 
-        if (statuses.TryGetValue(as_id, out CW_StatusEffectData same_id_status)) return same_id_status;
-        CW_StatusEffectData status = new(status_asset, from)
+        if (statuses.TryGetValue(pAsID, out CW_StatusEffectData same_id_status)) return same_id_status;
+        CW_StatusEffectData status = new(status_asset, pFrom)
         {
-            id = as_id
+            id = pAsID
         };
-        if (rewrite_effect_time < 0)
+        if (pRewriteEffectTime < 0)
         {
-            rewrite_effect_time = status.left_time;
-            if (from != null && from.isActor())
+            pRewriteEffectTime = status.left_time;
+            if (pFrom != null && pFrom.isActor())
             {
-                float reduce = from.a.data.GetMaxPower() / data.GetMaxPower();
+                float reduce = pFrom.a.data.GetMaxPower() / data.GetMaxPower();
                 //reduce *= reduce;
-                rewrite_effect_time *= reduce;
+                pRewriteEffectTime *= reduce;
             }
         }
 
-        status.left_time = rewrite_effect_time;
+        status.left_time = pRewriteEffectTime;
 
         if (!string.IsNullOrEmpty(status_asset.anim_id))
         {
             status.anim = EffectManager.instance.spawn_anim(status_asset.anim_id,
-                from == null ? Vector2.zero : from.currentPosition, currentPosition, from, this);
+                pFrom == null ? Vector2.zero : pFrom.currentPosition, currentPosition, pFrom, this);
             if (status.anim is { isOn: true })
             {
                 status.anim.change_scale(stats[S.scale]);
             }
         }
 
-        statuses.Add(as_id, status);
-        status_asset.action_on_get?.Invoke(status, from, this);
+        statuses.Add(pAsID, status);
+        status_asset.action_on_get?.Invoke(status, pFrom, this);
 
         activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
         batch.c_status_effects.Add(this);
@@ -187,19 +187,19 @@ public partial class CW_Actor : Actor
     /// <summary>
     ///     按id搜寻状态, 仅作用于模组内状态效果
     /// </summary>
-    /// <param name="id">状态id</param>
+    /// <param name="pID">状态id</param>
     /// <returns>状态效果数据</returns>
-    public CW_StatusEffectData get_status(string id)
+    public CW_StatusEffectData GetStatus(string pID)
     {
         if (statuses == null || statuses.Count > 0) return null;
-        return statuses.TryGetValue(id, out CW_StatusEffectData status) ? status : null;
+        return statuses.TryGetValue(pID, out CW_StatusEffectData status) ? status : null;
     }
 
     /// <summary>
     ///     拓展后hasAnyStatusEffect, 直接调用
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool has_any_status_effect()
+    public bool HasAnyStatusEffect()
     {
         return activeStatus_dict is { Count: > 0 } || statuses is { Count: > 0 };
     }
@@ -208,7 +208,7 @@ public partial class CW_Actor : Actor
     ///     拓展后的hasStatus, 直接调用
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool has_status(string id)
+    public bool HasStatus(string id)
     {
         return (activeStatus_dict is { Count: > 0 } && activeStatus_dict.ContainsKey(id)) ||
                (statuses is { Count: > 0 } && statuses.ContainsKey(id));
@@ -226,7 +226,7 @@ public partial class CW_Actor : Actor
             return;
         }
 
-        add_status(pID, null, pOverrideTimer);
+        AddStatus(pID, null, pOverrideTimer);
     }
 
     /// <summary>
@@ -275,7 +275,7 @@ public partial class CW_Actor : Actor
     /// </summary>
     /// <param name="regen_id">恢复的属性id</param>
     /// <param name="value">恢复量, 生命恢复四舍五入</param>
-    public void regen(string regen_id, float value)
+    public void Regenerate(string regen_id, float value)
     {
         if (regen_id == S.health)
         {
@@ -344,7 +344,7 @@ public partial class CW_Actor : Actor
         attackedBy = null;
         CW_AttackType attack_type = (CW_AttackType)pAttackType;
 
-        if ((pSkipIfShake && shake_active) || data.health <= 0 || !isAlive() || has_status("invincible")) return;
+        if ((pSkipIfShake && shake_active) || data.health <= 0 || !isAlive() || HasStatus("invincible")) return;
 
         #region 攻击音效
 
@@ -476,7 +476,7 @@ public partial class CW_Actor : Actor
             if ((pAttacker != null && (spell.can_trigger(SpellTriggerTag.NAMED_DEFEND) || (spell.can_trigger(SpellTriggerTag.ATTACK) && Toolbox.randomChance(0.3f)))) ||
                 (pAttacker == null && spell.can_trigger(SpellTriggerTag.UNNAMED_DEFEND)))
             {
-                cast_spell(spell, pAttacker, pAttacker == null ? null : pAttacker.currentTile);
+                CastSpell(spell, pAttacker, pAttacker == null ? null : pAttacker.currentTile);
             }
         }
 
@@ -568,9 +568,9 @@ public partial class CW_Actor : Actor
     /// <summary>
     ///     创建/改良血脉
     /// </summary>
-    public void create_blood()
+    public void CreateBlood()
     {
-        if (data.get_main_blood_id() == data.id) return;
+        if (data.GetMainBloodID() == data.id) return;
 
         BloodNodeAsset blood_asset = new()
         {
@@ -578,7 +578,7 @@ public partial class CW_Actor : Actor
             ancestor_data = data
         };
         Manager.bloods.add(blood_asset);
-        data.set_blood_nodes(new Dictionary<string, float>
+        data.SetBloodNodes(new Dictionary<string, float>
         {
             { blood_asset.id, 1f }
         });
@@ -589,9 +589,9 @@ public partial class CW_Actor : Actor
     /// <summary>
     ///     创建/改良功法
     /// </summary>
-    public void create_cultibook()
+    public void CreateCultibook()
     {
-        Cultibook old_cultibook = data.get_cultibook();
+        Cultibook old_cultibook = data.GetCultibook();
 
         Cultibook new_cultibook = new();
         if (old_cultibook != null)
@@ -646,10 +646,10 @@ public partial class CW_Actor : Actor
 
         new_cultibook.name = $"{new_cultibook.author_name}著,{new_cultibook.editor_name}改的功法";
         new_cultibook.id = $"{new_cultibook.level}_{data.id}";
-        new_cultibook.bonus_stats.merge_stats(data.get_element().comp_bonus_stats(), new_cultibook.level * 0.3f);
+        new_cultibook.bonus_stats.MergeStats(data.GetElement().ComputeBonusStats(), new_cultibook.level * 0.3f);
 
         Manager.cultibooks.add(new_cultibook);
-        data.set_cultibook(new_cultibook);
+        data.SetCultibook(new_cultibook);
 
         setStatsDirty();
     }
@@ -658,11 +658,11 @@ public partial class CW_Actor : Actor
     ///     学会法术
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void learn_spell(CW_SpellAsset spell)
+    public void LearnSpell(CW_SpellAsset spell)
     {
         if (__data_spells.Contains(spell.id)) return;
         __data_spells.Add(spell.id);
-        data.add_spell(spell.id);
+        data.AddSpell(spell.id);
     }
 
     /// <summary>
@@ -670,7 +670,7 @@ public partial class CW_Actor : Actor
     /// </summary>
     /// <param name="cultisys_id">目标修炼体系，null为检查所有修炼体系</param>
     /// <exception cref="System.Exception">严格模式下该生物不存在该修炼体系</exception>
-    public void check_level_up(string cultisys_id = null)
+    public void CheckLevelUp(string cultisys_id = null)
     {
         if (cultisys_id != null)
         {
@@ -689,7 +689,7 @@ public partial class CW_Actor : Actor
             return;
         }
 
-        int[] cultisys_levels = data.get_all_cultisys_levels();
+        int[] cultisys_levels = data.GetAllCultisysLevels();
         for (int i = 0; i < Manager.cultisys.size; i++)
         {
             if (cultisys_levels[i] < 0) continue;
@@ -713,8 +713,8 @@ public partial class CW_Actor : Actor
         data.set(cultisys.id, curr_level);
 
         if (!__learn_spell_from_cultibook()) __learn_spell_generally();
-        if (__can_create_blood_on_levelup(cultisys, curr_level)) create_blood();
-        if (__can_create_cultibook_on_levelup(cultisys, curr_level)) create_cultibook();
+        if (__can_create_blood_on_levelup(cultisys, curr_level)) CreateBlood();
+        if (__can_create_cultibook_on_levelup(cultisys, curr_level)) CreateCultibook();
         if (cultisys.external_levelup_bonus != null) _ = cultisys.external_levelup_bonus(this, cultisys, curr_level);
 
         setStatsDirty();
@@ -725,7 +725,7 @@ public partial class CW_Actor : Actor
     /// </summary>
     private void __learn_spell_generally()
     {
-        int[] cultisys_levels = data.get_all_cultisys_levels();
+        int[] cultisys_levels = data.GetAllCultisysLevels();
         uint cultisys_types = 0;
         for (int i = 0; i < Manager.cultisys.size; i++)
         {
@@ -752,7 +752,7 @@ public partial class CW_Actor : Actor
                  ordered_spell_chances.Where(spell_chance =>
                      Toolbox.randomChance(spell_chance.Value)))
         {
-            learn_spell(spell_chance.Key);
+            LearnSpell(spell_chance.Key);
             return;
         }
     }
@@ -762,12 +762,12 @@ public partial class CW_Actor : Actor
     /// </summary>
     private bool __learn_spell_from_cultibook()
     {
-        Cultibook cultibook = data.get_cultibook();
+        Cultibook cultibook = data.GetCultibook();
         if (cultibook == null) return false;
 
         if (cultibook.spells.Count == 0) return false;
 
-        int[] cultisys_levels = data.get_all_cultisys_levels();
+        int[] cultisys_levels = data.GetAllCultisysLevels();
         uint cultisys_types = 0;
         for (int i = 0; i < Manager.cultisys.size; i++)
         {
@@ -785,7 +785,7 @@ public partial class CW_Actor : Actor
             if (learn_chance < 0) continue;
             if (Toolbox.randomChance(learn_chance))
             {
-                learn_spell(spell);
+                LearnSpell(spell);
                 return true;
             }
         }
@@ -819,9 +819,9 @@ public partial class CW_Actor : Actor
 
     internal void cw_newCreature()
     {
-        data.set_element(CW_Element.get_element_for_set_data(cw_asset.prefer_element, cw_asset.prefer_element_scale));
+        data.SetElement(CW_Element.get_element_for_set_data(cw_asset.prefer_element, cw_asset.prefer_element_scale));
 
-        if (Constants.Others.new_creature_create_blood) create_blood();
+        if (Constants.Others.new_creature_create_blood) CreateBlood();
     }
 
     internal void cw_finalize()
@@ -850,7 +850,7 @@ public partial class CW_Actor : Actor
 
         foreach (string spell_id in cw_asset.born_spells)
         {
-            learn_spell(Manager.spells.get(spell_id));
+            LearnSpell(Manager.spells.get(spell_id));
         }
 
         setStatsDirty();

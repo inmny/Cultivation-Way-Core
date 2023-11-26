@@ -133,7 +133,7 @@ internal static class CW_GodPowers
                 return false;
             if (tile == null) return false;
             EnergyAsset energy_asset = Manager.energies.get(CW_Core.mod_state.energy_map_manager.current_map_id);
-            CW_EnergyMapTile energy_tile = tile.get_energy_tile(energy_asset.id);
+            CW_EnergyMapTile energy_tile = tile.GetEnergyTile(energy_asset.id);
             if (energy_tile.value is <= 1 or float.NaN)
             {
                 energy_tile.value = 0;
@@ -141,7 +141,7 @@ internal static class CW_GodPowers
             }
 
             energy_tile.value *= 0.99f;
-            energy_tile.update(energy_asset);
+            energy_tile.Update(energy_asset);
 
             return true;
         };
