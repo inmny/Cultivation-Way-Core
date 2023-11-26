@@ -156,7 +156,7 @@ public partial class CW_Actor : Actor
             if (from != null && from.isActor())
             {
                 float reduce = from.a.data.GetMaxPower() / data.GetMaxPower();
-                reduce *= reduce;
+                //reduce *= reduce;
                 rewrite_effect_time *= reduce;
             }
         }
