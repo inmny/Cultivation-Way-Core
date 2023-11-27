@@ -375,6 +375,7 @@ FodyWeavers.xsd
 /Code/OpenAIWrapper.cs
 /build/
 .*
+!.github/
 !.gitignore
 !.gitattributes
 Code/LK_*.cs
