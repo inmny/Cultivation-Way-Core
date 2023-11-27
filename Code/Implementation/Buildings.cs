@@ -22,20 +22,6 @@ internal static class Buildings
 
     private static void add_ming()
     {
-        BuildOrder bonfire_ming_order = AssetManager.race_build_orders
-            .get(Content_Constants.ming_race).list
-            .Find(order => order.id == SB.order_bonfire);
-        bonfire_ming_order.id = "bonfire_ming";
-
-        foreach (BuildOrder order in AssetManager.race_build_orders.get(Content_Constants.ming_race).list)
-        {
-            if (order.requirements_orders.Exists(order_id => order_id == SB.order_bonfire))
-            {
-                order.requirements_orders.Remove(SB.order_bonfire);
-                order.requirements_orders.Add("bonfire_ming");
-            }
-        }
-
         clone_human_buildings(Content_Constants.ming_race);
 
         BuildingAsset bonfire = AssetManager.buildings.clone("bonfire_ming", "bonfire");
@@ -52,7 +38,6 @@ internal static class Buildings
         AssetManager.buildings.get("hall_ming_0").fundament = new BuildingFundament(4, 4, 7, 0);
         AssetManager.buildings.get("hall_ming_1").fundament = new BuildingFundament(5, 5, 9, 0);
         AssetManager.buildings.get("hall_ming_2").fundament = new BuildingFundament(8, 8, 14, 0);
-
         AssetManager.buildings.get("temple_ming").fundament = new BuildingFundament(3, 3, 5, 0);
         AssetManager.buildings.get("barracks_ming").fundament = new BuildingFundament(3, 3, 7, 0);
         AssetManager.buildings.get("windmill_ming_0").fundament = new BuildingFundament(2, 1, 2, 0);

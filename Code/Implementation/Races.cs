@@ -72,8 +72,7 @@ internal static class Races
         AssetManager.raceLibrary.addPreferredWeapon("bow", 5);
         AssetManager.raceLibrary.cloneBuildingKeys(SK.human, ming.id);
         AssetManager.race_build_orders.clone(ming.build_order_id, "kingdom_base");
-        ming.building_order_keys.Remove(SB.order_bonfire);
-        ming.building_order_keys.Add("bonfire_ming", "bonfire_ming");
+        ming.building_order_keys[SB.order_bonfire] = "bonfire_ming";
     }
 
     private static void add_yao()
