@@ -248,6 +248,8 @@
   "trait_cw_negative_creature_info": "阴性生物在阳光下会受到一定的压制",
   "trait_cw_curse_immune": "诅咒免疫",
   "trait_cw_all_elements": "混沌之子",
+  "tech_smelt_mill": "炼器工艺",
+  "tech_info_smelt_mill": "解锁炼器坊",
   "achievement_group_cw_achievement_group": "修真之路",
   "cw_achievementLost": "天道有缺",
   "cw_achievementLost Description": "",

@@ -23,6 +23,7 @@ public class Manager
         instance = this;
         CW_ActorTraits.init();
         CW_BaseStatsLibrary.init();
+        CW_CultureTechLibrary.init();
         CW_GodPowers.init();
         CW_Drops.init();
         CW_Options.init();
