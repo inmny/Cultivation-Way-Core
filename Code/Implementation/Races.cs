@@ -134,7 +134,7 @@ internal static class Races
         AssetManager.raceLibrary.addPreferredWeapon("bow", 5);
         AssetManager.raceLibrary.cloneBuildingKeys(SK.human, eastern_human.id);
         AssetManager.race_build_orders.clone(eastern_human.build_order_id, "kingdom_base");
-        eastern_human.building_order_keys.Remove(SB.order_bonfire);
-        eastern_human.building_order_keys.Add("bonfire_eastern_human", "bonfire_eastern_human");
+        eastern_human.building_order_keys[SB.order_bonfire] = "bonfire_eastern_human";
+        eastern_human.building_order_keys[CW_SB.order_smelt_mill] = CW_SB.eh_smelt_mill;
     }
 }

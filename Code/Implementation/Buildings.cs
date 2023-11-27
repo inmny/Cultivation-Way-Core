@@ -80,25 +80,29 @@ internal static class Buildings
 
     private static void add_eastern_human()
     {
-        BuildOrder bonfire_eastern_human_order = AssetManager.race_build_orders
-            .get(Content_Constants.eastern_human_race).list
-            .Find(order => order.id == SB.order_bonfire);
-        bonfire_eastern_human_order.id = "bonfire_eastern_human";
-
-        foreach (BuildOrder order in AssetManager.race_build_orders.get(Content_Constants.eastern_human_race).list)
-        {
-            if (order.requirements_orders.Exists(order_id => order_id == SB.order_bonfire))
-            {
-                order.requirements_orders.Remove(SB.order_bonfire);
-                order.requirements_orders.Add("bonfire_eastern_human");
-            }
-        }
+        var race_order = AssetManager.race_build_orders.get(Content_Constants.eastern_human_race);
 
         clone_human_buildings(Content_Constants.eastern_human_race);
 
         BuildingAsset bonfire = AssetManager.buildings.clone("bonfire_eastern_human", "bonfire");
         bonfire.smoke = false;
         bonfire.race = Content_Constants.eastern_human_race;
+        
+        BuildingAsset smelt_mill = AssetManager.buildings.clone(CW_SB.eh_smelt_mill, SB.bonfire);
+        smelt_mill.race = Content_Constants.eastern_human_race;
+        smelt_mill.draw_light_size = 2;
+        smelt_mill.type = CW_SB.smelt_mill;
+        smelt_mill.fundament = new BuildingFundament(3, 3, 5, 0);
+        smelt_mill.smokeOffset = new(3, 5);
+        smelt_mill.max_houses = 0;
+        smelt_mill.build_place_single = true;
+        var smelt_mill_order = race_order.addBuilding(CW_SB.order_smelt_mill);
+        smelt_mill_order.requirements_orders = new();
+        smelt_mill_order.requirements_orders.Add(SB.order_hall_2);
+        
+        AssetManager.buildings.add(smelt_mill);
+        
+        AssetManager.buildings.loadSprites(smelt_mill);
         AssetManager.buildings.loadSprites(bonfire);
 
         AssetManager.buildings.get("tent_eastern_human").fundament = new BuildingFundament(1, 1, 1, 0);
