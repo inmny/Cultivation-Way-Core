@@ -83,6 +83,7 @@ internal static class Cultisyses
             sprite_path = "ui/Icons/iconCultiBook_bushido",
             curr_progress = (actor, culti, level) => actor.data.health,
             max_progress = (actor, asset, level) => actor.stats[S.health],
+            power_base = 1000,
             can_levelup = (actor, asset) =>
             {
                 if (asset.curr_progress(actor, asset, 0) < asset.max_progress(actor, asset, 0) * 0.95f) return false;
@@ -155,6 +156,7 @@ internal static class Cultisyses
                 return soul_val;
             },
             max_progress = (actor, asset, level) => actor.stats[CW_S.soul],
+            power_base = 1000,
             can_levelup = (actor, asset) =>
             {
                 if (asset.curr_progress(actor, asset, 0) < asset.max_progress(actor, asset, 0) * 0.95f) return false;
