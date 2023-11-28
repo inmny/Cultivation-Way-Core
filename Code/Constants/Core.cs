@@ -29,6 +29,9 @@ public static class Core
     public const int BASE_TYPE_IRON = 3;
     public const int BASE_TYPE_GROUND = 4;
     public const int element_type_nr = 5;
+    public const int item_level_count = 45;
+    public const int item_level_per_stage = 9;
+    public const int item_level_up_res_search_times = 3;
 
     public static readonly string[] element_str = new string[element_type_nr]
     {
