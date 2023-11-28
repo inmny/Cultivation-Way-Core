@@ -373,36 +373,13 @@ public partial class CW_Actor : Actor
 
         float num = 1f;
         CultisysAsset cultisys = null;
+        Actor attacker = null;
+        if (pAttacker != null && pAttacker.isActor())
+        {
+            attacker = pAttacker.a;
+        }
         switch (attack_type)
         {
-            case CW_AttackType.Other:
-            case CW_AttackType.Weapon:
-                num = 1f - stats[S.armor] / (stats[S.armor] + 100);
-                
-                float best_reduce = 1;
-                cultisys = data.GetCultisys(CultisysType.BODY);
-                if (cultisys != null)
-                {
-                    data.get(cultisys.id, out int level, 0);
-                    best_reduce = Mathf.Max(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
-                }
-                cultisys = data.GetCultisys(CultisysType.WAKAN);
-                if (cultisys != null)
-                {
-                    data.get(cultisys.id, out int level, 0);
-                    best_reduce = Mathf.Max(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
-                }
-                num /= best_reduce;
-                break;
-            case CW_AttackType.Acid:
-            case CW_AttackType.Eaten:
-            case CW_AttackType.Fire:
-            case CW_AttackType.Hunger:
-            case CW_AttackType.Infection:
-            case CW_AttackType.Plague:
-            case CW_AttackType.Poison:
-            case CW_AttackType.Tumor:
-            case CW_AttackType.AshFever:
             case CW_AttackType.Spell:
                 num = 1f - stats[CW_S.spell_armor] / (stats[CW_S.spell_armor] + 100);
                 cultisys = data.GetCultisys(CultisysType.WAKAN);
@@ -411,7 +388,14 @@ public partial class CW_Actor : Actor
                     data.get(cultisys.id, out int level, 0);
                     num /= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
                 }
-                // LogService.LogInfoConcurrent($"Actor {data.id} get hit by spell, damage: {pDamage}, reduce: {num}");
+
+                if (attacker == null) break;
+                cultisys = attacker.data.GetCultisys(CultisysType.WAKAN);
+                if (cultisys != null)
+                {
+                    attacker.data.get(cultisys.id, out int level, 0);
+                    num *= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
+                }
                 break;
             case CW_AttackType.Soul:
                 if (pAttacker != null && pAttacker.isActor() && pAttacker.isAlive())
@@ -430,6 +414,60 @@ public partial class CW_Actor : Actor
                     num /= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
                 }
 
+                if (attacker == null) break;
+                cultisys = attacker.data.GetCultisys(CultisysType.SOUL);
+                if (cultisys != null)
+                {
+                    attacker.data.get(cultisys.id, out int level, 0);
+                    num *= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
+                }
+                break;
+            
+            case CW_AttackType.Acid:
+            case CW_AttackType.Eaten:
+            case CW_AttackType.Fire:
+            case CW_AttackType.Hunger:
+            case CW_AttackType.Infection:
+            case CW_AttackType.Plague:
+            case CW_AttackType.Poison:
+            case CW_AttackType.Tumor:
+            case CW_AttackType.AshFever:
+            case CW_AttackType.Other:
+            case CW_AttackType.Weapon:
+                num = 1f - stats[S.armor] / (stats[S.armor] + 100);
+                
+                float best_reduce = 1;
+                cultisys = data.GetCultisys(CultisysType.BODY);
+                if (cultisys != null)
+                {
+                    data.get(cultisys.id, out int level, 0);
+                    best_reduce = Mathf.Max(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                }
+                
+                cultisys = data.GetCultisys(CultisysType.WAKAN);
+                if (cultisys != null)
+                {
+                    data.get(cultisys.id, out int level, 0);
+                    best_reduce = Mathf.Max(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                }
+                
+                if (attacker != null)
+                {
+                    cultisys = attacker.data.GetCultisys(CultisysType.WAKAN);
+                    if (cultisys != null)
+                    {
+                        attacker.data.get(cultisys.id, out int level, 0);
+                        best_reduce /= Mathf.Min(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                    }
+                    cultisys = attacker.data.GetCultisys(CultisysType.BODY);
+                    if (cultisys != null)
+                    {
+                        attacker.data.get(cultisys.id, out int level, 0);
+                        best_reduce /= Mathf.Min(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                    }
+                }
+                num /= best_reduce;
+                
                 break;
         }
 

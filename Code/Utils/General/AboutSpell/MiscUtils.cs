@@ -9,6 +9,8 @@ public static class MiscUtils
 {
     public static float WakanCostToDamage(float pWakanCost, BaseSimObject pSimObject)
     {
+        return pWakanCost;
+        /*
         if(pSimObject == null) return pWakanCost;
         pWakanCost *= pSimObject.stats[CW_S.wakan];
         if (pSimObject.a != null)
@@ -29,5 +31,6 @@ public static class MiscUtils
         {
             return pWakanCost;
         }
+        */
     }
 }
