@@ -20,6 +20,7 @@ public static class BaseSystemDataTools
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void WriteObj<T>(this BaseSystemData pData, string pKey, T pObject)
     {
+        if(pObject == null) pData.removeString(pKey);
         pData.set(pKey, GeneralHelper.to_json(pObject));
     }
 
