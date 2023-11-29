@@ -1473,11 +1473,11 @@ internal static class Spells
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (anim.dst_object == null || !anim.dst_object.isAlive()) return;
-                CW_Actor src_obj = (CW_Actor)anim.src_object;
-                CW_StatusEffectData status_data = src_obj
+                CW_Actor dst_obj = (CW_Actor)anim.dst_object;
+                CW_StatusEffectData status_data = dst_obj
                     .AddStatus("status_loltus_fire", anim.src_object,
                         Library.Manager.statuses.get("status_loltus_fire").duration *
-                        (0.1f + src_obj.data.kills / 10f));
+                        (0.1f + dst_obj.data.kills / 10f));
                 if (status_data == null) return;
                 anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                 status_data.effect_val = spell_cost;
