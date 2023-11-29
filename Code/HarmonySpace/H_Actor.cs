@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
@@ -54,8 +55,14 @@ internal static class H_Actor
     public static IEnumerable<CodeInstruction> updateStats_Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         List<CodeInstruction> codes = instructions.ToList();
-        codes.Insert(498, new CodeInstruction(OpCodes.Ldarg_0));
-        codes.Insert(499,
+        int index = codes.FindIndex(instr => instr.opcode == OpCodes.Stfld && ((FieldInfo)instr.operand).Name == "has_status_frozen");
+        if (index == -1)
+        {
+            CW_Core.LogWarning("updateStats_Transpiler: index not found");
+            return codes;
+        }
+        codes.Insert(index+1, new CodeInstruction(OpCodes.Ldarg_0));
+        codes.Insert(index+2,
             new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(H_Actor), nameof(cw_updateStats))));
         return codes;
     }
@@ -120,7 +127,7 @@ internal static class H_Actor
         }
 
         actor.data.get(DataS.soul, out float soul);
-        if (Math.Abs(soul - float.MaxValue) < 1e37)
+        if (soul > actor.stats[CW_S.soul])
         {
             actor.data.set(DataS.soul, actor.stats[CW_S.soul]);
         }

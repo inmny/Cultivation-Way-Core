@@ -114,7 +114,7 @@ public static class ActorDataTools
             _ => throw new ArgumentOutOfRangeException(nameof(pType), pType, null)
         };
         pData.get(pTypeStr, out string cultisys_id, null);
-        return cultisys_id == null ? null : Manager.cultisys.get(cultisys_id);
+        return string.IsNullOrEmpty(cultisys_id) ? null : Manager.cultisys.get(cultisys_id);
     }
 
     /// <summary>

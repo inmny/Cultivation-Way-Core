@@ -16,6 +16,11 @@ internal class CultiProgress : MonoBehaviour
 
     private void Awake()
     {
+        init();
+    }
+
+    private void init()
+    {
         bar = GetComponent<StatBar>();
         bar_image = transform.Find("Mask/Bar").GetComponent<Image>();
         bar_image.color = Color.white;
@@ -28,7 +33,6 @@ internal class CultiProgress : MonoBehaviour
         tip_button = GetComponent<TipButton>();
         tip_button.hoverAction = null;
     }
-
     public void clear()
     {
         if (bar_image != null) bar_image.enabled = false;
@@ -44,6 +48,7 @@ internal class CultiProgress : MonoBehaviour
 
     public void load_cultisys(CultisysAsset cultisys, int cultisys_level, CultisysType type, CW_Actor actor)
     {
+        if(bar_image == null) init();
         bar_image.enabled = true;
         transform.Find("Background").gameObject.SetActive(true);
         transform.Find("Text").gameObject.SetActive(true);
