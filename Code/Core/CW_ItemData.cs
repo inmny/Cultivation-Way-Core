@@ -55,13 +55,6 @@ public class CW_ItemData : ItemData
             if (material_asset == null) continue;
 
             addition_stats.mergeStats(material_asset.base_stats);
-            StringBuilder sb = new();
-            sb.AppendLine($"Upgrade {id} with {material_id}({pCost[material_id]})");
-            foreach (var stat in addition_stats.stats_dict)
-            {
-                sb.AppendLine($"\t{stat.Key}: {stat.Value.value} ");
-            }
-            LogService.LogWarning(sb.ToString());
             if (Level < Constants.Core.item_level_per_stage) continue;
             if (material_asset.possible_spells_on_slot[(int)asset.vanilla_asset.equipmentType].Count == 0) continue;
             Spells.Add(material_asset.possible_spells_on_slot[(int)asset.vanilla_asset.equipmentType].GetRandom());
