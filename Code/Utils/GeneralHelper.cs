@@ -64,9 +64,13 @@ public static class GeneralHelper
         return JsonConvert.SerializeObject(obj);
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T from_json<T>(string json)
+    public static T from_json<T>(string json, bool private_members_included = false)
     {
         //return System.Text.Json.JsonSerializer.Deserialize<T>(json);
+        if (private_members_included)
+        {
+            return JsonConvert.DeserializeObject<T>(json, private_members_visit_settings);
+        }
         return JsonConvert.DeserializeObject<T>(json);
     }
 

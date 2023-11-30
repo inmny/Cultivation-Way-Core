@@ -20,7 +20,7 @@ internal static class ItemMakerHelper
         }
         return true;
     }
-
+    [Hotfixable]
     public static void CostResourcesAndAddProgress(Actor pCreator, CityStorage pStorage, CW_ItemData pItemData, Dictionary<string, int> pCost)
     {
         foreach (KeyValuePair<string, int> resource in pCost)
@@ -28,6 +28,7 @@ internal static class ItemMakerHelper
             pStorage.resources[resource.Key].amount -= resource.Value;
         }
         pItemData.UpgradeWithCosts(pCreator, pCost);
+        pCreator.data.WriteObj(DataS.crafting_item_data, pItemData, true);
     }
     [Hotfixable]
     public static void CostResourcesAndCreateProgress(Actor pCreator, CityStorage pStorage, CW_ItemAsset pAsset)
@@ -37,11 +38,12 @@ internal static class ItemMakerHelper
             pStorage.resources[resource.Key].amount -= resource.Value;
         }
         CW_ItemData item_data = new CW_ItemData(pAsset, pCreator);
-        pCreator.data.WriteObj(DataS.crafting_item_data, item_data);
+        pCreator.data.WriteObj(DataS.crafting_item_data, item_data, true);
     }
+    [Hotfixable]
     public static CW_ItemData GetCraftingItemData(Actor pActor)
     {
-        return pActor.data.ReadObj<CW_ItemData>(DataS.crafting_item_data);
+        return pActor.data.ReadObj<CW_ItemData>(DataS.crafting_item_data, true);
     }
 
     public static bool HasEnoughResourcesToContinue(Actor pCreator, CityStorage pStorage, CW_ItemData pCraftingItemData, out Dictionary<string, int> pCost)

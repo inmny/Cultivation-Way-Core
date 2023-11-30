@@ -22,7 +22,6 @@ public class CW_BehPrepareMakeItem : BehCity
     [Hotfixable]
     public override BehResult execute(Actor pCreator)
     {
-        CW_Core.LogInfo($"{pCreator.name} is preparing to make item......");
         if (pCreator.beh_building_target == null) return BehResult.Continue;
         pCreator.timer_action = 3f;
         pCreator.stayInBuilding(pCreator.beh_building_target);
@@ -31,7 +30,7 @@ public class CW_BehPrepareMakeItem : BehCity
         TryToMakeNormalItem(pCreator);
         return BehResult.Continue;
     }
-
+    [Hotfixable]
     private void TryToMakeNormalItem(Actor pCreator)
     {
         var storage = pCreator.city.data.storage;
@@ -40,10 +39,8 @@ public class CW_BehPrepareMakeItem : BehCity
             CW_ItemAsset asset = Manager.items.FindAssetToCraft(pCreator);
             if (asset != null)
             {
-                CW_Core.LogInfo($"{pCreator.name} tries to make {asset.id}");
                 if (ItemMakerHelper.HasEnoughResourcesToMakeItem(storage, asset))
                 {
-                    CW_Core.LogInfo($"{pCreator.name} makes {asset.id}");
                     ItemMakerHelper.CostResourcesAndCreateProgress(pCreator, storage, asset);
                     return;
                 }
@@ -77,13 +74,11 @@ public class CW_BehMakeItem : BehCity
         CW_ItemData crafting_item_data = ItemMakerHelper.GetCraftingItemData(pCreator);
         if (crafting_item_data == null)
         {
-            CW_Core.LogInfo($"{pCreator.name} has no crafting item data");
             return BehResult.Continue;
         }
-        if (Toolbox.randomBool())
+        if (Toolbox.randomChance(0.9f))
         {
             var storage = pCreator.city.data.storage;
-            CW_Core.LogInfo($"Item made by {pCreator.name} checks resources...");
             if (ItemMakerHelper.HasEnoughResourcesToContinue(pCreator, storage, crafting_item_data, out var cost))
             {
                 ItemMakerHelper.CostResourcesAndAddProgress(pCreator, storage, crafting_item_data, cost);
@@ -95,11 +90,10 @@ public class CW_BehMakeItem : BehCity
                 pCreator.beh_tile_target = null;
             
                 pCreator.beh_building_target.startShake(pCreator.timer_action / minTime * 0.5f);
-                CW_Core.LogInfo($"Item made by {pCreator.name} added progress");
+                CW_Core.LogInfo($"Item made by {pCreator.name} added progress to {crafting_item_data.Level}");
                 return BehResult.RepeatStep;
             }
         }
-        CW_Core.LogInfo($"Item made by {pCreator.name} is going to finish making");
         return BehResult.Continue;
     }
 }
@@ -121,10 +115,9 @@ public class CW_BehFinishMakeItem : BehCity
         pCreator.beh_building_target.startShake(0.01f);
         
         CW_ItemData crafting_item_data = ItemMakerHelper.GetCraftingItemData(pCreator);
-        CW_Core.LogInfo($"{pCreator.name} tries to finish making");
         if (crafting_item_data == null) return BehResult.Continue;
 
-        CW_Core.LogInfo($"{pCreator.name}'s crafting item data is not null");
+        CW_Core.LogInfo($"{pCreator.name}'s crafting item level at {crafting_item_data.Level}");
         bool item_extracted;
         if (pCreator.city == null || !pCreator.city.isAlive())
         {
@@ -138,8 +131,8 @@ public class CW_BehFinishMakeItem : BehCity
         
         if (item_extracted)
         {
-            pCreator.data.WriteObj<object>(DataS.crafting_item_data, null);
-            CW_Core.LogInfo($"Item made by {pCreator.name} extracted to {pCreator.city?.getCityName() ?? "null"}");
+            pCreator.data.WriteObj<object>(DataS.crafting_item_data, null, true);
+            CW_Core.LogInfo($"Item made by {pCreator.name}({pCreator.getName()}) extracted to {pCreator.city?.getCityName() ?? "null"}");
         }
         
         return BehResult.Continue;

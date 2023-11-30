@@ -233,7 +233,8 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
     public void Reload()
     {
         LogInfo("Reloaded");
-        new_reload_method();
+        Manager.item_materials.init();
+        Implementation.Items.init();
     }
 
     [Hotfixable]

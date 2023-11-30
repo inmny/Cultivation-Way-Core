@@ -45,7 +45,7 @@ public class CW_ItemData : ItemData
             if (material_asset == null) continue;
 
             addition_stats.mergeStats(material_asset.base_stats);
-            LogService.LogInfo($"Merging stats with {material_id}");
+            LogService.LogWarning($"Merging stats with {material_id} total {addition_stats.stats_dict.Count}");
             if (material_asset.possible_spells_on_slot[(int)asset.vanilla_asset.equipmentType].Count == 0) continue;
             Spells.Add(material_asset.possible_spells_on_slot[(int)asset.vanilla_asset.equipmentType].GetRandom());
         }
