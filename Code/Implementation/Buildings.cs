@@ -82,7 +82,7 @@ internal static class Buildings
         smelt_mill.max_houses = 0;
         smelt_mill.build_place_single = true;
         smelt_mill.tech = "smelt_mill";
-        var smelt_mill_order = race_order.addBuilding(CW_SB.order_smelt_mill, 3, 2);
+        var smelt_mill_order = race_order.addBuilding(CW_SB.order_smelt_mill, 1, 1);
         smelt_mill_order.requirements_orders = new();
         //smelt_mill_order.requirements_orders.Add(SB.order_hall_2);
         
