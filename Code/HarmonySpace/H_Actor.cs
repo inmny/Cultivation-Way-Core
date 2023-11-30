@@ -10,6 +10,7 @@ using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using HarmonyLib;
+using NeoModLoader.api.attributes;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -66,7 +67,7 @@ internal static class H_Actor
             new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(H_Actor), nameof(cw_updateStats))));
         return codes;
     }
-
+    [Hotfixable]
     private static void cw_updateStats(Actor actor)
     {
         // 载入修炼体系的加成
@@ -116,6 +117,16 @@ internal static class H_Actor
         cw_actor.cur_spells.Clear();
         cw_actor.cur_spells.AddRange(cw_actor.__data_spells);
 
+        if (cw_actor.asset.use_items)
+        {
+            List<ActorEquipmentSlot> slots = ActorEquipment.getList(cw_actor.equipment);
+            foreach (ActorEquipmentSlot slot in slots)
+            {
+                if (slot.data is not CW_ItemData cw_item_data) continue;
+                cw_actor.cur_spells.AddRange(cw_item_data.Spells);
+            }
+        }
+        
         // 载入阴/阳性生物的加成
         if (cw_actor.hasTrait(CW_ActorTraits.negative_creature.id) && !World.world_era.overlay_darkness)
         {
