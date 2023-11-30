@@ -43,7 +43,9 @@ internal static class ItemMakerHelper
     [Hotfixable]
     public static CW_ItemData GetCraftingItemData(Actor pActor)
     {
-        return pActor.data.ReadObj<CW_ItemData>(DataS.crafting_item_data, true);
+        var ret = pActor.data.ReadObj<CW_ItemData>(DataS.crafting_item_data, true);
+        ret?.addition_stats.AfterDeserialize();
+        return ret;
     }
 
     public static bool HasEnoughResourcesToContinue(Actor pCreator, CityStorage pStorage, CW_ItemData pCraftingItemData, out Dictionary<string, int> pCost)

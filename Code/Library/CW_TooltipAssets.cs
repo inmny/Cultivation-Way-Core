@@ -89,7 +89,6 @@ internal static class CW_TooltipAssets
             
             spells_container.SetActive(true);
         }
-        CW_Core.LogInfo(LocalizedTextManager.getText($"2_immortal_spell"));
         
         foreach (var spell in cw_item.Spells)
         {
@@ -126,7 +125,7 @@ internal static class CW_TooltipAssets
         head_description_text.fontSize = 6;
         head_description_text.color = Colors.default_color;
     }
-
+    [Hotfixable]
     private static void show_cultisys(Tooltip tooltip, string type, TooltipData data = default)
     {
         CW_Actor actor = (CW_Actor)data.actor;
@@ -145,8 +144,7 @@ internal static class CW_TooltipAssets
         str_builder.AppendLine(
             $"{(int)cultisys_asset.curr_progress(actor, cultisys_asset, level)}/{(int)cultisys_asset.max_progress(actor, cultisys_asset, level)}");
 
-        HashSet<string> spells = actor.data.GetSpells();
-        spells ??= new HashSet<string>();
+        HashSet<string> spells = new (actor.cur_spells);
         foreach (string spell_id in spells)
         {
             str_builder.AppendLine(LocalizedTextManager.getText($"spell_{spell_id}"));

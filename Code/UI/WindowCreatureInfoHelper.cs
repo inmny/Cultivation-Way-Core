@@ -3,6 +3,7 @@ using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
+using NeoModLoader.api.attributes;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -252,12 +253,14 @@ internal class WindowCreatureInfoHelper
 
         initialized = true;
     }
-
+    [Hotfixable]
     public static void OnEnable_postfix(WindowCreatureInfo window_creature_info)
     {
         if (!initialized) return;
         CW_Actor actor = (CW_Actor)window_creature_info.actor;
 
+        actor.setStatsDirty();
+        actor.updateStats();
         #region StatIcons
 
         spell_armor.gameObject.SetActive(true);

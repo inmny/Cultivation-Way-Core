@@ -235,6 +235,12 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         LogInfo("Reloaded");
         Manager.item_materials.init();
         Implementation.Items.init();
+
+        foreach (Actor actor in World.world.units)
+        {
+            if (!actor.isAlive()) continue;
+            actor.setStatsDirty();
+        }
     }
 
     [Hotfixable]
