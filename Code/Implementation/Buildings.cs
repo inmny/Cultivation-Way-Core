@@ -84,7 +84,7 @@ internal static class Buildings
         smelt_mill.tech = "smelt_mill";
         var smelt_mill_order = race_order.addBuilding(CW_SB.order_smelt_mill);
         smelt_mill_order.requirements_orders = new();
-        smelt_mill_order.requirements_orders.Add(SB.order_hall_2);
+        //smelt_mill_order.requirements_orders.Add(SB.order_hall_2);
         
         AssetManager.buildings.add(smelt_mill);
         

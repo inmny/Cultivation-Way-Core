@@ -27,6 +27,8 @@ public class Manager
         CW_ActorTraits.init();
         CW_BaseStatsLibrary.init();
         CW_BehaviourTaskActorLibrary.init();
+        CW_BehaviourTaskCityLibrary.init();
+        CW_CitizenJobLibrary.init();
         CW_CultureTechLibrary.init();
         CW_GodPowers.init();
         CW_Drops.init();

@@ -3,6 +3,7 @@ using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
+using NeoModLoader.api.attributes;
 
 namespace Cultivation_Way.Utils;
 
@@ -28,14 +29,14 @@ internal static class ItemMakerHelper
         }
         pItemData.UpgradeWithCosts(pCreator, pCost);
     }
-
+    [Hotfixable]
     public static void CostResourcesAndCreateProgress(Actor pCreator, CityStorage pStorage, CW_ItemAsset pAsset)
     {
         foreach (KeyValuePair<string, int> resource in pAsset.necessary_resource_cost)
         {
             pStorage.resources[resource.Key].amount -= resource.Value;
         }
-        CW_ItemData item_data = new CW_ItemData(pAsset);
+        CW_ItemData item_data = new CW_ItemData(pAsset, pCreator);
         pCreator.data.WriteObj(DataS.crafting_item_data, item_data);
     }
     public static CW_ItemData GetCraftingItemData(Actor pActor)

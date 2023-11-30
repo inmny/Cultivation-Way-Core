@@ -8,12 +8,12 @@ internal static class CW_ActorJobLibrary
     {
         ActorJob job = new();
         job.id = CW_AIS.job_artificer;
+        job.addTask(CW_AIS.task_cw_make_items);
         job.addTask("wait");
         job.addTask("city_idle_walking");
         job.addTask("wait");
         job.addTask("try_to_return_home");
         job.addTask("wait");
-        job.addTask(CW_AIS.task_cw_make_items);
         AssetManager.job_actor.add(job);
     }
 }

@@ -1,6 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Cultivation_Way.Library;
+using NeoModLoader.api.attributes;
+using NeoModLoader.services;
 using Newtonsoft.Json;
 
 namespace Cultivation_Way.Core;
@@ -16,13 +17,24 @@ public class CW_ItemData : ItemData
     public CW_ItemData()
     {
     }
-    public CW_ItemData(CW_ItemAsset pAsset)
+    public CW_ItemData(CW_ItemAsset pAsset, Actor pCreator)
     {
         id = pAsset.vanilla_asset.id;
         Level = pAsset.base_level;
         Spells = new HashSet<string>(pAsset.base_spells);
-    }
 
+        material = pAsset.main_material;
+        year = World.world.mapStats.year;
+        by = pCreator.getName();
+        if (pCreator.kingdom != null)
+        {
+            byColor = pCreator.kingdom.kingdomColor.color_text;
+            from = pCreator.kingdom.name;
+            fromColor = pCreator.kingdom.kingdomColor.color_text;
+        }
+        
+    }
+    [Hotfixable]
     public void UpgradeWithCosts(Actor pCreator, Dictionary<string, int> pCost)
     {
         Level++;
@@ -33,7 +45,8 @@ public class CW_ItemData : ItemData
             if (material_asset == null) continue;
 
             addition_stats.mergeStats(material_asset.base_stats);
-            
+            LogService.LogInfo($"Merging stats with {material_id}");
+            if (material_asset.possible_spells_on_slot[(int)asset.vanilla_asset.equipmentType].Count == 0) continue;
             Spells.Add(material_asset.possible_spells_on_slot[(int)asset.vanilla_asset.equipmentType].GetRandom());
         }
     }

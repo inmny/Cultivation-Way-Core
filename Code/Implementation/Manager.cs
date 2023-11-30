@@ -12,6 +12,7 @@ internal static class Manager
         Cultisyses.init();
         Elements.init();
         Energies.init();
+        Items.init();
         Kingdoms.init();
         StatusEffects.init();
         Spells.init();

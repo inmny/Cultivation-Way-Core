@@ -13,10 +13,11 @@ using ModDeclaration;
 using NCMS;
 using UnityEngine;
 using NeoModLoader.api;
+using NeoModLoader.api.attributes;
 
 namespace Cultivation_Way;
 
-public class CW_Core : BasicMod<CW_Core>
+public class CW_Core : BasicMod<CW_Core>, IReloadable
 {
     public static ModState mod_state;
     public static Transform ui_prefab_library;
@@ -227,5 +228,17 @@ public class CW_Core : BasicMod<CW_Core>
     protected override void OnModLoad()
     {
         
+    }
+    [Hotfixable]
+    public void Reload()
+    {
+        LogInfo("Reloaded");
+        new_reload_method();
+    }
+
+    [Hotfixable]
+    private void new_reload_method()
+    {
+        LogInfo("new reload method: hello world!");
     }
 }

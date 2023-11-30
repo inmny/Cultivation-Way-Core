@@ -11,10 +11,11 @@ internal static class CW_CultureTechLibrary
             id = "smelt_mill",
             path_icon = "tech/icon_tech_weaponsmith",
             knowledge_cost = 2f,
-            type = TechType.Rare,
+            type = TechType.Common,
+            required_level = 50,
             requirements = new List<string>
             {
-                "weaponsmith", "armorsmith"
+                "weaponsmith"
             }
         };
         AssetManager.culture_tech.add(tech);
