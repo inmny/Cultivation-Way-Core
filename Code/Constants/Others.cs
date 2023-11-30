@@ -9,6 +9,8 @@ public static class Others
     /// </summary>
     public const bool strict_mode = false;
 
+    public const float common_map_icon_duration = 2f;
+
     /// <summary>
     ///     继承父母灵根时随机灵根的概率
     /// </summary>

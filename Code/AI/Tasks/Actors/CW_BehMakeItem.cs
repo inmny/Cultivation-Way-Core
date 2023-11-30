@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using ai.behaviours;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
@@ -68,6 +69,8 @@ public class CW_BehMakeItem : BehCity
         this.check_building_target_non_usable = true;
         this.null_check_building_target = true;
     }
+
+    private static MapIconAsset mark = AssetManager.map_icons.get("ate_item");
     [Hotfixable]
     public override BehResult execute(Actor pCreator)
     {
@@ -85,6 +88,8 @@ public class CW_BehMakeItem : BehCity
             {
                 ItemMakerHelper.CostResourcesAndAddProgress(pCreator, storage, crafting_item_data, cost);
             
+                MapIconHelper.AddCommonIcon(AssetManager.resources.get(cost.First().Key).getSprite(), pCreator.currentPosition);
+                
                 pCreator.timer_action = Toolbox.randomFloat(minTime, maxTime);
                 pCreator.stayInBuilding(pCreator.beh_building_target);
                 pCreator.beh_tile_target = null;

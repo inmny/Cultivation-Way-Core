@@ -31,6 +31,7 @@ public class Manager
         CW_CitizenJobLibrary.init();
         CW_CultureTechLibrary.init();
         CW_GodPowers.init();
+        CW_MapIconLibrary.init();
         CW_Drops.init();
         CW_Options.init();
         CW_TooltipAssets.init();
