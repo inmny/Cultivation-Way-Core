@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Cultivation_Way.Constants;
 
 namespace Cultivation_Way.Library;
 
 public class CW_ItemAsset : Asset
 {
     public int base_level = 0;
+    public CW_ItemType ItemType { get; protected set; }
     public BaseStats base_stats = new();
     public string main_material = "base";
     public readonly HashSet<string> base_spells = new();
@@ -44,6 +46,11 @@ public class CW_ItemAsset : Asset
             
             resource_cost_lists_per_level[i].Add(default_cost);
         }
+    }
+
+    public CW_ItemAsset(string id)
+    {
+        this.id = id;
     }
     public void ClearCurrentPerLevelCosts()
     {
