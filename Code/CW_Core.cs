@@ -204,10 +204,6 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
 
         if (Environment.UserName != "Inmny") return;
         state.editor_inmny = true;
-        Config.isEditor = true;
-        Config.editor_maxim = true;
-        Config.editor_mastef = true;
-        Config.disableLocaleLogs = true;
     }
 
     public class ModState
