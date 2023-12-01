@@ -99,7 +99,7 @@ internal static class CW_TooltipAssets
 
         
         LocalizedText item_level_text = pTooltip.transform.Find("Equipment Type/EquipmentText").GetComponent<LocalizedText>();
-        item_level_text.setKeyAndUpdate($"cw_{cw_item_asset.vanilla_asset.name_class}");
+        item_level_text.setKeyAndUpdate($"cw_{cw_item_asset.VanillaAsset.name_class}");
         item_level_text.text.text = item_level_text.text.text
             .Replace("$item_stage$", LM.Get($"item_stage_{cw_item.Level / Constants.Core.item_level_per_stage}"))
             .Replace("$item_level$", LM.Get($"item_level_{cw_item.Level % Constants.Core.item_level_per_stage}"));

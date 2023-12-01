@@ -21,15 +21,15 @@ public class CW_ItemData : ItemData
     }
     public CW_ItemData(CW_ItemAsset pAsset, Actor pCreator)
     {
-        id = pAsset.vanilla_asset.id;
-        Level = pAsset.base_level;
+        id = pAsset.VanillaAsset.id;
+        Level = pAsset.BaseLevel;
         Spells = new();
         if (Level >= Constants.Core.item_level_per_stage)
         {
-            Spells.UnionWith(pAsset.base_spells);
+            Spells.UnionWith(pAsset.BaseSpells);
         }
 
-        material = pAsset.main_material;
+        material = pAsset.MainMaterial;
         year = World.world.mapStats.year;
         by = pCreator.getName();
         if (pCreator.kingdom != null)
@@ -47,7 +47,7 @@ public class CW_ItemData : ItemData
         CW_ItemAsset asset = Manager.items.get(id);
         if (Level >= Constants.Core.item_level_per_stage)
         {
-            Spells.UnionWith(asset.base_spells);
+            Spells.UnionWith(asset.BaseSpells);
         }
         foreach(string material_id in pCost.Keys)
         {
@@ -56,12 +56,12 @@ public class CW_ItemData : ItemData
 
             addition_stats.mergeStats(material_asset.base_stats);
             if (Level < Constants.Core.item_level_per_stage) continue;
-            if (material_asset.possible_spells_on_slot[(int)asset.vanilla_asset.equipmentType].Count == 0) continue;
+            if (material_asset.possible_spells_on_slot[(int)asset.VanillaAsset.equipmentType].Count == 0) continue;
             
-            HashSet<string> new_spells = new(material_asset.possible_spells_on_slot[(int)asset.vanilla_asset.equipmentType]);
+            HashSet<string> new_spells = new(material_asset.possible_spells_on_slot[(int)asset.VanillaAsset.equipmentType]);
             new_spells.ExceptWith(Spells);
             new_spells.RemoveWhere(spell_id =>
-                !Manager.spells.get(spell_id)?.spell_classes.Overlaps(asset.allowed_spell_classes) ?? true);
+                !Manager.spells.get(spell_id)?.spell_classes.Overlaps(asset.AllowedSpellClasses) ?? true);
             
             Spells.Add(new_spells.GetRandom());
         }

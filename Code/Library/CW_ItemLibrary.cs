@@ -1,25 +1,27 @@
 using System;
 using System.Collections.Generic;
 using Cultivation_Way.Constants;
+using Cultivation_Way.Core;
 
 namespace Cultivation_Way.Library;
 
 public class CW_ItemAsset : Asset
 {
-    public int base_level = 0;
+    public int BaseLevel = 0;
+    public CW_Element BaseElement = new(new int[] { 20, 20, 20, 20, 20 });
     public CW_ItemType ItemType { get; protected set; }
     public BaseStats base_stats = new();
-    public string main_material = "base";
-    public readonly HashSet<string> base_spells = new();
-    public readonly HashSet<string> allowed_spell_classes = new();
-    public readonly Dictionary<string, int> necessary_resource_cost = new();
-    public readonly List<Dictionary<string, int>>[] resource_cost_lists_per_level = new List<Dictionary<string, int>>[Constants.Core.item_level_count];
-    public ItemAsset vanilla_asset;
+    public string MainMaterial = "base";
+    public readonly HashSet<string> BaseSpells = new();
+    public readonly HashSet<string> AllowedSpellClasses = new();
+    public readonly Dictionary<string, int> NecessaryResourceCost = new();
+    public readonly List<Dictionary<string, int>>[] ResourceCostListsPerLevel = new List<Dictionary<string, int>>[Constants.Core.item_level_count];
+    public ItemAsset VanillaAsset;
     public CW_ItemAsset()
     {
         for (int i = 0; i < Constants.Core.item_level_count; i++)
         {
-            resource_cost_lists_per_level[i] = new List<Dictionary<string, int>>();
+            ResourceCostListsPerLevel[i] = new List<Dictionary<string, int>>();
             var default_cost = new Dictionary<string, int>();
 
             switch (i / Constants.Core.item_level_per_stage)
@@ -44,7 +46,7 @@ public class CW_ItemAsset : Asset
             }
             
             
-            resource_cost_lists_per_level[i].Add(default_cost);
+            ResourceCostListsPerLevel[i].Add(default_cost);
         }
     }
 
@@ -56,7 +58,7 @@ public class CW_ItemAsset : Asset
     {
         for (int i = 0; i < Constants.Core.item_level_count; i++)
         {
-            resource_cost_lists_per_level[i].Clear();
+            ResourceCostListsPerLevel[i].Clear();
         }
     }
 }
