@@ -57,7 +57,13 @@ public class CW_ItemData : ItemData
             addition_stats.mergeStats(material_asset.base_stats);
             if (Level < Constants.Core.item_level_per_stage) continue;
             if (material_asset.possible_spells_on_slot[(int)asset.vanilla_asset.equipmentType].Count == 0) continue;
-            Spells.Add(material_asset.possible_spells_on_slot[(int)asset.vanilla_asset.equipmentType].GetRandom());
+            
+            HashSet<string> new_spells = new(material_asset.possible_spells_on_slot[(int)asset.vanilla_asset.equipmentType]);
+            new_spells.ExceptWith(Spells);
+            new_spells.RemoveWhere(spell_id =>
+                !Manager.spells.get(spell_id)?.spell_classes.Overlaps(asset.allowed_spell_classes) ?? true);
+            
+            Spells.Add(new_spells.GetRandom());
         }
     }
 }

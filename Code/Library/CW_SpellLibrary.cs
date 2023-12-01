@@ -97,6 +97,11 @@ public class CW_SpellAsset : Asset
     /// </summary>
     private uint _trigger_tags;
 
+    /// <summary>
+    ///     用于表示法术类别
+    /// </summary>
+    public HashSet<string> spell_classes = new();
+
 
     /// <summary>
     ///     添加法术触发标签
@@ -172,7 +177,7 @@ public class CW_SpellAsset : Asset
 public class CW_SpellLibrary : CW_Library<CW_SpellAsset>
 {
     private readonly Dictionary<uint, List<CW_SpellAsset>> cultisys_spells = new();
-
+    private readonly Dictionary<string, List<CW_SpellAsset>> spell_classes_spells = new();
     /// <summary>
     ///     将法术按照修炼体系分类
     /// </summary>
@@ -200,6 +205,15 @@ public class CW_SpellLibrary : CW_Library<CW_SpellAsset>
         foreach (CW_SpellAsset spell in list)
         {
             spell.spell_cultisys_level_require ??= new List<KeyValuePair<string, int>>();
+            
+            foreach(string class_name in spell.spell_classes)
+            {
+                if (!spell_classes_spells.ContainsKey(class_name))
+                {
+                    spell_classes_spells.Add(class_name, new List<CW_SpellAsset>());
+                }
+                spell_classes_spells[class_name].Add(spell);
+            }
         }
     }
 

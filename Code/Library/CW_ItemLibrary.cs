@@ -9,6 +9,7 @@ public class CW_ItemAsset : Asset
     public BaseStats base_stats = new();
     public string main_material = "base";
     public readonly HashSet<string> base_spells = new();
+    public readonly HashSet<string> allowed_spell_classes = new();
     public readonly Dictionary<string, int> necessary_resource_cost = new();
     public readonly List<Dictionary<string, int>>[] resource_cost_lists_per_level = new List<Dictionary<string, int>>[Constants.Core.item_level_count];
     public ItemAsset vanilla_asset;
