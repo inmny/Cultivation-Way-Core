@@ -242,7 +242,7 @@ public class CW_Element : FactoryItem<CW_Element>
             // 加上稀有度影响
             tmp_no_similarity = (1 - __get_similarity(asset_list[i].base_elements, BaseElements)) *
                                 asset_list[i].rarity;
-            if (tmp_no_similarity < min_no_similarity || (tmp_no_similarity == min_no_similarity &&
+            if (tmp_no_similarity < min_no_similarity || (Math.Abs(tmp_no_similarity - min_no_similarity) < 1e-3 &&
                                                           asset_list[i].rarity > Manager.elements.get(type_id).rarity))
             {
                 min_no_similarity = tmp_no_similarity;
