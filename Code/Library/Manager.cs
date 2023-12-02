@@ -32,6 +32,7 @@ public class Manager
         CW_CultureTechLibrary.init();
         CW_GodPowers.init();
         CW_MapIconLibrary.init();
+        CW_NameGenerators.init();
         CW_Drops.init();
         CW_Options.init();
         CW_TooltipAssets.init();

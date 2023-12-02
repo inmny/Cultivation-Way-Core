@@ -24,13 +24,12 @@ internal static class Races
         wu.skin_citizen_male = new List<string> { "unit_male_1" };
         wu.skin_citizen_female = new List<string> { "unit_female_1" };
         wu.skin_warrior = new List<string> { "unit_warrior_1" };
-        if (Environment.UserName == "94508")
-        {
-            wu.name_template_kingdom = "easternhuman_kingdom";
-            wu.name_template_city = "easternhuman_city";
-            wu.name_template_clan = "easternhuman_clan";
-            wu.name_template_culture = "easternhuman_culture";
-        }
+#if 一米_中文名
+        wu.name_template_city = "wu_city";
+        wu.name_template_clan = "wu_clan";
+        wu.name_template_culture = "wu_culture";
+        wu.name_template_kingdom = "wu_kingdom";
+#endif
 
         AssetManager.raceLibrary.setPreferredStatPool("diplomacy#5,warfare#5,stewardship#5,intelligence#5");
         AssetManager.raceLibrary.setPreferredFoodPool(
@@ -54,13 +53,12 @@ internal static class Races
         ming.skin_citizen_male = new List<string> { "unit_male_1" };
         ming.skin_citizen_female = new List<string> { "unit_female_1" };
         ming.skin_warrior = new List<string> { "unit_warrior_1" };
-        if (Environment.UserName == "94508")
-        {
-            ming.name_template_kingdom = "easternhuman_kingdom";
-            ming.name_template_city = "easternhuman_city";
-            ming.name_template_clan = "easternhuman_clan";
-            ming.name_template_culture = "easternhuman_culture";
-        }
+#if 一米_中文名
+        ming.name_template_city = "ming_city";
+        ming.name_template_clan = "ming_clan";
+        ming.name_template_culture = "ming_culture";
+        ming.name_template_kingdom = "ming_kingdom";
+#endif
 
         AssetManager.raceLibrary.setPreferredStatPool("diplomacy#5,warfare#5,stewardship#5,intelligence#5");
         AssetManager.raceLibrary.setPreferredFoodPool(
@@ -85,13 +83,12 @@ internal static class Races
         yao.skin_citizen_male = new List<string> { "unit_male_1" };
         yao.skin_citizen_female = new List<string> { "unit_female_1" };
         yao.skin_warrior = new List<string> { "unit_warrior_1" };
-        if (Environment.UserName == "94508")
-        {
-            yao.name_template_kingdom = "easternhuman_kingdom";
-            yao.name_template_city = "easternhuman_city";
-            yao.name_template_clan = "easternhuman_clan";
-            yao.name_template_culture = "easternhuman_culture";
-        }
+#if 一米_中文名
+        yao.name_template_city = "yao_city";
+        yao.name_template_clan = "yao_clan";
+        yao.name_template_culture = "yao_culture";
+        yao.name_template_kingdom = "yao_kingdom";
+#endif
 
         AssetManager.raceLibrary.setPreferredStatPool("diplomacy#5,warfare#5,stewardship#5,intelligence#5");
         AssetManager.raceLibrary.setPreferredFoodPool(
@@ -115,13 +112,12 @@ internal static class Races
         eastern_human.skin_citizen_male = new List<string> { "unit_male_1" };
         eastern_human.skin_citizen_female = new List<string> { "unit_female_1" };
         eastern_human.skin_warrior = new List<string> { "unit_warrior_1" };
-        if (Environment.UserName == "94508")
-        {
-            eastern_human.name_template_kingdom = "easternhuman_kingdom";
-            eastern_human.name_template_city = "easternhuman_city";
-            eastern_human.name_template_clan = "easternhuman_clan";
-            eastern_human.name_template_culture = "easternhuman_culture";
-        }
+#if 一米_中文名
+        eastern_human.name_template_city = "eastern_human_city";
+        eastern_human.name_template_clan = "eastern_human_clan";
+        eastern_human.name_template_culture = "eastern_human_culture";
+        eastern_human.name_template_kingdom = "eastern_human_kingdom";
+#endif
 
         AssetManager.raceLibrary.setPreferredStatPool("diplomacy#5,warfare#5,stewardship#5,intelligence#5");
         AssetManager.raceLibrary.setPreferredFoodPool(

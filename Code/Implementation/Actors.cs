@@ -33,10 +33,9 @@ internal static class Actors
 
         #region 原版设置
 
-        if (Environment.UserName == "94508")
-        {
-            asset.nameTemplate = "easternhuman_name";
-        }
+#if 一米_中文名
+        asset.nameTemplate = "wu_name";
+#endif
 
         asset.base_stats[CW_S.soul] = 10;
         asset.nameLocale = Content_Constants.wu_name_locale;
@@ -90,10 +89,9 @@ internal static class Actors
 
         #region 原版设置
 
-        if (Environment.UserName == "94508")
-        {
-            asset.nameTemplate = "easternhuman_name";
-        }
+#if 一米_中文名
+        asset.nameTemplate = "ming_name";
+#endif
 
         asset.base_stats[CW_S.soul] = 50;
         asset.base_stats[CW_S.mod_soul] = 0.5f;
@@ -235,6 +233,9 @@ internal static class Actors
             ? AssetManager.actor_library.get(id).nameLocale
             : cw_yao_asset.vanllia_asset.nameLocale;
 
+#if 一米_中文名
+        cw_yao_asset.vanllia_asset.nameTemplate = "yao_name";
+#endif
         AssetManager.actor_library.t = cw_yao_asset.vanllia_asset;
         AssetManager.actor_library.addColorSet(S_SkinColor.human_default);
         AssetManager.actor_library.loadShadow(cw_yao_asset.vanllia_asset);
@@ -260,7 +261,7 @@ internal static class Actors
         #region 原版设置
 
         #if 一米_中文名
-            asset.nameTemplate = "easternhuman_name";
+            asset.nameTemplate = "eastern_human_name";
         #endif
 
         asset.base_stats[CW_S.soul] = 10;

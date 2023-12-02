@@ -682,7 +682,8 @@ public partial class CW_Actor : Actor
         }
 
 
-        new_cultibook.name = $"{new_cultibook.author_name}著,{new_cultibook.editor_name}改的功法";
+        new_cultibook.name =
+            General.AboutNameGenerate.NameGenerateUtils.GenerateCultibookName(new_cultibook, this);
         new_cultibook.id = $"{new_cultibook.level}_{data.id}";
         new_cultibook.bonus_stats.MergeStats(data.GetElement().ComputeBonusStats(), new_cultibook.level * 0.3f);
 

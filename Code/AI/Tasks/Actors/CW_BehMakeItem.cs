@@ -117,6 +117,11 @@ public class CW_BehFinishMakeItem : BehCity
         CW_ItemData crafting_item_data = ItemMakerHelper.GetCraftingItemData(pCreator);
         if (crafting_item_data == null) return BehResult.Continue;
 
+        if (string.IsNullOrEmpty(crafting_item_data.name))
+        {
+            General.AboutNameGenerate.NameGenerateUtils.GenerateItemName(crafting_item_data, Manager.items.get(crafting_item_data.id), (CW_Actor)pCreator);
+        }
+        
         CW_Core.LogInfo($"{pCreator.name}'s crafting item level at {crafting_item_data.Level}");
         bool item_extracted;
         if (pCreator.city == null || !pCreator.city.isAlive())
