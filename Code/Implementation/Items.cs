@@ -1,14 +1,16 @@
 using System.Collections.Generic;
+using Cultivation_Way.Constants;
 using Cultivation_Way.Library;
+using NeoModLoader.api.attributes;
 
 namespace Cultivation_Way.Implementation;
 
 internal static class Items
 {
+    [Hotfixable]
     public static void init()
     {
-        CW_ItemAsset item = new();
-        item.id = "赤血戟"; // 虽然用中文作为id不太合适, 但着实不想翻译了
+        CW_ItemAsset item = new CW_MeleeWeaponAsset("赤血戟", CW_MeleeWeaponType.戟);
         item.VanillaAsset =
             NeoModLoader.General.Game.ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
                 new List<string> { "adamantine" }, equipment_value: 100, name_class: "item_class_halberd");
