@@ -7,12 +7,11 @@ namespace Cultivation_Way.Addon;
 
 public abstract class CW_Addon : MonoBehaviour
 {
-    // ReSharper disable once InconsistentNaming
-    public class _Mod
-    {
-        public Info info;
-        public GameObject game_object;
-    }
+    private string _adapted_core_version = "";
+    private bool _disabled;
+    private bool _loaded;
+
+    internal bool initialized;
 
     /// <summary>
     ///     此Mod, NCMS提供的全局Mod在编辑器中报错, 膈应.
@@ -24,36 +23,12 @@ public abstract class CW_Addon : MonoBehaviour
     /// </summary>
     public string addon_name { get; private set; }
 
-    internal bool initialized = false;
-    private bool _loaded;
-    private bool _disabled;
-
-    private string _adapted_core_version = "";
-
     private void Awake()
     {
         if (_loaded) return;
         _loaded = true;
         awake();
         load_addon_info();
-    }
-
-    /// <summary>
-    ///     加载附属信息, 并加入addons
-    /// </summary>
-    private void load_addon_info()
-    {
-        Assembly assembly = GetType().Assembly;
-        Type mod_type = assembly.GetType("Mod");
-        this_mod.game_object = gameObject;
-        this_mod.info = mod_type.GetField("Info").GetValue(null) as Info;
-        if (this_mod.info == null)
-        {
-            _disabled = true;
-            return;
-        }
-
-        CW_Core.mod_state.addons.Add(this);
     }
 
     private void Update()
@@ -89,6 +64,24 @@ public abstract class CW_Addon : MonoBehaviour
             error(e.Message);
             error(e.StackTrace);
         }
+    }
+
+    /// <summary>
+    ///     加载附属信息, 并加入addons
+    /// </summary>
+    private void load_addon_info()
+    {
+        Assembly assembly = GetType().Assembly;
+        Type mod_type = assembly.GetType("Mod");
+        this_mod.game_object = gameObject;
+        this_mod.info = mod_type.GetField("Info").GetValue(null) as Info;
+        if (this_mod.info == null)
+        {
+            _disabled = true;
+            return;
+        }
+
+        CW_Core.mod_state.addons.Add(this);
     }
 
     /// <summary>
@@ -130,5 +123,12 @@ public abstract class CW_Addon : MonoBehaviour
     /// <param name="elapsed">(1/60s, \infty)</param>
     public virtual void update(float elapsed)
     {
+    }
+
+    // ReSharper disable once InconsistentNaming
+    public class _Mod
+    {
+        public GameObject game_object;
+        public Info info;
     }
 }

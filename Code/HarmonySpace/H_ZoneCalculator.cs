@@ -9,6 +9,9 @@ namespace Cultivation_Way.HarmonySpace;
 
 internal static class H_ZoneCalculator
 {
+    private static ZoneDisplayMode _last_mode;
+    private static readonly HashSet<CW_EnergyMapTile> _tiles_to_redraw = new();
+
     /// <summary>
     ///     暂且使用<see cref="MapMode.Special" />来表示
     /// </summary>
@@ -18,9 +21,6 @@ internal static class H_ZoneCalculator
         return PlayerConfig.optionBoolEnabled(Constants.Core.energy_maps_toggle_name)
                || World.world.isPowerForceMapMode(MapMode.Special);
     }
-
-    private static ZoneDisplayMode _last_mode;
-    private static readonly HashSet<CW_EnergyMapTile> _tiles_to_redraw = new();
 
     [HarmonyPrefix]
     [HarmonyPatch(typeof(ZoneCalculator), nameof(ZoneCalculator.redrawZones))]

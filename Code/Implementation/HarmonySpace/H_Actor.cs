@@ -48,7 +48,8 @@ internal static class H_Actor
 
             float culti_wakan = actor.cw_asset.culti_velo * energy_tile.density *
                                 (1 + actor.stats[CW_S.mod_cultivelo]) *
-                                Content_Constants.immortal_base_cultivelo * actor.data.GetElement().GetElementType().rarity;
+                                Content_Constants.immortal_base_cultivelo *
+                                actor.data.GetElement().GetElementType().rarity;
 
             culti_wakan = culti_wakan > energy_tile.value ? energy_tile.value : culti_wakan;
 
@@ -67,6 +68,7 @@ internal static class H_Actor
             actor.data.set(DataS.wakan, wakan);
             actor.CheckLevelUp(Content_Constants.immortal_id);
         }
+
         BUSHIDO_CHECK:
         actor.data.get(Content_Constants.bushido_id, out level, -1);
         if (level >= 0)
@@ -97,6 +99,7 @@ internal static class H_Actor
 
             actor.CheckLevelUp(Content_Constants.bushido_id);
         }
+
         SOUL_CHECK:
         actor.CheckLevelUp(Content_Constants.soul_id);
     }

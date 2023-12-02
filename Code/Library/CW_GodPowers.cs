@@ -13,6 +13,8 @@ internal static class CW_GodPowers
 {
     private static readonly List<string> _energy_map_ids = new();
 
+    private static Animation.SpriteAnimation anim;
+
     public static void init()
     {
         add_more_map_modes_switch();
@@ -81,8 +83,6 @@ internal static class CW_GodPowers
         };
         add(global_switch);
     }
-
-    private static Animation.SpriteAnimation anim;
 
     private static void add_energy_decrease()
     {

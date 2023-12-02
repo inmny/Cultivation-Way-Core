@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
@@ -12,7 +11,6 @@ using Cultivation_Way.Others;
 using HarmonyLib;
 using NeoModLoader.api.attributes;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Cultivation_Way.HarmonySpace;
 
@@ -47,7 +45,7 @@ internal static class H_Actor
      *  if (base.hasAnyStatusEffect())
      *  </code>
      * 中指定位置插入调用cw_updateStats(this)函数
-     *
+     * 
      * 恰好在统计完生物类型属性、心情、数据中的四维属性、等级、默认武器、状态效果、特质后
      * 忽略了装备目的是为了统计作为血脉主导者在血脉中记录的属性加成
      */
@@ -56,17 +54,20 @@ internal static class H_Actor
     public static IEnumerable<CodeInstruction> updateStats_Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         List<CodeInstruction> codes = instructions.ToList();
-        int index = codes.FindIndex(instr => instr.opcode == OpCodes.Stfld && ((FieldInfo)instr.operand).Name == "has_status_frozen");
+        int index = codes.FindIndex(instr =>
+            instr.opcode == OpCodes.Stfld && ((FieldInfo)instr.operand).Name == "has_status_frozen");
         if (index == -1)
         {
             CW_Core.LogWarning("updateStats_Transpiler: index not found");
             return codes;
         }
-        codes.Insert(index+1, new CodeInstruction(OpCodes.Ldarg_0));
-        codes.Insert(index+2,
+
+        codes.Insert(index + 1, new CodeInstruction(OpCodes.Ldarg_0));
+        codes.Insert(index + 2,
             new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(H_Actor), nameof(cw_updateStats))));
         return codes;
     }
+
     [Hotfixable]
     private static void cw_updateStats(Actor actor)
     {
@@ -126,7 +127,7 @@ internal static class H_Actor
                 cw_actor.cur_spells.AddRange(cw_item_data.Spells);
             }
         }
-        
+
         // 载入阴/阳性生物的加成
         if (cw_actor.hasTrait(CW_ActorTraits.negative_creature.id) && !World.world_era.overlay_darkness)
         {

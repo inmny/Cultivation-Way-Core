@@ -13,19 +13,22 @@ public enum CW_WeaponType
     Range,
     Special
 }
+
 public enum CW_ArmorType
 {
     Helmet,
     Breastplate,
     Boots
 }
+
 public enum CW_AccessoryType
 {
     Ring,
     Amulet
 }
+
 /// <summary>
-/// 近战武器类型, 虽然用中文不合适, 但真的不好翻译
+///     近战武器类型, 虽然用中文不合适, 但真的不好翻译
 /// </summary>
 public enum CW_MeleeWeaponType
 {
@@ -51,7 +54,7 @@ public enum CW_MeleeWeaponType
 }
 
 /// <summary>
-/// 远程武器类型, 虽然用中文不合适, 但真的不好翻译
+///     远程武器类型, 虽然用中文不合适, 但真的不好翻译
 /// </summary>
 public enum CW_RangeWeaponType
 {
@@ -63,7 +66,7 @@ public enum CW_RangeWeaponType
 }
 
 /// <summary>
-/// 特殊武器类型, 虽然用中文不合适, 但真的不好翻译
+///     特殊武器类型, 虽然用中文不合适, 但真的不好翻译
 /// </summary>
 public enum CW_SpecialWeaponType
 {
@@ -86,7 +89,7 @@ public enum CW_SpecialWeaponType
 }
 
 /// <summary>
-/// 头盔类型, 虽然用中文不合适, 但真的不好翻译
+///     头盔类型, 虽然用中文不合适, 但真的不好翻译
 /// </summary>
 public enum CW_HelmetArmorType
 {
@@ -97,7 +100,7 @@ public enum CW_HelmetArmorType
 }
 
 /// <summary>
-/// 胸甲类型, 虽然用中文不合适, 但真的不好翻译
+///     胸甲类型, 虽然用中文不合适, 但真的不好翻译
 /// </summary>
 public enum CW_BreastplateArmorType
 {
@@ -115,7 +118,7 @@ public enum CW_BreastplateArmorType
 }
 
 /// <summary>
-/// 护靴类型, 虽然用中文不合适, 但真的不好翻译
+///     护靴类型, 虽然用中文不合适, 但真的不好翻译
 /// </summary>
 public enum CW_BootsArmorType
 {
@@ -126,7 +129,7 @@ public enum CW_BootsArmorType
 }
 
 /// <summary>
-/// 戒指类型, 虽然用中文不合适, 但真的不好翻译
+///     戒指类型, 虽然用中文不合适, 但真的不好翻译
 /// </summary>
 public enum CW_RingAccessoryType
 {
@@ -134,7 +137,7 @@ public enum CW_RingAccessoryType
 }
 
 /// <summary>
-/// 护身符类型, 虽然用中文不合适, 但真的不好翻译
+///     护身符类型, 虽然用中文不合适, 但真的不好翻译
 /// </summary>
 public enum CW_AmuletAccessoryType
 {

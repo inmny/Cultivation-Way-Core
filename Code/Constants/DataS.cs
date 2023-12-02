@@ -16,7 +16,7 @@ public static class DataS
 
     public const string spell_cost = Core.mod_prefix + "spell_cost";
     public const string spell_range = Core.mod_prefix + "spell_range";
-    
+
     public const string crafting_item_data = Core.mod_prefix + "crafting_item_data";
     public static readonly string[] element_list = Core.element_str;
 }

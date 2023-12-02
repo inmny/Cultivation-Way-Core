@@ -10,6 +10,17 @@ public class WindowCultisysLevelConfig : AbstractWindow<WindowCultisysLevelConfi
     private CultisysAsset editing_cultisys_asset;
     private int editing_cultisys_level;
 
+    private void OnEnable()
+    {
+        if (!initialized)
+        {
+            return;
+        }
+
+        Localization.Set(Constants.Core.cultisys_level_config_window + Constants.Core.title_suffix,
+            LocalizedTextManager.getText($"{editing_cultisys_asset.id}_{editing_cultisys_level}"));
+    }
+
     internal static void init()
     {
         base_init(Constants.Core.cultisys_level_config_window);
@@ -37,16 +48,5 @@ public class WindowCultisysLevelConfig : AbstractWindow<WindowCultisysLevelConfi
     {
         instance.editing_cultisys_asset = cultisys_asset;
         instance.editing_cultisys_level = level;
-    }
-
-    private void OnEnable()
-    {
-        if (!initialized)
-        {
-            return;
-        }
-
-        Localization.Set(Constants.Core.cultisys_level_config_window + Constants.Core.title_suffix,
-            LocalizedTextManager.getText($"{editing_cultisys_asset.id}_{editing_cultisys_level}"));
     }
 }

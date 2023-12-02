@@ -8,6 +8,7 @@ using NeoModLoader.api.attributes;
 using NeoModLoader.General;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace Cultivation_Way.Library;
 
@@ -40,8 +41,10 @@ internal static class CW_TooltipAssets
             callback = show_cultisys
         });
         var equipment_tooltip = AssetManager.tooltips.get("equipment");
-        equipment_tooltip.callback = (TooltipShowAction)Delegate.Combine(equipment_tooltip.callback, new TooltipShowAction(show_cw_item));
+        equipment_tooltip.callback =
+            (TooltipShowAction)Delegate.Combine(equipment_tooltip.callback, new TooltipShowAction(show_cw_item));
     }
+
     [Hotfixable]
     private static void show_cw_item(Tooltip pTooltip, string pType, TooltipData pData = default)
     {
@@ -51,17 +54,19 @@ internal static class CW_TooltipAssets
         {
             return;
         }
+
         CW_ItemAsset cw_item_asset = Manager.items.get(cw_item.id);
 
         if (pTooltip.transform.Find("HeadDescription") == null)
         {
             add_head_description(pTooltip);
         }
-        if(pTooltip.transform.Find("Spells") == null)
+
+        if (pTooltip.transform.Find("Spells") == null)
         {
             add_spell_stats(pTooltip);
         }
-        
+
         Text head_description_text = pTooltip.transform.Find("HeadDescription").GetComponent<Text>();
         if (LocalizedTextManager.stringExists($"item_desc_{cw_item.id}"))
         {
@@ -74,31 +79,34 @@ internal static class CW_TooltipAssets
             head_description_text.gameObject.SetActive(false);
         }
 
-        
+
         var spells_description = pTooltip.transform.Find("Spells/StatsDescription").GetComponent<Text>();
         var spells_values = pTooltip.transform.Find("Spells/StatsValues").GetComponent<Text>();
         var spells_container = pTooltip.transform.Find("Spells").gameObject;
-        
+
         spells_description.text = string.Empty;
         spells_values.text = string.Empty;
+
         void addSpell(string spell_id)
         {
-            spells_description.text += LocalizedTextManager.getText($"2_immortal_spell") + "\n";
+            spells_description.text += LocalizedTextManager.getText("2_immortal_spell") + "\n";
             spells_values.text += Toolbox.coloredText(LocalizedTextManager.getText($"spell_{spell_id}"),
-                Toolbox.colorToHex(Manager.spells.get(spell_id).element.GetColor()))+ "\n";
-            
+                Toolbox.colorToHex(Manager.spells.get(spell_id).element.GetColor())) + "\n";
+
             spells_container.SetActive(true);
         }
-        
+
         foreach (var spell in cw_item.Spells)
         {
             addSpell(spell);
         }
-        spells_description.text = spells_description.text.TrimEnd('\n');
-        spells_values.text=spells_values.text.TrimEnd('\n');
 
-        
-        LocalizedText item_level_text = pTooltip.transform.Find("Equipment Type/EquipmentText").GetComponent<LocalizedText>();
+        spells_description.text = spells_description.text.TrimEnd('\n');
+        spells_values.text = spells_values.text.TrimEnd('\n');
+
+
+        LocalizedText item_level_text =
+            pTooltip.transform.Find("Equipment Type/EquipmentText").GetComponent<LocalizedText>();
         item_level_text.setKeyAndUpdate($"cw_{cw_item_asset.VanillaAsset.name_class}");
         item_level_text.text.text = item_level_text.text.text
             .Replace("$item_stage$", LM.Get($"item_stage_{cw_item.Level / Constants.Core.item_level_per_stage}"))
@@ -108,23 +116,24 @@ internal static class CW_TooltipAssets
     [Hotfixable]
     private static void add_spell_stats(Tooltip pTooltip)
     {
-        GameObject spell_stats = GameObject.Instantiate(pTooltip.stats_container, pTooltip.transform);
+        GameObject spell_stats = Object.Instantiate(pTooltip.stats_container, pTooltip.transform);
         spell_stats.name = "Spells";
         spell_stats.transform.SetAsLastSibling();
     }
 
     private static void add_head_description(Tooltip pTooltip)
     {
-        GameObject head_description = new GameObject("HeadDescription", typeof(Text), typeof(LayoutElement));
+        GameObject head_description = new("HeadDescription", typeof(Text), typeof(LayoutElement));
         head_description.transform.SetParent(pTooltip.transform);
         head_description.transform.localScale = Vector3.one;
         head_description.transform.SetSiblingIndex(1);
-        
+
         Text head_description_text = head_description.GetComponent<Text>();
         head_description_text.font = pTooltip.name.font;
         head_description_text.fontSize = 6;
         head_description_text.color = Colors.default_color;
     }
+
     [Hotfixable]
     private static void show_cultisys(Tooltip tooltip, string type, TooltipData data = default)
     {
@@ -144,7 +153,7 @@ internal static class CW_TooltipAssets
         str_builder.AppendLine(
             $"{(int)cultisys_asset.curr_progress(actor, cultisys_asset, level)}/{(int)cultisys_asset.max_progress(actor, cultisys_asset, level)}");
 
-        HashSet<string> spells = new (actor.cur_spells);
+        HashSet<string> spells = new(actor.cur_spells);
         foreach (string spell_id in spells)
         {
             str_builder.AppendLine(LocalizedTextManager.getText($"spell_{spell_id}"));

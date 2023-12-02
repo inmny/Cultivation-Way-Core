@@ -6,19 +6,21 @@ namespace Cultivation_Way.Library;
 public class CW_ActorAsset : Asset
 {
     /// <summary>
+    ///     普攻是否额外造成元神伤害
+    /// </summary>
+    public bool addition_soul_damage = false;
+
+    /// <summary>
     ///     允许的修炼体系
     /// </summary>
     internal List<CultisysAsset> allowed_cultisys = new();
+
+    internal List<string> allowed_cultisys_ids = new();
 
     /// <summary>
     ///     反时间停止（非游戏暂停
     /// </summary>
     public bool anti_time_stop = false;
-
-    /// <summary>
-    ///     普攻是否额外造成元神伤害
-    /// </summary>
-    public bool addition_soul_damage = false;
 
     /// <summary>
     ///     自带法术
@@ -39,6 +41,8 @@ public class CW_ActorAsset : Asset
     ///     强制的修炼体系，或关系
     /// </summary>
     internal List<CultisysAsset> force_cultisys = new();
+
+    internal List<string> force_cultisys_ids = new();
 
     /// <summary>
     ///     偏好元素
@@ -65,14 +69,10 @@ public class CW_ActorAsset : Asset
         culti_velo = 1;
     }
 
-    internal List<string> allowed_cultisys_ids = new();
-
     public void add_allowed_cultisys(string cultisys_id)
     {
         allowed_cultisys_ids.Add(cultisys_id);
     }
-
-    internal List<string> force_cultisys_ids = new();
 
     public void add_force_cultisys(string cultisys_id)
     {

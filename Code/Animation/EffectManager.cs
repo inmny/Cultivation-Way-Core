@@ -71,8 +71,9 @@ public class EffectManager : MonoBehaviour
             }
         }
     }
+
     /// <summary>
-    /// 加载一个动画控制器并返回
+    ///     加载一个动画控制器并返回
     /// </summary>
     /// <param name="id">控制器id</param>
     /// <param name="path_to_anim">动画文件夹路径</param>
@@ -122,8 +123,9 @@ public class EffectManager : MonoBehaviour
 
         throw new Exception("No found animations controller for id:" + id);
     }
+
     /// <summary>
-    /// 生成动画并返回, 如果已有动画数量超过限制则会返回null
+    ///     生成动画并返回, 如果已有动画数量超过限制则会返回null
     /// </summary>
     /// <param name="id">控制器id</param>
     /// <param name="src_vec">起始点</param>

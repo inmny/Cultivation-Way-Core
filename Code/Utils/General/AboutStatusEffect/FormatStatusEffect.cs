@@ -65,13 +65,15 @@ public static class FormatStatusEffect
                 {
                     if (pAnim.src_object == null || !pAnim.src_object.isAlive())
                     {
-                        pAnim.force_stop(false);
+                        pAnim.force_stop();
                         return;
                     }
+
                     if (!pAnim.src_object.isActor())
                     {
                         return;
                     }
+
                     CW_Actor actor = (CW_Actor)pAnim.src_object;
                     pAnim.set_scale(actor.stats[S.scale]);
                     if (actor.statuses != null && actor.statuses.TryGetValue(id, out var status))

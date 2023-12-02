@@ -5,10 +5,10 @@ using System.Runtime.CompilerServices;
 using Cultivation_Way.Animation;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Extension;
+using Cultivation_Way.General.AboutNameGenerate;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using NeoModLoader.api.attributes;
-using NeoModLoader.services;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -181,7 +181,7 @@ public partial class CW_Actor : Actor
         batch.c_status_effects.Add(this);
 
         setStatsDirty();
-        
+
         return status;
     }
 
@@ -379,6 +379,7 @@ public partial class CW_Actor : Actor
         {
             attacker = pAttacker.a;
         }
+
         switch (attack_type)
         {
             case CW_AttackType.Spell:
@@ -386,7 +387,7 @@ public partial class CW_Actor : Actor
                 cultisys = data.GetCultisys(CultisysType.WAKAN);
                 if (cultisys != null)
                 {
-                    data.get(cultisys.id, out int level, 0);
+                    data.get(cultisys.id, out int level);
                     num /= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
                 }
 
@@ -394,9 +395,10 @@ public partial class CW_Actor : Actor
                 cultisys = attacker.data.GetCultisys(CultisysType.WAKAN);
                 if (cultisys != null)
                 {
-                    attacker.data.get(cultisys.id, out int level, 0);
+                    attacker.data.get(cultisys.id, out int level);
                     num *= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
                 }
+
                 break;
             case CW_AttackType.Soul:
                 if (pAttacker != null && pAttacker.isActor() && pAttacker.isAlive())
@@ -407,11 +409,11 @@ public partial class CW_Actor : Actor
                 {
                     num = 0;
                 }
-                
+
                 cultisys = data.GetCultisys(CultisysType.SOUL);
                 if (cultisys != null)
                 {
-                    data.get(cultisys.id, out int level, 0);
+                    data.get(cultisys.id, out int level);
                     num /= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
                 }
 
@@ -419,11 +421,12 @@ public partial class CW_Actor : Actor
                 cultisys = attacker.data.GetCultisys(CultisysType.SOUL);
                 if (cultisys != null)
                 {
-                    attacker.data.get(cultisys.id, out int level, 0);
+                    attacker.data.get(cultisys.id, out int level);
                     num *= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
                 }
+
                 break;
-            
+
             case CW_AttackType.Acid:
             case CW_AttackType.Eaten:
             case CW_AttackType.Fire:
@@ -436,39 +439,45 @@ public partial class CW_Actor : Actor
             case CW_AttackType.Other:
             case CW_AttackType.Weapon:
                 num = 1f - stats[S.armor] / (stats[S.armor] + 100);
-                
+
                 float best_reduce = 1;
                 cultisys = data.GetCultisys(CultisysType.BODY);
                 if (cultisys != null)
                 {
-                    data.get(cultisys.id, out int level, 0);
-                    best_reduce = Mathf.Max(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                    data.get(cultisys.id, out int level);
+                    best_reduce = Mathf.Max(best_reduce,
+                        Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
                 }
-                
+
                 cultisys = data.GetCultisys(CultisysType.WAKAN);
                 if (cultisys != null)
                 {
-                    data.get(cultisys.id, out int level, 0);
-                    best_reduce = Mathf.Max(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                    data.get(cultisys.id, out int level);
+                    best_reduce = Mathf.Max(best_reduce,
+                        Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
                 }
-                
+
                 if (attacker != null)
                 {
                     cultisys = attacker.data.GetCultisys(CultisysType.WAKAN);
                     if (cultisys != null)
                     {
-                        attacker.data.get(cultisys.id, out int level, 0);
-                        best_reduce /= Mathf.Min(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                        attacker.data.get(cultisys.id, out int level);
+                        best_reduce /= Mathf.Min(best_reduce,
+                            Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
                     }
+
                     cultisys = attacker.data.GetCultisys(CultisysType.BODY);
                     if (cultisys != null)
                     {
-                        attacker.data.get(cultisys.id, out int level, 0);
-                        best_reduce /= Mathf.Min(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                        attacker.data.get(cultisys.id, out int level);
+                        best_reduce /= Mathf.Min(best_reduce,
+                            Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
                     }
                 }
+
                 num /= best_reduce;
-                
+
                 break;
         }
 
@@ -512,7 +521,8 @@ public partial class CW_Actor : Actor
         if (__data_spells.Count > 0)
         {
             CW_SpellAsset spell = Manager.spells.get(__data_spells.GetRandom());
-            if ((pAttacker != null && (spell.can_trigger(SpellTriggerTag.NAMED_DEFEND) || (spell.can_trigger(SpellTriggerTag.ATTACK) && Toolbox.randomChance(0.3f)))) ||
+            if ((pAttacker != null && (spell.can_trigger(SpellTriggerTag.NAMED_DEFEND) ||
+                                       (spell.can_trigger(SpellTriggerTag.ATTACK) && Toolbox.randomChance(0.3f)))) ||
                 (pAttacker == null && spell.can_trigger(SpellTriggerTag.UNNAMED_DEFEND)))
             {
                 CastSpell(spell, pAttacker, pAttacker == null ? null : pAttacker.currentTile);
@@ -688,7 +698,7 @@ public partial class CW_Actor : Actor
         new_cultibook.bonus_stats.MergeStats(data.GetElement().ComputeBonusStats(), new_cultibook.level * 0.3f);
 
         new_cultibook.name =
-            General.AboutNameGenerate.NameGenerateUtils.GenerateCultibookName(new_cultibook, this);
+            NameGenerateUtils.GenerateCultibookName(new_cultibook, this);
         Manager.cultibooks.add(new_cultibook);
         data.SetCultibook(new_cultibook);
 

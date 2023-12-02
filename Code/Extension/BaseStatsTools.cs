@@ -36,6 +36,7 @@ public static class BaseStatsTools
             if (value > pBaseStats[id]) pBaseStats[id] = value;
         }
     }
+
     public static void AfterDeserialize(this BaseStats pBaseStats)
     {
         pBaseStats.stats_list = new ListPool<BaseStatsContainer>(pBaseStats.stats_dict.Values);
@@ -48,6 +49,7 @@ public static class BaseStatsTools
         {
             sb.AppendLine($"{stat.id}: {stat.value} ");
         }
+
         return sb.ToString();
     }
 }

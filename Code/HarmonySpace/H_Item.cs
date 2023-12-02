@@ -1,4 +1,3 @@
-using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Utils;
 using HarmonyLib;
@@ -17,7 +16,6 @@ internal static class H_Item
         {
             if (item_data.addition_stats.stats_dict.Count > 0)
             {
-                
             }
             else if (item_data.Level > 1)
             {
@@ -26,6 +24,7 @@ internal static class H_Item
                 //item_data.addition_stats[S.mod_damage] = 0.1f * item_data.Level;
                 CW_Core.LogInfo(GeneralHelper.to_json(item_data, true));
             }
+
             pStats.mergeStats(item_data.addition_stats);
 
             switch (item_data.Level / Constants.Core.item_level_per_stage)
@@ -39,7 +38,7 @@ internal static class H_Item
                 case 3:
                     ItemTools.s_quality = ItemQuality.Epic;
                     break;
-                case >=4:
+                case >= 4:
                     ItemTools.s_quality = ItemQuality.Legendary;
                     break;
             }

@@ -8,10 +8,44 @@ namespace Cultivation_Way.UI;
 
 public class WindowCultisysConfig : AbstractWindow<WindowCultisysConfig>
 {
-    private CultisysAsset editing_cultisys_asset;
     private Image cultisys_icon;
     private InputField cultisys_name_input;
+    private CultisysAsset editing_cultisys_asset;
     private Transform level_list;
+
+    private void OnEnable()
+    {
+        if (!initialized)
+        {
+            return;
+        }
+
+        cultisys_icon.sprite = SpriteTextureLoader.getSprite(editing_cultisys_asset.sprite_path);
+        cultisys_name_input.text = LocalizedTextManager.getText(editing_cultisys_asset.id);
+
+        foreach (Transform child in level_list)
+        {
+            Destroy(child.gameObject);
+        }
+
+        for (int level = 0; level < editing_cultisys_asset.max_level; level++)
+        {
+            int tmp = level;
+            GameObject level_obj = Instantiate(Prefabs.cultisys_level_edit_prefab, level_list);
+            level_obj.name = $"Level {level}";
+            level_obj.transform.Find("Comment").GetComponent<Text>().text = level.ToString();
+            level_obj.transform.Find("Name_Input/Input_Field").GetComponent<InputField>().text =
+                LocalizedTextManager.getText($"{editing_cultisys_asset.id}_{level}");
+            level_obj.transform.Find("Name_Input/Input_Field").GetComponent<InputField>().onEndEdit.AddListener(
+                str => { Localization.Set($"{editing_cultisys_asset.id}_{tmp}", str); }
+            );
+            level_obj.transform.Find("Edit").GetComponent<Button>().onClick.AddListener(() =>
+            {
+                WindowCultisysLevelConfig.select_cultisys_level(instance.editing_cultisys_asset, tmp);
+                ScrollWindow.showWindow(Constants.Core.cultisys_level_config_window);
+            });
+        }
+    }
 
     internal static void init()
     {
@@ -75,39 +109,5 @@ public class WindowCultisysConfig : AbstractWindow<WindowCultisysConfig>
     public static void select_cultisys(CultisysAsset cultisys_asset)
     {
         instance.editing_cultisys_asset = cultisys_asset;
-    }
-
-    private void OnEnable()
-    {
-        if (!initialized)
-        {
-            return;
-        }
-
-        cultisys_icon.sprite = SpriteTextureLoader.getSprite(editing_cultisys_asset.sprite_path);
-        cultisys_name_input.text = LocalizedTextManager.getText(editing_cultisys_asset.id);
-
-        foreach (Transform child in level_list)
-        {
-            Destroy(child.gameObject);
-        }
-
-        for (int level = 0; level < editing_cultisys_asset.max_level; level++)
-        {
-            int tmp = level;
-            GameObject level_obj = Instantiate(Prefabs.cultisys_level_edit_prefab, level_list);
-            level_obj.name = $"Level {level}";
-            level_obj.transform.Find("Comment").GetComponent<Text>().text = level.ToString();
-            level_obj.transform.Find("Name_Input/Input_Field").GetComponent<InputField>().text =
-                LocalizedTextManager.getText($"{editing_cultisys_asset.id}_{level}");
-            level_obj.transform.Find("Name_Input/Input_Field").GetComponent<InputField>().onEndEdit.AddListener(
-                str => { Localization.Set($"{editing_cultisys_asset.id}_{tmp}", str); }
-            );
-            level_obj.transform.Find("Edit").GetComponent<Button>().onClick.AddListener(() =>
-            {
-                WindowCultisysLevelConfig.select_cultisys_level(instance.editing_cultisys_asset, tmp);
-                ScrollWindow.showWindow(Constants.Core.cultisys_level_config_window);
-            });
-        }
     }
 }

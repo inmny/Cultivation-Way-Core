@@ -10,8 +10,8 @@ namespace Cultivation_Way.Save;
 
 internal class EnergyTileData
 {
-    public float value;
     public float density;
+    public float value;
 }
 
 // 在0.22中, 只需要存储额外的数据

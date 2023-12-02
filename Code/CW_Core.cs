@@ -6,14 +6,15 @@ using System.Threading;
 using Cultivation_Way.Addon;
 using Cultivation_Way.Animation;
 using Cultivation_Way.Core;
-using Cultivation_Way.Library;
+using Cultivation_Way.Implementation;
 using Cultivation_Way.Others;
 using Cultivation_Way.UI;
 using ModDeclaration;
 using NCMS;
-using UnityEngine;
 using NeoModLoader.api;
 using NeoModLoader.api.attributes;
+using UnityEngine;
+using Manager = Cultivation_Way.Library.Manager;
 
 namespace Cultivation_Way;
 
@@ -23,6 +24,8 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
     public static Transform ui_prefab_library;
     public static Transform actor_prefab_library;
     public static Transform anim_prefab_library;
+
+    private int _last_year;
 
     public ModState state = new()
     {
@@ -43,8 +46,6 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
     {
         mod_state = state;
     }
-
-    private int _last_year;
 
     private void Update()
     {
@@ -115,6 +116,20 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
             {
                 Factories.recycle_memory();
             }
+        }
+    }
+
+    [Hotfixable]
+    public void Reload()
+    {
+        LogInfo("Reloaded");
+        Manager.item_materials.init();
+        Items.init();
+
+        foreach (Actor actor in World.world.units)
+        {
+            if (!actor.isAlive()) continue;
+            actor.setStatsDirty();
         }
     }
 
@@ -206,6 +221,16 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         state.editor_inmny = true;
     }
 
+    protected override void OnModLoad()
+    {
+    }
+
+    [Hotfixable]
+    private void new_reload_method()
+    {
+        LogInfo("new reload method: hello world!");
+    }
+
     public class ModState
     {
         internal List<CW_Addon> addons;
@@ -214,34 +239,10 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         public EffectManager anim_manager;
         public bool core_initialized;
         internal bool editor_inmny;
-        public Manager library_manager;
         public CW_EnergyMapManager energy_map_manager;
+        public Manager library_manager;
         internal Info mod_info;
         internal SpellManager spell_manager;
         internal long update_nr;
-    }
-
-    protected override void OnModLoad()
-    {
-        
-    }
-    [Hotfixable]
-    public void Reload()
-    {
-        LogInfo("Reloaded");
-        Manager.item_materials.init();
-        Implementation.Items.init();
-
-        foreach (Actor actor in World.world.units)
-        {
-            if (!actor.isAlive()) continue;
-            actor.setStatsDirty();
-        }
-    }
-
-    [Hotfixable]
-    private void new_reload_method()
-    {
-        LogInfo("new reload method: hello world!");
     }
 }

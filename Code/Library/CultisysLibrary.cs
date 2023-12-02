@@ -12,11 +12,6 @@ namespace Cultivation_Way.Library;
 public class CultisysAsset : Asset
 {
     /// <summary>
-    ///     在list中的位置
-    /// </summary>
-    [NonSerialized] internal int pid;
-
-    /// <summary>
     ///     能否修炼判定
     /// </summary>
     [NonSerialized] public CultisysJudge allow;
@@ -52,14 +47,14 @@ public class CultisysAsset : Asset
     [NonSerialized] public CultisysCheck monthly_update_action;
 
     /// <summary>
+    ///     在list中的位置
+    /// </summary>
+    [NonSerialized] internal int pid;
+
+    /// <summary>
     ///     力量基数, b^l
     /// </summary>
     public float power_base = 1;
-
-    /// <summary>
-    ///     力量层次, b^l
-    /// </summary>
-    public float[] power_level { get; internal set; }
 
     /// <summary>
     ///     体系图标路径, 从根目录开始
@@ -85,6 +80,11 @@ public class CultisysAsset : Asset
             power_level[i] = 1;
         }
     }
+
+    /// <summary>
+    ///     力量层次, b^l
+    /// </summary>
+    public float[] power_level { get; internal set; }
 
     /// <summary>
     ///     体系类型

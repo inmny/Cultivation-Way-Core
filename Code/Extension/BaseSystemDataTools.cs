@@ -18,9 +18,10 @@ public static class BaseSystemDataTools
     ///     以key为key, 将pObject JSON序列化后写入data
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void WriteObj<T>(this BaseSystemData pData, string pKey, T pObject, bool pPrivateMembersIncluded = false)
+    public static void WriteObj<T>(this BaseSystemData pData, string pKey, T pObject,
+        bool pPrivateMembersIncluded = false)
     {
-        if(pObject == null) pData.removeString(pKey);
+        if (pObject == null) pData.removeString(pKey);
         pData.set(pKey, GeneralHelper.to_json(pObject, pPrivateMembersIncluded));
     }
 

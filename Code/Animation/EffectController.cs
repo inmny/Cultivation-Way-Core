@@ -35,7 +35,7 @@ public class EffectController
         GameObject default_prefab, float base_scale, Vector2 base_offset)
     {
         _base_offset = base_offset;
-        _prefab = GameObject.Instantiate(default_prefab, CW_Core.anim_prefab_library);
+        _prefab = Object.Instantiate(default_prefab, CW_Core.anim_prefab_library);
         _prefab.name = "prefab_" + id;
         this.id = id;
         this.base_scale = base_scale;

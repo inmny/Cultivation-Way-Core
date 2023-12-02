@@ -12,7 +12,6 @@ using Cultivation_Way.Utils;
 using Newtonsoft.Json;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
-using MiscUtils = Cultivation_Way.General.AboutSpell.MiscUtils;
 
 namespace Cultivation_Way.Implementation;
 
@@ -306,7 +305,8 @@ internal static class Spells
                 {
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
-                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object), anim.src_object, CW_AttackType.Spell);
+                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
+                        anim.src_object, CW_AttackType.Spell);
                 }
                 else
                 {
@@ -331,7 +331,8 @@ internal static class Spells
                 {
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
-                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object), anim.src_object, CW_AttackType.Spell);
+                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
+                        anim.src_object, CW_AttackType.Spell);
 
                     float dist = Toolbox.DistVec2Float(vec, dst_vec);
                     float force_x = (dst_vec.x - vec.x) / dist * 0.4f;
@@ -366,7 +367,8 @@ internal static class Spells
                 {
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
-                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object), anim.src_object, CW_AttackType.Spell);
+                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
+                        anim.src_object, CW_AttackType.Spell);
                 }
                 else
                 {
@@ -391,7 +393,8 @@ internal static class Spells
                 {
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
-                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object), anim.src_object, CW_AttackType.Spell);
+                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
+                        anim.src_object, CW_AttackType.Spell);
 
                     foreach (Actor target_unit in tiles.SelectMany(target_tile => target_tile._units))
                     {

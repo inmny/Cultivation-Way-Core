@@ -12,17 +12,17 @@ namespace Cultivation_Way.Core;
 /// </summary>
 public class CW_EnergyMapTile
 {
-    /// <summary>
-    ///     总量
-    /// </summary>
-    public float value;
+    internal Color32 color;
 
     /// <summary>
     ///     评估得到的密度
     /// </summary>
     public float density;
 
-    internal Color32 color;
+    /// <summary>
+    ///     总量
+    /// </summary>
+    public float value;
 
     internal int x;
     internal int y;
@@ -52,10 +52,22 @@ public class CW_EnergyMapTile
 /// </summary>
 public class CW_EnergyMap
 {
+    internal static bool redraw_lock = false;
+
+    private static readonly List<KeyValuePair<int, int>> _forward_dirs = new()
+    {
+        new KeyValuePair<int, int>(0, 1),
+        new KeyValuePair<int, int>(1, 0)
+    };
+
+    private CW_EnergyMapTile[,] _tmp_map;
+
     /// <summary>
     ///     表示能量的Asset
     /// </summary>
     internal EnergyAsset energy;
+
+    internal HashSet<CW_EnergyMapTile> tiles_to_redraw = new();
 
     public CW_EnergyMap(EnergyAsset energy)
     {
@@ -66,16 +78,6 @@ public class CW_EnergyMap
     ///     地图的数组
     /// </summary>
     public CW_EnergyMapTile[,] map { get; private set; }
-
-    private CW_EnergyMapTile[,] _tmp_map;
-    internal HashSet<CW_EnergyMapTile> tiles_to_redraw = new();
-    internal static bool redraw_lock = false;
-
-    private static readonly List<KeyValuePair<int, int>> _forward_dirs = new()
-    {
-        new(0, 1),
-        new(1, 0)
-    };
 
     internal void init(int width, int height)
     {
@@ -184,14 +186,14 @@ public class CW_EnergyMapManager
 {
     public readonly Dictionary<string, CW_EnergyMap> maps = new();
 
+    public int height;
+    internal bool paused = false;
+    public int width;
+
     /// <summary>
     ///     当前应用的地图ID
     /// </summary>
     public string current_map_id => PlayerConfig.dict[Constants.Core.energy_maps_toggle_name].stringVal;
-
-    public int height;
-    public int width;
-    internal bool paused = false;
 
     internal void init(int width, int height)
     {

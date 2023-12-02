@@ -1,4 +1,5 @@
 namespace Cultivation_Way.Implementation;
+
 /// <summary>
 ///     建筑字符串
 /// </summary>

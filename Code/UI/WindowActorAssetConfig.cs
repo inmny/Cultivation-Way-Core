@@ -7,8 +7,8 @@ namespace Cultivation_Way.UI;
 
 public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
 {
-    private ActorAsset editing_actor_asset;
     private Transform cultisys_select_grid;
+    private ActorAsset editing_actor_asset;
 
     internal static void init()
     {

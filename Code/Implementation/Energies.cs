@@ -107,7 +107,7 @@ internal static class Energies
             {
                 return (target_value - value) * 0.2f;
             },
-            initializer = ((tiles, x, y, width, height) =>
+            initializer = (tiles, x, y, width, height) =>
             {
                 float x_center = width / 2f;
                 float y_center = height / 2f;
@@ -115,7 +115,7 @@ internal static class Energies
                 float dy = y - y_center;
                 tiles.value = Mathf.Max(0, x_center * y_center - dx * dx - dy * dy);
                 //CW_Core.LogInfo($"({x},{y}): {tiles.value}");
-            })
+            }
         };
         Library.Manager.energies.add(energy);
     }

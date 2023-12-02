@@ -9,7 +9,7 @@ internal static class CW_BehaviourTaskActorLibrary
 {
     public static void init()
     {
-        BehaviourTaskActor cw_make_items = new BehaviourTaskActor()
+        BehaviourTaskActor cw_make_items = new()
         {
             id = CW_AIS.task_cw_make_items
         };

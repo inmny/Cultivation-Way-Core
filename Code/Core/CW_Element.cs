@@ -11,6 +11,13 @@ namespace Cultivation_Way.Core;
 public class CW_Element : FactoryItem<CW_Element>
 {
     private static readonly BaseStats tmp_stats = new();
+
+    private static readonly Color water = Color.blue;
+    private static readonly Color fire = Color.red;
+    private static readonly Color wood = Color.green;
+    private static readonly Color iron = Color.yellow;
+    private static readonly Color ground = Toolbox.makeColor("#603700");
+    private static readonly Color[] element_colors = { water, fire, wood, iron, ground };
     public readonly int[] BaseElements = new int[Constants.Core.element_type_nr];
     private string type_id;
 
@@ -32,7 +39,7 @@ public class CW_Element : FactoryItem<CW_Element>
     {
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            this.BaseElements[i] = base_elements[i];
+            BaseElements[i] = base_elements[i];
         }
 
         if (normalize) __normalize(normalize_ceil);
@@ -252,9 +259,10 @@ public class CW_Element : FactoryItem<CW_Element>
         }
 
         if (string.IsNullOrEmpty(type_id))
-        {            
+        {
             type_id = Constants.Core.uniform_type;
-            CW_Core.LogError($"Failed to compute type for {this.BaseElements[0]}, {this.BaseElements[1]}, {this.BaseElements[2]}, {this.BaseElements[3]}, {this.BaseElements[4]}");
+            CW_Core.LogError(
+                $"Failed to compute type for {BaseElements[0]}, {BaseElements[1]}, {BaseElements[2]}, {BaseElements[3]}, {BaseElements[4]}");
             LogService.LogStackTraceAsError();
         }
     }
@@ -349,7 +357,7 @@ public class CW_Element : FactoryItem<CW_Element>
     {
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            this.BaseElements[i] = base_elements[i];
+            BaseElements[i] = base_elements[i];
         }
 
         if (normalize) __normalize(normalize_ceil);
@@ -367,13 +375,6 @@ public class CW_Element : FactoryItem<CW_Element>
 
         data.get(DataS.element_type_id, out type_id, Constants.Core.uniform_type);
     }
-
-    private static readonly Color water = Color.blue;
-    private static readonly Color fire = Color.red;
-    private static readonly Color wood = Color.green;
-    private static readonly Color iron = Color.yellow;
-    private static readonly Color ground = Toolbox.makeColor("#603700");
-    private static readonly Color[] element_colors = { water, fire, wood, iron, ground };
 
     public Color GetColor()
     {

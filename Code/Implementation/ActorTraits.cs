@@ -27,6 +27,7 @@ internal static class ActorTraits
         {
             trait.opposite += "," + Constants.Core.mod_prefix + "curse_immune";
         }
+
         AssetManager.traits.checkDefault(trait);
 
         trait = new ActorTrait

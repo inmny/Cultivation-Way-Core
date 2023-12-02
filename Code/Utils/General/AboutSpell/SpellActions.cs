@@ -11,7 +11,7 @@ namespace Cultivation_Way.General.AboutSpell;
 public static class SpellActions
 {
     /// <summary>
-    /// 生成一个给予状态的spell_action
+    ///     生成一个给予状态的spell_action
     /// </summary>
     /// <param name="status_id">给予的状态id</param>
     /// <returns></returns>

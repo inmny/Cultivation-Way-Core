@@ -29,7 +29,7 @@ public static class FormatSpells
     /// <param name="cultisys_require">修习需要的修炼体系类型, 默认WAKAN</param>
     /// <param name="spell_cost_list">法术消耗列表</param>
     /// <returns>新添加spell asset</returns>
-    /// <exception cref="Exception">已存在对应id的法术; <paramref name="anim_type"/>不满足限定; <paramref name="target_type"/>不满足限定</exception>
+    /// <exception cref="Exception">已存在对应id的法术; <paramref name="anim_type" />不满足限定; <paramref name="target_type" />不满足限定</exception>
     public static CW_SpellAsset create_track_projectile_attack_spell(
         string id,
         string anim_id, string anim_path, float anim_scale = 1f, SpellAnimType anim_type = SpellAnimType.USER_TO_TARGET,
@@ -143,7 +143,7 @@ public static class FormatSpells
 
         CW_SpellAsset spell_asset = new()
         {
-            id = id, rarity = rarity, element = new(element_container),
+            id = id, rarity = rarity, element = new CW_Element(element_container),
             target_camp = SpellTargetCamp.ALIAS, target_type = SpellTargetType.ACTOR,
             spell_cost_action = CostChecks.generate_spell_cost_action(spell_cost_list),
             spell_learn_check = LearnChecks.default_learn_check,

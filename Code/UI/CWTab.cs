@@ -1,14 +1,11 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using Cultivation_Way.Constants;
 using NCMS.Utils;
 using NeoModLoader.General;
 using NeoModLoader.General.UI.Tab;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
-using Object = UnityEngine.Object;
 
 namespace Cultivation_Way.UI;
 
@@ -114,6 +111,7 @@ internal static class CWTab
     {
         _powers_tab.AddPowerButton(container_type.ToString(), button);
     }
+
     /// <summary>
     ///     创建按钮
     /// </summary>
@@ -135,7 +133,8 @@ internal static class CWTab
                 ret = PowerButtonCreator.CreateGodPowerButton(id, SpriteTextureLoader.getSprite(sprite_path));
                 break;
             case ButtonType.Toggle:
-                ret = PowerButtonCreator.CreateToggleButton(id, SpriteTextureLoader.getSprite(sprite_path), pNoAutoSetToggleAction: true);
+                ret = PowerButtonCreator.CreateToggleButton(id, SpriteTextureLoader.getSprite(sprite_path),
+                    pNoAutoSetToggleAction: true);
                 break;
         }
 

@@ -120,7 +120,7 @@ internal static class Cultisyses
             external_levelup_bonus = (actor, asset, level) =>
             {
                 actor.data.get(Content_Constants.data_bushido_cultivelo, out float cultivelo, 1);
-                cultivelo *= Toolbox.randomFloat(level-1, level);
+                cultivelo *= Toolbox.randomFloat(level - 1, level);
                 actor.data.set(Content_Constants.data_bushido_cultivelo, cultivelo);
                 return 0;
             }

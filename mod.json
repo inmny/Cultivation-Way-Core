@@ -1,11 +1,11 @@
 {
-  "name": "启源核心",
-  "author": "启源",
-  "version": "1.1.1",
-  "description": "提供核心内容以及附属运行环境",
-  "targetGameBuild": 558,
-  "OptionalDependencies": [
-    "一米.中文名"
-  ],
-  "iconPath": "icon.png"
+    "name": "启源核心",
+    "author": "启源",
+    "version": "1.1.1",
+    "description": "提供核心内容以及附属运行环境",
+    "targetGameBuild": 558,
+    "OptionalDependencies": [
+        "一米.中文名"
+    ],
+    "iconPath": "icon.png"
 }

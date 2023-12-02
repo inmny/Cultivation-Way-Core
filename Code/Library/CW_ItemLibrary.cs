@@ -8,20 +8,31 @@ namespace Cultivation_Way.Library;
 
 public class CW_ItemAsset : Asset
 {
-    public int BaseLevel = 0;
-    public CW_Element BaseElement = new(new int[] { 20, 20, 20, 20, 20 });
-    public CW_ItemType ItemType { get; protected set; }
-    public BaseStats base_stats = new();
-    public string MainMaterial = "base";
-    public readonly HashSet<string> BaseSpells = new();
     public readonly HashSet<string> AllowedSpellClasses = new();
+    public readonly HashSet<string> BaseSpells = new();
     public readonly Dictionary<string, int> NecessaryResourceCost = new();
-    public readonly List<Dictionary<string, int>>[] ResourceCostListsPerLevel = new List<Dictionary<string, int>>[Constants.Core.item_level_count];
+
+    public readonly List<Dictionary<string, int>>[] ResourceCostListsPerLevel =
+        new List<Dictionary<string, int>>[Constants.Core.item_level_count];
+
+    public BaseStats base_stats = new();
+    public CW_Element BaseElement = new(new[] { 20, 20, 20, 20, 20 });
+    public int BaseLevel = 0;
+    public string MainMaterial = "base";
     public ItemAsset VanillaAsset;
+
     public CW_ItemAsset()
     {
         SetDefaultResourceCostPerLevel();
     }
+
+    public CW_ItemAsset(string id)
+    {
+        this.id = id;
+        SetDefaultResourceCostPerLevel();
+    }
+
+    public CW_ItemType ItemType { get; protected set; }
 
     private void SetDefaultResourceCostPerLevel()
     {
@@ -57,12 +68,6 @@ public class CW_ItemAsset : Asset
         }
     }
 
-    public CW_ItemAsset(string id)
-    {
-        this.id = id;
-        SetDefaultResourceCostPerLevel();
-    }
-    
     [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
     public string GetTypeName()
     {
@@ -91,6 +96,7 @@ public class CW_ItemAsset : Asset
             _ => throw new ArgumentOutOfRangeException()
         };
     }
+
     public void ClearCurrentPerLevelCosts()
     {
         for (int i = 0; i < Constants.Core.item_level_count; i++)
@@ -99,6 +105,7 @@ public class CW_ItemAsset : Asset
         }
     }
 }
+
 public class CW_ItemLibrary : CW_Library<CW_ItemAsset>
 {
     public CW_ItemAsset FindAssetToCraft(Actor pActor)

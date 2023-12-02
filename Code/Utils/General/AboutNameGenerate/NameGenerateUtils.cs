@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-#if 一米_中文名
-using Chinese_Name;
-#endif
 using Cultivation_Way.Core;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using NeoModLoader.api.attributes;
+#if 一米_中文名
+using Chinese_Name;
+#endif
 
 namespace Cultivation_Way.General.AboutNameGenerate;
 
@@ -20,9 +20,10 @@ public static class NameGenerateUtils
         var para = new Dictionary<string, string>();
         ParameterGetters.GetCustomParameterGetter<GetCultibookNameParameters>(generator.parameter_getter)(pCultibook,
             pEditor, para);
-        
+
         return generator.GenerateName(para);
     }
+
     [Hotfixable]
     public static string GenerateItemName(CW_ItemData pItemData, CW_ItemAsset pItemAsset, CW_Actor pCreator)
     {
