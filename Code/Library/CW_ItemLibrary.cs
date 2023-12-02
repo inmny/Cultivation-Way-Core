@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 
@@ -19,6 +20,11 @@ public class CW_ItemAsset : Asset
     public ItemAsset VanillaAsset;
     public CW_ItemAsset()
     {
+        SetDefaultResourceCostPerLevel();
+    }
+
+    private void SetDefaultResourceCostPerLevel()
+    {
         for (int i = 0; i < Constants.Core.item_level_count; i++)
         {
             ResourceCostListsPerLevel[i] = new List<Dictionary<string, int>>();
@@ -30,7 +36,8 @@ public class CW_ItemAsset : Asset
                     default_cost.Add(SR.common_metals, i % Constants.Core.item_level_per_stage);
                     break;
                 case 1:
-                    default_cost.Add(SR.common_metals, i % Constants.Core.item_level_per_stage * 2 + Constants.Core.item_level_per_stage);
+                    default_cost.Add(SR.common_metals,
+                        i % Constants.Core.item_level_per_stage * 2 + Constants.Core.item_level_per_stage);
                     break;
                 case 2:
                     default_cost.Add(SR.silver, i % Constants.Core.item_level_per_stage);
@@ -44,8 +51,8 @@ public class CW_ItemAsset : Asset
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
-            
+
+
             ResourceCostListsPerLevel[i].Add(default_cost);
         }
     }
@@ -53,6 +60,8 @@ public class CW_ItemAsset : Asset
     public CW_ItemAsset(string id)
     {
         this.id = id;
+        SetDefaultResourceCostPerLevel();
+    }
     }
     public void ClearCurrentPerLevelCosts()
     {
