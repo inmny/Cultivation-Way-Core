@@ -1,3 +1,4 @@
+using System.Linq;
 using Cultivation_Way.Core;
 using Cultivation_Way.Library;
 
@@ -24,7 +25,7 @@ public class CW_ResourceAsset : Asset
     {
         this.id = vanllia_asset.id;
         this.vanllia_asset = vanllia_asset;
-        element = new CW_Element(new[] { 20, 20, 20, 20, 20 });
+        element = new CW_Element(new[] { 20, 20, 20, 20, 20 }, comp_type: false);
         yin_yang = 0.5f;
     }
 }
@@ -37,6 +38,15 @@ public class CW_ResourceLibrary : CW_Library<CW_ResourceAsset>
         foreach (var resource in AssetManager.resources.dict.Values)
         {
             add(new CW_ResourceAsset(resource));
+        }
+    }
+
+    public override void post_init()
+    {
+        base.post_init();
+        foreach (CW_ResourceAsset resource_asset in list)
+        {
+            resource_asset.element.ComputeType();
         }
     }
 
