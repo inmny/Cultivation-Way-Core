@@ -1,0 +1,15 @@
+[
+    {
+        "id": "easternhuman_name",
+        "templates": [
+            {
+                "format": "{百家姓:family_name}{千字文}{千字文}",
+                "weight": 8
+            },
+            {
+                "format": "{百家姓:family_name}{千字文}",
+                "weight": 1
+            }
+        ]
+    }
+]

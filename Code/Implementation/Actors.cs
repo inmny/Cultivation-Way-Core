@@ -259,10 +259,9 @@ internal static class Actors
 
         #region 原版设置
 
-        if (Environment.UserName == "94508")
-        {
+        #if 一米_中文名
             asset.nameTemplate = "easternhuman_name";
-        }
+        #endif
 
         asset.base_stats[CW_S.soul] = 10;
         asset.nameLocale = Content_Constants.eastern_human_name_locale;

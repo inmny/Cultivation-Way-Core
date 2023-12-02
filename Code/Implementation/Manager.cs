@@ -14,6 +14,7 @@ internal static class Manager
         Energies.init();
         Items.init();
         Kingdoms.init();
+        NameGenerators.init();
         StatusEffects.init();
         Spells.init();
         Races.init();
