@@ -1,0 +1,34 @@
+[
+    {
+        "id": "eastern_human_culture",
+        "templates": [
+            {
+                "format": "{真实城名}#文化#"
+            }
+        ]
+    },
+    {
+        "id": "ming_culture",
+        "templates": [
+            {
+                "format": "{真实城名}#文化#"
+            }
+        ]
+    },
+    {
+        "id": "wu_culture",
+        "templates": [
+            {
+                "format": "{真实城名}#文化#"
+            }
+        ]
+    },
+    {
+        "id": "yao_culture",
+        "templates": [
+            {
+                "format": "{真实城名}#文化#"
+            }
+        ]
+    }
+]
