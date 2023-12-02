@@ -62,6 +62,34 @@ public class CW_ItemAsset : Asset
         this.id = id;
         SetDefaultResourceCostPerLevel();
     }
+    
+    [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+    public string GetTypeName()
+    {
+        return ItemType switch
+        {
+            CW_ItemType.Weapon => (this as CW_WeaponItemAsset).WeaponType switch
+            {
+                CW_WeaponType.Melee => (this as CW_MeleeWeaponAsset).type.ToString(),
+                CW_WeaponType.Range => (this as CW_RangeWeaponAsset).type.ToString(),
+                CW_WeaponType.Special => (this as CW_SpecialWeaponAsset).type.ToString(),
+                _ => throw new ArgumentOutOfRangeException()
+            },
+            CW_ItemType.Armor => (this as CW_ItemArmorAsset).ArmorType switch
+            {
+                CW_ArmorType.Helmet => (this as CW_HelmetArmorAsset).type.ToString(),
+                CW_ArmorType.Breastplate => (this as CW_BreastplateArmorAsset).type.ToString(),
+                CW_ArmorType.Boots => (this as CW_BootsArmorAsset).type.ToString(),
+                _ => throw new ArgumentOutOfRangeException()
+            },
+            CW_ItemType.Accessory => (this as CW_ItemAccessoryAsset).AccessoryType switch
+            {
+                CW_AccessoryType.Ring => (this as CW_RingAccessoryAsset).type.ToString(),
+                CW_AccessoryType.Amulet => (this as CW_AmuletAccessoryAsset).type.ToString(),
+                _ => throw new ArgumentOutOfRangeException()
+            },
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
     public void ClearCurrentPerLevelCosts()
     {
