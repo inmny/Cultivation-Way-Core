@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Factory;
 using Cultivation_Way.Library;
+using NeoModLoader.services;
 using UnityEngine;
 
 namespace Cultivation_Way.Core;
@@ -248,6 +249,13 @@ public class CW_Element : FactoryItem<CW_Element>
                 min_no_similarity = tmp_no_similarity;
                 type_id = asset_list[i].id;
             }
+        }
+
+        if (string.IsNullOrEmpty(type_id))
+        {            
+            type_id = Constants.Core.uniform_type;
+            CW_Core.LogError($"Failed to compute type for {this.BaseElements[0]}, {this.BaseElements[1]}, {this.BaseElements[2]}, {this.BaseElements[3]}, {this.BaseElements[4]}");
+            LogService.LogStackTraceAsError();
         }
     }
 
