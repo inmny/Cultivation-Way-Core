@@ -7,6 +7,7 @@ using Cultivation_Way.Constants;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
+using NeoModLoader.api.attributes;
 using NeoModLoader.services;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -627,6 +628,7 @@ public partial class CW_Actor : Actor
     /// <summary>
     ///     创建/改良功法
     /// </summary>
+    [Hotfixable]
     public void CreateCultibook()
     {
         Cultibook old_cultibook = data.GetCultibook();
@@ -682,11 +684,11 @@ public partial class CW_Actor : Actor
         }
 
 
-        new_cultibook.name =
-            General.AboutNameGenerate.NameGenerateUtils.GenerateCultibookName(new_cultibook, this);
         new_cultibook.id = $"{new_cultibook.level}_{data.id}";
         new_cultibook.bonus_stats.MergeStats(data.GetElement().ComputeBonusStats(), new_cultibook.level * 0.3f);
 
+        new_cultibook.name =
+            General.AboutNameGenerate.NameGenerateUtils.GenerateCultibookName(new_cultibook, this);
         Manager.cultibooks.add(new_cultibook);
         data.SetCultibook(new_cultibook);
 
