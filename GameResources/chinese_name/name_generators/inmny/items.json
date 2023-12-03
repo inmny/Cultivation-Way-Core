@@ -3,7 +3,7 @@
         "id": "戟",
         "templates": [
             {
-                "format": "#赤血戟#"
+                "format": "<$main_bonus_stat$>#戟#"
             }
         ]
     }
