@@ -96,7 +96,7 @@ public class CW_BehMakeItem : BehCity
                 pCreator.beh_tile_target = null;
 
                 pCreator.beh_building_target.startShake(pCreator.timer_action / minTime * 0.5f);
-                CW_Core.LogInfo($"Item made by {pCreator.name} added progress to {crafting_item_data.Level}");
+
                 return BehResult.RepeatStep;
             }
         }
@@ -131,7 +131,6 @@ public class CW_BehFinishMakeItem : BehCity
                 Manager.items.get(crafting_item_data.id), (CW_Actor)pCreator);
         }
 
-        CW_Core.LogInfo($"{pCreator.name}'s crafting item level at {crafting_item_data.Level}");
         bool item_extracted;
         if (pCreator.city == null || !pCreator.city.isAlive())
         {
@@ -147,7 +146,7 @@ public class CW_BehFinishMakeItem : BehCity
         {
             pCreator.data.WriteObj<object>(DataS.crafting_item_data, null, true);
             CW_Core.LogInfo(
-                $"Item made by {pCreator.name}({pCreator.getName()}) extracted to {pCreator.city?.getCityName() ?? "null"}");
+                $"Item level {crafting_item_data.Level} made by {pCreator.name}({pCreator.getName()}) extracted to {pCreator.city?.getCityName() ?? "null"}");
         }
 
         return BehResult.Continue;
