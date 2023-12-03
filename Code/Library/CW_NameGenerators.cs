@@ -119,10 +119,11 @@ internal static class CW_NameGenerators
 
         string main_bonus_stat = "";
         float main_bonus_stat_value = 0;
-        foreach (var container in pItemData.addition_stats.mods_list)
+        if (pItemData.addition_stats.mods_list != null) // 当物品等级为1时, addition_stats.mods_list可能为null, 这不是bug
         {
-            if (container.value > main_bonus_stat_value)
+            foreach (var container in pItemData.addition_stats.mods_list)
             {
+                if (!(container.value > main_bonus_stat_value)) continue;
                 main_bonus_stat_value = container.value;
                 main_bonus_stat = container.id;
             }
