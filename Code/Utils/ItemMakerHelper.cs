@@ -55,9 +55,16 @@ internal static class ItemMakerHelper
         return ret;
     }
 
+    [Hotfixable]
     public static bool HasEnoughResourcesToContinue(Actor pCreator, CityStorage pStorage, CW_ItemData pCraftingItemData,
         out Dictionary<string, int> pCost)
     {
+        if (pCraftingItemData.Level >= Constants.Core.item_level_count)
+        {
+            pCost = null;
+            return false;
+        }
+
         CW_ItemAsset asset = Manager.items.get(pCraftingItemData.id);
         if (asset.ResourceCostListsPerLevel[pCraftingItemData.Level].Count == 0)
         {
