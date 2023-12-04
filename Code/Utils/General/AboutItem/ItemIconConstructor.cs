@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cultivation_Way.Core;
+using NeoModLoader.api.attributes;
 using UnityEngine;
 
 namespace Cultivation_Way.Utils.General.AboutItem;
@@ -8,6 +9,7 @@ public static class ItemIconConstructor
 {
     private static readonly Dictionary<string, Dictionary<int, Sprite>> items_icon = new();
 
+    [Hotfixable]
     public static Sprite GetItemIcon(Sprite pOriginal, CW_Element pElement)
     {
         Color32[] pixels = pOriginal.texture.GetPixels32();
@@ -31,6 +33,7 @@ public static class ItemIconConstructor
 
         for (int i = 0; i < pixels.Length; i++)
         {
+            if (pixels[i].a == 0) continue;
             if (Toolbox.areColorsEqual(pixels[i], Toolbox.color_green_0))
             {
                 pixels[i] = color_0;
@@ -49,8 +52,17 @@ public static class ItemIconConstructor
             }
         }
 
-        Sprite new_sprite = Sprite.Create(pOriginal.texture, pOriginal.rect, pOriginal.pivot, pOriginal.pixelsPerUnit,
+        Texture2D texture = new(pOriginal.texture.width, pOriginal.texture.height, TextureFormat.RGBA32,
+            false);
+        texture.filterMode = pOriginal.texture.filterMode;
+        texture.wrapMode = pOriginal.texture.wrapMode;
+        texture.anisoLevel = pOriginal.texture.anisoLevel;
+        texture.mipMapBias = pOriginal.texture.mipMapBias;
+        texture.SetPixels32(pixels);
+        texture.Apply();
+        Sprite new_sprite = Sprite.Create(texture, pOriginal.rect, pOriginal.pivot, pOriginal.pixelsPerUnit,
             0, SpriteMeshType.Tight, pOriginal.border, false);
+        new_sprite.name = pOriginal.name + "_" + Toolbox.colorToHex(color_0);
         dict[color_hash] = new_sprite;
         return new_sprite;
     }

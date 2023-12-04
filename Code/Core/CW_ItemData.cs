@@ -47,10 +47,11 @@ public class CW_ItemData : ItemData
 
     [JsonProperty("spells")] public HashSet<string> Spells { get; private set; }
 
+    [Hotfixable]
     public Sprite GetSprite()
     {
         if (!_sprite_dirty) return CachedSprite;
-        string default_path = "ui/icons/items/icon_" + id + material == "base" ? "" : "_" + material;
+        string default_path = "ui/icons/items/icon_" + id + (material == "base" ? "" : "_" + material);
         Sprite original_sprite = SpriteTextureLoader.getSprite(default_path);
         CachedSprite = ItemIconConstructor.GetItemIcon(original_sprite, element);
         _sprite_dirty = false;
@@ -74,7 +75,7 @@ public class CW_ItemData : ItemData
             float ratio = Toolbox.randomFloat(0, pCost[material_id]);
             addition_stats.MergeStats(material_asset.base_stats, ratio);
 
-            element.MergeWith(material_asset.Element, ratio / Level);
+            element.MergeWith(material_asset.Element, ratio / (Level * 10));
 
             _sprite_dirty = true;
 
