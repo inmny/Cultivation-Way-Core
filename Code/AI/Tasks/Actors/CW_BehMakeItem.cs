@@ -146,7 +146,7 @@ public class CW_BehFinishMakeItem : BehCity
         {
             pCreator.data.WriteObj<object>(DataS.crafting_item_data, null, true);
             CW_Core.LogInfo(
-                $"Item level {crafting_item_data.Level} made by {pCreator.name}({pCreator.getName()}) extracted to {pCreator.city?.getCityName() ?? "null"}");
+                $"Item level {crafting_item_data.Level} made by {pCreator.name}({pCreator.getName()}) with {crafting_item_data.element} extracted to {pCreator.city?.getCityName() ?? "null"}");
         }
 
         return BehResult.Continue;
