@@ -36,7 +36,7 @@ public static class NameGenerateUtils
         return generator.GenerateName(para);
     }
 #else
-    public static string GenerateCultibookName(Cultibook pCultibook, CW_Actor pCreator, CW_Actor pEditor)
+    public static string GenerateCultibookName(Cultibook pCultibook, CW_Actor pEditor)
     {
         return "";
     }
