@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Factory;
 using Cultivation_Way.Library;
+using NeoModLoader.api.attributes;
 using NeoModLoader.services;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ public class CW_Element : FactoryItem<CW_Element>
     private static readonly Color iron = Color.yellow;
     private static readonly Color ground = Toolbox.makeColor("#603700");
     private static readonly Color[] element_colors = { water, fire, wood, iron, ground };
-    public readonly int[] BaseElements = new int[Constants.Core.element_type_nr];
+    public int[] BaseElements = new int[Constants.Core.element_type_nr];
     private string type_id;
 
     public CW_Element()
@@ -31,7 +32,7 @@ public class CW_Element : FactoryItem<CW_Element>
     /// <summary>
     ///     创建CW_Element对象
     /// </summary>
-    /// <param name="base_elements">给定元素组合</param>
+    /// <param name="base_elements">给定元素组合(水, 火, 木, 金, 土)</param>
     /// <param name="normalize">是否规格化</param>
     /// <param name="normalize_ceil">规格化上界</param>
     /// <param name="comp_type">是否即时确定元素类型</param>
@@ -91,6 +92,12 @@ public class CW_Element : FactoryItem<CW_Element>
         }
 
         type_id = Constants.Core.uniform_type;
+    }
+
+    [Hotfixable]
+    public override string ToString()
+    {
+        return $"[{BaseElements[0]}, {BaseElements[1]}, {BaseElements[2]}, {BaseElements[3]}, {BaseElements[4]}]";
     }
 
     /// <summary>
