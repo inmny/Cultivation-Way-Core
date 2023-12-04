@@ -1,13 +1,18 @@
 using System.Collections.Generic;
+using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
+using Cultivation_Way.Utils.General.AboutItem;
 using NeoModLoader.api.attributes;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace Cultivation_Way.Core;
 
 public class CW_ItemData : ItemData
 {
+    [JsonIgnore] private bool _sprite_dirty = true;
     public BaseStats addition_stats = new();
+    public CW_Element element = new(new[] { 20, 20, 20, 20, 20 });
 
     public CW_ItemData()
     {
@@ -32,11 +37,25 @@ public class CW_ItemData : ItemData
             from = pCreator.kingdom.name;
             fromColor = pCreator.kingdom.kingdomColor.color_text;
         }
+
+        element.Set(pAsset.BaseElement);
     }
+
+    [JsonIgnore] public Sprite CachedSprite { get; private set; }
 
     [JsonProperty("level")] public int Level { get; private set; }
 
     [JsonProperty("spells")] public HashSet<string> Spells { get; private set; }
+
+    public Sprite GetSprite()
+    {
+        if (!_sprite_dirty) return CachedSprite;
+        string default_path = "ui/icons/items/icon_" + id + material == "base" ? "" : "_" + material;
+        Sprite original_sprite = SpriteTextureLoader.getSprite(default_path);
+        CachedSprite = ItemIconConstructor.GetItemIcon(original_sprite, element);
+        _sprite_dirty = false;
+        return CachedSprite;
+    }
 
     [Hotfixable]
     public void UpgradeWithCosts(Actor pCreator, Dictionary<string, int> pCost)
@@ -52,8 +71,13 @@ public class CW_ItemData : ItemData
         {
             CW_ItemMaterialAsset material_asset = Manager.item_materials.get(material_id);
             if (material_asset == null) continue;
+            float ratio = Toolbox.randomFloat(0, pCost[material_id]);
+            addition_stats.MergeStats(material_asset.base_stats, ratio);
 
-            addition_stats.mergeStats(material_asset.base_stats);
+            element.MergeWith(material_asset.Element, ratio / Level);
+
+            _sprite_dirty = true;
+
             if (Level < Constants.Core.item_level_per_stage) continue;
             if (material_asset.possible_spells_on_slot[(int)asset.VanillaAsset.equipmentType].Count == 0) continue;
 

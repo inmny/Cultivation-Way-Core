@@ -1,6 +1,12 @@
 ﻿using System.Collections.Generic;
+using Cultivation_Way.Core;
 
 namespace Cultivation_Way.Library;
+
+public class ElementalAsset : Asset
+{
+    public CW_Element Element;
+}
 
 public class CW_Library<T> : AssetLibrary<T> where T : Asset
 {

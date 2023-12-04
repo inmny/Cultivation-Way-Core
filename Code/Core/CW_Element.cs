@@ -125,6 +125,31 @@ public class CW_Element : FactoryItem<CW_Element>
         return middle;
     }
 
+    /// <summary>
+    ///     与另一个元素组合按pScale合并
+    /// </summary>
+    /// <param name="pElement">合并元素</param>
+    /// <param name="pScale">scale, 应该大于0</param>
+    /// <param name="normalize_ceil">规格化上限, 应该大于0, 默认为100</param>
+    /// <param name="pCompType">合并后是否自动计算类型</param>
+    public void MergeWith(CW_Element pElement, float pScale, int normalize_ceil = 100, bool pCompType = true)
+    {
+        for (int i = 0; i < Constants.Core.element_type_nr; i++)
+        {
+            BaseElements[i] = (int)((BaseElements[i] + pElement.BaseElements[i] * pScale) / (1 + pScale));
+        }
+
+        if (normalize_ceil > 0)
+        {
+            __normalize(normalize_ceil);
+        }
+
+        if (pCompType)
+        {
+            __comp_type();
+        }
+    }
+
     public CW_Element Deepcopy()
     {
         CW_Element copy = new();

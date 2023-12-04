@@ -2,6 +2,7 @@ using Cultivation_Way.Core;
 using Cultivation_Way.Utils;
 using HarmonyLib;
 using NeoModLoader.api.attributes;
+using UnityEngine;
 
 namespace Cultivation_Way.HarmonySpace;
 
@@ -43,5 +44,16 @@ internal static class H_Item
                     break;
             }
         }
+    }
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(ItemAsset), nameof(ItemAsset.getSprite))]
+    private static bool GetSpritePrefix(ref Sprite __result, ItemData pData)
+    {
+        if (pData is not CW_ItemData item_data) return true;
+
+        __result = item_data.GetSprite();
+
+        return false;
     }
 }
