@@ -40,6 +40,8 @@
     "wakan_tide_trigger_description": "禁用此项后，灵气将逐渐枯竭",
     "cw_energy_wakan_spread_limit_title": "限制灵气扩散",
     "cw_energy_wakan_spread_limit_description": "启用此项后，灵气将不会扩散",
+    "show_detailed_energy_info_title": "显示地块灵气信息",
+    "show_detailed_energy_info_description": "启用此项后\n将在地块上显示该地块的灵气具体信息",
     "enpowered_wakan_increase_title": "帝流浆增强",
     "enpowered_wakan_increase_description": "启用此项后，帝流浆将额外为生物恢复大量灵气",
     "no_auto_save_title": "禁用自动保存",
