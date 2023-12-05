@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using Cultivation_Way.Library;
 using UnityEngine;
@@ -26,6 +27,12 @@ public class CW_EnergyMapTile
 
     internal int x;
     internal int y;
+
+    [MethodImpl(MethodImplOptions.Synchronized | MethodImplOptions.AggressiveInlining)]
+    public void UpdateValue(float value)
+    {
+        this.value = value;
+    }
 
     public void Update(EnergyAsset energy_asset)
     {
@@ -176,7 +183,7 @@ public class CW_EnergyMap
             {
                 lock (map[x, y])
                 {
-                    map[x, y].value = _tmp_map[x, y].value;
+                    map[x, y].UpdateValue(_tmp_map[x, y].value);
                     map[x, y].Update(energy);
                 }
             }
@@ -190,7 +197,6 @@ public class CW_EnergyMapManager
     public readonly Dictionary<string, CW_EnergyMap> maps = new();
 
     public int height;
-    internal bool paused = false;
     public int width;
 
     /// <summary>
