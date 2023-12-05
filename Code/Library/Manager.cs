@@ -30,6 +30,7 @@ public class Manager
         CW_BehaviourTaskCityLibrary.init();
         CW_CitizenJobLibrary.init();
         CW_CultureTechLibrary.init();
+        CW_DebugTools.init();
         CW_GodPowers.init();
         CW_MapIconLibrary.init();
         CW_NameGenerators.init();

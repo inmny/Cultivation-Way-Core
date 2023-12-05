@@ -33,22 +33,33 @@ public class EffectManager : MonoBehaviour
         int i = 0;
         int time;
         low_res = quality_changer.isFullLowRes();
+        Toolbox.bench("EffectManager.Update");
         try
         {
+            /*
             for (time = 0; time < Config.timeScale; time++)
+            {*/
+            for (i = 0; i < controllers.Count; i++)
             {
-                for (i = 0; i < controllers.Count; i++)
+                Toolbox.bench(controllers[i].id, "EffectManager.Update");
+                for (time = 0; time < Config.timeScale; time++)
                 {
-                    controllers[i].update(Time.fixedDeltaTime);
+                    controllers[i].update(Time.fixedDeltaTime, (int)Config.timeScale);
                 }
 
-                for (i = 0; i < single_anims.Count; i++)
+                Toolbox.benchEnd(controllers[i].id, "EffectManager.Update");
+            }
+
+            for (i = 0; i < single_anims.Count; i++)
+            {
+                for (time = 0; time < Config.timeScale; time++)
                 {
                     single_anims[i].update(Time.fixedDeltaTime);
-                    if (single_anims[i].isOn) continue;
-                    single_anims.RemoveAt(i);
-                    i--;
                 }
+
+                if (single_anims[i].isOn) continue;
+                single_anims.RemoveAt(i);
+                i--;
             }
         }
         catch (Exception e)
@@ -57,6 +68,8 @@ public class EffectManager : MonoBehaviour
             Debug.LogError(e.Message);
             Debug.LogError(e.StackTrace);
         }
+
+        Toolbox.benchEnd("EffectManager.Update");
 
         if (timer > 0)
         {

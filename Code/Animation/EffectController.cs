@@ -85,7 +85,7 @@ public class EffectController
         }
     }
 
-    internal void update(float elapsed)
+    internal void update(float elapsed, int pTimeScale)
     {
         _active_anims.SetToFirst();
 
@@ -94,7 +94,10 @@ public class EffectController
         //int count = 0;
         while (anim != null)
         {
-            anim.update(elapsed);
+            for (int i = 0; i < pTimeScale && anim.isOn; i++)
+            {
+                anim.update(elapsed);
+            }
 
             if (!anim.isOn)
             {
