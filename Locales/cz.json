@@ -30,6 +30,8 @@
     "cw_Inspect_description": "制作中",
     "cw_Top_No_Items_Description": "你可以在这里找到世界最佳“对象”",
     "cw_Event_Wakan_Tide": "灵气潮汐",
+    "energy_change_scale": "帝流浆/灵气吞噬强度",
+    "energy_change_scale Description": "调整帝流浆/灵气吞噬作用于地块灵气的速度倍率",
     "worldlaw_creature_grid": "生物",
     "worldlaw_energy_grid": "源气",
     "worldlaw_cultisys_grid": "修炼",

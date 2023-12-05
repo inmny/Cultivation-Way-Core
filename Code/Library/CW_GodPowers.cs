@@ -134,14 +134,19 @@ internal static class CW_GodPowers
             if (tile == null) return false;
             EnergyAsset energy_asset = Manager.energies.get(CW_Core.mod_state.energy_map_manager.current_map_id);
             CW_EnergyMapTile energy_tile = tile.GetEnergyTile(energy_asset.id);
-            if (energy_tile.value is <= 1 or float.NaN)
-            {
-                energy_tile.value = 0;
-                return true;
-            }
 
-            energy_tile.value *= 0.99f;
-            energy_tile.Update(energy_asset);
+            lock (energy_tile)
+            {
+                if (energy_tile.value is <= 1 or float.NaN)
+                {
+                    energy_tile.value = 0;
+                    return true;
+                }
+
+                energy_tile.value *=
+                    1 - CW_Core.Instance.GetConfig()["worldlaw_energy_grid"]["energy_change_scale"].FloatVal * 0.01f;
+                energy_tile.Update(energy_asset);
+            }
 
             return true;
         };

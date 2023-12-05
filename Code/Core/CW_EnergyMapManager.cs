@@ -174,8 +174,11 @@ public class CW_EnergyMap
         {
             for (int y = 0; y < height; y++)
             {
-                map[x, y].value = _tmp_map[x, y].value;
-                map[x, y].Update(energy);
+                lock (map[x, y])
+                {
+                    map[x, y].value = _tmp_map[x, y].value;
+                    map[x, y].Update(energy);
+                }
             }
         }
     }
