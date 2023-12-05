@@ -288,7 +288,8 @@ public class SpriteAnimation
 
             if (setting.trace_type == AnimationTraceType.TRACK)
             {
-                Vector2 tmp_src_vec = new(gameObject.transform.position.x, gameObject.transform.position.y);
+                var position = gameObject.transform.position;
+                Vector2 tmp_src_vec = new(position.x, position.y);
                 if (dst_object != null)
                 {
                     dst_vec = dst_object.currentPosition;
@@ -313,8 +314,9 @@ public class SpriteAnimation
 
             delta_x *= elapsed;
             delta_y *= elapsed;
-            float next_x = gameObject.transform.position.x + delta_x;
-            float next_y = gameObject.transform.position.y + delta_y;
+            var curr_pos = gameObject.transform.position;
+            float next_x = curr_pos.x + delta_x;
+            float next_y = curr_pos.y + delta_y;
             //WorldBoxConsole.Console.print(string.Format("delta x:{0},y:{1}", delta_x, delta_y));
             if (setting.loop_limit_type == AnimationLoopLimitType.TRACE_LIMIT ||
                 setting.loop_limit_type == AnimationLoopLimitType.DST_LIMIT)
@@ -323,8 +325,9 @@ public class SpriteAnimation
             // 指向终点
             if (setting.always_point_to_dst)
             {
+                var position = gameObject.transform.position;
                 gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f,
-                    Toolbox.getAngle(gameObject.transform.position.x, gameObject.transform.position.y, dst_vec.x,
+                    Toolbox.getAngle(position.x, position.y, dst_vec.x,
                         dst_vec.y) * 57.29578f));
             }
 
@@ -400,8 +403,10 @@ public class SpriteAnimation
     /// <param name="scale">缩放比例</param>
     public void change_scale(float scale)
     {
-        gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x * scale,
-            gameObject.transform.localScale.y * scale, gameObject.transform.localScale.z);
+        var local_scale = gameObject.transform.localScale;
+        local_scale = new Vector3(local_scale.x * scale,
+            local_scale.y * scale, local_scale.z);
+        gameObject.transform.localScale = local_scale;
     }
 
     /// <summary>
