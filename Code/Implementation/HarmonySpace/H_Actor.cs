@@ -2,6 +2,7 @@
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using HarmonyLib;
+using UnityEngine;
 
 namespace Cultivation_Way.Implementation.HarmonySpace;
 
@@ -46,7 +47,7 @@ internal static class H_Actor
                 goto BUSHIDO_CHECK;
             }
 
-            float culti_wakan = actor.cw_asset.culti_velo * energy_tile.density *
+            float culti_wakan = actor.cw_asset.culti_velo * Mathf.Pow(10, energy_tile.density) *
                                 (1 + actor.stats[CW_S.mod_cultivelo]) *
                                 Content_Constants.immortal_base_cultivelo *
                                 actor.data.GetElement().GetElementType().rarity *
