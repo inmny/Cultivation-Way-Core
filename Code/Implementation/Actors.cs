@@ -94,7 +94,9 @@ internal static class Actors
 #endif
 
         asset.base_stats[CW_S.soul] = 50;
-        asset.base_stats[CW_S.mod_soul] = 0.5f;
+        asset.base_stats[CW_S.mod_soul] = 2f;
+        asset.base_stats[CW_S.soul_regen] = 1f;
+        asset.base_stats[CW_S.mod_soul_regen] = 3f;
         asset.nameLocale = Content_Constants.ming_name_locale;
         asset.race = Content_Constants.ming_race;
         asset.icon = "iconMings";
