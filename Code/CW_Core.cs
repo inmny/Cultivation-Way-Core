@@ -186,7 +186,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         {
             while (true)
             {
-                if (!state.energy_map_manager.paused && mod_state.all_initialized)
+                if (!World.world.isPaused() && mod_state.all_initialized)
                     state.energy_map_manager.update_per_year();
                 Thread.Sleep((int)(500 / Math.Max(Config.timeScale, 1)));
             }
