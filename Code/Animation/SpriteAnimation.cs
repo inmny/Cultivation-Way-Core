@@ -269,7 +269,7 @@ public class SpriteAnimation
         //始终旋转
         if (setting.always_roll)
         {
-            gameObject.transform.Rotate(setting.always_roll_axis * elapsed * setting.roll_angle_per_frame);
+            gameObject.transform.Rotate(setting.always_roll_axis * (elapsed * setting.roll_angle_per_frame));
         }
 
         // 检测到目标不存在后停止
