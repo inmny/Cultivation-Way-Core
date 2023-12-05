@@ -199,8 +199,9 @@ public static class GeneralHelper
     public static List<BaseSimObject> find_enemies_in_circle(WorldTile center_tile, Kingdom kingdom, float radius,
         bool building_included = true)
     {
-        List<WorldTile> tiles = get_tiles_in_circle(center_tile, radius);
         List<BaseSimObject> enemies = new();
+        if (MapBox.instance.worldLaws.world_law_peaceful_monsters.boolVal) return enemies;
+        List<WorldTile> tiles = get_tiles_in_circle(center_tile, radius);
         foreach (WorldTile tile in tiles)
         {
             if (building_included && tile.building != null && is_enemy(tile.building.kingdom, kingdom))
@@ -249,8 +250,9 @@ public static class GeneralHelper
     public static List<BaseSimObject> find_enemies_in_square(WorldTile center_tile, Kingdom kingdom, float half_edge,
         bool building_included = true)
     {
-        List<WorldTile> tiles = get_tiles_in_square(center_tile, half_edge);
         List<BaseSimObject> enemies = new();
+        if (MapBox.instance.worldLaws.world_law_peaceful_monsters.boolVal) return enemies;
+        List<WorldTile> tiles = get_tiles_in_square(center_tile, half_edge);
         foreach (WorldTile tile in tiles)
         {
             if (building_included && tile.building != null && is_enemy(tile.building.kingdom, kingdom))
