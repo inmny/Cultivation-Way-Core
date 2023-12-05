@@ -107,5 +107,8 @@ public class EnergyLibrary : CW_Library<EnergyAsset>
                     "ui/icons/iconNo_Wakan_Spread", false);
             }
         }
+
+        General.AboutUI.WorldLaws.add_switch_law("show_detailed_energy_info", "worldlaw_energy_grid",
+            "ui/cw_icons/iconInspectWakan", false);
     }
 }

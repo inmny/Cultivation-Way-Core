@@ -24,6 +24,8 @@
     "Energy Maps Layer": "源气分布图",
     "Energy Maps Layer Description": "切换查看不同形式的源气的分布",
     "cw_energy_wakan": "灵气",
+    "cw_energy_density": "浓度",
+    "cw_energy_value": "数值",
     "cw_Inspect": "世镜",
     "cw_Inspect_description": "制作中",
     "cw_Top_No_Items_Description": "你可以在这里找到世界最佳“对象”",
