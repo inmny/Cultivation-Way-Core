@@ -71,6 +71,16 @@ public static class ActorDataTools
     public static int[] GetAllCultisysLevels(this ActorData pData)
     {
         int[] result = new int[Manager.cultisys.size];
+        if (pData == null)
+        {
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = -1;
+            }
+
+            return result;
+        }
+
         for (int i = 0; i < result.Length; i++)
         {
             pData.get(Manager.cultisys.list[i].id, out result[i], -1);
