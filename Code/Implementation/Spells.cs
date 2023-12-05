@@ -602,7 +602,7 @@ internal static class Spells
             frame_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec,
                 Animation.SpriteAnimation anim) =>
             {
-                float cur_scale = anim.get_scale().x;
+                float cur_scale = anim.get_scale();
                 if (anim.setting.loop_time_limit - anim.play_time > 32 * anim.setting.frame_interval &&
                     anim.setting.free_val > cur_scale)
                 {

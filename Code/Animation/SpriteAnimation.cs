@@ -1,5 +1,6 @@
 ﻿using System;
 using Cultivation_Way.Extension;
+using NeoModLoader.api.attributes;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -208,6 +209,7 @@ public class SpriteAnimation
         //renderer.sprite = sprites[cur_frame_idx];
     }
 
+    [Hotfixable]
     internal void update(float elapsed)
     {
         if (!isOn)
@@ -215,8 +217,10 @@ public class SpriteAnimation
             return;
         }
 
-        if (renderer.enabled && !setting.visible_in_low_res && EffectManager.instance.low_res) hide();
-        if (!renderer.enabled && setting.visible_in_low_res && !EffectManager.instance.low_res) show();
+        if (renderer.enabled &&
+            ((!setting.visible_in_low_res && EffectManager.instance.low_res) || IsOutScreen())) hide();
+        if (!renderer.enabled && setting.visible_in_low_res && !EffectManager.instance.low_res &&
+            !IsOutScreen()) show();
 
         //if (!CW_EffectManager.instance.low_res && renderer.sprite == null) renderer.sprite = sprites[cur_frame_idx];
         play_time += elapsed;
@@ -238,6 +242,7 @@ public class SpriteAnimation
         if (elapsed < next_frame_time)
         {
             next_frame_time -= elapsed;
+            return;
         }
         else
         {
@@ -255,7 +260,7 @@ public class SpriteAnimation
                     ? 1
                     : -1;
                 int next_frame_idx = (cur_frame_idx + change + sprites.Length) % sprites.Length;
-                if (setting.visible_in_low_res || !EffectManager.instance.low_res)
+                if (renderer.enabled)
                     renderer.sprite = sprites[next_frame_idx];
                 cur_frame_idx = next_frame_idx;
                 if (cur_frame_idx == 0) loop_nr++;
@@ -306,6 +311,7 @@ public class SpriteAnimation
                 }
 
                 gameObject.transform.position = dst_object.currentPosition;
+                goto NO_TRACE_COMP;
             }
             else
             {
@@ -334,8 +340,9 @@ public class SpriteAnimation
             gameObject.transform.position = new Vector3(next_x, next_y, next_y);
         }
 
+        NO_TRACE_COMP:
         // 路径行为
-        if (setting.frame_action != null) setting.frame_action(cur_frame_idx, ref src_vec, ref dst_vec, this);
+        setting.frame_action?.Invoke(cur_frame_idx, ref src_vec, ref dst_vec, this);
 
         // 按照设置进行判断是否结束
         bool end = false;
@@ -382,6 +389,16 @@ public class SpriteAnimation
         }
     }
 
+    [Hotfixable]
+    private bool IsOutScreen()
+    {
+        return false;
+        var position = gameObject.transform.position;
+
+        return position.x > EffectManager.camera_range_1.x && position.x < EffectManager.camera_range_2.x &&
+               position.y > EffectManager.camera_range_1.y && position.y < EffectManager.camera_range_2.y;
+    }
+
     internal void kill()
     {
         Object.Destroy(gameObject, 5);
@@ -413,9 +430,9 @@ public class SpriteAnimation
     ///     获取当前localScale
     /// </summary>
     /// <returns></returns>
-    public Vector3 get_scale()
+    public float get_scale()
     {
-        return gameObject.transform.localScale;
+        return gameObject.transform.localScale.x;
     }
 
     /// <summary>

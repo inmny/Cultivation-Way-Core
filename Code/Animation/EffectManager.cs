@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NeoModLoader.api.attributes;
 using UnityEngine;
 
 namespace Cultivation_Way.Animation;
@@ -8,6 +9,8 @@ public class EffectManager : MonoBehaviour
 {
     public static EffectManager instance;
     private static QualityChanger quality_changer;
+    internal static Vector2 camera_range_1;
+    internal static Vector2 camera_range_2;
     private readonly List<EffectController> controllers = new();
     private readonly Dictionary<string, EffectController> controllers_dict = new();
     private readonly GameObject default_prefab = new();
@@ -27,13 +30,17 @@ public class EffectManager : MonoBehaviour
         quality_changer = MapBox.instance.qualityChanger;
     }
 
+    [Hotfixable]
     private void Update()
     {
         if (Config.paused || ScrollWindow.isWindowActive()) return;
         int i = 0;
         int time;
+        camera_range_1 = World.world.camera.ViewportToWorldPoint(new Vector3(0, 0, World.world.camera.nearClipPlane));
+        camera_range_2 = World.world.camera.ViewportToWorldPoint(new Vector3(1, 1, World.world.camera.nearClipPlane));
         low_res = quality_changer.isFullLowRes();
         Toolbox.bench("EffectManager.Update");
+        float elapsed = World.world.getCurElapsed();
         try
         {
             /*
@@ -42,10 +49,7 @@ public class EffectManager : MonoBehaviour
             for (i = 0; i < controllers.Count; i++)
             {
                 Toolbox.bench(controllers[i].id, "EffectManager.Update");
-                for (time = 0; time < Config.timeScale; time++)
-                {
-                    controllers[i].update(Time.fixedDeltaTime, (int)Config.timeScale);
-                }
+                controllers[i].update(elapsed, (int)Config.timeScale);
 
                 Toolbox.benchEnd(controllers[i].id, "EffectManager.Update");
             }
@@ -54,7 +58,7 @@ public class EffectManager : MonoBehaviour
             {
                 for (time = 0; time < Config.timeScale; time++)
                 {
-                    single_anims[i].update(Time.fixedDeltaTime);
+                    single_anims[i].update(elapsed);
                 }
 
                 if (single_anims[i].isOn) continue;
@@ -73,7 +77,7 @@ public class EffectManager : MonoBehaviour
 
         if (timer > 0)
         {
-            timer -= Time.deltaTime;
+            timer -= elapsed;
         }
         else
         {

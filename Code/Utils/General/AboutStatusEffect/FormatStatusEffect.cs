@@ -3,6 +3,7 @@ using Cultivation_Way.Animation;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Library;
+using NeoModLoader.api.attributes;
 using UnityEngine;
 
 namespace Cultivation_Way.General.AboutStatusEffect;
@@ -60,7 +61,7 @@ public static class FormatStatusEffect
                     layer_name = "EffectsBack",
                     loop_time_limit = duration
                 };
-                anim_setting.frame_action = (int pIdx, ref Vector2 pVec, ref Vector2 pDstVec,
+                anim_setting.frame_action = [Hotfixable](int pIdx, ref Vector2 pVec, ref Vector2 pDstVec,
                     Animation.SpriteAnimation pAnim) =>
                 {
                     if (pAnim.src_object == null || !pAnim.src_object.isAlive())
@@ -75,7 +76,13 @@ public static class FormatStatusEffect
                     }
 
                     CW_Actor actor = (CW_Actor)pAnim.src_object;
-                    pAnim.set_scale(actor.stats[S.scale]);
+
+                    float cur_scale = pAnim.get_scale();
+                    if (Math.Abs(cur_scale - actor.stats[S.scale]) > 1e-3)
+                    {
+                        pAnim.set_scale(actor.stats[S.scale]);
+                    }
+
                     if (actor.statuses != null && actor.statuses.TryGetValue(id, out var status))
                     {
                         pAnim.play_time = Math.Max(0, anim_setting.loop_time_limit - status.left_time);
