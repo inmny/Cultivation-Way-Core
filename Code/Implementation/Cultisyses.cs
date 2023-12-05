@@ -1,6 +1,7 @@
 ﻿using Cultivation_Way.Constants;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
+using UnityEngine;
 
 namespace Cultivation_Way.Implementation;
 
@@ -9,6 +10,7 @@ internal static class Cultisyses
     public static CultisysAsset immortal;
     public static CultisysAsset bushido;
     public static CultisysAsset soul;
+    public static float[] immortal_power_co = new float[Content_Constants.immortal_max_level];
 
     public static void init()
     {
@@ -67,6 +69,7 @@ internal static class Cultisyses
             cultisys.bonus_stats[i][S.mod_health] = i;
             cultisys.bonus_stats[i][S.damage] = i * 9;
             cultisys.bonus_stats[i][S.max_age] = i * i * 10;
+            immortal_power_co[i] = Mathf.Pow(cultisys.power_base, cultisys.power_level[i]);
         }
 
         Library.Manager.cultisys.add(cultisys);
