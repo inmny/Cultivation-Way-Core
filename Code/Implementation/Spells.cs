@@ -221,7 +221,7 @@ internal static class Spells
             loop_trace_limit = range,
             anim_froze_frame_idx = 3,
             frame_interval = 0.05f,
-            trace_grad = 15f,
+            trace_grad = 30f,
             frame_action = anim_frame_action
         };
         anim_setting.set_trace(AnimationTraceType.LINE);
@@ -597,7 +597,7 @@ internal static class Spells
             loop_nr_limit = -1,
             frame_interval = 0.05f,
             layer_name = "Objects",
-            trace_grad = 10f,
+            trace_grad = 20f,
             free_val = 0.2f,
             frame_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec,
                 Animation.SpriteAnimation anim) =>
@@ -1037,7 +1037,7 @@ internal static class Spells
             loop_limit_type = AnimationLoopLimitType.DST_LIMIT,
             loop_nr_limit = -1,
             frame_interval = 0.05f,
-            trace_grad = 15f,
+            trace_grad = 20f,
             point_to_dst = true,
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
@@ -1092,7 +1092,7 @@ internal static class Spells
             loop_limit_type = AnimationLoopLimitType.DST_LIMIT,
             loop_nr_limit = -1,
             frame_interval = 0.05f,
-            trace_grad = 15f,
+            trace_grad = 20f,
             point_to_dst = true,
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
@@ -1144,7 +1144,7 @@ internal static class Spells
             loop_limit_type = AnimationLoopLimitType.DST_LIMIT,
             loop_nr_limit = -1,
             frame_interval = 0.05f,
-            trace_grad = 15f,
+            trace_grad = 20f,
             point_to_dst = true,
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
@@ -1202,7 +1202,7 @@ internal static class Spells
             loop_limit_type = AnimationLoopLimitType.DST_LIMIT,
             loop_nr_limit = -1,
             frame_interval = 0.05f,
-            trace_grad = 15f,
+            trace_grad = 20f,
             point_to_dst = true,
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
