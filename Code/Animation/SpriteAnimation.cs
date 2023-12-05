@@ -242,7 +242,10 @@ public class SpriteAnimation
         if (elapsed < next_frame_time)
         {
             next_frame_time -= elapsed;
-            return;
+            if (Config.timeScale >= 3)
+            {
+                return;
+            }
         }
         else
         {
