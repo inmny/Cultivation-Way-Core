@@ -876,7 +876,7 @@ internal static class Spells
                     if (tile != null)
                     {
                         List<BaseSimObject> targets =
-                            GeneralHelper.find_enemies_in_square(tile, anim.src_object.kingdom, 3);
+                            GeneralHelper.find_enemies_in_square(tile, anim.src_object.kingdom, 2);
                         anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                         spell_cost = MiscUtils.WakanCostToDamage(spell_cost, anim.src_object);
                         foreach (BaseSimObject actor in targets)
