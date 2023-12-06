@@ -7,7 +7,6 @@ namespace Cultivation_Way.Library;
 
 public class CW_ItemMaterialAsset : ElementalAsset
 {
-    public BaseStats base_stats = new();
     public BaseStats[] base_stats_on_slot = new BaseStats[Enum.GetValues(typeof(EquipmentType)).Length];
     public List<string>[] possible_spells_on_slot = new List<string>[Enum.GetValues(typeof(EquipmentType)).Length];
 

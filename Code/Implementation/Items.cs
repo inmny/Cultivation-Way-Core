@@ -33,8 +33,8 @@ internal static class Items
         CW_ItemMaterialAsset asset;
         asset = Library.Manager.item_materials.add(new CW_ItemMaterialAsset
             (Library.Manager.resources.get(SR.common_metals)));
-        asset.base_stats[S.mod_damage] = 0.1f;
-        asset.base_stats[S.damage] = 5;
+        asset.base_stats_on_slot[(int)EquipmentType.Weapon][S.damage] = 5;
+        asset.base_stats_on_slot[(int)EquipmentType.Weapon][S.mod_damage] = 0.1f;
 
         asset = Library.Manager.item_materials.add(new CW_ItemMaterialAsset
             (Library.Manager.resources.get(SR.silver)));
@@ -44,7 +44,7 @@ internal static class Items
 
         asset = Library.Manager.item_materials.add(new CW_ItemMaterialAsset
             (Library.Manager.resources.get(SR.adamantine)));
-        asset.base_stats[S.mod_damage] = 1f;
-        asset.base_stats[S.damage] = 50;
+        asset.base_stats_on_slot[(int)EquipmentType.Weapon][S.damage] = 50;
+        asset.base_stats_on_slot[(int)EquipmentType.Weapon][S.mod_damage] = 1f;
     }
 }

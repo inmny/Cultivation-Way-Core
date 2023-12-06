@@ -73,17 +73,19 @@ public class CW_ItemData : ItemData
             CW_ItemMaterialAsset material_asset = Manager.item_materials.get(material_id);
             if (material_asset == null) continue;
             float ratio = Toolbox.randomFloat(0, pCost[material_id]);
-            addition_stats.MergeStats(material_asset.base_stats, ratio);
+            int equip_type = (int)asset.VanillaAsset.equipmentType;
+            addition_stats.MergeStats(material_asset.base_stats_on_slot[equip_type],
+                ratio);
 
             element.MergeWith(material_asset.Element, ratio / (Level * 10));
 
             _sprite_dirty = true;
 
             if (Level < Constants.Core.item_level_per_stage) continue;
-            if (material_asset.possible_spells_on_slot[(int)asset.VanillaAsset.equipmentType].Count == 0) continue;
+            if (material_asset.possible_spells_on_slot[equip_type].Count == 0) continue;
 
             HashSet<string> new_spells =
-                new(material_asset.possible_spells_on_slot[(int)asset.VanillaAsset.equipmentType]);
+                new(material_asset.possible_spells_on_slot[equip_type]);
             new_spells.ExceptWith(Spells);
             new_spells.RemoveWhere(spell_id =>
                 !Manager.spells.get(spell_id)?.spell_classes.Overlaps(asset.AllowedSpellClasses) ?? true);
