@@ -18,10 +18,9 @@ internal static class Items
             ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
                 new List<string> { "adamantine" }, equipment_value: 100, name_class: "item_class_halberd");
         item.BaseLevel = 1;
-        item.MainMaterial = SR.adamantine;
+        item.MainMaterials[SR.adamantine] = 4;
         item.NecessaryResourceCost[SR.common_metals] = 32;
         item.NecessaryResourceCost[SR.silver] = 8;
-        item.NecessaryResourceCost[SR.adamantine] = 4;
         item.BaseSpells.Add("fire_blade");
         item.BaseElement = new CW_Element(new[] { 0, 80, 0, 15, 5 });
 

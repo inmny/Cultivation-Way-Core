@@ -9,16 +9,27 @@ namespace Cultivation_Way.Utils;
 
 internal static class ItemMakerHelper
 {
-    public static bool HasEnoughResourcesToMakeItem(CityStorage pStorage, CW_ItemAsset pItem)
+    public static bool HasEnoughResourcesToMakeItem(CityStorage pStorage, CW_ItemAsset pItem, out string pMainMaterial)
     {
         foreach (KeyValuePair<string, int> resource in pItem.NecessaryResourceCost)
         {
             if (!pStorage.resources.TryGetValue(resource.Key, out var slot) || slot.amount < resource.Value)
             {
+                pMainMaterial = null;
                 return false;
             }
         }
 
+        foreach (KeyValuePair<string, int> resource in pItem.MainMaterials)
+        {
+            if (pStorage.resources.TryGetValue(resource.Key, out var slot) && slot.amount >= resource.Value)
+            {
+                pMainMaterial = resource.Key;
+                return true;
+            }
+        }
+
+        pMainMaterial = null;
         return true;
     }
 
@@ -36,14 +47,17 @@ internal static class ItemMakerHelper
     }
 
     [Hotfixable]
-    public static void CostResourcesAndCreateProgress(Actor pCreator, CityStorage pStorage, CW_ItemAsset pAsset)
+    public static void CostResourcesAndCreateProgress(Actor pCreator, CityStorage pStorage, CW_ItemAsset pAsset,
+        string pMainMaterial)
     {
         foreach (KeyValuePair<string, int> resource in pAsset.NecessaryResourceCost)
         {
             pStorage.resources[resource.Key].amount -= resource.Value;
         }
 
-        CW_ItemData item_data = new(pAsset, pCreator);
+        pStorage.resources[pMainMaterial].amount -= pAsset.MainMaterials[pMainMaterial];
+
+        CW_ItemData item_data = new(pAsset, pCreator, pMainMaterial);
         pCreator.data.WriteObj(DataS.crafting_item_data, item_data, true);
     }
 

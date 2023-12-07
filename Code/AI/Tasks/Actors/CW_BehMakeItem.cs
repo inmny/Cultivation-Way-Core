@@ -42,9 +42,9 @@ public class CW_BehPrepareMakeItem : BehCity
             CW_ItemAsset asset = Manager.items.FindAssetToCraft(pCreator);
             if (asset != null)
             {
-                if (ItemMakerHelper.HasEnoughResourcesToMakeItem(storage, asset))
+                if (ItemMakerHelper.HasEnoughResourcesToMakeItem(storage, asset, out string main_material))
                 {
-                    ItemMakerHelper.CostResourcesAndCreateProgress(pCreator, storage, asset);
+                    ItemMakerHelper.CostResourcesAndCreateProgress(pCreator, storage, asset, main_material);
                     return;
                 }
             }

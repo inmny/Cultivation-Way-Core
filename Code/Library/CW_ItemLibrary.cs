@@ -10,6 +10,15 @@ public class CW_ItemAsset : Asset
 {
     public readonly HashSet<string> AllowedSpellClasses = new();
     public readonly HashSet<string> BaseSpells = new();
+
+    /// <summary>
+    ///     主要材料, 用于确定物品的图标样式
+    /// </summary>
+    public readonly Dictionary<string, int> MainMaterials = new();
+
+    /// <summary>
+    ///     必需的材料消耗
+    /// </summary>
     public readonly Dictionary<string, int> NecessaryResourceCost = new();
 
     public readonly List<Dictionary<string, int>>[] ResourceCostListsPerLevel =
@@ -18,7 +27,6 @@ public class CW_ItemAsset : Asset
     public BaseStats base_stats = new();
     public CW_Element BaseElement = new(new[] { 20, 20, 20, 20, 20 });
     public int BaseLevel = 0;
-    public string MainMaterial = "base";
     public ItemAsset VanillaAsset;
 
     public CW_ItemAsset()

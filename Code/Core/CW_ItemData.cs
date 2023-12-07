@@ -18,7 +18,7 @@ public class CW_ItemData : ItemData
     {
     }
 
-    public CW_ItemData(CW_ItemAsset pAsset, Actor pCreator)
+    public CW_ItemData(CW_ItemAsset pAsset, Actor pCreator, string pMainMaterial)
     {
         id = pAsset.VanillaAsset.id;
         Level = pAsset.BaseLevel;
@@ -28,7 +28,7 @@ public class CW_ItemData : ItemData
             Spells.UnionWith(pAsset.BaseSpells);
         }
 
-        material = pAsset.MainMaterial;
+        material = pMainMaterial;
         year = World.world.mapStats.year;
         by = pCreator.getName();
         if (pCreator.kingdom != null)
