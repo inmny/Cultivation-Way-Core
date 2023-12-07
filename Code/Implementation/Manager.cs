@@ -16,6 +16,7 @@ internal static class Manager
         Kingdoms.init();
         StatusEffects.init();
         Spells.init();
+        ImprovedSpells.init();
         Races.init();
         Resources.init();
         // 由于BuildingOrderAsset初始化在Races.init之中，所以必须在Races.init之后
