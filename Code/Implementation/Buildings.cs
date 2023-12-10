@@ -87,7 +87,6 @@ internal static class Buildings
         smelt_mill_order.requirements_orders = new List<string>();
         //smelt_mill_order.requirements_orders.Add(SB.order_hall_2);
 
-        AssetManager.buildings.add(smelt_mill);
 
         AssetManager.buildings.loadSprites(smelt_mill);
         AssetManager.buildings.loadSprites(bonfire);
