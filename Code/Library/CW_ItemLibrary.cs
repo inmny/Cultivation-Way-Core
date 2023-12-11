@@ -116,8 +116,19 @@ public class CW_ItemAsset : Asset
 
 public class CW_ItemLibrary : CW_Library<CW_ItemAsset>
 {
+    private readonly List<CW_ItemAsset> creatable_items = new();
+
     public CW_ItemAsset FindAssetToCraft(Actor pActor)
     {
-        return list.GetRandom();
+        return creatable_items.GetRandom();
+    }
+
+    public void AddCreatableItem(CW_ItemAsset item)
+    {
+        creatable_items.Add(item);
+        if (!dict.ContainsKey(item.id))
+        {
+            add(item);
+        }
     }
 }

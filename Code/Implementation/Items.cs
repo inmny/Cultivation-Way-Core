@@ -24,6 +24,81 @@ internal static class Items
         item.BaseSpells.Add("fire_blade");
         item.BaseElement = new CW_Element(new[] { 0, 80, 0, 15, 5 });
 
+        Library.Manager.items.AddCreatableItem(item);
+
+        add_five_mountain_seals();
+    }
+
+    private static void add_five_mountain_seals()
+    {
+        CW_ItemAsset item;
+        item = new CW_SpecialWeaponAsset("衡山印", CW_SpecialWeaponType.印);
+        item.VanillaAsset =
+            ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
+                new List<string> { "base" }, equipment_value: 1000, name_class: "item_class_seal");
+        item.BaseLevel = 35;
+        item.MainMaterials[SR.stone] = 256;
+        item.NecessaryResourceCost[SR.adamantine] = 32;
+        item.NecessaryResourceCost[SR.mythril] = 8;
+        item.BaseSpells.Add("fall_heng1_mountain");
+        item.BaseElement = new CW_Element(new[] { 0, 0, 0, 15, 85 });
+
+        Library.Manager.items.add(item);
+
+
+        item = new CW_SpecialWeaponAsset("华山印", CW_SpecialWeaponType.印);
+        item.VanillaAsset =
+            ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
+                new List<string> { "base" }, equipment_value: 1000, name_class: "item_class_seal");
+        item.BaseLevel = 35;
+        item.MainMaterials[SR.stone] = 256;
+        item.NecessaryResourceCost[SR.adamantine] = 32;
+        item.NecessaryResourceCost[SR.mythril] = 8;
+        item.BaseSpells.Add("fall_hua_mountain");
+        item.BaseElement = new CW_Element(new[] { 0, 0, 0, 15, 85 });
+
+        Library.Manager.items.add(item);
+
+
+        item = new CW_SpecialWeaponAsset("恒山印", CW_SpecialWeaponType.印);
+        item.VanillaAsset =
+            ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
+                new List<string> { "base" }, equipment_value: 1000, name_class: "item_class_seal");
+        item.BaseLevel = 35;
+        item.MainMaterials[SR.stone] = 256;
+        item.NecessaryResourceCost[SR.adamantine] = 32;
+        item.NecessaryResourceCost[SR.mythril] = 8;
+        item.BaseSpells.Add("fall_heng2_mountain");
+        item.BaseElement = new CW_Element(new[] { 0, 0, 0, 15, 85 });
+
+        Library.Manager.items.add(item);
+
+
+        item = new CW_SpecialWeaponAsset("泰山印", CW_SpecialWeaponType.印);
+        item.VanillaAsset =
+            ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
+                new List<string> { "base" }, equipment_value: 1000, name_class: "item_class_seal");
+        item.BaseLevel = 35;
+        item.MainMaterials[SR.stone] = 256;
+        item.NecessaryResourceCost[SR.adamantine] = 32;
+        item.NecessaryResourceCost[SR.mythril] = 8;
+        item.BaseSpells.Add("fall_tai_mountain");
+        item.BaseElement = new CW_Element(new[] { 0, 0, 0, 15, 85 });
+
+        Library.Manager.items.add(item);
+
+
+        item = new CW_SpecialWeaponAsset("嵩山印", CW_SpecialWeaponType.印);
+        item.VanillaAsset =
+            ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
+                new List<string> { "base" }, equipment_value: 1000, name_class: "item_class_seal");
+        item.BaseLevel = 35;
+        item.MainMaterials[SR.stone] = 256;
+        item.NecessaryResourceCost[SR.adamantine] = 32;
+        item.NecessaryResourceCost[SR.mythril] = 8;
+        item.BaseSpells.Add("fall_song_mountain");
+        item.BaseElement = new CW_Element(new[] { 0, 0, 0, 15, 85 });
+
         Library.Manager.items.add(item);
     }
 

@@ -16,6 +16,7 @@ internal static class Manager
         Kingdoms.init();
         StatusEffects.init();
         Spells.init();
+        Terraforms.init();
         ImprovedSpells.init();
         Races.init();
         Resources.init();

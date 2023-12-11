@@ -9,6 +9,7 @@ namespace Cultivation_Way.Utils;
 
 internal static class ItemMakerHelper
 {
+    [Hotfixable]
     public static bool HasEnoughResourcesToMakeItem(CityStorage pStorage, CW_ItemAsset pItem, out string pMainMaterial)
     {
         foreach (KeyValuePair<string, int> resource in pItem.NecessaryResourceCost)
@@ -30,7 +31,7 @@ internal static class ItemMakerHelper
         }
 
         pMainMaterial = null;
-        return true;
+        return false;
     }
 
     [Hotfixable]

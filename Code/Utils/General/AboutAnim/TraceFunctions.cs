@@ -1,4 +1,5 @@
 ﻿using System;
+using NeoModLoader.api.attributes;
 using UnityEngine;
 
 namespace Cultivation_Way.General.AboutAnim;
@@ -8,6 +9,13 @@ namespace Cultivation_Way.General.AboutAnim;
 /// </summary>
 public static class TraceFunctions
 {
+    [Hotfixable]
+    public static void free_fall(ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim,
+        ref float delta_x, ref float delta_y)
+    {
+        delta_y = -4.9f * anim.play_time * anim.play_time * anim.setting.trace_grad;
+    }
+
     /// <summary>
     ///     按src_vec->dst_vec方向直线移动
     /// </summary>

@@ -1,3 +1,4 @@
+using System.Linq;
 using Cultivation_Way.Library;
 
 namespace Cultivation_Way.Core;
@@ -19,5 +20,26 @@ public partial class CW_Actor
             CW_Core.LogInfo(
                 $"CW_Actor.__check_level_up__: can not level up: {cultisys.curr_progress(this, cultisys, level)}/{cultisys.max_progress(this, cultisys, level)}");
         }
+    }
+
+    private void __set_base_cw_item__(string item_id, EquipmentType slot)
+    {
+        if (equipment == null)
+        {
+            CW_Core.LogInfo("CW_Actor.__set_base_cw_item__: equipment is null");
+            return;
+        }
+
+        CW_ItemAsset item_asset = Manager.items.get(item_id);
+        if (item_asset == null)
+        {
+            CW_Core.LogInfo($"CW_Actor.__set_base_cw_item__: item_asset is null: {item_id}");
+            return;
+        }
+
+        string main_material = item_asset.MainMaterials.Keys.ToList().GetRandom();
+        CW_Core.LogInfo($"CW_Actor.__set_base_cw_item__: main_material: '{main_material}'");
+        CW_ItemData item_data = new(item_asset, this, main_material);
+        equipment.getSlot(slot).setItem(item_data);
     }
 }
