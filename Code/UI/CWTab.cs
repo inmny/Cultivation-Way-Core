@@ -4,6 +4,7 @@ using Cultivation_Way.Constants;
 using NCMS.Utils;
 using NeoModLoader.General;
 using NeoModLoader.General.UI.Tab;
+using NeoModLoader.ui;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -56,7 +57,7 @@ internal static class CWTab
         create_and_add_button(
             Constants.Core.modconfig_window,
             "ui/Icons/iconOptions",
-            () => ScrollWindow.showWindow(Constants.Core.modconfig_window),
+            () => { ModConfigureWindow.ShowWindow(CW_Core.Instance.GetConfig()); },
             ButtonType.Click,
             ButtonContainerType.TOOL
         );
