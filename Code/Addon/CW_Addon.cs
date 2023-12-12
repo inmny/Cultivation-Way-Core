@@ -10,8 +10,4 @@ public abstract class CW_Addon : BasicMod<CW_Addon>
     {
         initialized = true;
     }
-
-    protected override void OnModLoad()
-    {
-    }
 }
