@@ -10,7 +10,6 @@ using Cultivation_Way.Implementation;
 using Cultivation_Way.Others;
 using Cultivation_Way.UI;
 using ModDeclaration;
-using NCMS;
 using NeoModLoader.api;
 using NeoModLoader.api.attributes;
 using UnityEngine;
@@ -42,49 +41,30 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         energy_map_manager = null
     };
 
-    private void Awake()
-    {
-        mod_state = state;
-    }
-
     private void Update()
     {
         if (!state.all_initialized)
         {
-            if (!state.core_initialized)
+            if (!state.core_initialized) return;
+            // 等待附属初始化
+            if (!state.addons_initialized)
             {
-                // 初始化核心
-                state.core_initialized = true;
-                initialize();
-                try_to_load_core_content();
+                state.addons_initialized = true;
+                foreach (CW_Addon addon in state.addons.Where(addon => !addon.initialized))
+                {
+                    state.addons_initialized = false;
+                    break;
+                }
             }
             else
             {
-                // 等待附属初始化
-                if (!state.addons_initialized)
-                {
-                    /* 检查附属是否初始化完全 */
-                    /*一般加载流程为
-                     * 核心Awake, 附属依次Awake, 将自身加入到核心的附属列表中
-                     * 核心第一次Update
-                     */
-                    state.addons_initialized = true;
-                    foreach (CW_Addon addon in state.addons.Where(addon => !addon.initialized))
-                    {
-                        state.addons_initialized = false;
-                        break;
-                    }
-                }
-                else
-                {
-                    // 在所有附属初始化完毕后, 进行后续处理
-                    CWTab.post_init();
-                    action_on_windows("post_init");
-                    state.library_manager.post_init();
-                    state.energy_map_manager.init(256, 256);
+                // 在所有附属初始化完毕后, 进行后续处理
+                CWTab.post_init();
+                action_on_windows("post_init");
+                state.library_manager.post_init();
+                state.energy_map_manager.init(256, 256);
 
-                    state.all_initialized = true;
-                }
+                state.all_initialized = true;
             }
 
             return;
@@ -145,21 +125,12 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
 
     private void initialize()
     {
-        List<NCMod> mods = NCMS.ModLoader.Mods;
-        foreach (NCMod mod in mods.Where(mod => mod.name == Constants.Core.mod_name))
-        {
-            state.mod_info =
-                typeof(Info)
-                    .GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(NCMod) },
-                        null)
-                    ?.Invoke(new object[] { mod }) as Info;
-            break;
-        }
-
         state.anim_manager = gameObject.AddComponent<EffectManager>();
         state.spell_manager = new SpellManager();
         state.library_manager = new Manager();
         state.energy_map_manager = new CW_EnergyMapManager();
+
+        state.anim_manager.Init();
 
         GameObject ui_prefab_library_obj = new("UI_PrefabLibrary");
         GameObject actor_prefab_library_obj = new("Actor_PrefabLibrary");
@@ -223,6 +194,11 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
 
     protected override void OnModLoad()
     {
+        // 初始化核心
+        mod_state = state;
+        initialize();
+        state.core_initialized = true;
+        try_to_load_core_content();
     }
 
     [Hotfixable]

@@ -15,20 +15,8 @@ public class EffectManager : MonoBehaviour
     private readonly Dictionary<string, EffectController> controllers_dict = new();
     private readonly GameObject default_prefab = new();
     private readonly List<SpriteAnimation> single_anims = new();
-    private bool initialized;
     internal bool low_res;
     private float timer;
-
-    private void Awake()
-    {
-        if (initialized) return;
-
-        initialized = true;
-        instance = this;
-        default_prefab.AddComponent<SpriteRenderer>();
-
-        quality_changer = MapBox.instance.qualityChanger;
-    }
 
     [Hotfixable]
     private void Update()
@@ -87,6 +75,14 @@ public class EffectManager : MonoBehaviour
                 controllers[i].recycle_memory();
             }
         }
+    }
+
+    internal void Init()
+    {
+        instance = this;
+        default_prefab.AddComponent<SpriteRenderer>();
+
+        quality_changer = MapBox.instance.qualityChanger;
     }
 
     /// <summary>
