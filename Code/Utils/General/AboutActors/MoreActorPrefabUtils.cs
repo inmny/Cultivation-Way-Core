@@ -22,4 +22,9 @@ public static class MoreActorPrefabUtils
 
         FastVisit.patch_actor_prefab(pPath, pPrefab);
     }
+
+    public static GameObject GetActorPrefab(string pPath)
+    {
+        return FastVisit.get_actor_prefab(pPath);
+    }
 }

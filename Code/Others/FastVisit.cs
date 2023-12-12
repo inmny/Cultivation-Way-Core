@@ -191,6 +191,8 @@ internal static class FastVisit
 
     internal static void patch_actor_prefab(string path, GameObject prefab)
     {
+        prefab.SetActive(false);
+        prefab.transform.SetParent(CW_Core.actor_prefab_library);
         actor_prefabs[path] = prefab;
     }
 }
