@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Cultivation_Way.Addon;
 using Cultivation_Way.Animation;
 using Cultivation_Way.Core;
 using Cultivation_Way.Implementation;
@@ -12,6 +11,7 @@ using Cultivation_Way.UI;
 using ModDeclaration;
 using NeoModLoader.api;
 using NeoModLoader.api.attributes;
+using NeoModLoader.General;
 using UnityEngine;
 using Manager = Cultivation_Way.Library.Manager;
 
@@ -34,7 +34,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         editor_inmny = false,
         update_nr = 0,
         mod_info = null,
-        addons = new List<CW_Addon>(),
+        addons = new List<IMod>(),
         anim_manager = null,
         spell_manager = null,
         library_manager = null,
@@ -50,7 +50,8 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
             if (!state.addons_initialized)
             {
                 state.addons_initialized = true;
-                foreach (CW_Addon addon in state.addons.Where(addon => !addon.initialized))
+                foreach (var addon in state.addons.Where(addon =>
+                             addon.GetType().Name.Contains("CW_Addon") && !addon.GetField<bool>("initialized")))
                 {
                     state.addons_initialized = false;
                     break;
@@ -209,7 +210,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
 
     public class ModState
     {
-        internal List<CW_Addon> addons;
+        internal List<IMod> addons;
         public bool addons_initialized;
         public bool all_initialized;
         public EffectManager anim_manager;
