@@ -10,19 +10,19 @@ using UnityEngine.Events;
 
 namespace Cultivation_Way.UI;
 
-internal static class CWTab
+public static class CWTab
 {
     private static GameObject _tab;
     private static PowersTab _powers_tab;
 
-    public static void init()
+    internal static void init()
     {
         create_tab();
 
         add_buttons();
     }
 
-    public static void post_init()
+    internal static void post_init()
     {
         _powers_tab.UpdateLayout();
     }
@@ -95,7 +95,7 @@ internal static class CWTab
         );
     }
 
-    public static PowerButton create_and_add_button(string id, string sprite_path, UnityAction action,
+    internal static PowerButton create_and_add_button(string id, string sprite_path, UnityAction action,
         ButtonType button_type = ButtonType.Click, ButtonContainerType container_type = ButtonContainerType.OTHERS)
     {
         var ret = create_button(id, sprite_path, action, button_type);
@@ -121,7 +121,7 @@ internal static class CWTab
     /// <param name="action"></param>
     /// <param name="button_type"></param>
     /// <returns></returns>
-    public static PowerButton create_button(string id, string sprite_path, UnityAction action,
+    internal static PowerButton create_button(string id, string sprite_path, UnityAction action,
         ButtonType button_type = ButtonType.Click)
     {
         PowerButton ret = null;

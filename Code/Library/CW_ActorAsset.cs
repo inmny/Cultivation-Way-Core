@@ -59,7 +59,7 @@ public class CW_ActorAsset : Asset
     /// </summary>
     public ActorAsset vanllia_asset;
 
-    internal CW_ActorAsset(ActorAsset vanllia_asset)
+    public CW_ActorAsset(ActorAsset vanllia_asset)
     {
         id = vanllia_asset.id;
         this.vanllia_asset = vanllia_asset;

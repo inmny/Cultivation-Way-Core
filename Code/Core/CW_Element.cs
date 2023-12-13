@@ -36,7 +36,7 @@ public class CW_Element : FactoryItem<CW_Element>
     /// <param name="normalize">是否规格化</param>
     /// <param name="normalize_ceil">规格化上界</param>
     /// <param name="comp_type">是否即时确定元素类型</param>
-    internal CW_Element(int[] base_elements, bool normalize = false, int normalize_ceil = 100, bool comp_type = true)
+    public CW_Element(int[] base_elements, bool normalize = false, int normalize_ceil = 100, bool comp_type = true)
     {
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
@@ -56,7 +56,7 @@ public class CW_Element : FactoryItem<CW_Element>
     /// <param name="comp_type">是否即时确定元素类型</param>
     /// <param name="prefer_elements">偏好元素</param>
     /// <param name="prefer_scale">偏好系数</param>
-    internal CW_Element(bool random_generate = true, bool normalize = true, int normalize_ceil = 100,
+    public CW_Element(bool random_generate = true, bool normalize = true, int normalize_ceil = 100,
         bool comp_type = true, int[] prefer_elements = null, float prefer_scale = 0f)
     {
         BaseElements = new int[Constants.Core.element_type_nr];
