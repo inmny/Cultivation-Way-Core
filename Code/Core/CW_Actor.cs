@@ -100,6 +100,7 @@ public partial class CW_Actor : Actor
     /// <param name="pTarget">法术目标, 可为null</param>
     /// <param name="pTargetTile">法术目标区域, 可为null</param>
     /// <returns>法术是否合法</returns>
+    [Hotfixable]
     public bool CastSpell(CW_SpellAsset pSpell, BaseSimObject pTarget, WorldTile pTargetTile)
     {
         if ((pSpell.target_type == SpellTargetType.TILE && pTargetTile == null) ||
@@ -110,7 +111,7 @@ public partial class CW_Actor : Actor
             return false;
         if (has_status_frozen) return false;
 
-        bool is_enemy = kingdom == null || kingdom.isEnemy(pTarget.kingdom);
+        bool is_enemy = kingdom == null || kingdom.isEnemy(pTarget == null ? null : pTarget.kingdom);
 
         if ((pSpell.target_camp == SpellTargetCamp.ALIAS && is_enemy) ||
             (pSpell.target_camp == SpellTargetCamp.ENEMY && !is_enemy)) return false;
