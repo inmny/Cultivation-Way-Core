@@ -882,6 +882,9 @@ public partial class CW_Actor : Actor
         data.set(DataS.soul, float.MaxValue);
         // 暂且不支持直接的血脉修炼体系
         uint allow_cultisys_types = 0b111;
+        if (data.GetCultisys(CultisysType.WAKAN) != null) allow_cultisys_types &= ~(uint)CultisysType.WAKAN;
+        if (data.GetCultisys(CultisysType.SOUL) != null) allow_cultisys_types &= ~(uint)CultisysType.SOUL;
+        if (data.GetCultisys(CultisysType.BODY) != null) allow_cultisys_types &= ~(uint)CultisysType.BODY;
         // 强制添加的修炼体系
         foreach (CultisysAsset cultisys in cw_asset.force_cultisys)
         {
