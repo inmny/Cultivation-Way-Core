@@ -972,7 +972,7 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
-            id = $"fall_{name}_mountain", rarity = 3,
+            id = $"fall_{name}_mountain", rarity = 95,
             element = new CW_Element(new[] { 0, 0, 0, 0, 100 }),
             anim_id = $"fall_{name}_anim", anim_type = SpellAnimType.ON_TARGET,
             anim_action = AnimActions.fall_to_ground,
