@@ -39,7 +39,7 @@ public partial class CW_Actor : Actor
     /// <summary>
     ///     状态数据
     /// </summary>
-    internal Dictionary<string, CW_StatusEffectData> statuses;
+    public Dictionary<string, CW_StatusEffectData> statuses;
 
     public void StartColorEffect(string pColorID, float pRewrtieTimer = -1)
     {
