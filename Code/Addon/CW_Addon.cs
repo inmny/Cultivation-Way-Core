@@ -10,4 +10,9 @@ public abstract class CW_Addon<T> : BasicMod<T> where T : CW_Addon<T>
     {
         initialized = true;
     }
+
+    protected override void OnModLoad()
+    {
+        CW_Core.mod_state.addons.Add(this);
+    }
 }
