@@ -54,6 +54,15 @@ internal static class Cultisyses
 
                 actor.data.set(DataS.wakan, wakan);
                 return 0;
+            },
+            external_levelup_bonus = (actor, culti, level) =>
+            {
+                if (level % 5 == 0)
+                {
+                    SpecialSpells.CastDoom(actor, (DoomType)(level / 5 - 1));
+                }
+
+                return 0;
             }
         };
         for (int i = 0; i < Content_Constants.immortal_max_level; i++)
