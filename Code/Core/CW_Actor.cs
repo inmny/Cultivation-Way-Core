@@ -132,6 +132,7 @@ public partial class CW_Actor : Actor
     /// <param name="pRewriteEffectTime">重写状态持续时间</param>
     /// <param name="pAsID">加入状态表的key</param>
     /// <returns></returns>
+    [Hotfixable]
     public CW_StatusEffectData AddStatus(string pStatusID, BaseSimObject pFrom = null, float pRewriteEffectTime = -1,
         string pAsID = null)
     {
@@ -147,14 +148,9 @@ public partial class CW_Actor : Actor
         pAsID ??= pStatusID;
         statuses ??= new Dictionary<string, CW_StatusEffectData>();
 
-        if (statuses.TryGetValue(pAsID, out CW_StatusEffectData same_id_status)) return same_id_status;
-        CW_StatusEffectData status = new(status_asset, pFrom)
-        {
-            id = pAsID
-        };
         if (pRewriteEffectTime < 0)
         {
-            pRewriteEffectTime = status.left_time;
+            pRewriteEffectTime = status_asset.duration;
             if (pFrom != null && pFrom.isActor())
             {
                 float reduce = pFrom.a.data.GetMaxPower() / data.GetMaxPower();
@@ -163,23 +159,36 @@ public partial class CW_Actor : Actor
             }
         }
 
-        status.left_time = pRewriteEffectTime;
-
-        if (!string.IsNullOrEmpty(status_asset.anim_id))
+        if (statuses.TryGetValue(pAsID, out CW_StatusEffectData status))
         {
-            status.anim = EffectManager.instance.spawn_anim(status_asset.anim_id,
-                pFrom == null ? Vector2.zero : pFrom.currentPosition, currentPosition, pFrom, this);
-            if (status.anim is { isOn: true })
+            status.left_time += pRewriteEffectTime;
+        }
+        else
+        {
+            status = new CW_StatusEffectData(status_asset, pFrom)
             {
-                status.anim.change_scale(stats[S.scale]);
+                id = pAsID
+            };
+
+            status.left_time = pRewriteEffectTime;
+            if (!string.IsNullOrEmpty(status_asset.anim_id))
+            {
+                status.anim = EffectManager.instance.spawn_anim(status_asset.anim_id,
+                    pFrom == null ? Vector2.zero : pFrom.currentPosition, currentPosition, pFrom, this);
+                if (status.anim is { isOn: true })
+                {
+                    status.anim.change_scale(stats[S.scale]);
+                }
             }
+
+            statuses.Add(pAsID, status);
+            status_asset.action_on_get?.Invoke(status, pFrom, this);
+
+            activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
+            batch.c_status_effects.Add(this);
         }
 
-        statuses.Add(pAsID, status);
-        status_asset.action_on_get?.Invoke(status, pFrom, this);
-
-        activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
-        batch.c_status_effects.Add(this);
+        status.left_time = Mathf.Min(status.left_time, Constants.Others.max_status_effect_duration);
 
         setStatsDirty();
 

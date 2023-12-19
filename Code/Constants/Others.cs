@@ -12,6 +12,11 @@ public static class Others
     public const float common_map_icon_duration = 2f;
 
     /// <summary>
+    ///     状态效果的最大持续时间
+    /// </summary>
+    public const float max_status_effect_duration = 3600;
+
+    /// <summary>
     ///     继承父母灵根时随机灵根的概率
     /// </summary>
     public const float random_element_when_inherit_chance = 0.3f;
