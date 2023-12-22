@@ -473,16 +473,16 @@ public partial class CW_Actor : Actor
                     if (cultisys != null)
                     {
                         attacker.data.get(cultisys.id, out int level);
-                        best_reduce /= Mathf.Min(best_reduce,
-                            Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                        best_reduce = Mathf.Min(best_reduce,
+                            best_reduce / Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
                     }
 
                     cultisys = attacker.data.GetCultisys(CultisysType.BODY);
                     if (cultisys != null)
                     {
                         attacker.data.get(cultisys.id, out int level);
-                        best_reduce /= Mathf.Min(best_reduce,
-                            Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                        best_reduce = Mathf.Min(best_reduce,
+                            best_reduce / Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
                     }
                 }
 
