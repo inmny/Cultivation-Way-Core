@@ -64,12 +64,38 @@ public partial class CW_Actor : Actor
 
         setSpriteSharedMaterial(material);
     }
-
+    private bool cleaned_after_dead = false;
     /// <summary>
     ///     死后保留需要保留的数据
     /// </summary>
     internal void leave_data()
     {
+        if (cleaned_after_dead) return;
+
+        cleaned_after_dead = true;
+
+        CultisysAsset cultisys = null;
+        int level;
+
+        cultisys = data.GetCultisys(CultisysType.WAKAN);
+        if (cultisys != null)
+        {
+            data.get(cultisys.id, out level, 0);
+            cultisys.number_per_level[level]--;
+        }
+        cultisys = data.GetCultisys(CultisysType.BODY);
+        if (cultisys != null)
+        {
+            data.get(cultisys.id, out level, 0);
+            cultisys.number_per_level[level]--;
+        }
+        cultisys = data.GetCultisys(CultisysType.SOUL);
+        if (cultisys != null)
+        {
+            data.get(cultisys.id, out level, 0);
+            cultisys.number_per_level[level]--;
+        }
+
         BloodNodeAsset blood = data.GetMainBlood();
         if (blood != null && blood.id == data.id && blood.ancestor_data == data)
         {
@@ -743,9 +769,8 @@ public partial class CW_Actor : Actor
             }
 
             CultisysAsset cultisys = Manager.cultisys.get(cultisys_id);
-            if (level >= cultisys.max_level - 1) return;
 
-            if (cultisys.can_levelup(this, cultisys)) __level_up_and_get_bonus(cultisys, level);
+            if (cultisys.CanLevelUp(this, cultisys, level + 1)) __level_up_and_get_bonus(cultisys, level);
 
             return;
         }
@@ -756,9 +781,7 @@ public partial class CW_Actor : Actor
             if (cultisys_levels[i] < 0) continue;
             CultisysAsset cultisys = Manager.cultisys.list[i];
 
-            if (cultisys_levels[i] >= cultisys.max_level - 1) continue;
-
-            if (cultisys.can_levelup(this, cultisys)) __level_up_and_get_bonus(cultisys, cultisys_levels[i]);
+            if (cultisys.can_levelup(this, cultisys, cultisys_levels[i] + 1)) __level_up_and_get_bonus(cultisys, cultisys_levels[i]);
         }
     }
 
@@ -905,7 +928,7 @@ public partial class CW_Actor : Actor
 
         foreach (CultisysAsset cultisys in cw_asset.allowed_cultisys)
         {
-            if ((allow_cultisys_types & (uint)cultisys.type) == 0 || !cultisys.allow(this, cultisys))
+            if ((allow_cultisys_types & (uint)cultisys.type) == 0 || !cultisys.allow(this, cultisys, 0))
                 continue;
             data.set(cultisys.type.ToString(), cultisys.id);
             data.set(cultisys.id, 0);

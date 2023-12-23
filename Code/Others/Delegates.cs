@@ -13,9 +13,12 @@ namespace Cultivation_Way.Others;
 ///         <item>
 ///             <term>参数2</term><description>需要判定的修炼体系</description>
 ///         </item>
+///         <item>
+///             <term>参数3</term><description>目标等级</description>
+///         </item>
 ///     </list>
 /// </summary>
-public delegate bool CultisysJudge(CW_Actor actor, CultisysAsset cultisys);
+public delegate bool CultisysJudge(CW_Actor actor, CultisysAsset cultisys, int level);
 
 /// <summary>
 ///     获取修炼体系的属性加成

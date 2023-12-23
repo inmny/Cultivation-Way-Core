@@ -56,7 +56,7 @@ internal static class ActorTraits
                         continue;
                     }
 
-                    if ((allow_cultisys_types & (uint)cultisys.type) == 0 || !cultisys.allow(self, cultisys))
+                    if ((allow_cultisys_types & (uint)cultisys.type) == 0 || !cultisys.allow(self, cultisys, 0))
                         continue;
                     self.data.set(cultisys.id, 0);
                     allow_cultisys_types &= ~(uint)cultisys.type;

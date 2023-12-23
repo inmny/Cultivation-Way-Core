@@ -1,5 +1,6 @@
 using Cultivation_Way.Library;
 using NCMS.Utils;
+using NeoModLoader.General;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,10 +18,12 @@ public class WindowCultisysLevelConfig : AbstractWindow<WindowCultisysLevelConfi
             return;
         }
 
-        Localization.Set(Constants.Core.cultisys_level_config_window + Constants.Core.title_suffix,
+        LM.AddToCurrentLocale(Constants.Core.cultisys_level_config_window + Constants.Core.title_suffix,
             LocalizedTextManager.getText($"{editing_cultisys_asset.id}_{editing_cultisys_level}"));
+        
+        instance.level_limit_field.text = editing_cultisys_asset.number_limit_per_level[editing_cultisys_level].ToString();
     }
-
+    private InputField level_limit_field;
     internal static void init()
     {
         base_init(Constants.Core.cultisys_level_config_window);
@@ -38,12 +41,27 @@ public class WindowCultisysLevelConfig : AbstractWindow<WindowCultisysLevelConfi
         content_fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
 
         // 人数限制
-        Prefabs.instantiate_edit_bar("cw_cultisys_level_number_limit", content_transform);
+        instance.level_limit_field = Prefabs.instantiate_edit_bar("cw_cultisys_level_number_limit", content_transform).transform.Find("Name_Input/Input_Field").GetComponent<InputField>();
+        instance.level_limit_field.onValueChanged.AddListener((string value) =>
+        {
+            if (int.TryParse(value, out int result))
+            {
+                if(result < 0)
+                {
+                    instance.level_limit_field.textComponent.color = Color.red;
+                    return;
+                }
+                instance.level_limit_field.textComponent.color = Color.white;
+                instance.editing_cultisys_asset.number_limit_per_level[instance.editing_cultisys_level] = result;
+                return;
+            }
+            instance.level_limit_field.textComponent.color = Color.red;
+        });
         // 破镜难度
         // 属性设置
         initialized = true;
     }
-
+    
     internal static void select_cultisys_level(CultisysAsset cultisys_asset, int level)
     {
         instance.editing_cultisys_asset = cultisys_asset;

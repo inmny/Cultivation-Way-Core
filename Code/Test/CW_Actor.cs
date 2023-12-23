@@ -14,7 +14,7 @@ public partial class CW_Actor
         CW_Core.LogInfo($"CW_Actor.__check_level_up__: {cultisys_id} level is {level}");
         var cultisys = Manager.cultisys.get(cultisys_id);
         if (cultisys == null) CW_Core.LogInfo("CW_Actor.__check_level_up__: cultisys is null");
-        if (cultisys.can_levelup(this, cultisys)) CW_Core.LogInfo("CW_Actor.__check_level_up__: can level up");
+        if (cultisys.can_levelup(this, cultisys, level+1)) CW_Core.LogInfo("CW_Actor.__check_level_up__: can level up");
         else
         {
             CW_Core.LogInfo(

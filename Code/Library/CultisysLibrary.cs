@@ -65,6 +65,14 @@ public class CultisysAsset : Asset
     ///     获取额外的属性加成数据
     /// </summary>
     [NonSerialized] public CultisysStats stats_action;
+    /// <summary>
+    ///     各个境界人数限制
+    /// </summary>
+    public int[] number_limit_per_level;
+    /// <summary>
+    ///     各个境界当前人数
+    /// </summary>
+    public int[] number_per_level;
 
     public CultisysAsset(string id, string culti_energy_id, CultisysType type, int max_level)
     {
@@ -74,11 +82,23 @@ public class CultisysAsset : Asset
         this.culti_energy_id = culti_energy_id;
         power_level = new float[max_level];
         bonus_stats = new BaseStats[max_level];
+        number_limit_per_level = new int[max_level];
+        number_per_level = new int[max_level];
         for (int i = 0; i < max_level; i++)
         {
             bonus_stats[i] = new BaseStats();
             power_level[i] = 1;
+            number_limit_per_level[i] = int.MaxValue;
+            number_per_level[i] = 0;
         }
+    }
+    public bool CanLevelUp(CW_Actor pActor, CultisysAsset pAsset, int pLevel)
+    {
+        if (pLevel >= number_per_level.Length || number_per_level[pLevel] >= number_limit_per_level[pLevel])
+        {
+            return false;
+        }
+        return can_levelup(pActor, pAsset, pLevel);
     }
 
     /// <summary>
@@ -143,8 +163,8 @@ public class CultisysLibrary : CW_Library<CultisysAsset>
         foreach (CultisysAsset cultisys in list)
         {
             cultisys.pid = idx++;
-            cultisys.allow ??= (actor, culti) => false;
-            cultisys.can_levelup ??= (actor, culti) => false;
+            cultisys.allow ??= (actor, culti, level) => false;
+            cultisys.can_levelup ??= (actor, culti, level) => false;
             cultisys.curr_progress ??= (actor, culti, level) => 0;
             cultisys.max_progress ??= (actor, culti, level) => 1;
             cultisys.sprite_path ??= "ui/Icons/iconCultiSys";

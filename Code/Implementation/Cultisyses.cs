@@ -32,8 +32,8 @@ internal static class Cultisyses
                 return wakan;
             },
             max_progress = (actor, culti, level) => actor.stats[CW_S.wakan],
-            allow = (actor, culti) => actor.data.GetElement().GetElementType().id != "cw_common",
-            can_levelup = (actor, culti) =>
+            allow = (actor, culti, level) => actor.data.GetElement().GetElementType().id != "cw_common",
+            can_levelup = (actor, culti, level) =>
                 immortal.curr_progress(actor, immortal, 0) >= immortal.max_progress(actor, immortal, 0),
             monthly_update_action = (actor, culti, level) =>
             {
@@ -96,11 +96,10 @@ internal static class Cultisyses
             curr_progress = (actor, culti, level) => actor.data.health,
             max_progress = (actor, asset, level) => actor.stats[S.health],
             power_base = 1000,
-            can_levelup = (actor, asset) =>
+            can_levelup = (actor, asset, level) =>
             {
                 if (asset.curr_progress(actor, asset, 0) < asset.max_progress(actor, asset, 0) * 0.95f) return false;
-                actor.data.get(asset.id, out int level, 1);
-                return Toolbox.randomChance(1f / (level + 1));
+                return Toolbox.randomChance(1f / level);
             },
             monthly_update_action = (actor, asset, level) =>
             {
@@ -119,7 +118,7 @@ internal static class Cultisyses
 
                 return 0;
             },
-            allow = (actor, asset) =>
+            allow = (actor, asset, level) =>
             {
                 if (false)
                 {
@@ -169,13 +168,12 @@ internal static class Cultisyses
             },
             max_progress = (actor, asset, level) => actor.stats[CW_S.soul],
             power_base = 1000,
-            can_levelup = (actor, asset) =>
+            can_levelup = (actor, asset, level) =>
             {
                 if (asset.curr_progress(actor, asset, 0) < asset.max_progress(actor, asset, 0) * 0.95f) return false;
-                actor.data.get(asset.id, out int level, 1);
-                return Toolbox.randomChance(1f / (level + 1));
+                return Toolbox.randomChance(1f / level);
             },
-            allow = (actor, asset) => { return true; }
+            allow = (actor, asset, level) => { return true; }
         };
         for (int i = 0; i < Content_Constants.soul_max_level; i++)
         {
