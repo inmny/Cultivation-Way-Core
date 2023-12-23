@@ -1,0 +1,34 @@
+[
+    {
+        "id": "eastern_human_city",
+        "templates": [
+            {
+                "format": "{真实城名}"
+            }
+        ]
+    },
+    {
+        "id": "ming_city",
+        "templates": [
+            {
+                "format": "{真实城名}"
+            }
+        ]
+    },
+    {
+        "id": "wu_city",
+        "templates": [
+            {
+                "format": "{真实城名}"
+            }
+        ]
+    },
+    {
+        "id": "yao_city",
+        "templates": [
+            {
+                "format": "{真实城名}"
+            }
+        ]
+    }
+]

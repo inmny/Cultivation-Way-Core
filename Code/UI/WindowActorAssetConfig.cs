@@ -1,5 +1,11 @@
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
+using NeoModLoader.api.attributes;
+using NeoModLoader.General;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,8 +13,8 @@ namespace Cultivation_Way.UI;
 
 public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
 {
-    private ActorAsset editing_actor_asset;
     private Transform cultisys_select_grid;
+    private HashSet<CW_ActorAsset> found_actor_assets = new();
 
     internal static void init()
     {
@@ -31,7 +37,7 @@ public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
         GameObject search_part = new("Search", typeof(RectTransform));
         search_part.transform.SetParent(content_transform);
         search_part.transform.localScale = new Vector3(1, 1);
-        search_part.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 30);
+        search_part.GetComponent<RectTransform>().sizeDelta = new Vector2(0, 60);
         GameObject search_result = new("Search_Result", typeof(Text), typeof(LocalizedText));
         search_result.transform.SetParent(search_part.transform);
         search_result.GetComponent<Text>().font = LocalizedTextManager.currentFont;
@@ -42,61 +48,80 @@ public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
         search_result.GetComponent<Text>().color = Color.red;
         search_result.GetComponent<LocalizedText>().key = "no_found";
         search_result.GetComponent<LocalizedText>().text = search_result.GetComponent<Text>();
-        search_result.transform.localPosition = new Vector3(-75, 0);
+        search_result.transform.localPosition = new Vector3(-75, 15);
         search_result.transform.localScale = new Vector3(1, 1);
         search_result.GetComponent<RectTransform>().sizeDelta = new Vector2(50, 20);
+        GameObject search_count = Instantiate(search_result, search_part.transform);
+        search_count.name = "Search_Count";
+        search_count.transform.localPosition = new Vector3(0, -15);
+        search_count.GetComponent<RectTransform>().sizeDelta = new Vector2(200, 40);
+        search_count.GetComponent<LocalizedText>().autoField = false;
+        search_count.GetComponent<Text>().text = LM.Get("found_count").Replace("$count$", 0.ToString());
+        search_count.GetComponent<Text>().resizeTextMinSize = 4;
 
         GameObject search_input = Prefabs.instantiate_input_field(FastVisit.get_window_inner_sliced(),
             new Vector2(110, 20),
             new Vector2(4, 2), search_part.transform);
         search_input.name = "Search_Input";
-        search_input.transform.localPosition = new Vector3(5, 0);
+        search_input.transform.localPosition = new Vector3(5, 15);
         search_input.transform.localScale = new Vector3(1, 1);
         search_input.transform.Find("Input_Field").GetComponent<InputField>().onValueChanged.AddListener(
-            str =>
+            [Hotfixable](str) =>
             {
-                ActorAsset actor_asset = AssetManager.actor_library.get(str);
-                if (actor_asset == null)
+                if (string.IsNullOrEmpty(str))
                 {
                     search_result.GetComponent<Text>().color = Color.red;
-                    search_result.GetComponent<LocalizedText>().key = "no_found";
+                    search_result.GetComponent<LocalizedText>().setKeyAndUpdate("no_found");
+                    search_count.GetComponent<Text>().text = LM.Get("found_count").Replace("$count$", 0.ToString());
+                    search_count.GetComponent<Text>().color = Color.red;
+                    instance.found_actor_assets.Clear();
+                    instance.update_configure();
+                    return;
+                }
+                HashSet<CW_ActorAsset> searched_actor_assets = new();
+
+                searched_actor_assets.UnionWith(Manager.actors.SearchByID(str));
+                searched_actor_assets.UnionWith(Manager.actors.SearchByName(str));
+                searched_actor_assets.UnionWith(Manager.actors.SearchByRaceID(str));
+                searched_actor_assets.UnionWith(Manager.actors.SearchByRaceName(str));
+
+                if (searched_actor_assets.Count == 0)
+                {
+                    search_result.GetComponent<Text>().color = Color.red;
+                    search_count.GetComponent<Text>().color = Color.red;
+                    search_result.GetComponent<LocalizedText>().setKeyAndUpdate("no_found");
                 }
                 else
                 {
+                    CW_ActorAsset actor_asset = searched_actor_assets.First(_ => true);
                     search_result.GetComponent<Text>().color = Color.white;
-                    search_result.GetComponent<LocalizedText>().key = actor_asset.nameLocale;
+                    search_count.GetComponent<Text>().color = Color.white;
+                    search_result.GetComponent<LocalizedText>().setKeyAndUpdate(actor_asset.vanllia_asset.nameLocale);
                 }
-
-                search_result.GetComponent<LocalizedText>().updateText();
-            }
-        );
-        search_input.transform.Find("Input_Field").GetComponent<InputField>().onEndEdit.AddListener(
-            str =>
-            {
-                ActorAsset actor_asset = AssetManager.actor_library.get(str);
-                if (actor_asset == null)
+                StringBuilder sb = new StringBuilder();
+                sb.Append(LM.Get("found_count").Replace("$count$", searched_actor_assets.Count.ToString()));
+                sb.Append(':');
+                foreach (CW_ActorAsset actor_asset in searched_actor_assets)
                 {
-                    if (instance.editing_actor_asset == null)
+                    if(string.IsNullOrEmpty(actor_asset.vanllia_asset.nameLocale) || !LocalizedTextManager.stringExists(actor_asset.vanllia_asset.nameLocale))
                     {
-                        search_result.GetComponent<Text>().color = Color.red;
-                        search_result.GetComponent<LocalizedText>().key = "no_found";
-                        search_result.GetComponent<LocalizedText>().updateText();
+                        sb.Append(actor_asset.vanllia_asset.id);
                     }
                     else
                     {
-                        search_input.transform.Find("Input_Field").GetComponent<InputField>().text =
-                            instance.editing_actor_asset.id;
+                        sb.Append(LM.Get(actor_asset.vanllia_asset.nameLocale));
                     }
+                    sb.Append(';');
                 }
-                else
-                {
-                    instance.select_actor_asset(actor_asset);
-                }
+                search_count.GetComponent<Text>().text = sb.ToString();
+
+                instance.found_actor_assets = searched_actor_assets;
+                instance.update_configure();
             }
         );
         GameObject search_help = new("Search_Help", typeof(Image), typeof(Button));
         search_help.transform.SetParent(search_part.transform);
-        search_help.transform.localPosition = new Vector3(82, 0);
+        search_help.transform.localPosition = new Vector3(82, 15);
         search_help.transform.localScale = new Vector3(1, 1);
         search_help.GetComponent<Image>().sprite = FastVisit.get_red_button();
         search_help.GetComponent<Image>().type = Image.Type.Sliced;
@@ -166,6 +191,46 @@ public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
 
         #endregion
     }
+    [Hotfixable]
+    private void update_configure()
+    {
+        foreach(Button button in cultisys_buttons)
+        {
+            GameObject button_icon = button.transform.Find("Icon").gameObject;
+            if (button_icon.activeSelf)
+            {
+                button_icon.SetActive(false);
+            }
+            button.GetComponent<Image>().color = Color.white;
+        }
+        if (found_actor_assets.Count == 0) return;
+
+        HashSet<CultisysAsset> allowed = new(found_actor_assets.First().allowed_cultisys);
+        HashSet<CultisysAsset> implicits = new();
+
+        foreach(var asset in found_actor_assets)
+        {
+            allowed.IntersectWith(asset.allowed_cultisys);
+            implicits.UnionWith(asset.allowed_cultisys);
+        }
+
+        foreach(Transform cultisys_select_tsf in cultisys_select_grid)
+        {
+            GameObject select_button = cultisys_select_tsf.Find("Button").gameObject;
+            GameObject select_button_icon = select_button.transform.Find("Icon").gameObject;
+            select_button_icon.SetActive(allowed.Contains(Manager.cultisys.get(cultisys_select_tsf.name)));
+            CultisysAsset cultisys = Manager.cultisys.get(cultisys_select_tsf.name);
+            if (implicits.Contains(cultisys) && !allowed.Contains(cultisys))
+            {
+                select_button.GetComponent<Image>().color = Color.green;
+            }
+            else
+            {
+                select_button.GetComponent<Image>().color = Color.white;
+            }
+        }
+    }
+    private List<Button> cultisys_buttons = new();
 
     internal static void post_init()
     {
@@ -173,6 +238,7 @@ public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
             "ui/icons/iconYaos", Constants.Core.actorasset_config_window);
         foreach (CultisysAsset cultisys in Manager.cultisys.list)
         {
+            string tmp_cultisys_id = cultisys.id;
             GameObject cultisys_select_obj = new(cultisys.id, typeof(RectTransform));
             cultisys_select_obj.transform.SetParent(instance.cultisys_select_grid);
             cultisys_select_obj.transform.localScale = new Vector3(1, 1);
@@ -200,36 +266,28 @@ public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
             select_button_icon.GetComponent<RectTransform>().sizeDelta = new Vector2(20, 20);
             select_button_icon.GetComponent<Image>().sprite = SpriteTextureLoader.getSprite("ui/icons/iconOn");
             select_button_icon.SetActive(false);
+            instance.cultisys_buttons.Add(select_button.GetComponent<Button>());
             select_button.GetComponent<Button>().onClick.AddListener(() =>
             {
                 select_button_icon.SetActive(!select_button_icon.activeSelf);
-                if (instance.editing_actor_asset == null) return;
-
-                CW_ActorAsset cw_actor_asset = Manager.actors.get(instance.editing_actor_asset.id);
-                if (select_button_icon.activeSelf)
+                if (instance.found_actor_assets.Count == 0) return;
+                bool active = select_button_icon.activeSelf;
+                foreach(CW_ActorAsset asset in instance.found_actor_assets)
                 {
-                    cw_actor_asset.allowed_cultisys.Add(Manager.cultisys.get(cultisys_select_obj.name));
-                }
-                else
-                {
-                    cw_actor_asset.allowed_cultisys.Remove(Manager.cultisys.get(cultisys_select_obj.name));
+                    CultisysAsset cultisys_asset = Manager.cultisys.get(tmp_cultisys_id);
+                    if (active)
+                    {
+                        if (!asset.allowed_cultisys.Contains(cultisys_asset))
+                        {
+                            asset.allowed_cultisys.Add(cultisys_asset);
+                        }
+                    }
+                    else
+                    {
+                        asset.allowed_cultisys.Remove(cultisys_asset);
+                    }
                 }
             });
-        }
-    }
-
-    private void select_actor_asset(ActorAsset actor_asset)
-    {
-        instance.editing_actor_asset = actor_asset;
-        if (actor_asset == null) return;
-        CW_ActorAsset cw_actor_asset = Manager.actors.get(actor_asset.id);
-        // 更新允许的修炼体系
-        foreach (Transform cultisys_select_tsf in cultisys_select_grid)
-        {
-            GameObject select_button = cultisys_select_tsf.Find("Button").gameObject;
-            GameObject select_button_icon = select_button.transform.Find("Icon").gameObject;
-            select_button_icon.SetActive(
-                cw_actor_asset.allowed_cultisys.Contains(Manager.cultisys.get(cultisys_select_tsf.name)));
         }
     }
 }

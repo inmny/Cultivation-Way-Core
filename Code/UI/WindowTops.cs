@@ -14,31 +14,12 @@ namespace Cultivation_Way.UI;
 
 public class WindowTops : AbstractWindow<WindowTops>
 {
-    private GameObject creature_entry;
-    private GameObject cultibook_entry;
-    private GameObject blood_entry;
-    private GameObject item_entry;
-    private GameObject pope_entry;
-    private GameObject city_entry;
-    private GameObject kingdom_entry;
-    private GameObject clan_entry;
-    private GameObject no_item;
-
-    private GameObject sort_key;
-    private GameObject filter;
-
-    private TopValueCalc curr_value_calc;
-    private TopValueShow curr_value_show;
-    private TopFilterCheck curr_filter;
-    private string curr_icon;
-    private SimpleInfo curr_info_prefab;
-    private readonly int show_count = 10;
-    private readonly List<object> curr_list = new();
-
     private readonly Dictionary<string, TopValueCalc> calcs = new();
-    private readonly Dictionary<string, TopValueShow> shows = new();
-    private readonly Dictionary<string, string> icons = new();
+    private readonly List<object> curr_list = new();
     private readonly Dictionary<string, TopFilterCheck> filter_funcs = new();
+    private readonly Dictionary<string, string> icons = new();
+    private readonly int show_count = 10;
+    private readonly Dictionary<string, TopValueShow> shows = new();
 
     private readonly string[] top_ids =
     {
@@ -51,6 +32,42 @@ public class WindowTops : AbstractWindow<WindowTops>
         "kingdom",
         "clan"
     };
+
+    private GameObject blood_entry;
+    private GameObject city_entry;
+    private GameObject clan_entry;
+    private GameObject creature_entry;
+    private GameObject cultibook_entry;
+    private TopFilterCheck curr_filter;
+    private string curr_icon;
+    private SimpleInfo curr_info_prefab;
+
+    private TopValueCalc curr_value_calc;
+    private TopValueShow curr_value_show;
+    private GameObject filter;
+    private GameObject item_entry;
+    private GameObject kingdom_entry;
+    private GameObject no_item;
+    private GameObject pope_entry;
+
+    private GameObject sort_key;
+
+    private void OnEnable()
+    {
+        if (!initialized) return;
+        clear_content();
+        if (curr_value_calc != null)
+        {
+            foreach (string top_id in top_ids)
+            {
+                if (!sort_key.transform.Find(top_id).gameObject.activeSelf) continue;
+                this.CallMethod($"load_{top_id}_list");
+                break;
+            }
+
+            show();
+        }
+    }
 
     internal static void init()
     {
@@ -228,23 +245,6 @@ public class WindowTops : AbstractWindow<WindowTops>
             {
                 // 忽略, 仅说明该分榜未实现
             }
-        }
-    }
-
-    private void OnEnable()
-    {
-        if (!initialized) return;
-        clear_content();
-        if (curr_value_calc != null)
-        {
-            foreach (string top_id in top_ids)
-            {
-                if (!sort_key.transform.Find(top_id).gameObject.activeSelf) continue;
-                this.CallMethod($"load_{top_id}_list");
-                break;
-            }
-
-            show();
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using Cultivation_Way.Core;
+﻿using System.Collections.Generic;
+using Cultivation_Way.Core;
 using Cultivation_Way.Library;
 using UnityEngine;
 
@@ -12,9 +13,13 @@ namespace Cultivation_Way.Others;
 ///         <item>
 ///             <term>参数2</term><description>需要判定的修炼体系</description>
 ///         </item>
+///         <item>
+///             <term>参数3</term><description>目标等级</description>
+///         </item>
 ///     </list>
 /// </summary>
-public delegate bool CultisysJudge(CW_Actor actor, CultisysAsset cultisys);
+public delegate bool CultisysJudge(CW_Actor actor, CultisysAsset cultisys, int level);
+public delegate void CultisysInit(CultisysAsset cultisys);
 
 /// <summary>
 ///     获取修炼体系的属性加成
@@ -48,6 +53,7 @@ public delegate float EnergySpreadGradCalc(
 );
 
 public delegate void EnergyMapInitialize(CW_EnergyMapTile tiles, int x, int y, int width, int height);
+
 /// <summary>
 ///     动画结束时的委托
 /// </summary>
@@ -101,3 +107,9 @@ public delegate float TopValueCalc(object obj);
 ///     用于天榜筛选
 /// </summary>
 public delegate bool TopFilterCheck(object obj);
+
+public delegate void GetCultibookNameParameters(Cultibook pCultibook, CW_Actor pEditor,
+    Dictionary<string, string> pParameters);
+
+public delegate void GetCWItemNameParameters(CW_ItemData pItemData, CW_ItemAsset pItemAsset, CW_Actor pCreator,
+    Dictionary<string, string> pParameters);

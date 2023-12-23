@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Factory;
 using Cultivation_Way.Library;
+using NeoModLoader.api.attributes;
+using NeoModLoader.services;
 using UnityEngine;
 
 namespace Cultivation_Way.Core;
@@ -10,7 +12,14 @@ namespace Cultivation_Way.Core;
 public class CW_Element : FactoryItem<CW_Element>
 {
     private static readonly BaseStats tmp_stats = new();
-    public readonly int[] BaseElements = new int[Constants.Core.element_type_nr];
+
+    private static readonly Color water = Color.blue;
+    private static readonly Color fire = Color.red;
+    private static readonly Color wood = Color.green;
+    private static readonly Color iron = Color.yellow;
+    private static readonly Color ground = Toolbox.makeColor("#603700");
+    private static readonly Color[] element_colors = { water, fire, wood, iron, ground };
+    public int[] BaseElements = new int[Constants.Core.element_type_nr];
     private string type_id;
 
     public CW_Element()
@@ -23,15 +32,15 @@ public class CW_Element : FactoryItem<CW_Element>
     /// <summary>
     ///     创建CW_Element对象
     /// </summary>
-    /// <param name="base_elements">给定元素组合</param>
+    /// <param name="base_elements">给定元素组合(水, 火, 木, 金, 土)</param>
     /// <param name="normalize">是否规格化</param>
     /// <param name="normalize_ceil">规格化上界</param>
     /// <param name="comp_type">是否即时确定元素类型</param>
-    internal CW_Element(int[] base_elements, bool normalize = false, int normalize_ceil = 100, bool comp_type = true)
+    public CW_Element(int[] base_elements, bool normalize = false, int normalize_ceil = 100, bool comp_type = true)
     {
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            this.BaseElements[i] = base_elements[i];
+            BaseElements[i] = base_elements[i];
         }
 
         if (normalize) __normalize(normalize_ceil);
@@ -47,7 +56,7 @@ public class CW_Element : FactoryItem<CW_Element>
     /// <param name="comp_type">是否即时确定元素类型</param>
     /// <param name="prefer_elements">偏好元素</param>
     /// <param name="prefer_scale">偏好系数</param>
-    internal CW_Element(bool random_generate = true, bool normalize = true, int normalize_ceil = 100,
+    public CW_Element(bool random_generate = true, bool normalize = true, int normalize_ceil = 100,
         bool comp_type = true, int[] prefer_elements = null, float prefer_scale = 0f)
     {
         BaseElements = new int[Constants.Core.element_type_nr];
@@ -85,6 +94,12 @@ public class CW_Element : FactoryItem<CW_Element>
         type_id = Constants.Core.uniform_type;
     }
 
+    [Hotfixable]
+    public override string ToString()
+    {
+        return $"[{BaseElements[0]}, {BaseElements[1]}, {BaseElements[2]}, {BaseElements[3]}, {BaseElements[4]}]";
+    }
+
     /// <summary>
     ///     获取用来初始化人物数据用的临时元素
     /// </summary>
@@ -115,6 +130,31 @@ public class CW_Element : FactoryItem<CW_Element>
 
         middle.Normalize();
         return middle;
+    }
+
+    /// <summary>
+    ///     与另一个元素组合按pScale合并
+    /// </summary>
+    /// <param name="pElement">合并元素</param>
+    /// <param name="pScale">scale, 应该大于0</param>
+    /// <param name="normalize_ceil">规格化上限, 应该大于0, 默认为100</param>
+    /// <param name="pCompType">合并后是否自动计算类型</param>
+    public void MergeWith(CW_Element pElement, float pScale, int normalize_ceil = 100, bool pCompType = true)
+    {
+        for (int i = 0; i < Constants.Core.element_type_nr; i++)
+        {
+            BaseElements[i] = (int)((BaseElements[i] + pElement.BaseElements[i] * pScale) / (1 + pScale));
+        }
+
+        if (normalize_ceil > 0)
+        {
+            __normalize(normalize_ceil);
+        }
+
+        if (pCompType)
+        {
+            __comp_type();
+        }
     }
 
     public CW_Element Deepcopy()
@@ -242,12 +282,20 @@ public class CW_Element : FactoryItem<CW_Element>
             // 加上稀有度影响
             tmp_no_similarity = (1 - __get_similarity(asset_list[i].base_elements, BaseElements)) *
                                 asset_list[i].rarity;
-            if (tmp_no_similarity < min_no_similarity || (tmp_no_similarity == min_no_similarity &&
+            if (tmp_no_similarity < min_no_similarity || (Math.Abs(tmp_no_similarity - min_no_similarity) < 1e-3 &&
                                                           asset_list[i].rarity > Manager.elements.get(type_id).rarity))
             {
                 min_no_similarity = tmp_no_similarity;
                 type_id = asset_list[i].id;
             }
+        }
+
+        if (string.IsNullOrEmpty(type_id))
+        {
+            type_id = Constants.Core.uniform_type;
+            CW_Core.LogError(
+                $"Failed to compute type for {BaseElements[0]}, {BaseElements[1]}, {BaseElements[2]}, {BaseElements[3]}, {BaseElements[4]}");
+            LogService.LogStackTraceAsError();
         }
     }
 
@@ -341,7 +389,7 @@ public class CW_Element : FactoryItem<CW_Element>
     {
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
-            this.BaseElements[i] = base_elements[i];
+            BaseElements[i] = base_elements[i];
         }
 
         if (normalize) __normalize(normalize_ceil);
@@ -359,13 +407,6 @@ public class CW_Element : FactoryItem<CW_Element>
 
         data.get(DataS.element_type_id, out type_id, Constants.Core.uniform_type);
     }
-
-    private static readonly Color water = Color.blue;
-    private static readonly Color fire = Color.red;
-    private static readonly Color wood = Color.green;
-    private static readonly Color iron = Color.yellow;
-    private static readonly Color ground = Toolbox.makeColor("#603700");
-    private static readonly Color[] element_colors = { water, fire, wood, iron, ground };
 
     public Color GetColor()
     {

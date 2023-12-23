@@ -18,8 +18,11 @@
 
 两种方式:
 
-1. 当代码量较少且局限于bug修复和性能优化时, 提出 Pull Request 等待回复即可。当不满足该条件时, 在 Pull Request Description 中详细描述.
-2. 当代码量较多或尝试添加新的内容/功能时, 邮件联系 <1342885270@qq.com> 沟通或提出 [Issue](https://github.com/inmny/Cultivation-Way-Core/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=) 讨论通过后再Coding, 以免浪费时间.
+1. 当代码量较少且局限于bug修复和性能优化时, 提出 Pull Request 等待回复即可。当不满足该条件时, 在 Pull Request Description
+   中详细描述.
+2. 当代码量较多或尝试添加新的内容/功能时, 邮件联系 <1342885270@qq.com>
+   沟通或提出 [Issue](https://github.com/inmny/Cultivation-Way-Core/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=)
+   讨论通过后再Coding, 以免浪费时间.
 
 ## TODO
 

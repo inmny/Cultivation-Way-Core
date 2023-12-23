@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System;
+using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using Cultivation_Way.Constants;
 using HarmonyLib;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using UnityEngine;
 
 namespace Cultivation_Way.Utils;
@@ -22,19 +22,30 @@ public static class GeneralHelper
         new int[2] { 0, 2 } //左下
     };
 
+    private static readonly JsonSerializerSettings private_members_visit_settings = new()
+    {
+        ContractResolver = new DefaultContractResolver
+        {
+            // 反正不改版本, 就用这个吧
+#pragma warning disable 618
+            DefaultMembersSearchFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+#pragma warning restore 618
+        }
+    };
+
     private static void SelfUpload(string changelog)
     {
-        var mod_info = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, object>>(
+        var mod_info = JsonConvert.DeserializeObject<Dictionary<string, object>>(
             File.ReadAllText(Path.Combine(CW_Core.Instance.GetDeclaration().FolderPath, "mod.json")));
         string version = (string)mod_info["version"];
         mod_info["version"] = next_version(version);
         File.WriteAllText(Path.Combine(CW_Core.Instance.GetDeclaration().FolderPath, "mod.json"),
-            Newtonsoft.Json.JsonConvert.SerializeObject(mod_info, Formatting.Indented));
+            JsonConvert.SerializeObject(mod_info, Formatting.Indented));
 
         Type type = AccessTools.TypeByName("ModWorkshopService");
         MethodInfo method = type.GetMethod("TryEditMod");
         method.Invoke(null, new object[] { 3072913057, CW_Core.Instance, changelog });
-        
+
         return;
 
         string next_version(string pVersion)
@@ -45,16 +56,25 @@ public static class GeneralHelper
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static string to_json(object obj)
+    public static string to_json(object obj, bool private_members_included = false)
     {
-        //return System.Text.Json.JsonSerializer.Serialize(obj);
+        if (private_members_included)
+        {
+            return JsonConvert.SerializeObject(obj, private_members_visit_settings);
+        }
+
         return JsonConvert.SerializeObject(obj);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T from_json<T>(string json)
+    public static T from_json<T>(string json, bool private_members_included = false)
     {
         //return System.Text.Json.JsonSerializer.Deserialize<T>(json);
+        if (private_members_included)
+        {
+            return JsonConvert.DeserializeObject<T>(json, private_members_visit_settings);
+        }
+
         return JsonConvert.DeserializeObject<T>(json);
     }
 
@@ -179,8 +199,9 @@ public static class GeneralHelper
     public static List<BaseSimObject> find_enemies_in_circle(WorldTile center_tile, Kingdom kingdom, float radius,
         bool building_included = true)
     {
-        List<WorldTile> tiles = get_tiles_in_circle(center_tile, radius);
         List<BaseSimObject> enemies = new();
+        if (MapBox.instance.worldLaws.world_law_peaceful_monsters.boolVal) return enemies;
+        List<WorldTile> tiles = get_tiles_in_circle(center_tile, radius);
         foreach (WorldTile tile in tiles)
         {
             if (building_included && tile.building != null && is_enemy(tile.building.kingdom, kingdom))
@@ -229,8 +250,9 @@ public static class GeneralHelper
     public static List<BaseSimObject> find_enemies_in_square(WorldTile center_tile, Kingdom kingdom, float half_edge,
         bool building_included = true)
     {
-        List<WorldTile> tiles = get_tiles_in_square(center_tile, half_edge);
         List<BaseSimObject> enemies = new();
+        if (MapBox.instance.worldLaws.world_law_peaceful_monsters.boolVal) return enemies;
+        List<WorldTile> tiles = get_tiles_in_square(center_tile, half_edge);
         foreach (WorldTile tile in tiles)
         {
             if (building_included && tile.building != null && is_enemy(tile.building.kingdom, kingdom))

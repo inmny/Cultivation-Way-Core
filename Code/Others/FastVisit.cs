@@ -24,6 +24,8 @@ internal static class FastVisit
     private static Sprite button_1;
     private static Sprite info_bg;
 
+    private static readonly HashSet<string> actor_prefab_blacklist = new();
+
     public static void init()
     {
         get_actor_prefabs();
@@ -54,7 +56,7 @@ internal static class FastVisit
 
     public static GameObject get_actor_prefab(string path)
     {
-        return actor_prefabs.ContainsKey(path) ? actor_prefabs[path] : null;
+        return actor_prefabs.TryGetValue(path, out GameObject prefab) ? prefab : try_generate_actor_prefab(path);
     }
 
     public static Sprite get_info_bg()
@@ -159,11 +161,38 @@ internal static class FastVisit
                 continue;
             }
 
-            GameObject new_prefab = GameObject.Instantiate(old_prefab, CW_Core.actor_prefab_library);
+            GameObject new_prefab = Object.Instantiate(old_prefab, CW_Core.actor_prefab_library);
             new_prefab.SetActive(false);
-            GameObject.Destroy(new_prefab.GetComponent<Actor>());
+            Object.Destroy(new_prefab.GetComponent<Actor>());
             new_prefab.AddComponent<CW_Actor>();
             actor_prefabs[actor_prefab_paths[i]] = new_prefab;
         }
+    }
+
+    private static GameObject try_generate_actor_prefab(string pPath)
+    {
+        if (actor_prefab_blacklist.Contains(pPath)) return null;
+        GameObject old_prefab = Resources.Load<GameObject>(pPath);
+
+        if (old_prefab == null)
+        {
+            CW_Core.LogWarning($"Empty prefab {pPath}");
+            actor_prefab_blacklist.Add(pPath);
+            return null;
+        }
+
+        GameObject new_prefab = Object.Instantiate(old_prefab, CW_Core.actor_prefab_library);
+        new_prefab.SetActive(false);
+        Object.Destroy(new_prefab.GetComponent<Actor>());
+        new_prefab.AddComponent<CW_Actor>();
+        actor_prefabs[pPath] = new_prefab;
+        return new_prefab;
+    }
+
+    internal static void patch_actor_prefab(string path, GameObject prefab)
+    {
+        prefab.SetActive(false);
+        prefab.transform.SetParent(CW_Core.actor_prefab_library);
+        actor_prefabs[path] = prefab;
     }
 }

@@ -2,6 +2,7 @@
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using HarmonyLib;
+using UnityEngine;
 
 namespace Cultivation_Way.Implementation.HarmonySpace;
 
@@ -46,12 +47,16 @@ internal static class H_Actor
                 goto BUSHIDO_CHECK;
             }
 
-            float culti_wakan = actor.cw_asset.culti_velo * energy_tile.density *
+            float culti_wakan = actor.cw_asset.culti_velo * Mathf.Pow(10, energy_tile.density) *
                                 (1 + actor.stats[CW_S.mod_cultivelo]) *
-                                Content_Constants.immortal_base_cultivelo * actor.data.GetElement().GetElementType().rarity;
+                                Content_Constants.immortal_base_cultivelo *
+                                actor.data.GetElement().GetElementType().rarity *
+                                Cultisyses.immortal_power_co[level];
 
             culti_wakan = culti_wakan > energy_tile.value ? energy_tile.value : culti_wakan;
 
+            max_wakan *= Cultisyses.immortal_power_co[level];
+            wakan *= Cultisyses.immortal_power_co[level];
             if (wakan + culti_wakan >= max_wakan)
             {
                 wakan = max_wakan;
@@ -64,9 +69,11 @@ internal static class H_Actor
 
             energy_tile.value -= culti_wakan;
 
+            wakan /= Cultisyses.immortal_power_co[level];
             actor.data.set(DataS.wakan, wakan);
             actor.CheckLevelUp(Content_Constants.immortal_id);
         }
+
         BUSHIDO_CHECK:
         actor.data.get(Content_Constants.bushido_id, out level, -1);
         if (level >= 0)
@@ -97,6 +104,7 @@ internal static class H_Actor
 
             actor.CheckLevelUp(Content_Constants.bushido_id);
         }
+
         SOUL_CHECK:
         actor.CheckLevelUp(Content_Constants.soul_id);
     }

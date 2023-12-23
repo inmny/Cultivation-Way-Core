@@ -106,11 +106,11 @@ internal static class H_City
 
         if (parent_1_blood == null && parent_2_blood != null)
         {
-            child_data.set_blood_nodes_only_save(parent_1_blood);
+            child_data.set_blood_nodes_only_save(parent_2_blood);
         }
         else if (parent_1_blood != null && parent_2_blood == null)
         {
-            child_data.set_blood_nodes_only_save(parent_2_blood);
+            child_data.set_blood_nodes_only_save(parent_1_blood);
         }
         else if (parent_1_blood != null && parent_2_blood != null)
         {

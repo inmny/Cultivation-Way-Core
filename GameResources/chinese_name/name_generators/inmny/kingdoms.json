@@ -1,0 +1,34 @@
+[
+    {
+        "id": "eastern_human_kingdom",
+        "templates": [
+            {
+                "format": "{真实国名}"
+            }
+        ]
+    },
+    {
+        "id": "ming_kingdom",
+        "templates": [
+            {
+                "format": "{真实国名}"
+            }
+        ]
+    },
+    {
+        "id": "wu_kingdom",
+        "templates": [
+            {
+                "format": "{真实国名}"
+            }
+        ]
+    },
+    {
+        "id": "yao_kingdom",
+        "templates": [
+            {
+                "format": "{真实国名}"
+            }
+        ]
+    }
+]

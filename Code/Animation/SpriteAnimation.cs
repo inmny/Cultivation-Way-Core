@@ -1,5 +1,6 @@
 ﻿using System;
 using Cultivation_Way.Extension;
+using NeoModLoader.api.attributes;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -104,10 +105,6 @@ public class SpriteAnimation
     ///     路径长度
     /// </summary>
     public float trace_length;
-    /// <summary>
-    ///     创建时设定的大小
-    /// </summary>
-    public float default_scale { get; private set; }
 
     internal SpriteAnimation(AnimationSetting setting, Sprite[] sprites, GameObject prefab, Vector2 src_vec,
         Vector2 dst_vec, BaseSimObject src_object, BaseSimObject dst_object)
@@ -126,6 +123,11 @@ public class SpriteAnimation
 
         apply_setting(src_vec, dst_vec, src_object, dst_object);
     }
+
+    /// <summary>
+    ///     创建时设定的大小
+    /// </summary>
+    public float default_scale { get; private set; }
 
     // TODO: complete it
     internal void apply_setting(Vector2 src_vec, Vector2 dst_vec, BaseSimObject src_object, BaseSimObject dst_object)
@@ -207,6 +209,7 @@ public class SpriteAnimation
         //renderer.sprite = sprites[cur_frame_idx];
     }
 
+    [Hotfixable]
     internal void update(float elapsed)
     {
         if (!isOn)
@@ -214,8 +217,10 @@ public class SpriteAnimation
             return;
         }
 
-        if (renderer.enabled && !setting.visible_in_low_res && EffectManager.instance.low_res) hide();
-        if (!renderer.enabled && setting.visible_in_low_res && !EffectManager.instance.low_res) show();
+        if (renderer.enabled &&
+            ((!setting.visible_in_low_res && EffectManager.instance.low_res) || IsOutScreen())) hide();
+        if (!renderer.enabled && setting.visible_in_low_res && !EffectManager.instance.low_res &&
+            !IsOutScreen()) show();
 
         //if (!CW_EffectManager.instance.low_res && renderer.sprite == null) renderer.sprite = sprites[cur_frame_idx];
         play_time += elapsed;
@@ -237,6 +242,10 @@ public class SpriteAnimation
         if (elapsed < next_frame_time)
         {
             next_frame_time -= elapsed;
+            if (Config.timeScale >= 3)
+            {
+                return;
+            }
         }
         else
         {
@@ -254,7 +263,7 @@ public class SpriteAnimation
                     ? 1
                     : -1;
                 int next_frame_idx = (cur_frame_idx + change + sprites.Length) % sprites.Length;
-                if (setting.visible_in_low_res || !EffectManager.instance.low_res)
+                if (renderer.enabled)
                     renderer.sprite = sprites[next_frame_idx];
                 cur_frame_idx = next_frame_idx;
                 if (cur_frame_idx == 0) loop_nr++;
@@ -268,7 +277,7 @@ public class SpriteAnimation
         //始终旋转
         if (setting.always_roll)
         {
-            gameObject.transform.Rotate(setting.always_roll_axis * elapsed * setting.roll_angle_per_frame);
+            gameObject.transform.Rotate(setting.always_roll_axis * (elapsed * setting.roll_angle_per_frame));
         }
 
         // 检测到目标不存在后停止
@@ -287,7 +296,8 @@ public class SpriteAnimation
 
             if (setting.trace_type == AnimationTraceType.TRACK)
             {
-                Vector2 tmp_src_vec = new(gameObject.transform.position.x, gameObject.transform.position.y);
+                var position = gameObject.transform.position;
+                Vector2 tmp_src_vec = new(position.x, position.y);
                 if (dst_object != null)
                 {
                     dst_vec = dst_object.currentPosition;
@@ -304,6 +314,7 @@ public class SpriteAnimation
                 }
 
                 gameObject.transform.position = dst_object.currentPosition;
+                goto NO_TRACE_COMP;
             }
             else
             {
@@ -312,8 +323,9 @@ public class SpriteAnimation
 
             delta_x *= elapsed;
             delta_y *= elapsed;
-            float next_x = gameObject.transform.position.x + delta_x;
-            float next_y = gameObject.transform.position.y + delta_y;
+            var curr_pos = gameObject.transform.position;
+            float next_x = curr_pos.x + delta_x;
+            float next_y = curr_pos.y + delta_y;
             //WorldBoxConsole.Console.print(string.Format("delta x:{0},y:{1}", delta_x, delta_y));
             if (setting.loop_limit_type == AnimationLoopLimitType.TRACE_LIMIT ||
                 setting.loop_limit_type == AnimationLoopLimitType.DST_LIMIT)
@@ -322,16 +334,18 @@ public class SpriteAnimation
             // 指向终点
             if (setting.always_point_to_dst)
             {
+                var position = gameObject.transform.position;
                 gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f,
-                    Toolbox.getAngle(gameObject.transform.position.x, gameObject.transform.position.y, dst_vec.x,
+                    Toolbox.getAngle(position.x, position.y, dst_vec.x,
                         dst_vec.y) * 57.29578f));
             }
 
             gameObject.transform.position = new Vector3(next_x, next_y, next_y);
         }
 
+        NO_TRACE_COMP:
         // 路径行为
-        if (setting.frame_action != null) setting.frame_action(cur_frame_idx, ref src_vec, ref dst_vec, this);
+        setting.frame_action?.Invoke(cur_frame_idx, ref src_vec, ref dst_vec, this);
 
         // 按照设置进行判断是否结束
         bool end = false;
@@ -378,6 +392,16 @@ public class SpriteAnimation
         }
     }
 
+    [Hotfixable]
+    private bool IsOutScreen()
+    {
+        return false;
+        var position = gameObject.transform.position;
+
+        return position.x > EffectManager.camera_range_1.x && position.x < EffectManager.camera_range_2.x &&
+               position.y > EffectManager.camera_range_1.y && position.y < EffectManager.camera_range_2.y;
+    }
+
     internal void kill()
     {
         Object.Destroy(gameObject, 5);
@@ -389,7 +413,8 @@ public class SpriteAnimation
     /// <param name="scale">大小系数</param>
     public void set_scale(float scale)
     {
-        gameObject.transform.localScale = new Vector3(scale * default_scale, scale * default_scale, gameObject.transform.localScale.z);
+        gameObject.transform.localScale = new Vector3(scale * default_scale, scale * default_scale,
+            gameObject.transform.localScale.z);
     }
 
     /// <summary>
@@ -398,17 +423,19 @@ public class SpriteAnimation
     /// <param name="scale">缩放比例</param>
     public void change_scale(float scale)
     {
-        gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x * scale,
-            gameObject.transform.localScale.y * scale, gameObject.transform.localScale.z);
+        var local_scale = gameObject.transform.localScale;
+        local_scale = new Vector3(local_scale.x * scale,
+            local_scale.y * scale, local_scale.z);
+        gameObject.transform.localScale = local_scale;
     }
 
     /// <summary>
     ///     获取当前localScale
     /// </summary>
     /// <returns></returns>
-    public Vector3 get_scale()
+    public float get_scale()
     {
-        return gameObject.transform.localScale;
+        return gameObject.transform.localScale.x;
     }
 
     /// <summary>

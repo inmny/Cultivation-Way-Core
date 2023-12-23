@@ -20,6 +20,11 @@ public class CW_StatusEffectData
     public BaseStats bonus_stats;
 
     /// <summary>
+    ///     效果值, 一个自由变量
+    /// </summary>
+    public float effect_val;
+
+    /// <summary>
     ///     结束标记, 准备回收
     /// </summary>
     public bool finished;
@@ -43,11 +48,6 @@ public class CW_StatusEffectData
     ///     Asset访问
     /// </summary>
     public CW_StatusEffect status_asset;
-
-    /// <summary>
-    ///     效果值, 一个自由变量
-    /// </summary>
-    public float effect_val;
 
     /// <summary>
     ///     创建状态数据, 注意动画需要自行创建

@@ -71,6 +71,16 @@ public static class ActorDataTools
     public static int[] GetAllCultisysLevels(this ActorData pData)
     {
         int[] result = new int[Manager.cultisys.size];
+        if (pData == null)
+        {
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = -1;
+            }
+
+            return result;
+        }
+
         for (int i = 0; i < result.Length; i++)
         {
             pData.get(Manager.cultisys.list[i].id, out result[i], -1);
@@ -78,6 +88,7 @@ public static class ActorDataTools
 
         return result;
     }
+
     public static float GetMaxPower(this ActorData pData)
     {
         float max_power = 1;
@@ -87,23 +98,24 @@ public static class ActorDataTools
             pData.get(cultisys.id, out int level);
             max_power = Math.Max(max_power, Mathf.Pow(cultisys.power_base, cultisys.power_level[level]));
         }
-        
+
         cultisys = pData.GetCultisys(CultisysType.BODY);
         if (cultisys != null)
         {
             pData.get(cultisys.id, out int level);
             max_power = Math.Max(max_power, Mathf.Pow(cultisys.power_base, cultisys.power_level[level]));
         }
-        
+
         cultisys = pData.GetCultisys(CultisysType.SOUL);
         if (cultisys != null)
         {
             pData.get(cultisys.id, out int level);
             max_power = Math.Max(max_power, Mathf.Pow(cultisys.power_base, cultisys.power_level[level]));
         }
-        
+
         return max_power;
     }
+
     public static CultisysAsset GetCultisys(this ActorData pData, CultisysType pType)
     {
         string pTypeStr = pType switch
@@ -113,8 +125,8 @@ public static class ActorDataTools
             CultisysType.WAKAN => "WAKAN",
             _ => throw new ArgumentOutOfRangeException(nameof(pType), pType, null)
         };
-        pData.get(pTypeStr, out string cultisys_id, null);
-        return cultisys_id == null ? null : Manager.cultisys.get(cultisys_id);
+        pData.get(pTypeStr, out string cultisys_id);
+        return string.IsNullOrEmpty(cultisys_id) ? null : Manager.cultisys.get(cultisys_id);
     }
 
     /// <summary>

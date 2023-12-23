@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using Cultivation_Way.Library;
 using UnityEngine;
 
@@ -12,22 +15,28 @@ namespace Cultivation_Way.Core;
 /// </summary>
 public class CW_EnergyMapTile
 {
-    /// <summary>
-    ///     总量
-    /// </summary>
-    public float value;
+    internal Color32 color;
 
     /// <summary>
     ///     评估得到的密度
     /// </summary>
     public float density;
 
-    internal Color32 color;
+    /// <summary>
+    ///     总量
+    /// </summary>
+    public float value;
 
     internal int x;
     internal int y;
 
-    public void Update(EnergyAsset energy_asset)
+    [MethodImpl(MethodImplOptions.Synchronized | MethodImplOptions.AggressiveInlining)]
+    public void UpdateValue(float value)
+    {
+        this.value = value;
+    }
+    [MethodImpl(MethodImplOptions.Synchronized | MethodImplOptions.AggressiveInlining)]
+    public void Update(EnergyAsset energy_asset, bool pRedraw = false)
     {
         density = Mathf.Log(Mathf.Max(value, energy_asset.power_base_value),
             energy_asset.power_base_value);
@@ -40,9 +49,11 @@ public class CW_EnergyMapTile
             color = new_color;
             var tiles_to_redraw = CW_Core.mod_state.energy_map_manager
                 .maps[CW_Core.mod_state.energy_map_manager.current_map_id].tiles_to_redraw;
-            Monitor.Enter(tiles_to_redraw);
             tiles_to_redraw.Add(this);
-            Monitor.Exit(tiles_to_redraw);
+            if (pRedraw)
+            {
+                CW_Core.mod_state.energy_map_layer.ForceRedraw();
+            }
         }
     }
 }
@@ -52,10 +63,21 @@ public class CW_EnergyMapTile
 /// </summary>
 public class CW_EnergyMap
 {
+
+    private static readonly List<KeyValuePair<int, int>> _forward_dirs = new()
+    {
+        new KeyValuePair<int, int>(0, 1),
+        new KeyValuePair<int, int>(1, 0)
+    };
+
+    private CW_EnergyMapTile[,] _tmp_map;
+
     /// <summary>
     ///     表示能量的Asset
     /// </summary>
     internal EnergyAsset energy;
+
+    internal ConcurrentBag<CW_EnergyMapTile> tiles_to_redraw = new();
 
     public CW_EnergyMap(EnergyAsset energy)
     {
@@ -66,16 +88,6 @@ public class CW_EnergyMap
     ///     地图的数组
     /// </summary>
     public CW_EnergyMapTile[,] map { get; private set; }
-
-    private CW_EnergyMapTile[,] _tmp_map;
-    internal HashSet<CW_EnergyMapTile> tiles_to_redraw = new();
-    internal static bool redraw_lock = false;
-
-    private static readonly List<KeyValuePair<int, int>> _forward_dirs = new()
-    {
-        new(0, 1),
-        new(1, 0)
-    };
 
     internal void init(int width, int height)
     {
@@ -120,7 +132,6 @@ public class CW_EnergyMap
                 _tmp_map[x, y].value = map[x, y].value;
             }
         }
-
         for (int x = 0; x < width - 1; x++)
         {
             for (int y = 0; y < height - 1; y++)
@@ -139,7 +150,6 @@ public class CW_EnergyMap
                 }
             }
         }
-
         for (int x = 0; x < width - 1; x++)
         {
             var dir = _forward_dirs[1];
@@ -153,7 +163,6 @@ public class CW_EnergyMap
             _tmp_map[x, height - 1].value += delta_value;
             _tmp_map[x + dir.Key, height - 1 + dir.Value].value -= delta_value;
         }
-
         for (int y = 0; y < height - 1; y++)
         {
             var dir = _forward_dirs[0];
@@ -167,7 +176,6 @@ public class CW_EnergyMap
             _tmp_map[width - 1, y].value += delta_value;
             _tmp_map[width - 1 + dir.Key, y + dir.Value].value -= delta_value;
         }
-
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -184,14 +192,13 @@ public class CW_EnergyMapManager
 {
     public readonly Dictionary<string, CW_EnergyMap> maps = new();
 
+    public int height;
+    public int width;
+
     /// <summary>
     ///     当前应用的地图ID
     /// </summary>
     public string current_map_id => PlayerConfig.dict[Constants.Core.energy_maps_toggle_name].stringVal;
-
-    public int height;
-    public int width;
-    internal bool paused = false;
 
     internal void init(int width, int height)
     {
@@ -229,7 +236,6 @@ public class CW_EnergyMapManager
             }
         }
     }
-
     internal void update_per_year()
     {
         foreach (CW_EnergyMap map in maps.Values)

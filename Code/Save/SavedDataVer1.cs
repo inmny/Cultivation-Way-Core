@@ -12,132 +12,28 @@ namespace Cultivation_Way.Save;
 // 0.14中, 存档数据为完整游戏数据, 需要单独加载
 internal class SavedDataVer1 : AbstractSavedData
 {
-    public class OldBaseStats
-    {
-        public float personality_aggression;
-        public float personality_administration;
-        public float personality_diplomatic;
-        public float personality_rationality;
-        public int diplomacy;
-        public int warfare;
-        public int stewardship;
-        public int intelligence;
-        public int army;
-        public int cities;
-        public int zones;
-        public int bonus_towers;
-        public float s_crit_chance;
-        public int damage;
-        public float speed;
-        public int health;
-        public int armor;
-        public float dodge;
-        public float accuracy;
-        public int targets;
-        public int projectiles;
-        public float crit;
-        public float damageCritMod;
-        public float range;
-        public float size;
-        public float areaOfEffect;
-        public float attackSpeed;
-        public float knockback;
-        public int loyalty_traits;
-        public int loyalty_mood;
-        public int opinion;
-        public float knockbackReduction;
-        public float mod_health;
-        public float mod_damage;
-        public float mod_armor;
-        public float mod_crit;
-        public float mod_diplomacy;
-        public float mod_speed;
-        public float mod_attackSpeed;
-        public float scale;
-        public float mod_supply_timer;
-    }
-
-    public class CW_BaseStats
-    {
-        public int shield;
-        public float mod_shield;
-        public int shield_regen;
-        public float mod_shield_regen;
-        public float soul;
-        public float mod_soul;
-        public float soul_regen;
-        public float mod_soul_regen;
-        public int age_bonus;
-        public float mod_age;
-        public float spell_range;
-        public float mod_spell_range;
-        public float vampire;
-        public float anti_injury;
-        public int spell_armor;
-        public float mod_spell_armor;
-        public int health_regen;
-        public float mod_health_regen;
-        public int wakan;
-        public float mod_wakan;
-        public int wakan_regen;
-        public float mod_wakan_regen;
-        public float mod_cultivation;
-        public OldBaseStats base_stats;
-    }
-
-    public class CW_ActorData
-    {
-        public int[] cultisys_level;
-        public uint cultisys;
-        public string cultibook_id;
-        public CW_Element element;
-        public List<string> spells;
-        public int cultisys_to_save;
-    }
-
-    public class CW_MapChunkData
-    {
-        public float wakan;
-        public float wakan_level;
-    }
-
-    public class CW_CultiBookAsset
-    {
-        public string id;
-        public string name = "无名";
-        public string content;
-        public string author_name = "佚名";
-        public string author_id;
-        public int cur_culti_nr;
-        public int histroy_culti_nr;
-        public int order;
-        public int level;
-        public float culti_promt;
-        public string[] spells;
-        public CW_BaseStats bonus_stats;
-    }
+    public List<ActorDataObsolete> actor_datas = new();
+    public List<BuildingData> building_datas = new();
+    public List<CW_MapChunkData> chunks = new();
+    public List<CityData> cities = new();
+    public List<int> conway_creator = new();
+    public List<int> conway_eater = new();
+    public List<CW_CultiBookAsset> cultibooks = new();
+    public List<CultureData> cultures = new();
+    public List<CW_ActorData> cw_actor_datas = new();
+    public List<int> fire = new();
+    public List<KingdomData> kingdoms = new();
+    public MapStats map_stats;
+    public List<DiplomacyRelationData> relations = new();
+    public int[][] tile_amounts;
+    public int[][] tile_array;
+    public List<string> tile_map = new();
+    public string tile_str;
+    public List<WorldTileData> tiles = new();
+    public int world_height;
+    public WorldLaws world_laws;
 
     public int world_width;
-    public int world_height;
-    public MapStats map_stats;
-    public WorldLaws world_laws;
-    public string tile_str;
-    public List<string> tile_map = new();
-    public int[][] tile_array;
-    public int[][] tile_amounts;
-    public List<int> fire = new();
-    public List<int> conway_eater = new();
-    public List<int> conway_creator = new();
-    public List<WorldTileData> tiles = new();
-    public List<CityData> cities = new();
-    public List<ActorDataObsolete> actor_datas = new();
-    public List<CW_ActorData> cw_actor_datas = new();
-    public List<BuildingData> building_datas = new();
-    public List<KingdomData> kingdoms = new();
-    public List<DiplomacyRelationData> relations = new();
-    public List<CultureData> cultures = new();
-    public List<CW_MapChunkData> chunks = new();
-    public List<CW_CultiBookAsset> cultibooks = new();
 
     public override void load_to_world(SaveManager save_manager, SavedMap origin_data)
     {
@@ -398,5 +294,110 @@ internal class SavedDataVer1 : AbstractSavedData
         }
 
         return base_stats;
+    }
+
+    public class OldBaseStats
+    {
+        public float accuracy;
+        public float areaOfEffect;
+        public int armor;
+        public int army;
+        public float attackSpeed;
+        public int bonus_towers;
+        public int cities;
+        public float crit;
+        public int damage;
+        public float damageCritMod;
+        public int diplomacy;
+        public float dodge;
+        public int health;
+        public int intelligence;
+        public float knockback;
+        public float knockbackReduction;
+        public int loyalty_mood;
+        public int loyalty_traits;
+        public float mod_armor;
+        public float mod_attackSpeed;
+        public float mod_crit;
+        public float mod_damage;
+        public float mod_diplomacy;
+        public float mod_health;
+        public float mod_speed;
+        public float mod_supply_timer;
+        public int opinion;
+        public float personality_administration;
+        public float personality_aggression;
+        public float personality_diplomatic;
+        public float personality_rationality;
+        public int projectiles;
+        public float range;
+        public float s_crit_chance;
+        public float scale;
+        public float size;
+        public float speed;
+        public int stewardship;
+        public int targets;
+        public int warfare;
+        public int zones;
+    }
+
+    public class CW_BaseStats
+    {
+        public int age_bonus;
+        public float anti_injury;
+        public OldBaseStats base_stats;
+        public int health_regen;
+        public float mod_age;
+        public float mod_cultivation;
+        public float mod_health_regen;
+        public float mod_shield;
+        public float mod_shield_regen;
+        public float mod_soul;
+        public float mod_soul_regen;
+        public float mod_spell_armor;
+        public float mod_spell_range;
+        public float mod_wakan;
+        public float mod_wakan_regen;
+        public int shield;
+        public int shield_regen;
+        public float soul;
+        public float soul_regen;
+        public int spell_armor;
+        public float spell_range;
+        public float vampire;
+        public int wakan;
+        public int wakan_regen;
+    }
+
+    public class CW_ActorData
+    {
+        public string cultibook_id;
+        public uint cultisys;
+        public int[] cultisys_level;
+        public int cultisys_to_save;
+        public CW_Element element;
+        public List<string> spells;
+    }
+
+    public class CW_MapChunkData
+    {
+        public float wakan;
+        public float wakan_level;
+    }
+
+    public class CW_CultiBookAsset
+    {
+        public string author_id;
+        public string author_name = "佚名";
+        public CW_BaseStats bonus_stats;
+        public string content;
+        public float culti_promt;
+        public int cur_culti_nr;
+        public int histroy_culti_nr;
+        public string id;
+        public int level;
+        public string name = "无名";
+        public int order;
+        public string[] spells;
     }
 }

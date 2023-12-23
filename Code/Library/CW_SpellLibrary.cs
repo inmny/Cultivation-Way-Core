@@ -9,6 +9,11 @@ namespace Cultivation_Way.Library;
 
 public class CW_SpellAsset : Asset
 {
+    /// <summary>
+    ///     法术触发标签, 以32位的二进制表示, 具体参考 <see cref="SpellTriggerTag" />
+    /// </summary>
+    private uint _trigger_tags;
+
     /// 法术实例管理器取出法术
     ///  
     /// 检查法术释放者是否存活, 或其他合法性检查
@@ -48,6 +53,11 @@ public class CW_SpellAsset : Asset
     public CW_Element element;
 
     /// <summary>
+    ///     最低消耗, 在申请释放法术时检查法术是否可释放
+    /// </summary>
+    public float minimum_cost = 1;
+
+    /// <summary>
     ///     法术稀有度, 用于法术习得概率计算, 值越大越稀有
     ///     <para>取值范围:[0,\infty)</para>
     /// </summary>
@@ -58,20 +68,21 @@ public class CW_SpellAsset : Asset
     /// </summary>
     public SpellAction spell_action;
 
-
     /// <summary>
-    ///     法术修习的等级要求
+    ///     用于表示法术类别
     /// </summary>
-    public List<KeyValuePair<string, int>> spell_cultisys_level_require;
+    public HashSet<string> spell_classes = new();
 
     /// <summary>
     ///     法术消耗行为, 在申请释放法术时调用以检查法术是否可释放
     /// </summary>
     public SpellCheck spell_cost_action;
+
+
     /// <summary>
-    ///     最低消耗, 在申请释放法术时检查法术是否可释放
+    ///     法术修习的等级要求
     /// </summary>
-    public float minimum_cost = 1;
+    public List<KeyValuePair<string, int>> spell_cultisys_level_require;
 
     /// <summary>
     ///     法术修习检查, 在申请修习法术时调用以检查法术修习可行性
@@ -91,11 +102,6 @@ public class CW_SpellAsset : Asset
     ///     <para>使用场景:法术释放前检查法术合法性; 范围法术在核心*action执行时查找作用目标</para>
     /// </summary>
     public SpellTargetType target_type;
-
-    /// <summary>
-    ///     法术触发标签, 以32位的二进制表示, 具体参考 <see cref="SpellTriggerTag" />
-    /// </summary>
-    private uint _trigger_tags;
 
 
     /// <summary>
@@ -172,6 +178,7 @@ public class CW_SpellAsset : Asset
 public class CW_SpellLibrary : CW_Library<CW_SpellAsset>
 {
     private readonly Dictionary<uint, List<CW_SpellAsset>> cultisys_spells = new();
+    private readonly Dictionary<string, List<CW_SpellAsset>> spell_classes_spells = new();
 
     /// <summary>
     ///     将法术按照修炼体系分类
@@ -200,6 +207,16 @@ public class CW_SpellLibrary : CW_Library<CW_SpellAsset>
         foreach (CW_SpellAsset spell in list)
         {
             spell.spell_cultisys_level_require ??= new List<KeyValuePair<string, int>>();
+
+            foreach (string class_name in spell.spell_classes)
+            {
+                if (!spell_classes_spells.ContainsKey(class_name))
+                {
+                    spell_classes_spells.Add(class_name, new List<CW_SpellAsset>());
+                }
+
+                spell_classes_spells[class_name].Add(spell);
+            }
         }
     }
 

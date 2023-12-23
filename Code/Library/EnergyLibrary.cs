@@ -18,10 +18,6 @@ public class EnergyAsset : Asset
     public EnergyColorCalc color_calc;
 
     /// <summary>
-    ///     扩散计算
-    /// </summary>
-    public EnergySpreadGradCalc spread_grad_calc;
-    /// <summary>
     ///     分布初始化器
     /// </summary>
     public EnergyMapInitialize initializer;
@@ -35,6 +31,11 @@ public class EnergyAsset : Asset
     ///     层次提升的幂乘值
     /// </summary>
     public float power_base_value = 100;
+
+    /// <summary>
+    ///     扩散计算
+    /// </summary>
+    public EnergySpreadGradCalc spread_grad_calc;
 
     /// <summary>
     ///     类型
@@ -106,5 +107,8 @@ public class EnergyLibrary : CW_Library<EnergyAsset>
                     "ui/icons/iconNo_Wakan_Spread", false);
             }
         }
+
+        General.AboutUI.WorldLaws.add_switch_law("show_detailed_energy_info", "worldlaw_energy_grid",
+            "ui/cw_icons/iconInspectWakan", false);
     }
 }

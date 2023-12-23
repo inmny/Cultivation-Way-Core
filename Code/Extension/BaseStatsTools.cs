@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 
 namespace Cultivation_Way.Extension;
 
@@ -34,5 +35,21 @@ public static class BaseStatsTools
             float value = base_stats_container.value * pCo;
             if (value > pBaseStats[id]) pBaseStats[id] = value;
         }
+    }
+
+    public static void AfterDeserialize(this BaseStats pBaseStats)
+    {
+        pBaseStats.stats_list = new ListPool<BaseStatsContainer>(pBaseStats.stats_dict.Values);
+    }
+
+    public static string AsString(this BaseStats pBaseStats)
+    {
+        StringBuilder sb = new();
+        foreach (var stat in pBaseStats.stats_list)
+        {
+            sb.AppendLine($"{stat.id}: {stat.value} ");
+        }
+
+        return sb.ToString();
     }
 }

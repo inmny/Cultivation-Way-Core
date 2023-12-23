@@ -1,0 +1,58 @@
+[
+    {
+        "id": "eastern_human_clan",
+        "templates": [
+            {
+                "format": "$founder_home$$founder_family_name$#家#"
+            },
+            {
+                "format": "$founder_home$$founder_family_name$#氏#"
+            },
+            {
+                "format": "$founder_home$$founder_family_name$#族#"
+            }
+        ]
+    },
+    {
+        "id": "ming_clan",
+        "templates": [
+            {
+                "format": "$founder_home$$founder_family_name$#家#"
+            },
+            {
+                "format": "$founder_home$$founder_family_name$#氏#"
+            },
+            {
+                "format": "$founder_home$$founder_family_name$#族#"
+            }
+        ]
+    },
+    {
+        "id": "wu_clan",
+        "templates": [
+            {
+                "format": "$founder_home$$founder_family_name$#家#"
+            },
+            {
+                "format": "$founder_home$$founder_family_name$#氏#"
+            },
+            {
+                "format": "$founder_home$$founder_family_name$#族#"
+            }
+        ]
+    },
+    {
+        "id": "yao_clan",
+        "templates": [
+            {
+                "format": "$founder_home$$founder_family_name$#家#"
+            },
+            {
+                "format": "$founder_home$$founder_family_name$#氏#"
+            },
+            {
+                "format": "$founder_home$$founder_family_name$#族#"
+            }
+        ]
+    }
+]

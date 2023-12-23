@@ -3,25 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Cultivation_Way.Addon;
 using Cultivation_Way.Animation;
 using Cultivation_Way.Core;
-using Cultivation_Way.Library;
+using Cultivation_Way.Implementation;
 using Cultivation_Way.Others;
 using Cultivation_Way.UI;
 using ModDeclaration;
-using NCMS;
-using UnityEngine;
 using NeoModLoader.api;
+using NeoModLoader.api.attributes;
+using NeoModLoader.General;
+using NeoModLoader.services;
+using UnityEngine;
+using Manager = Cultivation_Way.Library.Manager;
 
 namespace Cultivation_Way;
 
-public class CW_Core : BasicMod<CW_Core>
+public class CW_Core : BasicMod<CW_Core>, IReloadable
 {
     public static ModState mod_state;
     public static Transform ui_prefab_library;
     public static Transform actor_prefab_library;
     public static Transform anim_prefab_library;
+
+    private int _last_year;
 
     public ModState state = new()
     {
@@ -31,58 +35,39 @@ public class CW_Core : BasicMod<CW_Core>
         editor_inmny = false,
         update_nr = 0,
         mod_info = null,
-        addons = new List<CW_Addon>(),
+        addons = new List<IMod>(),
         anim_manager = null,
         spell_manager = null,
         library_manager = null,
-        energy_map_manager = null
+        energy_map_manager = null,
+        energy_map_layer = null,
     };
-
-    private void Awake()
-    {
-        mod_state = state;
-    }
-
-    private int _last_year;
 
     private void Update()
     {
         if (!state.all_initialized)
         {
-            if (!state.core_initialized)
+            if (!state.core_initialized) return;
+            // 等待附属初始化
+            if (!state.addons_initialized)
             {
-                // 初始化核心
-                state.core_initialized = true;
-                initialize();
-                try_to_load_core_content();
+                state.addons_initialized = true;
+                foreach (var addon in state.addons.Where(addon =>
+                             addon.GetType().Name.Contains("CW_Addon") && !addon.GetField<bool>("initialized")))
+                {
+                    state.addons_initialized = false;
+                    break;
+                }
             }
             else
             {
-                // 等待附属初始化
-                if (!state.addons_initialized)
-                {
-                    /* 检查附属是否初始化完全 */
-                    /*一般加载流程为
-                     * 核心Awake, 附属依次Awake, 将自身加入到核心的附属列表中
-                     * 核心第一次Update
-                     */
-                    state.addons_initialized = true;
-                    foreach (CW_Addon addon in state.addons.Where(addon => !addon.initialized))
-                    {
-                        state.addons_initialized = false;
-                        break;
-                    }
-                }
-                else
-                {
-                    // 在所有附属初始化完毕后, 进行后续处理
-                    CWTab.post_init();
-                    action_on_windows("post_init");
-                    state.library_manager.post_init();
-                    state.energy_map_manager.init(256, 256);
+                // 在所有附属初始化完毕后, 进行后续处理
+                CWTab.post_init();
+                action_on_windows("post_init");
+                state.library_manager.post_init();
+                state.energy_map_manager.init(256, 256);
 
-                    state.all_initialized = true;
-                }
+                state.all_initialized = true;
             }
 
             return;
@@ -117,6 +102,20 @@ public class CW_Core : BasicMod<CW_Core>
         }
     }
 
+    [Hotfixable]
+    public void Reload()
+    {
+        LogInfo("Reloaded");
+        Manager.item_materials.init();
+        Items.init();
+
+        foreach (Actor actor in World.world.units)
+        {
+            if (!actor.isAlive()) continue;
+            actor.setStatsDirty();
+        }
+    }
+
     /// <summary>
     ///     为了保证Implementation可拆卸, 通过反射调用Implementation的初始化方法
     /// </summary>
@@ -129,21 +128,12 @@ public class CW_Core : BasicMod<CW_Core>
 
     private void initialize()
     {
-        List<NCMod> mods = NCMS.ModLoader.Mods;
-        foreach (NCMod mod in mods.Where(mod => mod.name == Constants.Core.mod_name))
-        {
-            state.mod_info =
-                typeof(Info)
-                    .GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(NCMod) },
-                        null)
-                    ?.Invoke(new object[] { mod }) as Info;
-            break;
-        }
-
         state.anim_manager = gameObject.AddComponent<EffectManager>();
         state.spell_manager = new SpellManager();
         state.library_manager = new Manager();
         state.energy_map_manager = new CW_EnergyMapManager();
+
+        state.anim_manager.Init();
 
         GameObject ui_prefab_library_obj = new("UI_PrefabLibrary");
         GameObject actor_prefab_library_obj = new("Actor_PrefabLibrary");
@@ -155,6 +145,13 @@ public class CW_Core : BasicMod<CW_Core>
         actor_prefab_library_obj.transform.SetParent(transform);
         anim_prefab_library_obj.transform.SetParent(transform);
 
+        GameObject energy_map_layer_obj = new("[layer]Energy Layer", typeof(CW_EnergyMapLayer), typeof(SpriteRenderer));
+        energy_map_layer_obj.transform.SetParent(World.world.transform);
+        energy_map_layer_obj.transform.localPosition = Vector3.zero;
+        energy_map_layer_obj.transform.localScale = Vector3.one;
+        energy_map_layer_obj.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        state.energy_map_layer = energy_map_layer_obj.GetComponent<CW_EnergyMapLayer>();
+        World.world.mapLayers.Add(state.energy_map_layer);
         configure();
 
         Factories.init();
@@ -170,9 +167,30 @@ public class CW_Core : BasicMod<CW_Core>
         {
             while (true)
             {
-                if (!state.energy_map_manager.paused && mod_state.all_initialized)
+                if (!World.world.isPaused() && mod_state.all_initialized)
+                {
                     state.energy_map_manager.update_per_year();
-                Thread.Sleep((int)(500 / Math.Min(Config.timeScale, 1)));
+                }
+                    
+                Thread.Sleep((int)(500 / Math.Max(Config.timeScale, 1)));
+            }
+        }).Start();
+        new Thread(() =>
+        {
+            try
+            {
+                while (true)
+                {
+                    if (!World.world.isPaused() && mod_state.all_initialized)
+                    {
+                        state.energy_map_layer.PrepareRedraw();
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                LogService.LogInfoConcurrent(e.Message);
+                LogService.LogInfoConcurrent(e.StackTrace);
             }
         }).Start();
     }
@@ -203,29 +221,36 @@ public class CW_Core : BasicMod<CW_Core>
 
         if (Environment.UserName != "Inmny") return;
         state.editor_inmny = true;
-        Config.isEditor = true;
-        Config.editor_maxim = true;
-        Config.editor_mastef = true;
-        Config.disableLocaleLogs = true;
+    }
+
+    protected override void OnModLoad()
+    {
+        // 初始化核心
+        mod_state = state;
+        initialize();
+        state.core_initialized = true;
+        try_to_load_core_content();
+    }
+
+    [Hotfixable]
+    private void new_reload_method()
+    {
+        LogInfo("new reload method: hello world!");
     }
 
     public class ModState
     {
-        internal List<CW_Addon> addons;
+        internal List<IMod> addons;
         public bool addons_initialized;
         public bool all_initialized;
         public EffectManager anim_manager;
         public bool core_initialized;
         internal bool editor_inmny;
-        public Manager library_manager;
         public CW_EnergyMapManager energy_map_manager;
+        public Manager library_manager;
         internal Info mod_info;
         internal SpellManager spell_manager;
         internal long update_nr;
-    }
-
-    protected override void OnModLoad()
-    {
-        
+        public CW_EnergyMapLayer energy_map_layer;
     }
 }

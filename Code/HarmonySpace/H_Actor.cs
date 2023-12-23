@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
@@ -9,8 +9,8 @@ using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using HarmonyLib;
+using NeoModLoader.api.attributes;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Cultivation_Way.HarmonySpace;
 
@@ -45,7 +45,7 @@ internal static class H_Actor
      *  if (base.hasAnyStatusEffect())
      *  </code>
      * 中指定位置插入调用cw_updateStats(this)函数
-     *
+     * 
      * 恰好在统计完生物类型属性、心情、数据中的四维属性、等级、默认武器、状态效果、特质后
      * 忽略了装备目的是为了统计作为血脉主导者在血脉中记录的属性加成
      */
@@ -54,12 +54,21 @@ internal static class H_Actor
     public static IEnumerable<CodeInstruction> updateStats_Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         List<CodeInstruction> codes = instructions.ToList();
-        codes.Insert(498, new CodeInstruction(OpCodes.Ldarg_0));
-        codes.Insert(499,
+        int index = codes.FindIndex(instr =>
+            instr.opcode == OpCodes.Stfld && ((FieldInfo)instr.operand).Name == "has_status_frozen");
+        if (index == -1)
+        {
+            CW_Core.LogWarning("updateStats_Transpiler: index not found");
+            return codes;
+        }
+
+        codes.Insert(index + 1, new CodeInstruction(OpCodes.Ldarg_0));
+        codes.Insert(index + 2,
             new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(H_Actor), nameof(cw_updateStats))));
         return codes;
     }
 
+    [Hotfixable]
     private static void cw_updateStats(Actor actor)
     {
         // 载入修炼体系的加成
@@ -109,6 +118,16 @@ internal static class H_Actor
         cw_actor.cur_spells.Clear();
         cw_actor.cur_spells.AddRange(cw_actor.__data_spells);
 
+        if (cw_actor.asset.use_items)
+        {
+            List<ActorEquipmentSlot> slots = ActorEquipment.getList(cw_actor.equipment);
+            foreach (ActorEquipmentSlot slot in slots)
+            {
+                if (slot.data is not CW_ItemData cw_item_data) continue;
+                cw_actor.cur_spells.AddRange(cw_item_data.Spells);
+            }
+        }
+
         // 载入阴/阳性生物的加成
         if (cw_actor.hasTrait(CW_ActorTraits.negative_creature.id) && !World.world_era.overlay_darkness)
         {
@@ -120,7 +139,7 @@ internal static class H_Actor
         }
 
         actor.data.get(DataS.soul, out float soul);
-        if (Math.Abs(soul - float.MaxValue) < 1e37)
+        if (soul > actor.stats[CW_S.soul])
         {
             actor.data.set(DataS.soul, actor.stats[CW_S.soul]);
         }

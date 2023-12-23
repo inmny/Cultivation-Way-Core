@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NeoModLoader.api.attributes;
 using UnityEngine;
 
 namespace Cultivation_Way.Animation;
@@ -8,47 +9,49 @@ public class EffectManager : MonoBehaviour
 {
     public static EffectManager instance;
     private static QualityChanger quality_changer;
+    internal static Vector2 camera_range_1;
+    internal static Vector2 camera_range_2;
     private readonly List<EffectController> controllers = new();
     private readonly Dictionary<string, EffectController> controllers_dict = new();
     private readonly GameObject default_prefab = new();
     private readonly List<SpriteAnimation> single_anims = new();
-    private bool initialized;
     internal bool low_res;
     private float timer;
 
-    private void Awake()
-    {
-        if (initialized) return;
-
-        initialized = true;
-        instance = this;
-        default_prefab.AddComponent<SpriteRenderer>();
-
-        quality_changer = MapBox.instance.qualityChanger;
-    }
-
+    [Hotfixable]
     private void Update()
     {
         if (Config.paused || ScrollWindow.isWindowActive()) return;
         int i = 0;
         int time;
+        camera_range_1 = World.world.camera.ViewportToWorldPoint(new Vector3(0, 0, World.world.camera.nearClipPlane));
+        camera_range_2 = World.world.camera.ViewportToWorldPoint(new Vector3(1, 1, World.world.camera.nearClipPlane));
         low_res = quality_changer.isFullLowRes();
+        Toolbox.bench("EffectManager.Update");
+        float elapsed = World.world.getCurElapsed();
         try
         {
+            /*
             for (time = 0; time < Config.timeScale; time++)
+            {*/
+            for (i = 0; i < controllers.Count; i++)
             {
-                for (i = 0; i < controllers.Count; i++)
+                Toolbox.bench(controllers[i].id, "EffectManager.Update");
+                controllers[i].update(elapsed, (int)Config.timeScale);
+
+                Toolbox.benchEnd(controllers[i].id, "EffectManager.Update");
+            }
+
+            for (i = 0; i < single_anims.Count; i++)
+            {
+                for (time = 0; time < Config.timeScale; time++)
                 {
-                    controllers[i].update(Time.fixedDeltaTime);
+                    single_anims[i].update(elapsed);
                 }
 
-                for (i = 0; i < single_anims.Count; i++)
-                {
-                    single_anims[i].update(Time.fixedDeltaTime);
-                    if (single_anims[i].isOn) continue;
-                    single_anims.RemoveAt(i);
-                    i--;
-                }
+                if (single_anims[i].isOn) continue;
+                single_anims.RemoveAt(i);
+                i--;
             }
         }
         catch (Exception e)
@@ -58,9 +61,11 @@ public class EffectManager : MonoBehaviour
             Debug.LogError(e.StackTrace);
         }
 
+        Toolbox.benchEnd("EffectManager.Update");
+
         if (timer > 0)
         {
-            timer -= Time.deltaTime;
+            timer -= elapsed;
         }
         else
         {
@@ -71,8 +76,17 @@ public class EffectManager : MonoBehaviour
             }
         }
     }
+
+    internal void Init()
+    {
+        instance = this;
+        default_prefab.AddComponent<SpriteRenderer>();
+
+        quality_changer = MapBox.instance.qualityChanger;
+    }
+
     /// <summary>
-    /// 加载一个动画控制器并返回
+    ///     加载一个动画控制器并返回
     /// </summary>
     /// <param name="id">控制器id</param>
     /// <param name="path_to_anim">动画文件夹路径</param>
@@ -122,8 +136,9 @@ public class EffectManager : MonoBehaviour
 
         throw new Exception("No found animations controller for id:" + id);
     }
+
     /// <summary>
-    /// 生成动画并返回, 如果已有动画数量超过限制则会返回null
+    ///     生成动画并返回, 如果已有动画数量超过限制则会返回null
     /// </summary>
     /// <param name="id">控制器id</param>
     /// <param name="src_vec">起始点</param>

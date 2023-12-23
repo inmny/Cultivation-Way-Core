@@ -18,21 +18,23 @@ public static class BaseSystemDataTools
     ///     以key为key, 将pObject JSON序列化后写入data
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static void WriteObj<T>(this BaseSystemData pData, string pKey, T pObject)
+    public static void WriteObj<T>(this BaseSystemData pData, string pKey, T pObject,
+        bool pPrivateMembersIncluded = false)
     {
-        pData.set(pKey, GeneralHelper.to_json(pObject));
+        if (pObject == null) pData.removeString(pKey);
+        pData.set(pKey, GeneralHelper.to_json(pObject, pPrivateMembersIncluded));
     }
 
     /// <summary>
     ///     以key为key, 从data中读取JSON, 并反序列化为T, 若不存在则会返回default(T)
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T ReadObj<T>(this BaseSystemData pData, string pKey)
+    public static T ReadObj<T>(this BaseSystemData pData, string pKey, bool pPrivateMembersIncluded = false)
     {
         pData.get(pKey, out string obj_str);
 
         if (string.IsNullOrEmpty(obj_str)) return default;
 
-        return GeneralHelper.from_json<T>(obj_str);
+        return GeneralHelper.from_json<T>(obj_str, pPrivateMembersIncluded);
     }
 }

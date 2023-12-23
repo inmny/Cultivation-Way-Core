@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Cultivation_Way.Implementation;
 
@@ -72,22 +73,21 @@ internal static class Buildings
         BuildingAsset bonfire = AssetManager.buildings.clone("bonfire_eastern_human", "bonfire");
         bonfire.smoke = false;
         bonfire.race = Content_Constants.eastern_human_race;
-        
+
         BuildingAsset smelt_mill = AssetManager.buildings.clone(CW_SB.eh_smelt_mill, SB.bonfire);
         smelt_mill.race = Content_Constants.eastern_human_race;
         smelt_mill.draw_light_size = 2;
         smelt_mill.type = CW_SB.smelt_mill;
         smelt_mill.fundament = new BuildingFundament(3, 3, 5, 0);
-        smelt_mill.smokeOffset = new(3, 5);
+        smelt_mill.smokeOffset = new Vector2Int(3, 5);
         smelt_mill.max_houses = 0;
         smelt_mill.build_place_single = true;
         smelt_mill.tech = "smelt_mill";
-        var smelt_mill_order = race_order.addBuilding(CW_SB.order_smelt_mill);
-        smelt_mill_order.requirements_orders = new();
-        smelt_mill_order.requirements_orders.Add(SB.order_hall_2);
-        
-        AssetManager.buildings.add(smelt_mill);
-        
+        var smelt_mill_order = race_order.addBuilding(CW_SB.order_smelt_mill, 1, 1);
+        smelt_mill_order.requirements_orders = new List<string>();
+        //smelt_mill_order.requirements_orders.Add(SB.order_hall_2);
+
+
         AssetManager.buildings.loadSprites(smelt_mill);
         AssetManager.buildings.loadSprites(bonfire);
 

@@ -12,6 +12,11 @@ public class CW_StatusEffect : Asset
     private readonly BaseSystemData _setting_data = new();
 
     /// <summary>
+    ///     状态类别标签, 以32位二进制表示, 具体参考 <see cref="StatusEffectTag" />
+    /// </summary>
+    private uint _tags;
+
+    /// <summary>
     ///     update_action执行间隔
     /// </summary>
     public float action_interval;
@@ -83,11 +88,6 @@ public class CW_StatusEffect : Asset
     ///     状态图标路径, 从根目录开始
     /// </summary>
     public string path_icon = "ui/Icons/iconRage";
-
-    /// <summary>
-    ///     状态类别标签, 以32位二进制表示, 具体参考 <see cref="StatusEffectTag" />
-    /// </summary>
-    private uint _tags;
 
     /// <summary>
     ///     等级

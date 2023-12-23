@@ -64,14 +64,14 @@ body:
       label: NeoModLoader Version
     validations:
       required: true
-      
+
   - type: input
     id: env-CW-Core-ver
     attributes:
       label: Cultivation-Way-Core Version
     validations:
       required: true
-      
+
   - type: dropdown
     id: env-vm-ver
     attributes:

@@ -1,5 +1,6 @@
 ﻿using Cultivation_Way.Constants;
 using Cultivation_Way.Library;
+using NeoModLoader.api.attributes;
 using UnityEngine;
 
 namespace Cultivation_Way.Implementation;
@@ -107,15 +108,16 @@ internal static class Energies
             {
                 return (target_value - value) * 0.2f;
             },
-            initializer = ((tiles, x, y, width, height) =>
+            initializer = [Hotfixable](tiles, x, y, width, height) =>
             {
                 float x_center = width / 2f;
                 float y_center = height / 2f;
                 float dx = x - x_center;
                 float dy = y - y_center;
-                tiles.value = Mathf.Max(0, x_center * y_center - dx * dx - dy * dy);
+
+                tiles.value = Toolbox.randomChance(1f / (width * height)) ? 1e8f : 100f;
                 //CW_Core.LogInfo($"({x},{y}): {tiles.value}");
-            })
+            }
         };
         Library.Manager.energies.add(energy);
     }

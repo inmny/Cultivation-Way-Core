@@ -1,0 +1,54 @@
+[
+    {
+        "id": "eastern_human_name",
+        "templates": [
+            {
+                "format": "{百家姓:family_name}{千字文}{千字文}",
+                "weight": 8
+            },
+            {
+                "format": "{百家姓:family_name}{千字文}",
+                "weight": 1
+            }
+        ]
+    },
+    {
+        "id": "ming_name",
+        "templates": [
+            {
+                "format": "{百家姓:family_name}{千字文}{千字文}",
+                "weight": 8
+            },
+            {
+                "format": "{百家姓:family_name}{千字文}",
+                "weight": 1
+            }
+        ]
+    },
+    {
+        "id": "wu_name",
+        "templates": [
+            {
+                "format": "{百家姓:family_name}{千字文}{千字文}",
+                "weight": 8
+            },
+            {
+                "format": "{百家姓:family_name}{千字文}",
+                "weight": 1
+            }
+        ]
+    },
+    {
+        "id": "yao_name",
+        "templates": [
+            {
+                "format": "{百家姓:family_name}{千字文}{千字文}",
+                "weight": 8
+            },
+            {
+                "format": "{百家姓:family_name}{千字文}",
+                "weight": 1
+            }
+        ]
+    }
+]

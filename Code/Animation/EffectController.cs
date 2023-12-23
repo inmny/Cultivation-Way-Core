@@ -35,7 +35,7 @@ public class EffectController
         GameObject default_prefab, float base_scale, Vector2 base_offset)
     {
         _base_offset = base_offset;
-        _prefab = GameObject.Instantiate(default_prefab, CW_Core.anim_prefab_library);
+        _prefab = Object.Instantiate(default_prefab, CW_Core.anim_prefab_library);
         _prefab.name = "prefab_" + id;
         this.id = id;
         this.base_scale = base_scale;
@@ -85,7 +85,7 @@ public class EffectController
         }
     }
 
-    internal void update(float elapsed)
+    internal void update(float elapsed, int pTimeScale)
     {
         _active_anims.SetToFirst();
 
@@ -94,7 +94,10 @@ public class EffectController
         //int count = 0;
         while (anim != null)
         {
-            anim.update(elapsed);
+            for (int i = 0; i < pTimeScale && anim.isOn; i++)
+            {
+                anim.update(elapsed);
+            }
 
             if (!anim.isOn)
             {

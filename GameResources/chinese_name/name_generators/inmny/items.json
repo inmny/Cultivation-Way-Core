@@ -1,0 +1,10 @@
+[
+    {
+        "id": "戟",
+        "templates": [
+            {
+                "format": "<$main_bonus_stat$>#戟#"
+            }
+        ]
+    }
+]

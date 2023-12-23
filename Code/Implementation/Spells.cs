@@ -9,10 +9,10 @@ using Cultivation_Way.General.AboutSpell;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using Cultivation_Way.Utils;
+using NeoModLoader.api.attributes;
 using Newtonsoft.Json;
 using UnityEngine;
 using Debug = System.Diagnostics.Debug;
-using MiscUtils = Cultivation_Way.General.AboutSpell.MiscUtils;
 
 namespace Cultivation_Way.Implementation;
 
@@ -32,6 +32,12 @@ internal static class Spells
 
         add_fall_rock();
         add_fall_wood();
+        add_fall_mountain("heng1");
+        add_fall_mountain("heng2");
+        add_fall_mountain("hua");
+        add_fall_mountain("tai");
+        add_fall_mountain("song");
+
 
         add_fen_fire_spell();
         add_loltus_fire_spell();
@@ -222,7 +228,7 @@ internal static class Spells
             loop_trace_limit = range,
             anim_froze_frame_idx = 3,
             frame_interval = 0.05f,
-            trace_grad = 15f,
+            trace_grad = 30f,
             frame_action = anim_frame_action
         };
         anim_setting.set_trace(AnimationTraceType.LINE);
@@ -297,7 +303,12 @@ internal static class Spells
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
-                if (anim.src_object == null || !anim.src_object.isAlive()) return;
+                if (anim.src_object == null || !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 var position = anim.gameObject.transform.position;
                 int x = (int)position.x;
                 int y = (int)position.y;
@@ -306,7 +317,8 @@ internal static class Spells
                 {
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
-                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object), anim.src_object, CW_AttackType.Spell);
+                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
+                        anim.src_object, CW_AttackType.Spell);
                 }
                 else
                 {
@@ -322,7 +334,12 @@ internal static class Spells
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
-                if (anim.src_object == null || !anim.src_object.isAlive()) return;
+                if (anim.src_object == null || !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 var position = anim.gameObject.transform.position;
                 int x = (int)position.x;
                 int y = (int)position.y;
@@ -331,7 +348,8 @@ internal static class Spells
                 {
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
-                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object), anim.src_object, CW_AttackType.Spell);
+                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
+                        anim.src_object, CW_AttackType.Spell);
 
                     float dist = Toolbox.DistVec2Float(vec, dst_vec);
                     float force_x = (dst_vec.x - vec.x) / dist * 0.4f;
@@ -357,7 +375,12 @@ internal static class Spells
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
-                if (anim.src_object == null || !anim.src_object.isAlive()) return;
+                if (anim.src_object == null || !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 var position = anim.gameObject.transform.position;
                 int x = (int)position.x;
                 int y = (int)position.y;
@@ -366,7 +389,8 @@ internal static class Spells
                 {
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
-                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object), anim.src_object, CW_AttackType.Spell);
+                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
+                        anim.src_object, CW_AttackType.Spell);
                 }
                 else
                 {
@@ -382,7 +406,12 @@ internal static class Spells
             }, 33f, (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx <= 2) return;
-                if (anim.src_object == null || !anim.src_object.isAlive()) return;
+                if (anim.src_object == null || !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 var position = anim.gameObject.transform.position;
                 int x = (int)position.x;
                 int y = (int)position.y;
@@ -391,7 +420,8 @@ internal static class Spells
                 {
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
-                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object), anim.src_object, CW_AttackType.Spell);
+                    GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
+                        anim.src_object, CW_AttackType.Spell);
 
                     foreach (Actor target_unit in tiles.SelectMany(target_tile => target_tile._units))
                     {
@@ -574,12 +604,12 @@ internal static class Spells
             loop_nr_limit = -1,
             frame_interval = 0.05f,
             layer_name = "Objects",
-            trace_grad = 10f,
+            trace_grad = 20f,
             free_val = 0.2f,
             frame_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec,
                 Animation.SpriteAnimation anim) =>
             {
-                float cur_scale = anim.get_scale().x;
+                float cur_scale = anim.get_scale();
                 if (anim.setting.loop_time_limit - anim.play_time > 32 * anim.setting.frame_interval &&
                     anim.setting.free_val > cur_scale)
                 {
@@ -588,6 +618,11 @@ internal static class Spells
                 else
                 {
                     anim.change_scale(1 - cur_scale * 0.1f);
+                    if (cur_scale < 0.1f)
+                    {
+                        anim.force_stop();
+                        return;
+                    }
                 }
 
                 if (anim.src_object == null || !anim.src_object.isAlive())
@@ -696,7 +731,12 @@ internal static class Spells
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec,
                 Animation.SpriteAnimation anim) =>
             {
-                if (anim.src_object == null || !anim.src_object.isAlive()) return;
+                if (anim.src_object == null || !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
                 if (center == null) return;
                 List<BaseSimObject> enemies = GeneralHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 5);
@@ -751,7 +791,12 @@ internal static class Spells
             layer_name = "Objects",
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
-                if (anim.src_object == null || !anim.src_object.isAlive()) return;
+                if (anim.src_object == null || !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
                 if (center == null) return;
                 List<BaseSimObject> enemies = GeneralHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 5);
@@ -791,6 +836,159 @@ internal static class Spells
         Library.Manager.spells.add(spell);
     }
 
+    private static void add_fall_mountain(string name)
+    {
+        AnimationSetting anim_setting = new()
+        {
+            loop_limit_type = AnimationLoopLimitType.DST_LIMIT,
+            loop_nr_limit = -1,
+            frame_interval = 0.05f,
+            trace_grad = 8f,
+            free_val = 60f,
+            froze_time_after_end = 0.3f,
+            layer_name = "Objects",
+            frame_action = [Hotfixable](int idx, ref Vector2 vec, ref Vector2 dst_vec,
+                Animation.SpriteAnimation anim) =>
+            {
+                if (anim.data.hasFlag("end"))
+                {
+                    anim.data.get("frozen_time", out float frozen_time);
+
+                    if (frozen_time > 0)
+                    {
+                        frozen_time -= anim.cur_elapsed;
+                        anim.data.set("frozen_time", frozen_time);
+                        return;
+                    }
+
+                    anim.change_scale(0.9f);
+                    if (anim.get_scale() < 0.01f) anim.force_stop();
+                }
+            },
+            end_action = [Hotfixable](int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
+            {
+                if (anim.src_object == null || !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
+                if (anim.data.hasFlag("end"))
+                {
+                    anim.has_end = false;
+                    return;
+                }
+
+                WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
+                if (center == null) return;
+                float radius = 20 * anim.get_scale();
+                List<BaseSimObject> enemies =
+                    GeneralHelper.find_enemies_in_circle(center, anim.src_object.kingdom, radius);
+                float force = 5f;
+                anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
+                spell_cost = MiscUtils.WakanCostToDamage(spell_cost, anim.src_object) * 10;
+                //CW_EffectManager.instance.spawn_anim("bushido_base_anim", dst_vec, dst_vec, sprites.src_object, null, 1f);
+                foreach (BaseSimObject actor in enemies)
+                {
+                    actor.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell, pAttacker: anim.src_object);
+                    if (actor.objectType != MapObjectType.Actor) continue;
+                    ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force,
+                        (actor.currentPosition.y - dst_vec.y) / force, 1 / force);
+                }
+
+                EffectsLibrary.spawnExplosionWave(dst_vec, radius / 2);
+                MapAction.damageWorld(center, (int)radius, AssetManager.terraform.get("cw_fall_mountain"));
+
+                anim.has_end = false;
+                anim.data.addFlag("end");
+                anim.data.set("frozen_time", anim.setting.froze_time_after_end);
+            }
+        };
+        anim_setting.set_trace([Hotfixable](ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim,
+            ref float delta_x, ref float delta_y) =>
+        {
+            if (anim.has_end) return;
+            if (!anim.data.hasFlag("started"))
+            {
+                anim.set_position(anim.src_object.currentPosition);
+                anim.data.addFlag("started");
+                return;
+            }
+
+            if (!anim.data.hasFlag("fall"))
+            {
+                var current_position = anim.gameObject.transform.position;
+
+                float dist = Toolbox.DistVec2Float(src_vec, current_position);
+                if (dist < 0.1f)
+                {
+                    anim.data.addFlag("fall");
+                    return;
+                }
+
+                delta_x = (src_vec.x - current_position.x) / anim.setting.froze_time_after_end;
+                delta_y = (src_vec.y - current_position.y) / anim.setting.froze_time_after_end;
+
+                if (anim.get_scale() <= 1.07f)
+                {
+                    anim.change_scale(1.02f);
+                }
+
+                return;
+            }
+
+            if (anim.data.hasFlag("end") && anim.src_object != null)
+            {
+                anim.data.get("frozen_time", out float frozen_time);
+                if (frozen_time > 0) return;
+                var current_position = anim.gameObject.transform.position;
+                delta_x = (anim.src_object.currentPosition.x - current_position.x) / anim.setting.froze_time_after_end;
+                delta_y = (anim.src_object.currentPosition.y - current_position.y) / anim.setting.froze_time_after_end;
+                return;
+            }
+
+            if (anim.get_scale() > 1.07f)
+            {
+                delta_y = -9.8f * anim.play_time * anim.setting.trace_grad * 10;
+                var current_position = anim.gameObject.transform.position;
+                if (current_position.y <= dst_vec.y)
+                {
+                    delta_y = 0;
+                    return;
+                }
+
+                if (current_position.y + delta_y * anim.cur_elapsed < dst_vec.y)
+                {
+                    delta_y = (dst_vec.y - current_position.y) / anim.cur_elapsed;
+                }
+
+                return;
+            }
+
+            anim.change_scale(1.04f);
+        });
+
+        EffectManager.instance.load_as_controller($"fall_{name}_anim", $"effects/fall_{name}_mountain/",
+            controller_setting: anim_setting, base_scale: 0.25f);
+        CW_SpellAsset spell = new()
+        {
+            id = $"fall_{name}_mountain", rarity = 95,
+            element = new CW_Element(new[] { 0, 0, 0, 0, 100 }),
+            anim_id = $"fall_{name}_anim", anim_type = SpellAnimType.ON_TARGET,
+            anim_action = AnimActions.fall_to_ground,
+            target_camp = SpellTargetCamp.ENEMY,
+            target_type = SpellTargetType.TILE,
+            spell_cost_action = CostChecks.generate_spell_cost_action(new[]
+            {
+                new KeyValuePair<string, float>(DataS.wakan, Content_Constants.default_spell_cost / 3f)
+            }),
+            spell_learn_check = LearnChecks.default_learn_check
+        };
+        spell.add_trigger_tag(SpellTriggerTag.ATTACK);
+        spell.add_cultisys_require(CultisysType.WAKAN);
+        Library.Manager.spells.add(spell);
+    }
+
     // 地刺
     private static void add_ground_thorn_spell()
     {
@@ -803,7 +1001,12 @@ internal static class Spells
             frame_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (idx != 3) return;
-                if (anim.src_object == null || !anim.src_object.isAlive()) return;
+                if (anim.src_object == null || !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 var position = anim.gameObject.transform.position;
                 int x = (int)position.x;
                 int y = (int)position.y;
@@ -865,7 +1068,12 @@ internal static class Spells
             {
                 if (idx > 2)
                 {
-                    if (anim.src_object == null || !anim.src_object.isAlive()) return;
+                    if (anim.src_object == null || !anim.src_object.isAlive())
+                    {
+                        anim.force_stop();
+                        return;
+                    }
+
                     var position = anim.gameObject.transform.position;
                     int x = (int)position.x;
                     int y = (int)position.y;
@@ -873,7 +1081,7 @@ internal static class Spells
                     if (tile != null)
                     {
                         List<BaseSimObject> targets =
-                            GeneralHelper.find_enemies_in_square(tile, anim.src_object.kingdom, 3);
+                            GeneralHelper.find_enemies_in_square(tile, anim.src_object.kingdom, 2);
                         anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                         spell_cost = MiscUtils.WakanCostToDamage(spell_cost, anim.src_object);
                         foreach (BaseSimObject actor in targets)
@@ -989,11 +1197,16 @@ internal static class Spells
             loop_limit_type = AnimationLoopLimitType.DST_LIMIT,
             loop_nr_limit = -1,
             frame_interval = 0.05f,
-            trace_grad = 15f,
+            trace_grad = 20f,
             point_to_dst = true,
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
-                if (anim.src_object == null || !anim.src_object.isAlive()) return;
+                if (anim.src_object == null || !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
                 if (center == null) return;
                 List<BaseSimObject> enemies = GeneralHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 3);
@@ -1039,11 +1252,16 @@ internal static class Spells
             loop_limit_type = AnimationLoopLimitType.DST_LIMIT,
             loop_nr_limit = -1,
             frame_interval = 0.05f,
-            trace_grad = 15f,
+            trace_grad = 20f,
             point_to_dst = true,
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
-                if (anim.src_object == null || !anim.src_object.isAlive()) return;
+                if (anim.src_object == null || !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
                 if (center == null) return;
                 List<BaseSimObject> enemies = GeneralHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 3);
@@ -1086,11 +1304,16 @@ internal static class Spells
             loop_limit_type = AnimationLoopLimitType.DST_LIMIT,
             loop_nr_limit = -1,
             frame_interval = 0.05f,
-            trace_grad = 15f,
+            trace_grad = 20f,
             point_to_dst = true,
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
-                if (anim.src_object == null || !anim.src_object.isAlive()) return;
+                if (anim.src_object == null || !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
                 if (center == null) return;
                 List<BaseSimObject> enemies = GeneralHelper.find_enemies_in_circle(center, anim.src_object.kingdom, 3);
@@ -1139,11 +1362,16 @@ internal static class Spells
             loop_limit_type = AnimationLoopLimitType.DST_LIMIT,
             loop_nr_limit = -1,
             frame_interval = 0.05f,
-            trace_grad = 15f,
+            trace_grad = 20f,
             point_to_dst = true,
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
-                if (anim.src_object == null || !anim.src_object.isAlive()) return;
+                if (anim.src_object == null || !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 WorldTile center = MapBox.instance.GetTile((int)dst_vec.x, (int)dst_vec.y);
                 if (center == null) return;
                 EffectManager.instance.spawn_anim("explosion_anim", center.posV, center.posV, null, null, 0.06f);
@@ -1199,7 +1427,12 @@ internal static class Spells
                 if (idx != 5) return;
                 float radius = 5;
                 if (anim.src_object == null || !anim.src_object.isAlive() || anim.dst_object == null ||
-                    !anim.dst_object.isAlive()) return;
+                    !anim.dst_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 WorldTile center = anim.dst_object.currentTile;
                 if (center == null) return;
                 List<WorldTile> tiles = GeneralHelper.get_tiles_in_circle(center, radius);
@@ -1250,7 +1483,12 @@ internal static class Spells
                 if (idx != 5) return;
                 float radius = 5;
                 if (anim.src_object == null || !anim.src_object.isAlive() || anim.dst_object == null ||
-                    !anim.dst_object.isAlive()) return;
+                    !anim.dst_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 WorldTile center = anim.dst_object.currentTile;
                 if (center == null) return;
                 List<WorldTile> tiles = GeneralHelper.get_tiles_in_circle(center, radius);
@@ -1296,7 +1534,12 @@ internal static class Spells
                 if (idx != 5) return;
                 float radius = 5;
                 if (anim.src_object == null || !anim.src_object.isAlive() || anim.dst_object == null ||
-                    !anim.dst_object.isAlive()) return;
+                    !anim.dst_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 WorldTile center = anim.dst_object.currentTile;
                 if (center == null) return;
                 List<WorldTile> tiles = GeneralHelper.get_tiles_in_circle(center, radius);
@@ -1345,7 +1588,12 @@ internal static class Spells
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
                 if (anim.dst_object == null || !anim.dst_object.isAlive() || anim.src_object == null ||
-                    !anim.src_object.isAlive()) return;
+                    !anim.src_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 Animation.SpriteAnimation anti_matter = EffectManager.instance.spawn_anim("anti_matter_anim",
                     anim.dst_object.currentPosition, anim.dst_object.currentPosition, anim.src_object, anim.dst_object);
                 if (anti_matter == null) return;
@@ -1428,7 +1676,12 @@ internal static class Spells
             trace_grad = 20,
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
-                if (anim.dst_object == null || !anim.dst_object.isAlive()) return;
+                if (anim.dst_object == null || !anim.dst_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 CW_StatusEffectData status_data = ((CW_Actor)anim.dst_object)
                     .AddStatus("status_samadhi_fire", anim.src_object);
                 if (status_data == null) return;
@@ -1472,12 +1725,17 @@ internal static class Spells
             trace_grad = 20,
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
-                if (anim.dst_object == null || !anim.dst_object.isAlive()) return;
-                CW_Actor src_obj = (CW_Actor)anim.src_object;
-                CW_StatusEffectData status_data = src_obj
+                if (anim.dst_object == null || !anim.dst_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
+                CW_Actor dst_obj = (CW_Actor)anim.dst_object;
+                CW_StatusEffectData status_data = dst_obj
                     .AddStatus("status_loltus_fire", anim.src_object,
                         Library.Manager.statuses.get("status_loltus_fire").duration *
-                        (0.1f + src_obj.data.kills / 10f));
+                        (0.1f + dst_obj.data.kills / 10f));
                 if (status_data == null) return;
                 anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                 status_data.effect_val = spell_cost;
@@ -1519,7 +1777,12 @@ internal static class Spells
             trace_grad = 20,
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
-                if (anim.dst_object == null || !anim.dst_object.isAlive()) return;
+                if (anim.dst_object == null || !anim.dst_object.isAlive())
+                {
+                    anim.force_stop();
+                    return;
+                }
+
                 CW_StatusEffectData status_data = ((CW_Actor)anim.dst_object)
                     .AddStatus("status_fen_fire", anim.src_object);
                 if (status_data == null) return;

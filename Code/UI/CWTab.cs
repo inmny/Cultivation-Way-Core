@@ -1,30 +1,28 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using Cultivation_Way.Constants;
 using NCMS.Utils;
 using NeoModLoader.General;
 using NeoModLoader.General.UI.Tab;
+using NeoModLoader.ui;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
-using Object = UnityEngine.Object;
 
 namespace Cultivation_Way.UI;
 
-internal static class CWTab
+public static class CWTab
 {
     private static GameObject _tab;
     private static PowersTab _powers_tab;
 
-    public static void init()
+    internal static void init()
     {
         create_tab();
 
         add_buttons();
     }
 
-    public static void post_init()
+    internal static void post_init()
     {
         _powers_tab.UpdateLayout();
     }
@@ -59,7 +57,7 @@ internal static class CWTab
         create_and_add_button(
             Constants.Core.modconfig_window,
             "ui/Icons/iconOptions",
-            () => ScrollWindow.showWindow(Constants.Core.modconfig_window),
+            () => { ModConfigureWindow.ShowWindow(CW_Core.Instance.GetConfig()); },
             ButtonType.Click,
             ButtonContainerType.TOOL
         );
@@ -97,7 +95,7 @@ internal static class CWTab
         );
     }
 
-    public static PowerButton create_and_add_button(string id, string sprite_path, UnityAction action,
+    internal static PowerButton create_and_add_button(string id, string sprite_path, UnityAction action,
         ButtonType button_type = ButtonType.Click, ButtonContainerType container_type = ButtonContainerType.OTHERS)
     {
         var ret = create_button(id, sprite_path, action, button_type);
@@ -114,6 +112,7 @@ internal static class CWTab
     {
         _powers_tab.AddPowerButton(container_type.ToString(), button);
     }
+
     /// <summary>
     ///     创建按钮
     /// </summary>
@@ -122,7 +121,7 @@ internal static class CWTab
     /// <param name="action"></param>
     /// <param name="button_type"></param>
     /// <returns></returns>
-    public static PowerButton create_button(string id, string sprite_path, UnityAction action,
+    internal static PowerButton create_button(string id, string sprite_path, UnityAction action,
         ButtonType button_type = ButtonType.Click)
     {
         PowerButton ret = null;
@@ -135,7 +134,8 @@ internal static class CWTab
                 ret = PowerButtonCreator.CreateGodPowerButton(id, SpriteTextureLoader.getSprite(sprite_path));
                 break;
             case ButtonType.Toggle:
-                ret = PowerButtonCreator.CreateToggleButton(id, SpriteTextureLoader.getSprite(sprite_path), pNoAutoSetToggleAction: true);
+                ret = PowerButtonCreator.CreateToggleButton(id, SpriteTextureLoader.getSprite(sprite_path),
+                    pNoAutoSetToggleAction: true);
                 break;
         }
 

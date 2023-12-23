@@ -135,13 +135,15 @@ internal static class StatusEffects
         {
             if (pAnim.src_object == null || !pAnim.src_object.isAlive())
             {
-                pAnim.force_stop(false);
+                pAnim.force_stop();
                 return;
             }
+
             if (!pAnim.src_object.isActor())
             {
                 return;
             }
+
             CW_Actor actor = (CW_Actor)pAnim.src_object;
             pAnim.set_scale(actor.stats[S.scale]);
             if (actor.statuses != null && actor.statuses.TryGetValue("status_vine_bound", out var status))
@@ -168,10 +170,7 @@ internal static class StatusEffects
             StatusTier.Advanced
         );
         status_effect.anim_id = "status_vine_bound_anim";
-        status_effect.action_on_update = (effect, object1, object2) =>
-        {
-            object2.a.has_status_frozen = true;
-        };
+        status_effect.action_on_update = (effect, object1, object2) => { object2.a.has_status_frozen = true; };
         // 石化
         bound_stats = new BaseStats();
         bound_stats[S.speed] = -999999;
@@ -195,19 +194,21 @@ internal static class StatusEffects
         bound_stats[S.attack_speed] = -999999;
         anim_setting = anim_setting.__deepcopy();
         anim_setting.frame_interval = 1f;
-        
+
         anim_setting.frame_action = (int pIdx, ref Vector2 pVec, ref Vector2 pDstVec,
             Animation.SpriteAnimation pAnim) =>
         {
             if (pAnim.src_object == null || !pAnim.src_object.isAlive())
             {
-                pAnim.force_stop(false);
+                pAnim.force_stop();
                 return;
             }
+
             if (!pAnim.src_object.isActor())
             {
                 return;
             }
+
             CW_Actor actor = (CW_Actor)pAnim.src_object;
             pAnim.set_scale(actor.stats[S.scale]);
             if (actor.statuses != null && actor.statuses.TryGetValue("status_ice_bound", out var status))
@@ -240,10 +241,7 @@ internal static class StatusEffects
             EffectManager.instance.spawn_anim("status_ice_bound_anim_" + Toolbox.randomInt(0, 5),
                 object2.currentPosition, object2.currentPosition, object2, object2, object2.stats[S.scale]);
         };
-        status_effect.action_on_update = (effect, object1, object2) =>
-        {
-            object2.a.has_status_frozen = true;
-        };
+        status_effect.action_on_update = (effect, object1, object2) => { object2.a.has_status_frozen = true; };
     }
 
     private static void add_shield_statuses()
@@ -407,8 +405,7 @@ internal static class StatusEffects
             10f,
             "basalt_armor_anim", "effects/basalt_armor", 0.5f,
             "effects/basalt_armor/玄武之甲",
-            new[] { StatusEffectTag.POSITIVE },
-            StatusTier.Basic
+            new[] { StatusEffectTag.POSITIVE }
         );
         // 青龙之鳞
         bonus_stats = new BaseStats();

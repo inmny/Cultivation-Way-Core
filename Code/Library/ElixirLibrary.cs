@@ -7,9 +7,9 @@ namespace Cultivation_Way;
 public class ElixirAsset : Asset
 {
     /// <summary>
-    ///     阴阳属性, 0为阴, 1为阳
+    ///     丹药效果
     /// </summary>
-    public float yin_yang;
+    public ElixirAction action;
 
     /// <summary>
     ///     五行属性
@@ -17,9 +17,9 @@ public class ElixirAsset : Asset
     public CW_Element element;
 
     /// <summary>
-    ///     丹药效果
+    ///     阴阳属性, 0为阴, 1为阳
     /// </summary>
-    public ElixirAction action;
+    public float yin_yang;
 }
 
 public class ElixirLibrary : CW_Library<ElixirAsset>

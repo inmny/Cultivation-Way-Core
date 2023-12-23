@@ -5,9 +5,10 @@ using System.Runtime.CompilerServices;
 using Cultivation_Way.Animation;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Extension;
+using Cultivation_Way.General.AboutNameGenerate;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
-using NeoModLoader.services;
+using NeoModLoader.api.attributes;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -38,7 +39,7 @@ public partial class CW_Actor : Actor
     /// <summary>
     ///     状态数据
     /// </summary>
-    internal Dictionary<string, CW_StatusEffectData> statuses;
+    public Dictionary<string, CW_StatusEffectData> statuses;
 
     public void StartColorEffect(string pColorID, float pRewrtieTimer = -1)
     {
@@ -63,12 +64,38 @@ public partial class CW_Actor : Actor
 
         setSpriteSharedMaterial(material);
     }
-
+    private bool cleaned_after_dead = false;
     /// <summary>
     ///     死后保留需要保留的数据
     /// </summary>
     internal void leave_data()
     {
+        if (cleaned_after_dead) return;
+
+        cleaned_after_dead = true;
+
+        CultisysAsset cultisys = null;
+        int level;
+
+        cultisys = data.GetCultisys(CultisysType.WAKAN);
+        if (cultisys != null)
+        {
+            data.get(cultisys.id, out level, 0);
+            cultisys.number_per_level[level]--;
+        }
+        cultisys = data.GetCultisys(CultisysType.BODY);
+        if (cultisys != null)
+        {
+            data.get(cultisys.id, out level, 0);
+            cultisys.number_per_level[level]--;
+        }
+        cultisys = data.GetCultisys(CultisysType.SOUL);
+        if (cultisys != null)
+        {
+            data.get(cultisys.id, out level, 0);
+            cultisys.number_per_level[level]--;
+        }
+
         BloodNodeAsset blood = data.GetMainBlood();
         if (blood != null && blood.id == data.id && blood.ancestor_data == data)
         {
@@ -99,6 +126,7 @@ public partial class CW_Actor : Actor
     /// <param name="pTarget">法术目标, 可为null</param>
     /// <param name="pTargetTile">法术目标区域, 可为null</param>
     /// <returns>法术是否合法</returns>
+    [Hotfixable]
     public bool CastSpell(CW_SpellAsset pSpell, BaseSimObject pTarget, WorldTile pTargetTile)
     {
         if ((pSpell.target_type == SpellTargetType.TILE && pTargetTile == null) ||
@@ -109,7 +137,7 @@ public partial class CW_Actor : Actor
             return false;
         if (has_status_frozen) return false;
 
-        bool is_enemy = kingdom == null || kingdom.isEnemy(pTarget.kingdom);
+        bool is_enemy = kingdom == null || kingdom.isEnemy(pTarget == null ? null : pTarget.kingdom);
 
         if ((pSpell.target_camp == SpellTargetCamp.ALIAS && is_enemy) ||
             (pSpell.target_camp == SpellTargetCamp.ENEMY && !is_enemy)) return false;
@@ -130,6 +158,7 @@ public partial class CW_Actor : Actor
     /// <param name="pRewriteEffectTime">重写状态持续时间</param>
     /// <param name="pAsID">加入状态表的key</param>
     /// <returns></returns>
+    [Hotfixable]
     public CW_StatusEffectData AddStatus(string pStatusID, BaseSimObject pFrom = null, float pRewriteEffectTime = -1,
         string pAsID = null)
     {
@@ -145,14 +174,9 @@ public partial class CW_Actor : Actor
         pAsID ??= pStatusID;
         statuses ??= new Dictionary<string, CW_StatusEffectData>();
 
-        if (statuses.TryGetValue(pAsID, out CW_StatusEffectData same_id_status)) return same_id_status;
-        CW_StatusEffectData status = new(status_asset, pFrom)
-        {
-            id = pAsID
-        };
         if (pRewriteEffectTime < 0)
         {
-            pRewriteEffectTime = status.left_time;
+            pRewriteEffectTime = status_asset.duration;
             if (pFrom != null && pFrom.isActor())
             {
                 float reduce = pFrom.a.data.GetMaxPower() / data.GetMaxPower();
@@ -161,26 +185,39 @@ public partial class CW_Actor : Actor
             }
         }
 
-        status.left_time = pRewriteEffectTime;
-
-        if (!string.IsNullOrEmpty(status_asset.anim_id))
+        if (statuses.TryGetValue(pAsID, out CW_StatusEffectData status))
         {
-            status.anim = EffectManager.instance.spawn_anim(status_asset.anim_id,
-                pFrom == null ? Vector2.zero : pFrom.currentPosition, currentPosition, pFrom, this);
-            if (status.anim is { isOn: true })
+            status.left_time += pRewriteEffectTime;
+        }
+        else
+        {
+            status = new CW_StatusEffectData(status_asset, pFrom)
             {
-                status.anim.change_scale(stats[S.scale]);
+                id = pAsID
+            };
+
+            status.left_time = pRewriteEffectTime;
+            if (!string.IsNullOrEmpty(status_asset.anim_id))
+            {
+                status.anim = EffectManager.instance.spawn_anim(status_asset.anim_id,
+                    pFrom == null ? Vector2.zero : pFrom.currentPosition, currentPosition, pFrom, this);
+                if (status.anim is { isOn: true })
+                {
+                    status.anim.change_scale(stats[S.scale]);
+                }
             }
+
+            statuses.Add(pAsID, status);
+            status_asset.action_on_get?.Invoke(status, pFrom, this);
+
+            activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
+            batch.c_status_effects.Add(this);
         }
 
-        statuses.Add(pAsID, status);
-        status_asset.action_on_get?.Invoke(status, pFrom, this);
-
-        activeStatus_dict ??= new Dictionary<string, StatusEffectData>();
-        batch.c_status_effects.Add(this);
+        status.left_time = Mathf.Min(status.left_time, Constants.Others.max_status_effect_duration);
 
         setStatsDirty();
-        
+
         return status;
     }
 
@@ -373,45 +410,31 @@ public partial class CW_Actor : Actor
 
         float num = 1f;
         CultisysAsset cultisys = null;
+        Actor attacker = null;
+        if (pAttacker != null && pAttacker.isActor())
+        {
+            attacker = pAttacker.a;
+        }
+
         switch (attack_type)
         {
-            case CW_AttackType.Other:
-            case CW_AttackType.Weapon:
-                num = 1f - stats[S.armor] / (stats[S.armor] + 100);
-                
-                float best_reduce = 1;
-                cultisys = data.GetCultisys(CultisysType.BODY);
-                if (cultisys != null)
-                {
-                    data.get(cultisys.id, out int level, 0);
-                    best_reduce = Mathf.Max(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
-                }
-                cultisys = data.GetCultisys(CultisysType.WAKAN);
-                if (cultisys != null)
-                {
-                    data.get(cultisys.id, out int level, 0);
-                    best_reduce = Mathf.Max(best_reduce, Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
-                }
-                num /= best_reduce;
-                break;
-            case CW_AttackType.Acid:
-            case CW_AttackType.Eaten:
-            case CW_AttackType.Fire:
-            case CW_AttackType.Hunger:
-            case CW_AttackType.Infection:
-            case CW_AttackType.Plague:
-            case CW_AttackType.Poison:
-            case CW_AttackType.Tumor:
-            case CW_AttackType.AshFever:
             case CW_AttackType.Spell:
                 num = 1f - stats[CW_S.spell_armor] / (stats[CW_S.spell_armor] + 100);
                 cultisys = data.GetCultisys(CultisysType.WAKAN);
                 if (cultisys != null)
                 {
-                    data.get(cultisys.id, out int level, 0);
+                    data.get(cultisys.id, out int level);
                     num /= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
                 }
-                // LogService.LogInfoConcurrent($"Actor {data.id} get hit by spell, damage: {pDamage}, reduce: {num}");
+
+                if (attacker == null) break;
+                cultisys = attacker.data.GetCultisys(CultisysType.WAKAN);
+                if (cultisys != null)
+                {
+                    attacker.data.get(cultisys.id, out int level);
+                    num *= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
+                }
+
                 break;
             case CW_AttackType.Soul:
                 if (pAttacker != null && pAttacker.isActor() && pAttacker.isAlive())
@@ -422,13 +445,74 @@ public partial class CW_Actor : Actor
                 {
                     num = 0;
                 }
-                
+
                 cultisys = data.GetCultisys(CultisysType.SOUL);
                 if (cultisys != null)
                 {
-                    data.get(cultisys.id, out int level, 0);
+                    data.get(cultisys.id, out int level);
                     num /= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
                 }
+
+                if (attacker == null) break;
+                cultisys = attacker.data.GetCultisys(CultisysType.SOUL);
+                if (cultisys != null)
+                {
+                    attacker.data.get(cultisys.id, out int level);
+                    num *= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
+                }
+
+                break;
+
+            case CW_AttackType.Acid:
+            case CW_AttackType.Eaten:
+            case CW_AttackType.Fire:
+            case CW_AttackType.Hunger:
+            case CW_AttackType.Infection:
+            case CW_AttackType.Plague:
+            case CW_AttackType.Poison:
+            case CW_AttackType.Tumor:
+            case CW_AttackType.AshFever:
+            case CW_AttackType.Other:
+            case CW_AttackType.Weapon:
+                num = 1f - stats[S.armor] / (stats[S.armor] + 100);
+
+                float best_reduce = 1;
+                cultisys = data.GetCultisys(CultisysType.BODY);
+                if (cultisys != null)
+                {
+                    data.get(cultisys.id, out int level);
+                    best_reduce = Mathf.Max(best_reduce,
+                        Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                }
+
+                cultisys = data.GetCultisys(CultisysType.WAKAN);
+                if (cultisys != null)
+                {
+                    data.get(cultisys.id, out int level);
+                    best_reduce = Mathf.Max(best_reduce,
+                        Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                }
+
+                if (attacker != null)
+                {
+                    cultisys = attacker.data.GetCultisys(CultisysType.WAKAN);
+                    if (cultisys != null)
+                    {
+                        attacker.data.get(cultisys.id, out int level);
+                        best_reduce = Mathf.Min(best_reduce,
+                            best_reduce / Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                    }
+
+                    cultisys = attacker.data.GetCultisys(CultisysType.BODY);
+                    if (cultisys != null)
+                    {
+                        attacker.data.get(cultisys.id, out int level);
+                        best_reduce = Mathf.Min(best_reduce,
+                            best_reduce / Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                    }
+                }
+
+                num /= best_reduce;
 
                 break;
         }
@@ -473,7 +557,8 @@ public partial class CW_Actor : Actor
         if (__data_spells.Count > 0)
         {
             CW_SpellAsset spell = Manager.spells.get(__data_spells.GetRandom());
-            if ((pAttacker != null && (spell.can_trigger(SpellTriggerTag.NAMED_DEFEND) || (spell.can_trigger(SpellTriggerTag.ATTACK) && Toolbox.randomChance(0.3f)))) ||
+            if ((pAttacker != null && (spell.can_trigger(SpellTriggerTag.NAMED_DEFEND) ||
+                                       (spell.can_trigger(SpellTriggerTag.ATTACK) && Toolbox.randomChance(0.3f)))) ||
                 (pAttacker == null && spell.can_trigger(SpellTriggerTag.UNNAMED_DEFEND)))
             {
                 CastSpell(spell, pAttacker, pAttacker == null ? null : pAttacker.currentTile);
@@ -589,6 +674,7 @@ public partial class CW_Actor : Actor
     /// <summary>
     ///     创建/改良功法
     /// </summary>
+    [Hotfixable]
     public void CreateCultibook()
     {
         Cultibook old_cultibook = data.GetCultibook();
@@ -644,10 +730,11 @@ public partial class CW_Actor : Actor
         }
 
 
-        new_cultibook.name = $"{new_cultibook.author_name}著,{new_cultibook.editor_name}改的功法";
         new_cultibook.id = $"{new_cultibook.level}_{data.id}";
         new_cultibook.bonus_stats.MergeStats(data.GetElement().ComputeBonusStats(), new_cultibook.level * 0.3f);
 
+        new_cultibook.name =
+            NameGenerateUtils.GenerateCultibookName(new_cultibook, this);
         Manager.cultibooks.add(new_cultibook);
         data.SetCultibook(new_cultibook);
 
@@ -682,9 +769,8 @@ public partial class CW_Actor : Actor
             }
 
             CultisysAsset cultisys = Manager.cultisys.get(cultisys_id);
-            if (level >= cultisys.max_level - 1) return;
 
-            if (cultisys.can_levelup(this, cultisys)) __level_up_and_get_bonus(cultisys, level);
+            if (cultisys.CanLevelUp(this, cultisys, level + 1)) __level_up_and_get_bonus(cultisys, level);
 
             return;
         }
@@ -695,9 +781,7 @@ public partial class CW_Actor : Actor
             if (cultisys_levels[i] < 0) continue;
             CultisysAsset cultisys = Manager.cultisys.list[i];
 
-            if (cultisys_levels[i] >= cultisys.max_level - 1) continue;
-
-            if (cultisys.can_levelup(this, cultisys)) __level_up_and_get_bonus(cultisys, cultisys_levels[i]);
+            if (cultisys.can_levelup(this, cultisys, cultisys_levels[i] + 1)) __level_up_and_get_bonus(cultisys, cultisys_levels[i]);
         }
     }
 
@@ -830,6 +914,9 @@ public partial class CW_Actor : Actor
         data.set(DataS.soul, float.MaxValue);
         // 暂且不支持直接的血脉修炼体系
         uint allow_cultisys_types = 0b111;
+        if (data.GetCultisys(CultisysType.WAKAN) != null) allow_cultisys_types &= ~(uint)CultisysType.WAKAN;
+        if (data.GetCultisys(CultisysType.SOUL) != null) allow_cultisys_types &= ~(uint)CultisysType.SOUL;
+        if (data.GetCultisys(CultisysType.BODY) != null) allow_cultisys_types &= ~(uint)CultisysType.BODY;
         // 强制添加的修炼体系
         foreach (CultisysAsset cultisys in cw_asset.force_cultisys)
         {
@@ -841,7 +928,7 @@ public partial class CW_Actor : Actor
 
         foreach (CultisysAsset cultisys in cw_asset.allowed_cultisys)
         {
-            if ((allow_cultisys_types & (uint)cultisys.type) == 0 || !cultisys.allow(this, cultisys))
+            if ((allow_cultisys_types & (uint)cultisys.type) == 0 || !cultisys.allow(this, cultisys, 0))
                 continue;
             data.set(cultisys.type.ToString(), cultisys.id);
             data.set(cultisys.id, 0);

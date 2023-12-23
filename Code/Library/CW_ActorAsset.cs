@@ -1,24 +1,28 @@
 ﻿using System.Collections.Generic;
 using Cultivation_Way.Constants;
+using NeoModLoader.api.attributes;
+using NeoModLoader.General;
 
 namespace Cultivation_Way.Library;
 
 public class CW_ActorAsset : Asset
 {
     /// <summary>
+    ///     普攻是否额外造成元神伤害
+    /// </summary>
+    public bool addition_soul_damage = false;
+
+    /// <summary>
     ///     允许的修炼体系
     /// </summary>
     internal List<CultisysAsset> allowed_cultisys = new();
+
+    internal List<string> allowed_cultisys_ids = new();
 
     /// <summary>
     ///     反时间停止（非游戏暂停
     /// </summary>
     public bool anti_time_stop = false;
-
-    /// <summary>
-    ///     普攻是否额外造成元神伤害
-    /// </summary>
-    public bool addition_soul_damage = false;
 
     /// <summary>
     ///     自带法术
@@ -40,6 +44,8 @@ public class CW_ActorAsset : Asset
     /// </summary>
     internal List<CultisysAsset> force_cultisys = new();
 
+    internal List<string> force_cultisys_ids = new();
+
     /// <summary>
     ///     偏好元素
     /// </summary>
@@ -55,7 +61,7 @@ public class CW_ActorAsset : Asset
     /// </summary>
     public ActorAsset vanllia_asset;
 
-    internal CW_ActorAsset(ActorAsset vanllia_asset)
+    public CW_ActorAsset(ActorAsset vanllia_asset)
     {
         id = vanllia_asset.id;
         this.vanllia_asset = vanllia_asset;
@@ -65,14 +71,10 @@ public class CW_ActorAsset : Asset
         culti_velo = 1;
     }
 
-    internal List<string> allowed_cultisys_ids = new();
-
     public void add_allowed_cultisys(string cultisys_id)
     {
         allowed_cultisys_ids.Add(cultisys_id);
     }
-
-    internal List<string> force_cultisys_ids = new();
 
     public void add_force_cultisys(string cultisys_id)
     {
@@ -216,5 +218,68 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
                 );
             }
         }
+    }
+    [Hotfixable]
+    public HashSet<CW_ActorAsset> SearchByID(string pID)
+    {
+        string id = pID.ToLower();
+        HashSet<CW_ActorAsset> res = new();
+        foreach(var asset in AssetManager.actor_library.list)
+        {
+            if (asset.id.StartsWith("_")) continue;
+            if (asset.id.ToLower().Contains(id))
+            {
+                res.Add(get(asset.id));
+            }
+        }
+        return res;
+    }
+    [Hotfixable]
+    public HashSet<CW_ActorAsset> SearchByName(string pName)
+    {
+        string name = pName.ToLower();
+        HashSet<CW_ActorAsset> res = new();
+        foreach (var asset in AssetManager.actor_library.list)
+        {
+            if (asset.id.StartsWith("_")) continue;
+            if (LocalizedTextManager.stringExists(asset.nameLocale) && LM.Get(asset.nameLocale).ToLower().Contains(name))
+            {
+                res.Add(get(asset.id));
+            }
+        }
+        return res;
+    }
+    [Hotfixable]
+    public HashSet<CW_ActorAsset> SearchByRaceID(string pRaceID)
+    {
+        string id = pRaceID.ToLower();
+        HashSet<CW_ActorAsset> res = new();
+        foreach (var asset in AssetManager.actor_library.list)
+        {
+            if (asset.id.StartsWith("_")) continue;
+            if ((!string.IsNullOrEmpty(asset.race)) && asset.race.ToLower().Contains(id))
+            {
+                res.Add(get(asset.id));
+            }
+        }
+        return res;
+    }
+    [Hotfixable]
+    public HashSet<CW_ActorAsset> SearchByRaceName(string pRaceName)
+    {
+        string id = pRaceName.ToLower();
+        HashSet<CW_ActorAsset> res = new();
+        foreach (var asset in AssetManager.actor_library.list)
+        {
+            if (asset.id.StartsWith("_")) continue;
+            if (string.IsNullOrEmpty(asset.race)) continue;
+            if (!AssetManager.raceLibrary.dict.TryGetValue(asset.race, out Race race)) continue;
+            if (string.IsNullOrEmpty(race.nameLocale) || !LocalizedTextManager.stringExists(race.nameLocale)) continue;
+            if (LM.Get(race.nameLocale).ToLower().Contains(id))
+            {
+                res.Add(get(asset.id));
+            }
+        }
+        return res;
     }
 }
