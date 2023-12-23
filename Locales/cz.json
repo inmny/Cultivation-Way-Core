@@ -1,6 +1,7 @@
 {
   "?????": "?????",
   "no_found": "未找到",
+  "found_count": "找到$count$个相关结果",
   "2_immortal_spell": "法术",
   "3_bushido_spell": "武技",
   "0_inborn_power_spell": "先天神通",

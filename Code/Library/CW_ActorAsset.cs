@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cultivation_Way.Constants;
+using NeoModLoader.api.attributes;
+using NeoModLoader.General;
 
 namespace Cultivation_Way.Library;
 
@@ -216,5 +218,68 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
                 );
             }
         }
+    }
+    [Hotfixable]
+    public HashSet<CW_ActorAsset> SearchByID(string pID)
+    {
+        string id = pID.ToLower();
+        HashSet<CW_ActorAsset> res = new();
+        foreach(var asset in AssetManager.actor_library.list)
+        {
+            if (asset.id.StartsWith("_")) continue;
+            if (asset.id.ToLower().Contains(id))
+            {
+                res.Add(get(asset.id));
+            }
+        }
+        return res;
+    }
+    [Hotfixable]
+    public HashSet<CW_ActorAsset> SearchByName(string pName)
+    {
+        string name = pName.ToLower();
+        HashSet<CW_ActorAsset> res = new();
+        foreach (var asset in AssetManager.actor_library.list)
+        {
+            if (asset.id.StartsWith("_")) continue;
+            if (LocalizedTextManager.stringExists(asset.nameLocale) && LM.Get(asset.nameLocale).ToLower().Contains(name))
+            {
+                res.Add(get(asset.id));
+            }
+        }
+        return res;
+    }
+    [Hotfixable]
+    public HashSet<CW_ActorAsset> SearchByRaceID(string pRaceID)
+    {
+        string id = pRaceID.ToLower();
+        HashSet<CW_ActorAsset> res = new();
+        foreach (var asset in AssetManager.actor_library.list)
+        {
+            if (asset.id.StartsWith("_")) continue;
+            if ((!string.IsNullOrEmpty(asset.race)) && asset.race.ToLower().Contains(id))
+            {
+                res.Add(get(asset.id));
+            }
+        }
+        return res;
+    }
+    [Hotfixable]
+    public HashSet<CW_ActorAsset> SearchByRaceName(string pRaceName)
+    {
+        string id = pRaceName.ToLower();
+        HashSet<CW_ActorAsset> res = new();
+        foreach (var asset in AssetManager.actor_library.list)
+        {
+            if (asset.id.StartsWith("_")) continue;
+            if (string.IsNullOrEmpty(asset.race)) continue;
+            if (!AssetManager.raceLibrary.dict.TryGetValue(asset.race, out Race race)) continue;
+            if (string.IsNullOrEmpty(race.nameLocale) || !LocalizedTextManager.stringExists(race.nameLocale)) continue;
+            if (LM.Get(race.nameLocale).ToLower().Contains(id))
+            {
+                res.Add(get(asset.id));
+            }
+        }
+        return res;
     }
 }
