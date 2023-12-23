@@ -144,7 +144,7 @@ internal static class CW_GodPowers
             new_value *=
                 1 - CW_Core.Instance.GetConfig()["worldlaw_energy_grid"]["energy_change_scale"].FloatVal * 0.01f;
             energy_tile.UpdateValue(new_value);
-            energy_tile.Update(energy_asset);
+            energy_tile.Update(energy_asset, true);
 
             return true;
         };

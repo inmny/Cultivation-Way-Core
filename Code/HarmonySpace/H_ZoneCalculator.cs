@@ -18,12 +18,13 @@ internal static class H_ZoneCalculator
     /// <returns></returns>
     private static bool showEnergyMaps()
     {
+        return false;
         return PlayerConfig.optionBoolEnabled(Constants.Core.energy_maps_toggle_name)
                || World.world.isPowerForceMapMode(MapMode.Special);
     }
 
-    [HarmonyPrefix]
-    [HarmonyPatch(typeof(ZoneCalculator), nameof(ZoneCalculator.redrawZones))]
+    //[HarmonyPrefix]
+    //[HarmonyPatch(typeof(ZoneCalculator), nameof(ZoneCalculator.redrawZones))]
     public static bool before_ZoneCalculator_redrawZones(ZoneCalculator __instance)
     {
         bool all_redraw = false;
@@ -98,16 +99,14 @@ internal static class H_ZoneCalculator
                 }
             }
 
-            map.tiles_to_redraw.Clear();
+            //map.tiles_to_redraw.Clear();
         }
         else
         {
-            Monitor.Enter(map.tiles_to_redraw);
 
             _tiles_to_redraw.UnionWith(map.tiles_to_redraw);
-            map.tiles_to_redraw.Clear();
+            //map.tiles_to_redraw.Clear();
 
-            Monitor.Exit(map.tiles_to_redraw);
             foreach (CW_EnergyMapTile energy_tile in _tiles_to_redraw)
             {
                 __instance.pixels[World.world.tilesMap[energy_tile.x, energy_tile.y].data.tile_id] = energy_tile.color;

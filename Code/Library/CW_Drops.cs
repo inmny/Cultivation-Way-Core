@@ -43,7 +43,7 @@ internal static class CW_Drops
                 }
 
                 energy_tile.UpdateValue(new_value);
-                energy_tile.Update(energy_asset);
+                energy_tile.Update(energy_asset, true);
             }
         });
     }

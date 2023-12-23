@@ -12,6 +12,7 @@ using ModDeclaration;
 using NeoModLoader.api;
 using NeoModLoader.api.attributes;
 using NeoModLoader.General;
+using NeoModLoader.services;
 using UnityEngine;
 using Manager = Cultivation_Way.Library.Manager;
 
@@ -38,7 +39,8 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         anim_manager = null,
         spell_manager = null,
         library_manager = null,
-        energy_map_manager = null
+        energy_map_manager = null,
+        energy_map_layer = null,
     };
 
     private void Update()
@@ -143,6 +145,13 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         actor_prefab_library_obj.transform.SetParent(transform);
         anim_prefab_library_obj.transform.SetParent(transform);
 
+        GameObject energy_map_layer_obj = new("[layer]Energy Layer", typeof(CW_EnergyMapLayer), typeof(SpriteRenderer));
+        energy_map_layer_obj.transform.SetParent(World.world.transform);
+        energy_map_layer_obj.transform.localPosition = Vector3.zero;
+        energy_map_layer_obj.transform.localScale = Vector3.one;
+        energy_map_layer_obj.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        state.energy_map_layer = energy_map_layer_obj.GetComponent<CW_EnergyMapLayer>();
+        World.world.mapLayers.Add(state.energy_map_layer);
         configure();
 
         Factories.init();
@@ -159,8 +168,29 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
             while (true)
             {
                 if (!World.world.isPaused() && mod_state.all_initialized)
+                {
                     state.energy_map_manager.update_per_year();
+                }
+                    
                 Thread.Sleep((int)(500 / Math.Max(Config.timeScale, 1)));
+            }
+        }).Start();
+        new Thread(() =>
+        {
+            try
+            {
+                while (true)
+                {
+                    if (!World.world.isPaused() && mod_state.all_initialized)
+                    {
+                        state.energy_map_layer.PrepareRedraw();
+                    }
+                }
+            }
+            catch(Exception e)
+            {
+                LogService.LogInfoConcurrent(e.Message);
+                LogService.LogInfoConcurrent(e.StackTrace);
             }
         }).Start();
     }
@@ -221,5 +251,6 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         internal Info mod_info;
         internal SpellManager spell_manager;
         internal long update_nr;
+        public CW_EnergyMapLayer energy_map_layer;
     }
 }
