@@ -19,6 +19,7 @@ namespace Cultivation_Way.Others;
 ///     </list>
 /// </summary>
 public delegate bool CultisysJudge(CW_Actor actor, CultisysAsset cultisys, int level);
+public delegate void CultisysInit(CultisysAsset cultisys);
 
 /// <summary>
 ///     获取修炼体系的属性加成
