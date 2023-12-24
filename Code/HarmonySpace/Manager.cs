@@ -16,8 +16,6 @@ internal class Manager
 
             if (type.Name.StartsWith("H_"))
             {
-                if (type.Name.Contains("Debug") && !CW_Core.mod_state.editor_inmny)
-                    continue;
                 Harmony.CreateAndPatchAll(
                     type, Constants.Others.harmony_id
                 );
