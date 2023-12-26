@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Cultivation_Way.Animation;
+using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Implementation;
 using Cultivation_Way.Others;
@@ -128,6 +130,18 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
 
     private void initialize()
     {
+        if (!Directory.Exists(Paths.DataPath))
+        {
+            try
+            {
+                Directory.CreateDirectory(Paths.DataPath);
+            }
+            catch(Exception e)
+            {
+                LogWarning(e.Message);
+                LogWarning(e.StackTrace);
+            }
+        }
         state.anim_manager = gameObject.AddComponent<EffectManager>();
         state.spell_manager = new SpellManager();
         state.library_manager = new Manager();
