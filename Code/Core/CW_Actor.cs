@@ -81,19 +81,28 @@ public partial class CW_Actor : Actor
         if (cultisys != null)
         {
             data.get(cultisys.id, out level, 0);
-            cultisys.number_per_level[level]--;
+            if (cultisys.number_per_level[level] > 0)
+            {
+                cultisys.number_per_level[level]--;
+            }
         }
         cultisys = data.GetCultisys(CultisysType.BODY);
         if (cultisys != null)
         {
             data.get(cultisys.id, out level, 0);
-            cultisys.number_per_level[level]--;
+            if (cultisys.number_per_level[level] > 0)
+            {
+                cultisys.number_per_level[level]--;
+            }
         }
         cultisys = data.GetCultisys(CultisysType.SOUL);
         if (cultisys != null)
         {
             data.get(cultisys.id, out level, 0);
-            cultisys.number_per_level[level]--;
+            if (cultisys.number_per_level[level] > 0)
+            {
+                cultisys.number_per_level[level]--;
+            }
         }
 
         BloodNodeAsset blood = data.GetMainBlood();
@@ -793,9 +802,14 @@ public partial class CW_Actor : Actor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void __level_up_and_get_bonus(CultisysAsset cultisys, int curr_level)
     {
+        if (cultisys.number_per_level[curr_level] > 0)
+        {
+            cultisys.number_per_level[curr_level]--;
+        }
+
         curr_level++;
         data.set(cultisys.id, curr_level);
-
+        cultisys.number_per_level[curr_level]++;
         if (!__learn_spell_from_cultibook()) __learn_spell_generally();
         if (__can_create_blood_on_levelup(cultisys, curr_level)) CreateBlood();
         if (__can_create_cultibook_on_levelup(cultisys, curr_level)) CreateCultibook();
