@@ -4,7 +4,6 @@ using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using NeoModLoader.api.attributes;
-
 namespace Cultivation_Way.Utils;
 
 internal static class ItemMakerHelper
@@ -74,7 +73,7 @@ internal static class ItemMakerHelper
     public static bool HasEnoughResourcesToContinue(Actor pCreator, CityStorage pStorage, CW_ItemData pCraftingItemData,
         out Dictionary<string, int> pCost)
     {
-        if (pCraftingItemData.Level >= Constants.Core.item_level_count)
+        if (pCraftingItemData.Level >= Constants.Core.item_level_count - 1)
         {
             pCost = null;
             return false;
