@@ -50,7 +50,7 @@ public static class CostChecks
 
         #endregion
 
-        SpellCheck delegate_ret = delegate(CW_SpellAsset spell_asset, BaseSimObject user)
+        SpellCheck delegate_ret = delegate(CW_SpellAsset spell_asset, BaseSimObject user, BaseSimObject target)
         {
             foreach (KeyValuePair<string, float> key_cost_pair in cost_list)
             {

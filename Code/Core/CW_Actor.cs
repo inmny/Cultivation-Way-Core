@@ -155,7 +155,7 @@ public partial class CW_Actor : Actor
         if ((pSpell.target_camp == SpellTargetCamp.ALIAS && is_enemy) ||
             (pSpell.target_camp == SpellTargetCamp.ENEMY && !is_enemy)) return false;
 
-        float cost = pSpell.spell_cost_action(pSpell, this);
+        float cost = pSpell.spell_cost_action(pSpell, this, pTarget);
         if (cost < 0) return false;
 
         CW_Core.mod_state.spell_manager.enqueue_spell(pSpell, this, pTarget, pTargetTile, cost);

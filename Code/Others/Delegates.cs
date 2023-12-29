@@ -2,7 +2,6 @@
 using Cultivation_Way.Core;
 using Cultivation_Way.Library;
 using UnityEngine;
-
 namespace Cultivation_Way.Others;
 
 /// <summary>
@@ -19,6 +18,7 @@ namespace Cultivation_Way.Others;
 ///     </list>
 /// </summary>
 public delegate bool CultisysJudge(CW_Actor actor, CultisysAsset cultisys, int level);
+
 public delegate void CultisysInit(CultisysAsset cultisys);
 
 /// <summary>
@@ -81,7 +81,7 @@ public delegate void SpellAction(CW_SpellAsset spell_asset, BaseSimObject user, 
 /// <summary>
 ///     法术消耗和修习相关检查, 一般返回负数表示false
 /// </summary>
-public delegate float SpellCheck(CW_SpellAsset spell_asset, BaseSimObject user);
+public delegate float SpellCheck(CW_SpellAsset spell_asset, BaseSimObject user, BaseSimObject target = null);
 
 /// <summary>
 ///     状态相关行为
