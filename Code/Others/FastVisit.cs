@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
 using Cultivation_Way.Core;
 using UnityEngine;
-
 namespace Cultivation_Way.Others;
 
 internal static class FastVisit
 {
     private static readonly string[] actor_prefab_paths =
     {
-        "actors/p_unit", "actors/p_dragon", "actors/p_tornado", "actors/p_ufo", "actors/p_boat", "actors/p_godFinger",
-        "actors/p_zombie_dragon", "actors/p_crabzilla"
+        "actors/p_unit", "actors/p_dragon", "actors/p_tornado", "actors/p_ufo", "actors/p_boat", "actors/p_godFinger", "actors/p_zombie_dragon", "actors/p_crabzilla"
     };
 
     private static readonly Dictionary<string, GameObject> actor_prefabs = new();
@@ -51,6 +49,15 @@ internal static class FastVisit
     public static Material get_color_material(string color_id)
     {
         color_materials.TryGetValue(color_id, out Material ret);
+
+        if (ret == null)
+        {
+            ret = new Material(LibraryMaterials.instance.matHighLighted.shader);
+            ret.CopyPropertiesFromMaterial(LibraryMaterials.instance.matHighLighted);
+            ret.color = Colors.GetColor(color_id);
+            color_materials[color_id] = ret;
+        }
+
         return ret;
     }
 

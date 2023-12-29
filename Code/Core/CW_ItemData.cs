@@ -3,16 +3,19 @@ using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Utils.General.AboutItem;
 using NeoModLoader.api.attributes;
+using NeoModLoader.General;
 using Newtonsoft.Json;
 using UnityEngine;
-
 namespace Cultivation_Way.Core;
 
 public class CW_ItemData : ItemData
 {
     [JsonIgnore] private bool _sprite_dirty = true;
     public BaseStats addition_stats = new();
-    public CW_Element element = new(new[] { 20, 20, 20, 20, 20 });
+    public CW_Element element = new(new[]
+    {
+        20, 20, 20, 20, 20
+    });
 
     public CW_ItemData()
     {
@@ -30,12 +33,22 @@ public class CW_ItemData : ItemData
 
         material = pMainMaterial;
         year = World.world.mapStats.year;
-        by = pCreator.getName();
-        if (pCreator.kingdom != null)
+        if (pCreator == null)
         {
-            byColor = pCreator.kingdom.kingdomColor.color_text;
-            from = pCreator.kingdom.name;
-            fromColor = pCreator.kingdom.kingdomColor.color_text;
+            by = LM.Get("world");
+            byColor = Toolbox.colorToHex(Color.gray);
+            from = LM.Get("world");
+            fromColor = Toolbox.colorToHex(Color.gray);
+        }
+        else
+        {
+            by = pCreator.getName();
+            if (pCreator.kingdom != null)
+            {
+                byColor = pCreator.kingdom.kingdomColor.color_text;
+                from = pCreator.kingdom.name;
+                fromColor = pCreator.kingdom.kingdomColor.color_text;
+            }
         }
 
         element.Set(pAsset.BaseElement);

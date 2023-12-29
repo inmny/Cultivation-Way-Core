@@ -7,7 +7,6 @@ using NeoModLoader.General.UI.Tab;
 using NeoModLoader.ui;
 using UnityEngine;
 using UnityEngine.Events;
-
 namespace Cultivation_Way.UI;
 
 public static class CWTab
@@ -66,6 +65,13 @@ public static class CWTab
             Constants.Core.tops_window,
             "ui/Icons/iconTop",
             () => ScrollWindow.showWindow(Constants.Core.tops_window),
+            ButtonType.Click,
+            ButtonContainerType.TOOL
+        );
+        create_and_add_button(
+            Constants.Core.item_library_window,
+            "ui/Icons/iconTop",
+            () => ScrollWindow.showWindow(nameof(WindowItemLibrary)),
             ButtonType.Click,
             ButtonContainerType.TOOL
         );

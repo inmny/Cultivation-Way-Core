@@ -3,7 +3,6 @@ using Assets.SimpleZip;
 using Cultivation_Way.Save;
 using HarmonyLib;
 using Newtonsoft.Json;
-
 namespace Cultivation_Way.HarmonySpace;
 
 internal static class H_SaveManager
@@ -46,8 +45,12 @@ internal static class H_SaveManager
     [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.loadData))]
     public static bool load_cw_data(SaveManager __instance, SavedMap pData)
     {
-        _saved_data.load_to_world(__instance, pData);
-        return false;
+        if (_saved_data != null)
+        {
+            _saved_data.load_to_world(__instance, pData);
+            return false;
+        }
+        return true;
     }
 
     private static void read_save_data(string file_path, bool is_compressed = true)

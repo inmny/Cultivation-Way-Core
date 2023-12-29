@@ -9,7 +9,6 @@ using NeoModLoader.General;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
-
 namespace Cultivation_Way.Library;
 
 internal static class CW_TooltipAssets
@@ -151,7 +150,7 @@ internal static class CW_TooltipAssets
         StringBuilder str_builder = new();
         str_builder.AppendLine($"{LocalizedTextManager.getText($"{cultisys_asset.id}_{level}")}({level + 1}境)");
         str_builder.AppendLine(
-            $"{(int)cultisys_asset.curr_progress(actor, cultisys_asset, level)}/{(int)cultisys_asset.max_progress(actor, cultisys_asset, level)}");
+            $"{LM.Get(cultisys_asset.culti_energy_id)} {(int)cultisys_asset.curr_progress(actor, cultisys_asset, level)}/{(int)cultisys_asset.max_progress(actor, cultisys_asset, level)}");
 
         HashSet<string> spells = new(actor.cur_spells);
         foreach (string spell_id in spells)

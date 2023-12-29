@@ -3,7 +3,6 @@ using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using NeoModLoader.api.attributes;
 using UnityEngine;
-
 namespace Cultivation_Way.Implementation;
 
 internal static class Cultisyses
@@ -22,20 +21,26 @@ internal static class Cultisyses
 
     private static void add_immortal()
     {
+        [Hotfixable]
         void init_immortal(CultisysAsset cultisys)
         {
             for (int i = 0; i < Content_Constants.immortal_max_level; i++)
             {
                 cultisys.power_level[i] = 1 + i * 0.1f;
-                cultisys.bonus_stats[i][CW_S.wakan] = 1 + i * 99;
-                cultisys.bonus_stats[i][CW_S.wakan_regen] = i * 0.1f;
-                cultisys.bonus_stats[i][S.armor] = i * 10;
-                cultisys.bonus_stats[i][S.mod_armor] = i;
-                cultisys.bonus_stats[i][CW_S.spell_armor] = i * 20;
-                cultisys.bonus_stats[i][CW_S.mod_spell_armor] = i * 3;
-                cultisys.bonus_stats[i][S.health] = i * 99;
+
+                cultisys.bonus_stats[i][S.health] = Mathf.Pow(1.4f, i + 1) * 100 - 100f / (i + 1);
                 cultisys.bonus_stats[i][S.mod_health] = i;
-                cultisys.bonus_stats[i][S.damage] = i * 9;
+
+                cultisys.bonus_stats[i][CW_S.wakan] = Mathf.Pow(1.4f, i) * 100 / (i * i + 1);
+                cultisys.bonus_stats[i][CW_S.mod_wakan] = i * i;
+
+                cultisys.bonus_stats[i][CW_S.spell_armor] = Mathf.Pow(1.2787536f, i) / (i * i + 1);
+                cultisys.bonus_stats[i][CW_S.mod_spell_armor] = i * i;
+
+                cultisys.bonus_stats[i][CW_S.wakan_regen] = Mathf.Pow(2f, i);
+                cultisys.bonus_stats[i][S.armor] = i;
+                cultisys.bonus_stats[i][S.mod_armor] = Mathf.Pow(1.2f, i) * 0.2f;
+                cultisys.bonus_stats[i][S.damage] = Mathf.Pow(1.2f, i) * 9;
                 cultisys.bonus_stats[i][S.max_age] = i * i * 10;
                 immortal_power_co[i] = Mathf.Pow(cultisys.power_base, cultisys.power_level[i]);
             }
@@ -93,6 +98,7 @@ internal static class Cultisyses
 
     private static void add_bushido()
     {
+        [Hotfixable]
         void init_bushido(CultisysAsset cultisys)
         {
             for (int i = 0; i < Content_Constants.bushido_max_level; i++)
@@ -117,7 +123,7 @@ internal static class Cultisyses
             curr_progress = (actor, culti, level) => actor.data.health,
             max_progress = (actor, asset, level) => actor.stats[S.health],
             power_base = 1000,
-            can_levelup = [Hotfixable] (actor, asset, level) =>
+            can_levelup = [Hotfixable](actor, asset, level) =>
             {
                 if (asset.curr_progress(actor, asset, 0) < asset.max_progress(actor, asset, 0) * 0.95f) return false;
                 return Toolbox.randomChance(1f / (level * level));
@@ -165,6 +171,7 @@ internal static class Cultisyses
 
     private static void add_soul_cultisys()
     {
+        [Hotfixable]
         void init_soul(CultisysAsset cultisys)
         {
             for (int i = 0; i < Content_Constants.soul_max_level; i++)

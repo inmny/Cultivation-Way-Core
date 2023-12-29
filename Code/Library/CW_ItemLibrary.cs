@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
-
 namespace Cultivation_Way.Library;
 
 public class CW_ItemAsset : Asset
@@ -25,7 +24,10 @@ public class CW_ItemAsset : Asset
         new List<Dictionary<string, int>>[Constants.Core.item_level_count];
 
     public BaseStats base_stats = new();
-    public CW_Element BaseElement = new(new[] { 20, 20, 20, 20, 20 });
+    public CW_Element BaseElement = new(new[]
+    {
+        20, 20, 20, 20, 20
+    });
     public int BaseLevel = 0;
     public ItemAsset VanillaAsset;
 
@@ -116,8 +118,11 @@ public class CW_ItemAsset : Asset
 
 public class CW_ItemLibrary : CW_Library<CW_ItemAsset>
 {
-    private readonly List<CW_ItemAsset> creatable_items = new();
-
+    private readonly HashSet<CW_ItemAsset> creatable_items = new();
+    public bool IsCreatable(CW_ItemAsset item)
+    {
+        return creatable_items.Contains(item);
+    }
     public CW_ItemAsset FindAssetToCraft(Actor pActor)
     {
         return creatable_items.GetRandom();

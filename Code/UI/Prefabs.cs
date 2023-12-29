@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Cultivation_Way.Code.UI.prefabs;
 using Cultivation_Way.Core;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
@@ -11,7 +10,6 @@ using ReflectionUtility;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
-
 namespace Cultivation_Way.UI;
 
 internal class CW_TipButton : MonoBehaviour
@@ -206,8 +204,6 @@ internal static class Prefabs
         add_tooltip_cultibook_prefab();
         add_tooltip_blood_nodes_prefab();
         add_tooltip_cultisys_prefab();
-
-        StatSliderBar._init();
     }
 
     private static void set_simple_cultibook_info_prefab()

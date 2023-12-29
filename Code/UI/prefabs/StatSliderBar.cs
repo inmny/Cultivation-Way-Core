@@ -2,25 +2,22 @@
 using NeoModLoader.api.attributes;
 using NeoModLoader.General;
 using NeoModLoader.General.UI.Prefabs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-
-namespace Cultivation_Way.Code.UI.prefabs;
+namespace Cultivation_Way.UI.prefabs;
 
 public class StatSliderBar : APrefab<StatSliderBar>
 {
+    private SliderBar slider_bar;
+    private Text stat_name;
+    private Text stat_value;
     private void Awake()
     {
         if (!Initialized) Init();
     }
     protected override void Init()
     {
-        if(Initialized) return;
+        if (Initialized) return;
         base.Init();
         slider_bar = transform.Find("SliderBar").GetComponent<SliderBar>();
         stat_name = transform.Find("Title/Name").GetComponent<Text>();
@@ -32,7 +29,7 @@ public class StatSliderBar : APrefab<StatSliderBar>
         Init();
 
         SetSize(size);
-        slider_bar.Setup(stats.value, min, max, [Hotfixable](val)=> 
+        slider_bar.Setup(stats.value, min, max, [Hotfixable](val) =>
         {
             stats.value = val;
             stat_value.text = val.ToString();
@@ -43,7 +40,7 @@ public class StatSliderBar : APrefab<StatSliderBar>
             stat_name.text = "Key: " + AssetManager.base_stats_library.get(stats.id).translation_key;
             if (string.IsNullOrEmpty(AssetManager.base_stats_library.get(stats.id).translation_key))
             {
-                stat_name.text = "ID: "+stats.id;
+                stat_name.text = "ID: " + stats.id;
             }
         }
         stat_value.text = stats.value.ToString();
@@ -54,14 +51,11 @@ public class StatSliderBar : APrefab<StatSliderBar>
         Init();
         RectTransform rect = GetComponent<RectTransform>();
         rect.sizeDelta = size;
-        stat_name.GetComponent<RectTransform>().sizeDelta = new Vector2(size.x / 2 * 0.95f, size.y /2 * 0.9f);
-        stat_value.GetComponent<RectTransform>().sizeDelta = new Vector2(size.x / 2 * 0.95f, size.y /2 * 0.9f);
+        stat_name.GetComponent<RectTransform>().sizeDelta = new Vector2(size.x / 2 * 0.95f, size.y / 2 * 0.9f);
+        stat_value.GetComponent<RectTransform>().sizeDelta = new Vector2(size.x / 2 * 0.95f, size.y / 2 * 0.9f);
 
         slider_bar.SetSize(new Vector2(size.x * 0.95f, size.y / 2 * 0.9f));
     }
-    private SliderBar slider_bar;
-    private Text stat_name;
-    private Text stat_value;
     internal static void _init()
     {
         GameObject obj = new GameObject("StatSliderBar", typeof(Image), typeof(VerticalLayoutGroup));

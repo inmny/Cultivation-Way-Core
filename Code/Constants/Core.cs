@@ -17,6 +17,7 @@ public static class Core
     public const string cultisys_config_window = mod_prefix + "cultisys_config_window";
     public const string cultisys_level_config_window = mod_prefix + "cultisys_level_config_window";
     public const string cultibook_library_window = mod_prefix + "cultibook_library_window";
+    public const string item_library_window = mod_prefix + "item_library_window";
 
     public const string power_energy_increase = mod_prefix + "energy_increase";
     public const string power_energy_decrease = mod_prefix + "energy_decrease";
@@ -35,7 +36,6 @@ public static class Core
 
     public static readonly string[] element_str = new string[element_type_nr]
     {
-        mod_prefix + "water_element", mod_prefix + "fire_element", mod_prefix + "wood_element",
-        mod_prefix + "iron_element", mod_prefix + "ground_element"
+        mod_prefix + "water_element", mod_prefix + "fire_element", mod_prefix + "wood_element", mod_prefix + "iron_element", mod_prefix + "ground_element"
     };
 }

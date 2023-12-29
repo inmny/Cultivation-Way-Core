@@ -8,10 +8,10 @@ using Cultivation_Way.Extension;
 using Cultivation_Way.General.AboutNameGenerate;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
+using Cultivation_Way.Test;
 using NeoModLoader.api.attributes;
 using Newtonsoft.Json;
 using UnityEngine;
-
 namespace Cultivation_Way.Core;
 
 /// <summary>
@@ -29,7 +29,9 @@ public partial class CW_Actor : Actor
     /// <summary>
     ///     data中的法术的拷贝, 用于快速访问
     /// </summary>
-    internal HashSet<string> __data_spells = new();
+    internal readonly HashSet<string> data_spells = new();
+
+    private bool cleaned_after_dead;
 
     /// <summary>
     ///     ActorAsset拓展部分, 在生物创建时已经初始化
@@ -41,7 +43,7 @@ public partial class CW_Actor : Actor
     /// </summary>
     public Dictionary<string, CW_StatusEffectData> statuses;
 
-    public void StartColorEffect(string pColorID, float pRewrtieTimer = -1)
+    public void StartColorEffect(string pColorID, float pRewriteTimer = -1)
     {
         if (!asset.effectDamage)
         {
@@ -54,7 +56,7 @@ public partial class CW_Actor : Actor
         }
 
         batch.c_color_effect.Add(this);
-        colorEffect = pRewrtieTimer < 0 ? 0.3f : pRewrtieTimer;
+        colorEffect = pRewriteTimer < 0 ? 0.3f : pRewriteTimer;
         Material material = FastVisit.get_color_material(pColorID);
         if (material == null)
         {
@@ -64,7 +66,7 @@ public partial class CW_Actor : Actor
 
         setSpriteSharedMaterial(material);
     }
-    private bool cleaned_after_dead = false;
+
     /// <summary>
     ///     死后保留需要保留的数据
     /// </summary>
@@ -74,7 +76,7 @@ public partial class CW_Actor : Actor
 
         cleaned_after_dead = true;
 
-        CultisysAsset cultisys = null;
+        CultisysAsset cultisys;
         int level;
 
         cultisys = data.GetCultisys(CultisysType.WAKAN);
@@ -86,6 +88,7 @@ public partial class CW_Actor : Actor
                 cultisys.number_per_level[level]--;
             }
         }
+
         cultisys = data.GetCultisys(CultisysType.BODY);
         if (cultisys != null)
         {
@@ -95,6 +98,7 @@ public partial class CW_Actor : Actor
                 cultisys.number_per_level[level]--;
             }
         }
+
         cultisys = data.GetCultisys(CultisysType.SOUL);
         if (cultisys != null)
         {
@@ -384,6 +388,7 @@ public partial class CW_Actor : Actor
     /// <summary>
     ///     重写getHit, 并应用属性
     /// </summary>
+    [Hotfixable]
     public override void getHit(float pDamage, bool pFlash = true, AttackType pAttackType = AttackType.Other,
         BaseSimObject pAttacker = null, bool pSkipIfShake = true, bool pMetallicWeapon = false)
     {
@@ -418,32 +423,27 @@ public partial class CW_Actor : Actor
         #region 伤害计算
 
         float num = 1f;
-        CultisysAsset cultisys = null;
+        CultisysAsset cultisys;
         Actor attacker = null;
         if (pAttacker != null && pAttacker.isActor())
         {
             attacker = pAttacker.a;
         }
 
+        int attacker_level = -1;
+        int defender_level = -1;
+        float armor_reduce = 1;
+        float level_reduce = 1;
         switch (attack_type)
         {
             case CW_AttackType.Spell:
-                num = 1f - stats[CW_S.spell_armor] / (stats[CW_S.spell_armor] + 100);
+                armor_reduce = 100 / (stats[CW_S.spell_armor] + 100);
                 cultisys = data.GetCultisys(CultisysType.WAKAN);
                 if (cultisys != null)
                 {
-                    data.get(cultisys.id, out int level);
-                    num /= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
+                    data.get(cultisys.id, out defender_level);
+                    level_reduce /= Mathf.Pow(cultisys.power_base, cultisys.power_level[defender_level] - 1);
                 }
-
-                if (attacker == null) break;
-                cultisys = attacker.data.GetCultisys(CultisysType.WAKAN);
-                if (cultisys != null)
-                {
-                    attacker.data.get(cultisys.id, out int level);
-                    num *= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
-                }
-
                 break;
             case CW_AttackType.Soul:
                 if (pAttacker != null && pAttacker.isActor() && pAttacker.isAlive())
@@ -483,50 +483,30 @@ public partial class CW_Actor : Actor
             case CW_AttackType.AshFever:
             case CW_AttackType.Other:
             case CW_AttackType.Weapon:
-                num = 1f - stats[S.armor] / (stats[S.armor] + 100);
+                armor_reduce = 100 / (stats[S.armor] + 100);
 
-                float best_reduce = 1;
                 cultisys = data.GetCultisys(CultisysType.BODY);
                 if (cultisys != null)
                 {
-                    data.get(cultisys.id, out int level);
-                    best_reduce = Mathf.Max(best_reduce,
-                        Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                    data.get(cultisys.id, out defender_level);
+                    level_reduce = Mathf.Min(level_reduce,
+                        Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
                 }
 
                 cultisys = data.GetCultisys(CultisysType.WAKAN);
                 if (cultisys != null)
                 {
-                    data.get(cultisys.id, out int level);
-                    best_reduce = Mathf.Max(best_reduce,
-                        Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                    data.get(cultisys.id, out defender_level);
+                    level_reduce = Mathf.Min(level_reduce,
+                        Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
                 }
-
-                if (attacker != null)
-                {
-                    cultisys = attacker.data.GetCultisys(CultisysType.WAKAN);
-                    if (cultisys != null)
-                    {
-                        attacker.data.get(cultisys.id, out int level);
-                        best_reduce = Mathf.Min(best_reduce,
-                            best_reduce / Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
-                    }
-
-                    cultisys = attacker.data.GetCultisys(CultisysType.BODY);
-                    if (cultisys != null)
-                    {
-                        attacker.data.get(cultisys.id, out int level);
-                        best_reduce = Mathf.Min(best_reduce,
-                            best_reduce / Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
-                    }
-                }
-
-                num /= best_reduce;
-
                 break;
         }
 
-        pDamage *= num;
+        DamageRecordManager.AddDamageRecord(attack_type, pDamage, attacker_level, defender_level,
+            attack_type == CW_AttackType.Spell ? stats[CW_S.spell_armor] : stats[S.armor], armor_reduce, level_reduce);
+
+        pDamage *= armor_reduce * level_reduce;
 
         #endregion
 
@@ -563,9 +543,9 @@ public partial class CW_Actor : Actor
             statuses_list.Clear();
         }
 
-        if (__data_spells.Count > 0)
+        if (data_spells.Count > 0)
         {
-            CW_SpellAsset spell = Manager.spells.get(__data_spells.GetRandom());
+            CW_SpellAsset spell = Manager.spells.get(data_spells.GetRandom());
             if ((pAttacker != null && (spell.can_trigger(SpellTriggerTag.NAMED_DEFEND) ||
                                        (spell.can_trigger(SpellTriggerTag.ATTACK) && Toolbox.randomChance(0.3f)))) ||
                 (pAttacker == null && spell.can_trigger(SpellTriggerTag.UNNAMED_DEFEND)))
@@ -674,7 +654,9 @@ public partial class CW_Actor : Actor
         Manager.bloods.add(blood_asset);
         data.SetBloodNodes(new Dictionary<string, float>
         {
-            { blood_asset.id, 1f }
+            {
+                blood_asset.id, 1f
+            }
         });
 
         setStatsDirty();
@@ -717,10 +699,10 @@ public partial class CW_Actor : Actor
         }
 
         // 功法内法术更新
-        if (__data_spells.Count > 0)
+        if (data_spells.Count > 0)
         {
             HashSet<string> can_be_add_spells = new();
-            can_be_add_spells.UnionWith(__data_spells);
+            can_be_add_spells.UnionWith(data_spells);
             can_be_add_spells.ExceptWith(new_cultibook.spells);
 
             if (can_be_add_spells.Count > 0)
@@ -756,8 +738,8 @@ public partial class CW_Actor : Actor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void LearnSpell(CW_SpellAsset spell)
     {
-        if (__data_spells.Contains(spell.id)) return;
-        __data_spells.Add(spell.id);
+        if (data_spells.Contains(spell.id)) return;
+        data_spells.Add(spell.id);
         data.AddSpell(spell.id);
     }
 
@@ -790,7 +772,8 @@ public partial class CW_Actor : Actor
             if (cultisys_levels[i] < 0) continue;
             CultisysAsset cultisys = Manager.cultisys.list[i];
 
-            if (cultisys.can_levelup(this, cultisys, cultisys_levels[i] + 1)) __level_up_and_get_bonus(cultisys, cultisys_levels[i]);
+            if (cultisys.can_levelup(this, cultisys, cultisys_levels[i] + 1))
+                __level_up_and_get_bonus(cultisys, cultisys_levels[i]);
         }
     }
 
@@ -837,7 +820,7 @@ public partial class CW_Actor : Actor
         Dictionary<CW_SpellAsset, float> spell_float = new();
         foreach (CW_SpellAsset spell in spells)
         {
-            if (__data_spells.Contains(spell.id)) continue;
+            if (data_spells.Contains(spell.id)) continue;
             float chance = spell.learn_check(this, cultisys_types);
             if (chance < 0) continue;
             spell_float.Add(spell, chance);
@@ -875,7 +858,7 @@ public partial class CW_Actor : Actor
 
         foreach (string t in cultibook.spells)
         {
-            if (__data_spells.Contains(t)) continue;
+            if (data_spells.Contains(t)) continue;
             CW_SpellAsset spell = Manager.spells.get(t);
 
             float learn_chance = spell.learn_check(this, cultisys_types);

@@ -1,6 +1,7 @@
 {
   "??????": "??????",
   "no_found": "未找到",
+  "world": "世界",
   "found_count": "找到$count$个相关结果",
   "2_immortal_spell": "法术",
   "3_bushido_spell": "武技",
@@ -12,6 +13,7 @@
   "cw_wood_element": "木",
   "cw_iron_element": "金",
   "cw_ground_element": "土",
+  "DragItemOrActorHere": "将装备拖拽至此处收纳进异宝阁",
   "cw_Tab_title": "修真之路",
   "cw_modinfo_window": "模组信息",
   "cw_wiki_title": "维基",
@@ -21,6 +23,7 @@
   "cw_actorasset_config_window": "生物配置",
   "cw_cultisys_config_window": "配置修炼体系",
   "cw_cultibook_library_window": "功法阁",
+  "cw_item_library_window": "异宝阁",
   "cw_cultisys_level_config_window": "修炼境界配置",
   "reset_cultisys": "重置配置并返回上一级",
   "cw_cultisys_level_number_limit": "该等级人数限制",

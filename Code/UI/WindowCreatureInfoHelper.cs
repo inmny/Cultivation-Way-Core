@@ -4,9 +4,10 @@ using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using NeoModLoader.api.attributes;
+using NeoModLoader.General;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
 namespace Cultivation_Way.UI;
 
 internal class CultiProgress : MonoBehaviour
@@ -108,6 +109,8 @@ internal class WindowCreatureInfoHelper
     public static Transform stat_icons_transform;
     private static bool initialized;
     private static bool first_open = true;
+    public static RectTransform drag_receiver;
+    private static Text drag_receiver_text;
 
     public static void init(ScrollWindow scroll_window)
     {
@@ -252,6 +255,29 @@ internal class WindowCreatureInfoHelper
         soul_progress.transform.Find("Icon").localPosition += new Vector3(7, 0);
         //soul_progress.transform.Find("Text").localPosition += new Vector3(7, 0);
 
+        GameObject receiver = new("Drag Receiver", typeof(Image));
+        receiver.transform.SetParent(background_transform);
+        receiver.transform.localPosition = new Vector3(-191, -109);
+        receiver.transform.localScale = Vector3.one;
+        receiver.GetComponent<Image>().sprite = SpriteTextureLoader.getSprite("ui/special/windowInnerSliced");
+        receiver.GetComponent<Image>().type = Image.Type.Sliced;
+
+        drag_receiver = receiver.GetComponent<RectTransform>();
+        drag_receiver.sizeDelta = new Vector2(150, 60);
+        drag_receiver.gameObject.SetActive(false);
+
+        GameObject receiver_text = new("Text", typeof(Text));
+        receiver_text.transform.SetParent(receiver.transform);
+        receiver_text.transform.localPosition = Vector3.zero;
+        receiver_text.transform.localScale = Vector3.one;
+        Text text = receiver_text.GetComponent<Text>();
+        text.alignment = TextAnchor.MiddleCenter;
+        text.resizeTextForBestFit = false;
+        text.font = LocalizedTextManager.currentFont;
+        text.fontSize = 12;
+        text.GetComponent<RectTransform>().sizeDelta = drag_receiver.sizeDelta * 0.95f;
+        drag_receiver_text = text;
+
         initialized = true;
     }
 
@@ -293,7 +319,7 @@ internal class WindowCreatureInfoHelper
         knockback_reduction.setValue(actor.stats[S.knockback_reduction]);
         health_regen.setValue(actor.stats[CW_S.health_regen]);
         shield_regen.setValue(actor.stats[CW_S.shield_regen]);
-        wakan_regen.setValue(0);
+        wakan_regen.setValue(actor.stats[CW_S.wakan_regen]);
         culti_velo_co.setValue((1 + actor.stats[CW_S.mod_cultivelo]) * actor.cw_asset.culti_velo);
 
         #endregion
@@ -331,8 +357,96 @@ internal class WindowCreatureInfoHelper
                     break;
             }
         }
-
+        drag_receiver_text.text = LM.Get("DragItemOrActorHere");
         load_cw_statuses(actor, window_creature_info);
+        patch_equipment_buttons_as_draggable(window_creature_info);
+    }
+
+    private static void patch_equipment_buttons_as_draggable(WindowCreatureInfo pWindowCreatureInfo)
+    {
+        foreach (var component in pWindowCreatureInfo.equipmentParent.GetComponentsInChildren(typeof(EquipmentButton), false))
+        {
+            var equip_button = (EquipmentButton)component;
+            EventTrigger button = equip_button.GetComponent<EventTrigger>();
+            if (button == null)
+            {
+                button = equip_button.gameObject.AddComponent<EventTrigger>();
+            }
+            bool need_add_trigger = true;
+            foreach (var trigger in button.triggers)
+            {
+                if (trigger.eventID == EventTriggerType.EndDrag)
+                {
+                    need_add_trigger = false;
+                    break;
+                }
+            }
+            if (!need_add_trigger) continue;
+            EventTrigger.Entry entry;
+
+            entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.BeginDrag;
+            entry.callback.AddListener([Hotfixable](data) =>
+            {
+                if (data is not PointerEventData pointerEventData)
+                {
+                    return;
+                }
+                drag_receiver_text.color = Color.white;
+                drag_receiver.gameObject.SetActive(true);
+                equip_button.transform.SetParent(background_transform);
+                equip_button.transform.localScale = Vector3.one;
+                equip_button.transform.position = pointerEventData.position;
+            });
+            button.triggers.Add(entry);
+
+            entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.Drag;
+            entry.callback.AddListener([Hotfixable](data) =>
+            {
+                if (data is not PointerEventData pointerEventData)
+                {
+                    return;
+                }
+                if (RectTransformUtility.RectangleContainsScreenPoint(drag_receiver, pointerEventData.position))
+                {
+                    drag_receiver_text.color = Color.yellow;
+                }
+                else
+                {
+                    drag_receiver_text.color = Color.white;
+                }
+                equip_button.transform.position = pointerEventData.position;
+            });
+            button.triggers.Add(entry);
+
+            entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.EndDrag;
+            entry.callback.AddListener([Hotfixable](data) =>
+            {
+                if (data is not PointerEventData pointerEventData)
+                {
+                    return;
+                }
+                if (RectTransformUtility.RectangleContainsScreenPoint(drag_receiver, pointerEventData.position))
+                {
+                    equip_button.gameObject.SetActive(false);
+                    pWindowCreatureInfo.pool_equipment._elements_inactive.Push(equip_button);
+
+                    ItemData item_data = equip_button.item_data;
+                    ItemAsset item_asset = AssetManager.items.get(item_data.id);
+
+                    WindowItemLibrary.CollectItem(item_data);
+
+                    pWindowCreatureInfo.actor.equipment.getSlot(item_asset.equipmentType).emptySlot();
+                    pWindowCreatureInfo.actor.setStatsDirty();
+                }
+                equip_button.transform.SetParent(pWindowCreatureInfo.equipmentParent);
+                drag_receiver.gameObject.SetActive(false);
+            });
+            button.triggers.Add(entry);
+
+        }
     }
 
     private static void load_cw_statuses(CW_Actor actor, WindowCreatureInfo window_creature_info)
