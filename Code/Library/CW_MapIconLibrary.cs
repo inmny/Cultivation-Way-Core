@@ -1,4 +1,5 @@
 using Cultivation_Way.Utils;
+using UnityEngine;
 
 namespace Cultivation_Way.Library;
 
@@ -15,5 +16,14 @@ internal static class CW_MapIconLibrary
             draw_call = MapIconHelper._draw_common_icon,
             render_in_game = true
         });
+        if (!MapIconManager._initiated) return;
+
+        foreach (var item in AssetManager.map_icons.list)
+        {
+            if (item.group_system != null) continue;
+            var system = new GameObject().AddComponent<MapIconGroupSystem>();
+            system.create(item);
+            item.group_system = system;
+        }
     }
 }

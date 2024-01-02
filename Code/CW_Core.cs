@@ -18,6 +18,7 @@ using NeoModLoader.General;
 using NeoModLoader.services;
 using UnityEngine;
 using Manager = Cultivation_Way.Library.Manager;
+
 namespace Cultivation_Way;
 
 public class CW_Core : BasicMod<CW_Core>, IReloadable
@@ -69,6 +70,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
                 state.library_manager.post_init();
                 state.energy_map_manager.init(256, 256);
 
+                World.world.units.clear();
                 state.all_initialized = true;
             }
 
@@ -115,6 +117,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         {
             cultisys.init_action.Invoke(cultisys);
         }
+
         foreach (Actor actor in World.world.units)
         {
             if (!actor.isAlive()) continue;
@@ -151,6 +154,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
                 LogWarning(e.StackTrace);
             }
         }
+
         state.anim_manager = gameObject.AddComponent<EffectManager>();
         state.spell_manager = new SpellManager();
         state.library_manager = new Manager();
