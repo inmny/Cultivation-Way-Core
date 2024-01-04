@@ -6,6 +6,7 @@ namespace Cultivation_Way.UI;
 
 public class WindowElixirLibrary : AutoLayoutWindow<WindowElixirLibrary>, ILibraryWindow<ElixirAsset>
 {
+    public static WindowElixirLibrary Instance { get; }
     public List<ElixirAsset> Data { get; set; }
 
     public void SaveData()
@@ -18,7 +19,17 @@ public class WindowElixirLibrary : AutoLayoutWindow<WindowElixirLibrary>, ILibra
         throw new NotImplementedException();
     }
 
+    public void PushData(ElixirAsset pData)
+    {
+        throw new NotImplementedException();
+    }
+
     protected override void Init()
     {
+    }
+
+    public override void OnNormalDisable()
+    {
+        CW_Core.mod_state.is_awarding = false;
     }
 }

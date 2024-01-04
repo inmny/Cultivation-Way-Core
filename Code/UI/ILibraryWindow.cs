@@ -8,4 +8,5 @@ public interface ILibraryWindow<TData> where TData : class
 
     public void SaveData();
     public void LoadData();
+    public void PushData(TData pData);
 }

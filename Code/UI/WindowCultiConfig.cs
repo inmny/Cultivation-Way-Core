@@ -10,4 +10,9 @@ public class WindowCultiConfig : AutoLayoutWindow<WindowCultiConfig>
     protected override void Init()
     {
     }
+
+    public override void OnNormalDisable()
+    {
+        CW_Core.mod_state.is_awarding = false;
+    }
 }

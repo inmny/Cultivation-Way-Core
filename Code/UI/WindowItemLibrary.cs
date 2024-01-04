@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
+using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.UI.prefabs;
+using Cultivation_Way.Utils;
 using NeoModLoader.api.attributes;
 using NeoModLoader.General;
 using NeoModLoader.General.UI.Window;
@@ -27,12 +31,41 @@ public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWi
 
     public void SaveData()
     {
-        throw new NotImplementedException();
+        if (Data.Count > 0)
+            File.WriteAllText(Paths.ItemLibraryPath, GeneralHelper.to_json(Data, true));
+        else
+            try
+            {
+                File.Delete(Paths.ItemLibraryPath);
+            }
+            catch (Exception e)
+            {
+                CW_Core.LogError(e.Message);
+                CW_Core.LogError(e.StackTrace);
+            }
     }
 
     public void LoadData()
     {
-        throw new NotImplementedException();
+        if (!File.Exists(Paths.ItemLibraryPath)) return;
+        var read_data = GeneralHelper.from_json<List<CW_ItemData>>(File.ReadAllText(Paths.ItemLibraryPath));
+        Data.Clear();
+        foreach (var data in read_data)
+            if (Manager.items.dict.ContainsKey(data.id))
+            {
+                data.addition_stats.AfterDeserialize();
+                Data.Add(data);
+            }
+            else
+            {
+                Data.Add(GeneralHelper.from_json<ItemData>(GeneralHelper.to_json(data)));
+            }
+    }
+
+    public void PushData(ItemData pData)
+    {
+        Data.Add(pData);
+        SaveData();
     }
 
     protected override void Init()
@@ -148,6 +181,7 @@ public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWi
             pool.clear();
         }
 
+        SaveData();
         CW_Core.mod_state.is_awarding = false;
     }
 
