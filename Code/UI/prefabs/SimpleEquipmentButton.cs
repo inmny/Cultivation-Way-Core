@@ -33,6 +33,14 @@ public class SimpleEquipmentButton : APrefab<SimpleEquipmentButton>
         tip_button.type = "equipment";
         tip_button.hoverAction = showTooltip;
         tip_button.clickAction = showTooltip;
+        icon.GetComponent<Button>().onClick.AddListener(() =>
+        {
+            if (!CW_Core.mod_state.is_awarding) return;
+            if (Config.selectedUnit == null || !Config.selectedUnit.isAlive()) return;
+            if (item_data == null) return;
+
+            WindowItemLibrary.Instance.ShowConfirmAwardWindow(item_data, this);
+        });
         base.Init();
     }
 

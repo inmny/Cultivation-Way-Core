@@ -1,3 +1,14 @@
 key,cz,en
 Award,旧神馈赠,The Old Gods Gift
 Award Description,来自旧神的馈赠\n少年，你渴望力量吗？,A gift from the Old Gods
+WindowItemLibrary Title,异宝阁,Item Library
+WindowItemLibrary Description,天道的宝库,The treasure house of the god
+WindowCultibookLibrary Title,百法录,The Cultibook Library
+WindowCultibookLibrary Description,天道的珍藏功法,The Cultibook Library of the god
+ElementAdjust Title,灵根重置,Element Reset
+ElementAdjust Description,再来搏一搏运气？,Try your luck again?
+ElementAdjust Result,恭喜呢\n$element$,Congratulations\n$element$
+confirm,确定,Confirm
+cancel,取消,Cancel
+confirm_award,确定馈赠,Confirm
+confirm_award_item_info,确定馈赠$item$？\n馈赠后，该生物对应装备栏将会被直接替换,Confirm the gift $item$?\nAfter the gift，the corresponding equipment slot will be replaced directly

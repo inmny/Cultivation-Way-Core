@@ -300,51 +300,73 @@ internal class WindowCreatureInfoHelper
         var possession_entry = Object.Instantiate(SimpleButton.Prefab, null);
         var child_born_entry = Object.Instantiate(SimpleButton.Prefab, null);
 
-        element_award_entry.Setup(() =>
+        element_award_entry.Setup([Hotfixable]() =>
         {
-            ScrollWindow.moveAllToLeftAndRemove();
-            ScrollWindow.showWindow(nameof(WindowElementAdjust));
-        }, SpriteTextureLoader.getSprite("ui/icons/iconElement"), pSize: new Vector2(32, 32));
+            var element = Config.selectedUnit.data.GetElement();
+            element.ReRandom();
+            Config.selectedUnit.data.SetElement(element);
+            scroll_window.GetComponent<WindowCreatureInfo>().OnEnable();
+            WorldTip.showNow(
+                LM.Get("ElementAdjust Result").Replace("$element$",
+                    LM.Get(Config.selectedUnit.data.GetElement().GetElementType().id)), false, "top");
+        }, SpriteTextureLoader.getSprite("ui/icons/iconElement"), pSize: new Vector2(32, 32), pTipData: new TooltipData
+        {
+            tip_name = "ElementAdjust Title",
+            tip_description = "ElementAdjust Description"
+        }, pTipType: "normal");
         cultibook_award_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();
             ScrollWindow.showWindow(nameof(WindowCultibookLibrary));
+            CW_Core.mod_state.is_awarding = true;
         }, SpriteTextureLoader.getSprite("ui/icons/iconCultiBook_immortal"), pSize: new Vector2(32, 32));
         equipment_award_entry.Setup(() =>
-        {
-            ScrollWindow.moveAllToLeftAndRemove();
-            ScrollWindow.showWindow(nameof(WindowItemLibrary));
-        }, SpriteTextureLoader.getSprite("ui/icons/items/icon_紫金葫芦_violet_gold"), pSize: new Vector2(32, 32));
+            {
+                ScrollWindow.moveAllToLeftAndRemove();
+                ScrollWindow.showWindow(nameof(WindowItemLibrary));
+                CW_Core.mod_state.is_awarding = true;
+            }, SpriteTextureLoader.getSprite("ui/icons/items/icon_紫金葫芦_violet_gold"), pSize: new Vector2(32, 32),
+            pTipData: new TooltipData
+            {
+                tip_name = "WindowItemLibrary Title",
+                tip_description = "WindowItemLibrary Description"
+            }, pTipType: "normal");
         elixir_award_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();
             ScrollWindow.showWindow(nameof(WindowElixirLibrary));
+            CW_Core.mod_state.is_awarding = true;
         }, SpriteTextureLoader.getSprite("ui/icons/elixirs/iconNormal"), pSize: new Vector2(32, 32));
         blood_award_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();
             ScrollWindow.showWindow(nameof(WindowBloodLibrary));
+            CW_Core.mod_state.is_awarding = true;
         }, SpriteTextureLoader.getSprite("ui/icons/iconWus"), pSize: new Vector2(32, 32));
         cultisys_award_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();
             ScrollWindow.showWindow(nameof(WindowCultiConfig));
+            CW_Core.mod_state.is_awarding = true;
         }, SpriteTextureLoader.getSprite("ui/icons/iconCultiSys"), pSize: new Vector2(32, 32));
         cultisys_award_entry.Icon.GetComponent<RectTransform>().sizeDelta = new Vector2(22.4f, 28);
         spell_award_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();
             ScrollWindow.showWindow(nameof(WindowSpellLibrary));
+            CW_Core.mod_state.is_awarding = true;
         }, SpriteTextureLoader.getSprite("ui/icons/iconSpell"), pSize: new Vector2(32, 32));
         possession_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();
             ScrollWindow.showWindow(nameof(WindowActorLibrary));
+            CW_Core.mod_state.is_awarding = true;
         }, SpriteTextureLoader.getSprite("ui/cw_icons/iconPossession"), pSize: new Vector2(32, 32));
         child_born_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();
             ScrollWindow.showWindow(nameof(WindowChildConfig));
+            CW_Core.mod_state.is_awarding = true;
         }, SpriteTextureLoader.getSprite("ui/icons/worldrules/icon_lastofus"), pSize: new Vector2(32, 32));
 
 

@@ -6,6 +6,7 @@ public static class Core
     public const string mod_prefix = "cw_";
     public const string title_suffix = "_title";
     public const string desc_suffix = "_description";
+    public const string new_title_suffix = " Title";
     public const string mod_name = "启源核心";
     public const int save_version = 2;
 
@@ -36,6 +37,7 @@ public static class Core
 
     public static readonly string[] element_str = new string[element_type_nr]
     {
-        mod_prefix + "water_element", mod_prefix + "fire_element", mod_prefix + "wood_element", mod_prefix + "iron_element", mod_prefix + "ground_element"
+        mod_prefix + "water_element", mod_prefix + "fire_element", mod_prefix + "wood_element",
+        mod_prefix + "iron_element", mod_prefix + "ground_element"
     };
 }

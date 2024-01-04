@@ -4,6 +4,8 @@ using System.Linq;
 using Cultivation_Way.Core;
 using Cultivation_Way.Library;
 using Cultivation_Way.UI.prefabs;
+using NeoModLoader.api.attributes;
+using NeoModLoader.General;
 using NeoModLoader.General.UI.Window;
 using NeoModLoader.General.UI.Window.Layout;
 using NeoModLoader.General.UI.Window.Utils.Extensions;
@@ -14,9 +16,13 @@ namespace Cultivation_Way.UI;
 
 public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWindow<ItemData>
 {
-    private static WindowItemLibrary Instance;
+    private SimpleEquipmentButton _button;
+    private ConfirmWindow _confirm_window;
+
+    private ItemData _item_data;
     private ObjectPoolGenericMono<SimpleEquipmentButton>[] _item_pools;
     private AutoGridLayoutGroup[] _item_stage_groups;
+    public static WindowItemLibrary Instance { get; private set; }
     public List<ItemData> Data { get; set; } = new();
 
     public void SaveData()
@@ -88,6 +94,16 @@ public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWi
             bg.type = Image.Type.Sliced;
         }
 
+        _confirm_window = Instantiate(ConfirmWindow.Prefab, BackgroundTransform);
+        _confirm_window.Setup(
+            LM.Get("confirm_award"),
+            LM.Get("confirm_award_intro"),
+            result =>
+            {
+                if (result) GiveItem();
+            }
+        );
+        _confirm_window.gameObject.SetActive(false);
         Instance = this;
     }
 
@@ -131,5 +147,31 @@ public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWi
         {
             pool.clear();
         }
+
+        CW_Core.mod_state.is_awarding = false;
+    }
+
+    [Hotfixable]
+    public void ShowConfirmAwardWindow(ItemData pItemData, SimpleEquipmentButton pButton)
+    {
+        _item_data = pItemData;
+        _button = pButton;
+        _confirm_window.title.text = LM.Get("confirm_award");
+
+        var item_name = _item_data.name;
+        if (string.IsNullOrEmpty(item_name)) item_name = LM.Get(_item_data.id);
+        _confirm_window.introduction.text = LM.Get("confirm_award_item_info").Replace("$item$", item_name);
+        _confirm_window.gameObject.SetActive(true);
+    }
+
+    [Hotfixable]
+    private void GiveItem()
+    {
+        var asset = AssetManager.items.get(_item_data.id);
+
+        Config.selectedUnit.equipment.getSlot(asset.equipmentType).setItem(_item_data);
+        Data.Remove(_item_data);
+
+        ScrollWindowComponent.clickBack();
     }
 }

@@ -36,6 +36,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         addons_initialized = false,
         all_initialized = false,
         editor_inmny = false,
+        is_awarding = false,
         update_nr = 0,
         mod_info = null,
         addons = new List<IMod>(),
@@ -110,6 +111,13 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
     public void Reload()
     {
         LogInfo("Reloaded");
+        var locale_dir = GetLocaleFilesDirectory(GetDeclaration());
+        foreach (var file in Directory.GetFiles(locale_dir))
+            if (file.EndsWith(".json"))
+                LM.LoadLocale(Path.GetFileNameWithoutExtension(file), file);
+            else if (file.EndsWith(".csv")) LM.LoadLocales(file);
+        LM.ApplyLocale();
+
         Manager.item_materials.init();
         Items.init();
 
@@ -189,7 +197,10 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         state.library_manager.init();
         CWTab.init();
         action_on_windows("init");
-        WindowItemLibrary.CreateWindow(nameof(WindowItemLibrary), "cw_item_library_window");
+        WindowItemLibrary.CreateWindow(nameof(WindowItemLibrary),
+            nameof(WindowItemLibrary) + Constants.Core.new_title_suffix);
+        WindowCultibookLibrary.CreateWindow(nameof(WindowCultibookLibrary),
+            nameof(WindowCultibookLibrary) + Constants.Core.new_title_suffix);
 
         new Thread(() =>
         {
@@ -277,6 +288,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         internal bool editor_inmny;
         public CW_EnergyMapLayer energy_map_layer;
         public CW_EnergyMapManager energy_map_manager;
+        internal bool is_awarding;
         public Manager library_manager;
         internal Info mod_info;
         internal SpellManager spell_manager;
