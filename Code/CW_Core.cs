@@ -198,9 +198,9 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         CWTab.init();
         action_on_windows("init");
         WindowItemLibrary.CreateWindow(nameof(WindowItemLibrary),
-            nameof(WindowItemLibrary) + Constants.Core.new_title_suffix);
+            nameof(WindowItemLibrary));
         WindowCultibookLibrary.CreateWindow(nameof(WindowCultibookLibrary),
-            nameof(WindowCultibookLibrary) + Constants.Core.new_title_suffix);
+            nameof(WindowCultibookLibrary));
 
         new Thread(() =>
         {

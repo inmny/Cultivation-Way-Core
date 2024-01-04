@@ -142,7 +142,7 @@ public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWi
 
     public static void CollectItem(ItemData pItemData)
     {
-        Instance.Data.Add(pItemData);
+        Instance.PushData(pItemData);
     }
 
     public override void OnNormalEnable()

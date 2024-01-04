@@ -311,15 +311,20 @@ internal class WindowCreatureInfoHelper
                     LM.Get(Config.selectedUnit.data.GetElement().GetElementType().id)), false, "top");
         }, SpriteTextureLoader.getSprite("ui/icons/iconElement"), pSize: new Vector2(32, 32), pTipData: new TooltipData
         {
-            tip_name = "ElementAdjust Title",
+            tip_name = "ElementAdjust",
             tip_description = "ElementAdjust Description"
         }, pTipType: "normal");
         cultibook_award_entry.Setup(() =>
-        {
-            ScrollWindow.moveAllToLeftAndRemove();
-            ScrollWindow.showWindow(nameof(WindowCultibookLibrary));
-            CW_Core.mod_state.is_awarding = true;
-        }, SpriteTextureLoader.getSprite("ui/icons/iconCultiBook_immortal"), pSize: new Vector2(32, 32));
+            {
+                ScrollWindow.moveAllToLeftAndRemove();
+                ScrollWindow.showWindow(nameof(WindowCultibookLibrary));
+                CW_Core.mod_state.is_awarding = true;
+            }, SpriteTextureLoader.getSprite("ui/icons/iconCultiBook_immortal"), pSize: new Vector2(32, 32),
+            pTipData: new TooltipData
+            {
+                tip_name = nameof(WindowCultibookLibrary),
+                tip_description = nameof(WindowCultibookLibrary) + Constants.Core.new_desc_suffix
+            }, pTipType: "normal");
         equipment_award_entry.Setup(() =>
             {
                 ScrollWindow.moveAllToLeftAndRemove();
@@ -328,8 +333,8 @@ internal class WindowCreatureInfoHelper
             }, SpriteTextureLoader.getSprite("ui/icons/items/icon_紫金葫芦_violet_gold"), pSize: new Vector2(32, 32),
             pTipData: new TooltipData
             {
-                tip_name = "WindowItemLibrary Title",
-                tip_description = "WindowItemLibrary Description"
+                tip_name = nameof(WindowItemLibrary),
+                tip_description = nameof(WindowItemLibrary) + Constants.Core.new_desc_suffix
             }, pTipType: "normal");
         elixir_award_entry.Setup(() =>
         {
@@ -401,6 +406,66 @@ internal class WindowCreatureInfoHelper
         anim.delay = 1.5f;
         anim.initScale = new Vector3(1, 1, 1);
         anim.scaleTo = new Vector3(1.1f, 1.1f, 1.1f);
+
+
+        EventTrigger.Entry entry;
+        EventTrigger event_trigger;
+
+        #region Draggable
+
+        event_trigger = cultibook.GetComponent<EventTrigger>();
+        if (event_trigger == null) event_trigger = cultibook.gameObject.AddComponent<EventTrigger>();
+
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.BeginDrag;
+        entry.callback.AddListener([Hotfixable](data) =>
+        {
+            if (data is not PointerEventData pointerEventData) return;
+
+            drag_receiver_text.color = Color.white;
+            drag_receiver.gameObject.SetActive(true);
+            cultibook.transform.SetParent(background_transform);
+            cultibook.transform.localScale = Vector3.one;
+            cultibook.transform.position = pointerEventData.position;
+        });
+        event_trigger.triggers.Add(entry);
+
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Drag;
+        entry.callback.AddListener([Hotfixable](data) =>
+        {
+            if (data is not PointerEventData pointerEventData) return;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(drag_receiver, pointerEventData.position))
+                drag_receiver_text.color = Color.yellow;
+            else
+                drag_receiver_text.color = Color.white;
+
+            cultibook.transform.position = pointerEventData.position;
+        });
+        event_trigger.triggers.Add(entry);
+
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.EndDrag;
+        entry.callback.AddListener([Hotfixable](data) =>
+        {
+            if (data is not PointerEventData pointerEventData) return;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(drag_receiver, pointerEventData.position))
+            {
+                var copied = new Cultibook();
+                copied.copy_from(Config.selectedUnit.data.GetCultibook());
+
+                WindowCultibookLibrary.Instance.PushData(copied);
+            }
+
+            cultibook.transform.SetParent(left_part.transform);
+            cultibook.transform.SetSiblingIndex(1);
+            drag_receiver.gameObject.SetActive(false);
+        });
+        event_trigger.triggers.Add(entry);
+
+        #endregion
 
         initialized = true;
     }

@@ -4,11 +4,13 @@ using System.Text;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Others;
+using Cultivation_Way.Utils;
 using NeoModLoader.api.attributes;
 using NeoModLoader.General;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
+
 namespace Cultivation_Way.Library;
 
 internal static class CW_TooltipAssets
@@ -186,23 +188,44 @@ internal static class CW_TooltipAssets
         tooltip.showBaseStats(element.ComputeBonusStats());
     }
 
+    /// <summary>
+    ///     约定
+    ///     <list type="table">
+    ///         <item>
+    ///             <term>actor</term><description>持有该功法的生物</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>tip_name</term><description>功法的id</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>tip_description</term><description>能够序列化为功法的字符串</description>
+    ///         </item>
+    ///     </list>
+    /// </summary>
+    /// <param name="tooltip"></param>
+    /// <param name="type"></param>
+    /// <param name="data"></param>
+    [Hotfixable]
     private static void show_cultibook(Tooltip tooltip, string type, TooltipData data = default)
     {
         Cultibook cultibook;
         if (data.actor != null)
-        {
             cultibook = data.actor.data.GetCultibook();
-        }
-        else
-        {
+        else if (!string.IsNullOrEmpty(data.tip_name))
             cultibook = Manager.cultibooks.get(data.tip_name);
-        }
+        else
+            cultibook = GeneralHelper.from_json<Cultibook>(data.tip_description, true);
 
         tooltip.name.text = cultibook.name;
         StringBuilder str_builder = new();
         str_builder.AppendLine($"{cultibook.author_name} 著");
         str_builder.AppendLine($"{cultibook.editor_name} 编");
-        str_builder.AppendLine(cultibook.description);
+
+        if (!string.IsNullOrEmpty(cultibook.description))
+        {
+            str_builder.AppendLine("");
+            str_builder.AppendLine(cultibook.description);
+        }
 
         tooltip.addDescription(str_builder.ToString());
 

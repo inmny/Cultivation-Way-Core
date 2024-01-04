@@ -69,13 +69,14 @@ public static class CWTab
             ButtonType.Click,
             ButtonContainerType.TOOL
         );
-        create_and_add_button(
-            Constants.Core.item_library_window,
-            "ui/Icons/items/icon_紫金葫芦_violet_gold",
-            () => ScrollWindow.showWindow(nameof(WindowItemLibrary)),
-            ButtonType.Click,
-            ButtonContainerType.LIBRARY
-        );
+        _powers_tab.AddPowerButton(
+            ButtonContainerType.LIBRARY.ToString(),
+            PowerButtonCreator.CreateWindowButton(nameof(WindowItemLibrary),
+                nameof(WindowItemLibrary), SpriteTextureLoader.getSprite("ui/icons/items/icon_紫金葫芦_violet_gold")));
+        _powers_tab.AddPowerButton(
+            ButtonContainerType.LIBRARY.ToString(),
+            PowerButtonCreator.CreateWindowButton(nameof(WindowCultibookLibrary),
+                nameof(WindowCultibookLibrary), SpriteTextureLoader.getSprite("ui/icons/iconCultiBook_immortal")));
         // 能量地图
         create_and_add_button(
             Constants.Core.energy_maps_toggle_name,

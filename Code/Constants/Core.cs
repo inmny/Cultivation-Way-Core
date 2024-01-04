@@ -7,6 +7,7 @@ public static class Core
     public const string title_suffix = "_title";
     public const string desc_suffix = "_description";
     public const string new_title_suffix = " Title";
+    public const string new_desc_suffix = " Description";
     public const string mod_name = "启源核心";
     public const int save_version = 2;
 
@@ -34,6 +35,9 @@ public static class Core
     public const int item_level_count = 45;
     public const int item_level_per_stage = 9;
     public const int item_level_up_res_search_times = 3;
+
+    public const int cultibook_level_count = 36;
+    public const int cultibook_level_per_stage = 9;
 
     public static readonly string[] element_str = new string[element_type_nr]
     {
