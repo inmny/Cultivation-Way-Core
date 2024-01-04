@@ -59,6 +59,160 @@ internal static class Spells
         add_default_lightning_spell();
         add_positive_quintuple_lightning_spell();
         add_negative_quintuple_lightning_spell();
+
+        add_violet_gold_gourd_spell();
+    }
+
+    private static void add_violet_gold_gourd_spell()
+    {
+        AnimationSetting anim_setting = new()
+        {
+            loop_limit_type = AnimationLoopLimitType.NO_LIMIT,
+            loop_nr_limit = -1,
+            frame_interval = 0.05f,
+            trace_grad = 8f,
+            free_val = 40f,
+            layer_name = "Objects",
+            frame_action = [Hotfixable](int idx, ref Vector2 vec, ref Vector2 dst_vec,
+                Animation.SpriteAnimation anim) =>
+            {
+                if (anim.data.hasFlag("go_back")) return;
+                if (anim.dst_object == null || !anim.dst_object.isActor() || !anim.dst_object.isAlive())
+                {
+                    anim.data.addFlag("go_back");
+                    return;
+                }
+
+                var dst_actor = (CW_Actor)anim.dst_object;
+
+                if (!anim.data.hasFlag("stop_scale_up"))
+                {
+                    anim.change_scale(1.02f);
+                    if (anim.get_scale() > 1.07f) anim.data.addFlag("stop_scale_up");
+                }
+
+                if (!anim.data.hasFlag("stop_rotate"))
+                {
+                    var target_z_angle =
+                        Toolbox.getAngle(vec.x, vec.y, dst_actor.currentPosition.x, dst_actor.currentPosition.y) *
+                        57.29578f - 45;
+                    if (target_z_angle < 0) target_z_angle += 360;
+                    var current_z_angle = anim.gameObject.transform.rotation.eulerAngles.z;
+                    var delta_z_angle = target_z_angle - current_z_angle;
+                    if (delta_z_angle > 180) delta_z_angle -= 360;
+                    if (delta_z_angle < -180) delta_z_angle += 360;
+                    /*
+                    CW_Core.LogInfo("====================================");
+                    CW_Core.LogInfo("delta_z_angle: " + delta_z_angle);
+                    CW_Core.LogInfo("target_z_angle: " + target_z_angle);
+                    CW_Core.LogInfo("current_z_angle: " + current_z_angle);
+                    */
+                    if (Mathf.Abs(delta_z_angle) < 0.1f)
+                        anim.data.addFlag("stop_rotate");
+                    else
+                        anim.gameObject.transform.Rotate(0, 0, delta_z_angle * 0.1f);
+                }
+
+                if (!anim.data.hasFlag("started")) return;
+
+                dst_actor.is_in_magnet = true;
+
+                if (anim.data.hasFlag("refining"))
+                {
+                    dst_actor.is_visible = false;
+                    anim.data.get(DataS.spell_cost, out var spell_cost, 1f);
+                    spell_cost = MiscUtils.WakanCostToDamage(spell_cost, anim.src_object);
+                    //CW_Core.LogInfo("Cause damage: " + spell_cost);
+                    dst_actor.getHit(spell_cost, false, (AttackType)CW_AttackType.Spell, anim.src_object, false);
+
+                    anim.data.get("refining_time", out float time);
+                    time += anim.cur_elapsed;
+                    if (time > 10)
+                    {
+                        dst_actor.is_in_magnet = false;
+                        anim.force_stop();
+                        return;
+                    }
+
+                    anim.data.set("refining_time", time);
+                    return;
+                }
+
+                dst_actor.data.health = int.MaxValue / 100;
+                dst_actor.currentPosition =
+                    new Vector2(Mathf.Lerp(dst_actor.currentPosition.x, vec.x, anim.cur_elapsed),
+                        Mathf.Lerp(dst_actor.currentPosition.y, vec.y, anim.cur_elapsed));
+                dst_actor.transform.position = dst_actor.currentPosition;
+                if (Toolbox.DistVec2Float(vec, dst_actor.currentPosition) < 0.1f) anim.data.addFlag("refining");
+            },
+            end_action = [Hotfixable](int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
+            {
+            }
+        };
+        anim_setting.set_trace([Hotfixable](ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim,
+            ref float delta_x, ref float delta_y) =>
+        {
+            if (anim.data.hasFlag("go_back"))
+            {
+                anim.change_scale(0.9f);
+                if (anim.get_scale() < 0.01f) anim.force_stop();
+                var current_position = anim.gameObject.transform.position;
+                delta_x = (anim.src_object.currentPosition.x - current_position.x) * 3;
+                delta_y = (anim.src_object.currentPosition.y - current_position.y) * 3;
+                return;
+            }
+
+            if (!anim.data.hasFlag("prepare"))
+            {
+                anim.set_position(anim.src_object.currentPosition);
+                src_vec.x = anim.src_object.currentPosition.x;
+                src_vec.y = anim.src_object.currentPosition.y + anim_setting.free_val;
+                anim.data.addFlag("prepare");
+                return;
+            }
+
+            if (!anim.data.hasFlag("started"))
+            {
+                var current_position = anim.gameObject.transform.position;
+
+                var dist = Toolbox.DistVec2Float(src_vec, current_position);
+                if (dist < 1f)
+                {
+                    anim.data.addFlag("started");
+                    return;
+                }
+
+                delta_x = (src_vec.x - current_position.x) * 3;
+                delta_y = (src_vec.y - current_position.y) * 3;
+            }
+        });
+
+        EffectManager.instance.load_as_controller("violet_gold_gourd_anim", "effects/violet_gold_gourd/",
+            controller_setting: anim_setting, base_scale: 0.25f);
+        CW_SpellAsset spell_asset = new()
+        {
+            id = "violet_gold_gourd",
+            rarity = 99,
+            element = new CW_Element(new[]
+            {
+                30, 30, 0, 40, 0
+            }),
+            anim_id = "violet_gold_gourd_anim",
+            anim_type = SpellAnimType.ON_TARGET,
+            anim_action = AnimActions.fall_to_ground,
+            target_camp = SpellTargetCamp.ENEMY,
+            target_type = SpellTargetType.ACTOR,
+            spell_cost_action = CostChecks.generate_spell_cost_action(new KeyValuePair<string, float>[]
+            {
+                new(DataS.wakan, Content_Constants.default_spell_cost)
+            }),
+            spell_learn_check = LearnChecks.default_learn_check
+        };
+        spell_asset.add_trigger_tags(new[]
+        {
+            SpellTriggerTag.ATTACK, SpellTriggerTag.NAMED_DEFEND
+        });
+        Library.Manager.spells.add(spell_asset);
     }
 
     private static void add_call_spells()

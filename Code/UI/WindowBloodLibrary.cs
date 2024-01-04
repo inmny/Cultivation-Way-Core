@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Cultivation_Way.Library;
+using NeoModLoader.General.UI.Window;
 
 namespace Cultivation_Way.UI;
 
-public class WindowCultibookLibrary : AbstractWindow<WindowCultibookLibrary>, ILibraryWindow<Cultibook>
+public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibraryWindow<BloodNodeAsset>
 {
-    public List<Cultibook> Data { get; set; }
+    public List<BloodNodeAsset> Data { get; set; }
 
     public void SaveData()
     {
@@ -18,8 +19,7 @@ public class WindowCultibookLibrary : AbstractWindow<WindowCultibookLibrary>, IL
         throw new NotImplementedException();
     }
 
-    internal static void init()
+    protected override void Init()
     {
-        base_init(Constants.Core.cultibook_library_window);
     }
 }

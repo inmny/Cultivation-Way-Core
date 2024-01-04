@@ -1,0 +1,24 @@
+key,cz,ch,en
+item_class_halberd,戟,戟,Halberd
+item_class_halberd_rare,戟(稀有),戟(稀有),Rare Halberd
+item_class_halberd_epic,戟(史诗),戟(史诗),Epic Halberd
+item_class_halberd_legendary,戟(传说),戟(传说),Legendary Halberd
+item_class_seal,印,印,Seal
+item_class_seal_rare,印(稀有),印(稀有),Rare Seal
+item_class_seal_epic,印(史诗),印(史诗),Epic Seal
+item_class_seal_legendary,印(传说),印(传说),Legendary Seal
+item_class_gourd,葫芦,葫芦,Gourd
+item_class_gourd_rare,葫芦(稀有),葫芦(稀有),Rare Gourd
+item_class_gourd_epic,葫芦(史诗),葫芦(史诗),Epic Gourd
+item_class_gourd_legendary,葫芦(传说),葫芦(传说),Legendary Gourd
+cw_item_class_weapon,武器($item_level$$item_stage$),武器($item_level$$item_stage$),Weapon($item_level$$item_stage$)
+cw_item_class_halberd,戟($item_level$$item_stage$),戟($item_level$$item_stage$),Halberd($item_level$$item_stage$)
+cw_item_class_seal,印($item_level$$item_stage$),印($item_level$$item_stage$),Seal($item_level$$item_stage$)
+cw_item_class_gourd,葫芦($item_level$$item_stage$),葫芦($item_level$$item_stage$),Gourd($item_level$$item_stage$)
+item_衡山印,衡山印,衡山印,Hengshan Seal
+item_恒山印,恒山印,恒山印,Hengshan Seal
+item_华山印,华山印,华山印,Huashan Seal
+item_嵩山印,嵩山印,嵩山印,Songshan Seal
+item_泰山印,泰山印,泰山印,Taishan Seal
+item_紫金葫芦,紫金葫芦,紫金葫芦,Zijin Gourd
+item_赤血戟,赤血戟,赤血戟,Chixue Halberd

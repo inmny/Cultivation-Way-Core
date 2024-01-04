@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using Cultivation_Way.Core;
 using UnityEngine;
+
 namespace Cultivation_Way.Others;
 
 internal static class FastVisit
 {
     private static readonly string[] actor_prefab_paths =
     {
-        "actors/p_unit", "actors/p_dragon", "actors/p_tornado", "actors/p_ufo", "actors/p_boat", "actors/p_godFinger", "actors/p_zombie_dragon", "actors/p_crabzilla"
+        "actors/p_unit", "actors/p_dragon", "actors/p_tornado", "actors/p_ufo", "actors/p_boat", "actors/p_godFinger",
+        "actors/p_zombie_dragon", "actors/p_crabzilla"
     };
 
     private static readonly Dictionary<string, GameObject> actor_prefabs = new();
@@ -18,6 +20,7 @@ internal static class FastVisit
     private static Sprite window_bar_90;
     private static Sprite window_big_close;
     private static Sprite window_inner_sliced;
+    private static Sprite window_library;
     private static Sprite red_button;
     private static Sprite button_1;
     private static Sprite info_bg;
@@ -154,6 +157,16 @@ internal static class FastVisit
             SpriteMeshType.Tight, new Vector4(5, 6, 5, 6));
         window_inner_sliced.name = "windowInnerSliced";
         return window_inner_sliced;
+    }
+
+    public static Sprite get_window_library()
+    {
+        if (window_library != null) return window_library;
+        var _orig = SpriteTextureLoader.getSprite("ui/cw_window/windowLibrary");
+        window_library = Sprite.Create(_orig.texture, _orig.rect, new Vector2(0, 0), _orig.pixelsPerUnit, 0,
+            SpriteMeshType.Tight, new Vector4(18, 56, 18, 28));
+        window_library.name = "window_library";
+        return window_library;
     }
 
     private static void get_actor_prefabs()
