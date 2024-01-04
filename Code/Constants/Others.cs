@@ -306,6 +306,7 @@ public enum ButtonContainerType
     ACTOR,
     BUILDING,
     BOSS,
+    LIBRARY,
     OTHERS
 }
 

@@ -7,6 +7,7 @@ using NeoModLoader.General.UI.Tab;
 using NeoModLoader.ui;
 using UnityEngine;
 using UnityEngine.Events;
+
 namespace Cultivation_Way.UI;
 
 public static class CWTab
@@ -70,10 +71,10 @@ public static class CWTab
         );
         create_and_add_button(
             Constants.Core.item_library_window,
-            "ui/Icons/iconTop",
+            "ui/Icons/items/icon_紫金葫芦_violet_gold",
             () => ScrollWindow.showWindow(nameof(WindowItemLibrary)),
             ButtonType.Click,
-            ButtonContainerType.TOOL
+            ButtonContainerType.LIBRARY
         );
         // 能量地图
         create_and_add_button(
