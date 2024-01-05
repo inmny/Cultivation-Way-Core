@@ -90,23 +90,6 @@ internal static class Buildings
 
         AssetManager.buildings.loadSprites(smelt_mill);
         AssetManager.buildings.loadSprites(bonfire);
-
-        AssetManager.buildings.get("tent_eastern_human").fundament = new BuildingFundament(1, 1, 1, 0);
-        AssetManager.buildings.get("house_eastern_human_0").fundament = new BuildingFundament(3, 3, 4, 0);
-        AssetManager.buildings.get("house_eastern_human_1").fundament = new BuildingFundament(3, 3, 4, 0);
-        AssetManager.buildings.get("house_eastern_human_2").fundament = new BuildingFundament(3, 3, 4, 0);
-        AssetManager.buildings.get("house_eastern_human_3").fundament = new BuildingFundament(4, 4, 6, 0);
-        AssetManager.buildings.get("house_eastern_human_4").fundament = new BuildingFundament(5, 5, 9, 0);
-        AssetManager.buildings.get("house_eastern_human_5").fundament = new BuildingFundament(5, 5, 9, 0);
-        AssetManager.buildings.get("hall_eastern_human_0").fundament = new BuildingFundament(4, 4, 7, 0);
-        AssetManager.buildings.get("hall_eastern_human_1").fundament = new BuildingFundament(5, 5, 9, 0);
-        AssetManager.buildings.get("hall_eastern_human_2").fundament = new BuildingFundament(8, 8, 14, 0);
-
-        AssetManager.buildings.get("temple_eastern_human").fundament = new BuildingFundament(3, 3, 5, 0);
-        AssetManager.buildings.get("barracks_eastern_human").fundament = new BuildingFundament(3, 3, 7, 0);
-        AssetManager.buildings.get("windmill_eastern_human_0").fundament = new BuildingFundament(2, 1, 2, 0);
-        AssetManager.buildings.get("windmill_eastern_human_1").fundament = new BuildingFundament(2, 2, 2, 0);
-        AssetManager.buildings.get("watch_tower_eastern_human").fundament = new BuildingFundament(2, 2, 3, 0);
     }
 
     private static void clone_human_buildings(string race)
