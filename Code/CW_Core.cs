@@ -201,6 +201,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
             nameof(WindowItemLibrary));
         WindowCultibookLibrary.CreateWindow(nameof(WindowCultibookLibrary),
             nameof(WindowCultibookLibrary));
+        WindowModInfo.CreateWindow(nameof(WindowModInfo), nameof(WindowModInfo));
 
         new Thread(() =>
         {
