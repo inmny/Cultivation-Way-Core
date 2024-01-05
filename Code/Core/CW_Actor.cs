@@ -12,6 +12,7 @@ using Cultivation_Way.Test;
 using NeoModLoader.api.attributes;
 using Newtonsoft.Json;
 using UnityEngine;
+
 namespace Cultivation_Way.Core;
 
 /// <summary>
@@ -444,6 +445,7 @@ public partial class CW_Actor : Actor
                     data.get(cultisys.id, out defender_level);
                     level_reduce /= Mathf.Pow(cultisys.power_base, cultisys.power_level[defender_level] - 1);
                 }
+
                 break;
             case CW_AttackType.Soul:
                 if (pAttacker != null && pAttacker.isActor() && pAttacker.isAlive())
@@ -500,6 +502,7 @@ public partial class CW_Actor : Actor
                     level_reduce = Mathf.Min(level_reduce,
                         Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
                 }
+
                 break;
         }
 
@@ -644,11 +647,16 @@ public partial class CW_Actor : Actor
     /// </summary>
     public void CreateBlood()
     {
-        if (data.GetMainBloodID() == data.id) return;
+        var blood_id = data.GetMainBloodID();
+        if (!string.IsNullOrEmpty(blood_id))
+        {
+            var blood = Manager.bloods.get(blood_id);
+            if (blood != null && blood.ancestor_data.id == data.id && blood.ancestor_data.asset_id == asset.id) return;
+        }
 
         BloodNodeAsset blood_asset = new()
         {
-            id = data.id,
+            id = Guid.NewGuid().ToString(),
             ancestor_data = data
         };
         Manager.bloods.add(blood_asset);
