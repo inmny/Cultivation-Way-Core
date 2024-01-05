@@ -343,11 +343,16 @@ internal class WindowCreatureInfoHelper
             CW_Core.mod_state.is_awarding = true;
         }, SpriteTextureLoader.getSprite("ui/icons/elixirs/iconNormal"), pSize: new Vector2(32, 32));
         blood_award_entry.Setup(() =>
-        {
-            ScrollWindow.moveAllToLeftAndRemove();
-            ScrollWindow.showWindow(nameof(WindowBloodLibrary));
-            CW_Core.mod_state.is_awarding = true;
-        }, SpriteTextureLoader.getSprite("ui/icons/iconWus"), pSize: new Vector2(32, 32));
+            {
+                ScrollWindow.moveAllToLeftAndRemove();
+                ScrollWindow.showWindow(nameof(WindowBloodLibrary));
+                CW_Core.mod_state.is_awarding = true;
+            }, SpriteTextureLoader.getSprite("ui/icons/iconWus"), pSize: new Vector2(32, 32),
+            pTipData: new TooltipData
+            {
+                tip_name = nameof(WindowBloodLibrary),
+                tip_description = nameof(WindowBloodLibrary) + Constants.Core.new_desc_suffix
+            }, pTipType: "normal");
         cultisys_award_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();
@@ -411,7 +416,7 @@ internal class WindowCreatureInfoHelper
         EventTrigger.Entry entry;
         EventTrigger event_trigger;
 
-        #region Draggable
+        #region Cultibook Draggable
 
         event_trigger = cultibook.GetComponent<EventTrigger>();
         if (event_trigger == null) event_trigger = cultibook.gameObject.AddComponent<EventTrigger>();
@@ -461,6 +466,57 @@ internal class WindowCreatureInfoHelper
 
             cultibook.transform.SetParent(left_part.transform);
             cultibook.transform.SetSiblingIndex(1);
+            drag_receiver.gameObject.SetActive(false);
+        });
+        event_trigger.triggers.Add(entry);
+
+        #endregion
+
+        #region Blood Draggable
+
+        event_trigger = blood.GetComponent<EventTrigger>();
+        if (event_trigger == null) event_trigger = blood.gameObject.AddComponent<EventTrigger>();
+
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.BeginDrag;
+        entry.callback.AddListener([Hotfixable](data) =>
+        {
+            if (data is not PointerEventData pointerEventData) return;
+
+            drag_receiver_text.color = Color.white;
+            drag_receiver.gameObject.SetActive(true);
+            blood.transform.SetParent(background_transform);
+            blood.transform.localScale = Vector3.one;
+            blood.transform.position = pointerEventData.position;
+        });
+        event_trigger.triggers.Add(entry);
+
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Drag;
+        entry.callback.AddListener([Hotfixable](data) =>
+        {
+            if (data is not PointerEventData pointerEventData) return;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(drag_receiver, pointerEventData.position))
+                drag_receiver_text.color = Color.yellow;
+            else
+                drag_receiver_text.color = Color.white;
+
+            blood.transform.position = pointerEventData.position;
+        });
+        event_trigger.triggers.Add(entry);
+
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.EndDrag;
+        entry.callback.AddListener([Hotfixable](data) =>
+        {
+            if (data is not PointerEventData pointerEventData) return;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(drag_receiver, pointerEventData.position))
+                WindowBloodLibrary.Instance.PushData(Config.selectedUnit.data.GetBloodNodes());
+
+            blood.transform.SetParent(left_part.transform);
+            blood.transform.SetSiblingIndex(2);
             drag_receiver.gameObject.SetActive(false);
         });
         event_trigger.triggers.Add(entry);

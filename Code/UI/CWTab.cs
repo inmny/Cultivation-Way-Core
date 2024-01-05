@@ -78,6 +78,10 @@ public static class CWTab
             ButtonContainerType.LIBRARY.ToString(),
             PowerButtonCreator.CreateWindowButton(nameof(WindowActorLibrary),
                 nameof(WindowActorLibrary), SpriteTextureLoader.getSprite("ui/cw_icons/iconEmpires")));
+        _powers_tab.AddPowerButton(
+            ButtonContainerType.LIBRARY.ToString(),
+            PowerButtonCreator.CreateWindowButton(nameof(WindowBloodLibrary),
+                nameof(WindowBloodLibrary), SpriteTextureLoader.getSprite("ui/icons/iconWus")));
         // 能量地图
         create_and_add_button(
             Constants.Core.energy_maps_toggle_name,

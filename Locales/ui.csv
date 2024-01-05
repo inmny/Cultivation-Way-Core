@@ -26,13 +26,19 @@ WindowCultibookLibrary,百法录,The Cultibook Library
 WindowCultibookLibrary Description,天道的珍藏功法,The Cultibook Library of the god
 WindowActorLibrary,群仙阁,The Actor Library
 WindowActorLibrary Description,群仙画卷还是旧神的收纳袋？,The Actor Library of the god
+WindowBloodLibrary,血脉图谱,Blood Library
+WindowBloodLibrary Description,血脉标本库？杂交试验场？,Blood Specimen Library? Hybridization Experiment Field?
+CreateBloodGroup,创建血脉分组,Create Blood Group
 ElementAdjust,灵根重置,Element Reset
 ElementAdjust Description,再来搏一搏运气？,Try your luck again?
 ElementAdjust Result,恭喜呢\n$element$,Congratulations\n$element$
 DragItemOrActorHere,拖拽装备或功法拖到这里进行收纳,Drag cultibook or item here to store
+default,默认,Default
 placeholder,占位符,Placeholder
 confirm,确定,Confirm
 cancel,取消,Cancel
+dissolve,解散,Dissolve
+dissolve_group,解散分组,Dissolve Group
 confirm_award,确定馈赠,Confirm
 confirm_award_item_info,确定馈赠$item$？\n馈赠后，该生物对应装备栏将会被直接替换,Confirm the gift $item$?\nAfter the gift，the corresponding equipment slot will be replaced directly
 confirm_award_cultibook_info,确定馈赠$cultibook$？\n馈赠后，该生物对应功法栏将会被直接替换,Confirm the gift $cultibook$?\nAfter the gift，the corresponding cultibook slot will be replaced directly
