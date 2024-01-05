@@ -132,13 +132,16 @@ public class WindowCultibookLibrary : AutoLayoutWindow<WindowCultibookLibrary>, 
 
     private void GiveCultibook()
     {
-        if (Manager.cultibooks.contains(_cultibook.id))
-        {
-            _cultibook.id = Guid.NewGuid().ToString();
-            Manager.cultibooks.add(_cultibook);
-        }
+        Cultibook copy = new();
+        copy.copy_from(_cultibook);
+        copy.id = Guid.NewGuid().ToString();
 
-        Config.selectedUnit.data.SetCultibook(_cultibook);
+        Manager.cultibooks.add(copy);
+
+        Config.selectedUnit.data.SetCultibook(copy);
+        Config.selectedUnit.setStatsDirty();
+
+        ScrollWindowComponent.clickBack();
     }
 
     public override void OnNormalEnable()
