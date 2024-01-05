@@ -360,7 +360,7 @@ internal class WindowCreatureInfoHelper
             ScrollWindow.moveAllToLeftAndRemove();
             ScrollWindow.showWindow(nameof(WindowSpellLibrary));
             CW_Core.mod_state.is_awarding = true;
-        }, SpriteTextureLoader.getSprite("ui/icons/iconSpell"), pSize: new Vector2(32, 32));
+        }, SpriteTextureLoader.getSprite("ui/cw_icons/天师"), pSize: new Vector2(32, 32));
         possession_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();
