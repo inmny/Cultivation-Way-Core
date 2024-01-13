@@ -568,7 +568,7 @@ internal class WindowCreatureInfoHelper
         health_regen.setValue(actor.stats[CW_S.health_regen]);
         shield_regen.setValue(actor.stats[CW_S.shield_regen]);
         wakan_regen.setValue(actor.stats[CW_S.wakan_regen]);
-        culti_velo_co.setValue((1 + actor.stats[CW_S.mod_cultivelo]) * actor.cw_asset.culti_velo);
+        culti_velo_co.setValue((1 + actor.stats[CW_S.mod_cultivelo]) * actor.cw_asset.culti_velo * 100, "%");
 
         #endregion
 
