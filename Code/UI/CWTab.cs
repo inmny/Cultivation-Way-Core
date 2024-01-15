@@ -38,13 +38,10 @@ public static class CWTab
     private static void add_buttons()
     {
         // 模组信息窗口
-        create_and_add_button(
-            Constants.Core.modinfo_window,
-            "ui/Icons/iconAbout",
-            () => ScrollWindow.showWindow(Constants.Core.modinfo_window),
-            ButtonType.Click,
-            ButtonContainerType.INFO
-        );
+        _powers_tab.AddPowerButton(
+            ButtonContainerType.INFO.ToString(),
+            PowerButtonCreator.CreateWindowButton(nameof(WindowModInfo),
+                nameof(WindowModInfo), SpriteTextureLoader.getSprite("ui/icons/iconAbout")));
         // 世界法则窗口
         create_and_add_button(
             Constants.Core.worldlaw_window,
@@ -69,6 +66,22 @@ public static class CWTab
             ButtonType.Click,
             ButtonContainerType.TOOL
         );
+        _powers_tab.AddPowerButton(
+            ButtonContainerType.LIBRARY.ToString(),
+            PowerButtonCreator.CreateWindowButton(nameof(WindowItemLibrary),
+                nameof(WindowItemLibrary), SpriteTextureLoader.getSprite("ui/icons/items/icon_紫金葫芦_violet_gold")));
+        _powers_tab.AddPowerButton(
+            ButtonContainerType.LIBRARY.ToString(),
+            PowerButtonCreator.CreateWindowButton(nameof(WindowCultibookLibrary),
+                nameof(WindowCultibookLibrary), SpriteTextureLoader.getSprite("ui/icons/iconCultiBook_immortal")));
+        _powers_tab.AddPowerButton(
+            ButtonContainerType.LIBRARY.ToString(),
+            PowerButtonCreator.CreateWindowButton(nameof(WindowActorLibrary),
+                nameof(WindowActorLibrary), SpriteTextureLoader.getSprite("ui/cw_icons/iconEmpires")));
+        _powers_tab.AddPowerButton(
+            ButtonContainerType.LIBRARY.ToString(),
+            PowerButtonCreator.CreateWindowButton(nameof(WindowBloodLibrary),
+                nameof(WindowBloodLibrary), SpriteTextureLoader.getSprite("ui/icons/iconWus")));
         // 能量地图
         create_and_add_button(
             Constants.Core.energy_maps_toggle_name,

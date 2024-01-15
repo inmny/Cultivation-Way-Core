@@ -51,7 +51,7 @@ internal static class Actors
 
         #endregion
 
-        FormatButtons.add_actor_button(asset.id);
+        FormatButtons.add_actor_button(asset.id, ButtonContainerType.RACE);
 
         ActorAsset baby_asset =
             AssetManager.actor_library.clone(Content_Constants.wu_id.Replace("unit", "baby"),
@@ -115,7 +115,7 @@ internal static class Actors
 
         #endregion
 
-        FormatButtons.add_actor_button(asset.id);
+        FormatButtons.add_actor_button(asset.id, ButtonContainerType.RACE);
 
         ActorAsset baby_asset =
             AssetManager.actor_library.clone(Content_Constants.ming_id.Replace("unit", "baby"),
@@ -215,7 +215,7 @@ internal static class Actors
 
         FormatButtons.add_actors_button(
             yao_ids.Select(yao_id => yao_id + Content_Constants.yao_postfix).ToList(),
-            _yao_asset.nameLocale, _yao_asset.icon
+            _yao_asset.nameLocale, _yao_asset.icon, ButtonContainerType.RACE
         );
 
         #endregion
@@ -278,7 +278,7 @@ internal static class Actors
 
         #endregion
 
-        FormatButtons.add_actor_button(asset.id);
+        FormatButtons.add_actor_button(asset.id, ButtonContainerType.RACE);
 
         ActorAsset baby_asset =
             AssetManager.actor_library.clone(Content_Constants.eastern_human_id.Replace("unit", "baby"),

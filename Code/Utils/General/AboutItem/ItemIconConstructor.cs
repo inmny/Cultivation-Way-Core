@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Cultivation_Way.Core;
 using NeoModLoader.api.attributes;
 using UnityEngine;
-
 namespace Cultivation_Way.Utils.General.AboutItem;
 
 public static class ItemIconConstructor
@@ -65,5 +64,18 @@ public static class ItemIconConstructor
         new_sprite.name = pOriginal.name + "_" + Toolbox.colorToHex(color_0);
         dict[color_hash] = new_sprite;
         return new_sprite;
+    }
+    public static Color GetItemQualityColor(ItemData pItemData)
+    {
+        if (pItemData is not CW_ItemData cw_item_data) return Color.white;
+        return (cw_item_data.Level / Constants.Core.item_level_per_stage) switch
+        {
+            0 => Color.white,
+            1 => Color.green,
+            2 => Color.blue,
+            3 => Color.magenta,
+            4 => Color.yellow,
+            _ => Color.red
+        };
     }
 }

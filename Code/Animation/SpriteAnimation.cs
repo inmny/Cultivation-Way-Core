@@ -172,10 +172,12 @@ public class SpriteAnimation
         show();
     }
 
+    [Hotfixable]
     internal void clear()
     {
         hide();
         gameObject.transform.localPosition = new Vector3(-9999999, -999999, -9999);
+        gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
         //this.gameObject.SetActive(false);
         cur_frame_idx = 0;
         dst_object = null;

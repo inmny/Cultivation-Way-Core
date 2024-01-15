@@ -4,6 +4,7 @@ internal static class Manager
 {
     public static void init()
     {
+        new CW_SR();
         Actors.init();
         ActorTraits.init();
         Achievements.init();

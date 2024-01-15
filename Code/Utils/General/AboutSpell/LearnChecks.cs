@@ -2,14 +2,13 @@
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
-
 namespace Cultivation_Way.General.AboutSpell;
 
 public static class LearnChecks
 {
     // 无需检查修炼体系, 已在上一级函数learn_check中检查
 
-    public static float default_learn_check(CW_SpellAsset spell_asset, BaseSimObject user)
+    public static float default_learn_check(CW_SpellAsset spell_asset, BaseSimObject user, BaseSimObject target)
     {
         int[] cultisys_levels = user.a.data.GetAllCultisysLevels();
         foreach (KeyValuePair<string, int> cultisys_level_require in spell_asset.spell_cultisys_level_require)

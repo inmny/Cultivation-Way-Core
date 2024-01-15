@@ -19,6 +19,12 @@ internal static class H_ScrollWindows
                 WindowCreatureInfoHelper.init(ScrollWindow.allWindows[pWindowID]);
                 break;
             }
+            case "village":
+            {
+                if (ScrollWindow.allWindows[pWindowID].GetComponent<CityWindowAddition>() == null)
+                    ScrollWindow.allWindows[pWindowID].gameObject.AddComponent<CityWindowAddition>().Init();
+                break;
+            }
         }
     }
 }

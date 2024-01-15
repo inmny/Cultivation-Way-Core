@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Cultivation_Way.Library;
 
@@ -101,6 +102,11 @@ public class Cultibook : Asset
         {
             max_users = cur_users;
         }
+    }
+
+    public Sprite GetSprite()
+    {
+        return SpriteTextureLoader.getSprite("ui/icons/iconCultiBook_Immortal");
     }
 }
 

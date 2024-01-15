@@ -1,25 +1,28 @@
-using NeoModLoader.api.attributes;
-using NeoModLoader.services;
 using System;
-using System.Collections.Generic;
 using System.Threading;
+using NeoModLoader.api.attributes;
 using UnityEngine;
 
 namespace Cultivation_Way.Core;
 
 public class CW_EnergyMapLayer : MapLayer
 {
+    private bool force_redraw = false;
+    private object force_redraw_obj = new object();
+    private bool last_enabled = false;
     private object lock_pixels = new object();
+    private Color spr_color = Color.white;
     private Color32[] tmp_pixels;
     private bool to_update = false;
-    private Color spr_color = Color.white;
+
     public override void create()
     {
         base.create();
     }
-    private bool last_enabled = false;
+
     public override void update(float pElapsed)
     {
+        if (sprRnd == null) sprRnd = GetComponent<SpriteRenderer>();
         if (pixels == null)
             createTextureNew();
         if (!PlayerConfig.optionBoolEnabled(Constants.Core.energy_maps_toggle_name))
@@ -27,7 +30,7 @@ public class CW_EnergyMapLayer : MapLayer
             sprRnd.enabled = false;
             return;
         }
-        
+
         if (MapBox.isRenderMiniMap())
         {
             spr_color.a = World.world.zoneCalculator.minimap_opacity;
@@ -36,6 +39,7 @@ public class CW_EnergyMapLayer : MapLayer
         {
             spr_color.a = Mathf.Clamp(ZoneCalculator.getCameraScaleZoom() * 0.3f, 0f, 0.7f);
         }
+
         spr_color.a *= World.world.zoneCalculator._night_mod;
 
         sprRnd.enabled = true;
@@ -48,8 +52,6 @@ public class CW_EnergyMapLayer : MapLayer
 
         base.update(pElapsed);
     }
-    private object force_redraw_obj = new object();
-    private bool force_redraw = false;
 
     public void ForceRedraw()
     {
@@ -57,12 +59,14 @@ public class CW_EnergyMapLayer : MapLayer
         force_redraw = true;
         Monitor.Exit(force_redraw_obj);
     }
+
     private void ExitForceRedraw()
     {
         Monitor.Enter(force_redraw_obj);
         force_redraw = false;
         Monitor.Exit(force_redraw_obj);
     }
+
     [Hotfixable]
     internal void PrepareRedraw()
     {
@@ -87,6 +91,7 @@ public class CW_EnergyMapLayer : MapLayer
                 tmp_pixels[World.world.tilesMap[tile.x, tile.y].data.tile_id] = tile.color;
                 count++;
             }
+
             if (count == 0)
             {
                 return;

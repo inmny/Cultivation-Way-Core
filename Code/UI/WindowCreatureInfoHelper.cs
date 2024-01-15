@@ -1,10 +1,15 @@
-﻿using Cultivation_Way.Constants;
+﻿using System.Collections.Generic;
+using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
+using Cultivation_Way.UI.prefabs;
 using NeoModLoader.api.attributes;
+using NeoModLoader.General;
+using NeoModLoader.General.UI.Prefabs;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Cultivation_Way.UI;
@@ -108,6 +113,10 @@ internal class WindowCreatureInfoHelper
     public static Transform stat_icons_transform;
     private static bool initialized;
     private static bool first_open = true;
+    public static RectTransform drag_receiver;
+    private static Text drag_receiver_text;
+
+    private static SubSelectWindow award_select_window;
 
     public static void init(ScrollWindow scroll_window)
     {
@@ -252,6 +261,268 @@ internal class WindowCreatureInfoHelper
         soul_progress.transform.Find("Icon").localPosition += new Vector3(7, 0);
         //soul_progress.transform.Find("Text").localPosition += new Vector3(7, 0);
 
+        GameObject receiver = new("Drag Receiver", typeof(Image));
+        receiver.transform.SetParent(background_transform);
+        receiver.transform.localPosition = new Vector3(-191, -109);
+        receiver.transform.localScale = Vector3.one;
+        receiver.GetComponent<Image>().sprite = SpriteTextureLoader.getSprite("ui/special/windowInnerSliced");
+        receiver.GetComponent<Image>().type = Image.Type.Sliced;
+
+        drag_receiver = receiver.GetComponent<RectTransform>();
+        drag_receiver.sizeDelta = new Vector2(150, 60);
+        drag_receiver.gameObject.SetActive(false);
+
+        GameObject receiver_text = new("Text", typeof(Text));
+        receiver_text.transform.SetParent(receiver.transform);
+        receiver_text.transform.localPosition = Vector3.zero;
+        receiver_text.transform.localScale = Vector3.one;
+        Text text = receiver_text.GetComponent<Text>();
+        text.alignment = TextAnchor.MiddleCenter;
+        text.resizeTextForBestFit = false;
+        text.font = LocalizedTextManager.currentFont;
+        text.fontSize = 12;
+        text.GetComponent<RectTransform>().sizeDelta = drag_receiver.sizeDelta * 0.95f;
+        drag_receiver_text = text;
+
+
+        award_select_window = Object.Instantiate(SubSelectWindow.Prefab, background_transform);
+        award_select_window.transform.localScale = Vector3.one;
+        award_select_window.transform.localPosition = Vector3.zero;
+        award_select_window.gameObject.SetActive(false);
+
+        var element_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
+        var cultibook_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
+        var equipment_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
+        var elixir_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
+        var blood_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
+        var cultisys_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
+        var spell_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
+        var possession_entry = Object.Instantiate(SimpleButton.Prefab, null);
+        var child_born_entry = Object.Instantiate(SimpleButton.Prefab, null);
+
+        element_award_entry.Setup([Hotfixable]() =>
+        {
+            var element = Config.selectedUnit.data.GetElement();
+            element.ReRandom();
+            Config.selectedUnit.data.SetElement(element);
+            scroll_window.GetComponent<WindowCreatureInfo>().OnEnable();
+            WorldTip.showNow(
+                LM.Get("ElementAdjust Result").Replace("$element$",
+                    LM.Get(Config.selectedUnit.data.GetElement().GetElementType().id)), false, "top");
+        }, SpriteTextureLoader.getSprite("ui/icons/iconElement"), pSize: new Vector2(32, 32), pTipData: new TooltipData
+        {
+            tip_name = "ElementAdjust",
+            tip_description = "ElementAdjust Description"
+        }, pTipType: "normal");
+        cultibook_award_entry.Setup(() =>
+            {
+                ScrollWindow.moveAllToLeftAndRemove();
+                ScrollWindow.showWindow(nameof(WindowCultibookLibrary));
+                CW_Core.mod_state.is_awarding = true;
+            }, SpriteTextureLoader.getSprite("ui/icons/iconCultiBook_immortal"), pSize: new Vector2(32, 32),
+            pTipData: new TooltipData
+            {
+                tip_name = nameof(WindowCultibookLibrary),
+                tip_description = nameof(WindowCultibookLibrary) + Constants.Core.new_desc_suffix
+            }, pTipType: "normal");
+        equipment_award_entry.Setup(() =>
+            {
+                ScrollWindow.moveAllToLeftAndRemove();
+                ScrollWindow.showWindow(nameof(WindowItemLibrary));
+                CW_Core.mod_state.is_awarding = true;
+            }, SpriteTextureLoader.getSprite("ui/icons/items/icon_紫金葫芦_violet_gold"), pSize: new Vector2(32, 32),
+            pTipData: new TooltipData
+            {
+                tip_name = nameof(WindowItemLibrary),
+                tip_description = nameof(WindowItemLibrary) + Constants.Core.new_desc_suffix
+            }, pTipType: "normal");
+        elixir_award_entry.Setup(() =>
+        {
+            ScrollWindow.moveAllToLeftAndRemove();
+            ScrollWindow.showWindow(nameof(WindowElixirLibrary));
+            CW_Core.mod_state.is_awarding = true;
+        }, SpriteTextureLoader.getSprite("ui/icons/elixirs/iconNormal"), pSize: new Vector2(32, 32));
+        blood_award_entry.Setup(() =>
+            {
+                ScrollWindow.moveAllToLeftAndRemove();
+                ScrollWindow.showWindow(nameof(WindowBloodLibrary));
+                CW_Core.mod_state.is_awarding = true;
+            }, SpriteTextureLoader.getSprite("ui/icons/iconWus"), pSize: new Vector2(32, 32),
+            pTipData: new TooltipData
+            {
+                tip_name = nameof(WindowBloodLibrary),
+                tip_description = nameof(WindowBloodLibrary) + Constants.Core.new_desc_suffix
+            }, pTipType: "normal");
+        cultisys_award_entry.Setup(() =>
+        {
+            ScrollWindow.moveAllToLeftAndRemove();
+            ScrollWindow.showWindow(nameof(WindowCultiConfig));
+            CW_Core.mod_state.is_awarding = true;
+        }, SpriteTextureLoader.getSprite("ui/icons/iconCultiSys"), pSize: new Vector2(32, 32));
+        cultisys_award_entry.Icon.GetComponent<RectTransform>().sizeDelta = new Vector2(22.4f, 28);
+        spell_award_entry.Setup(() =>
+        {
+            ScrollWindow.moveAllToLeftAndRemove();
+            ScrollWindow.showWindow(nameof(WindowSpellLibrary));
+            CW_Core.mod_state.is_awarding = true;
+        }, SpriteTextureLoader.getSprite("ui/cw_icons/天师"), pSize: new Vector2(32, 32));
+        possession_entry.Setup(() =>
+        {
+            ScrollWindow.moveAllToLeftAndRemove();
+            ScrollWindow.showWindow(nameof(WindowActorLibrary));
+            CW_Core.mod_state.is_awarding = true;
+        }, SpriteTextureLoader.getSprite("ui/cw_icons/iconPossession"), pSize: new Vector2(32, 32));
+        child_born_entry.Setup(() =>
+        {
+            ScrollWindow.moveAllToLeftAndRemove();
+            ScrollWindow.showWindow(nameof(WindowChildConfig));
+            CW_Core.mod_state.is_awarding = true;
+        }, SpriteTextureLoader.getSprite("ui/icons/worldrules/icon_lastofus"), pSize: new Vector2(32, 32));
+
+
+        award_select_window.Setup(new List<RectTransform>
+        {
+            element_award_entry.GetComponent<RectTransform>(),
+            cultisys_award_entry.GetComponent<RectTransform>(),
+            spell_award_entry.GetComponent<RectTransform>(),
+            cultibook_award_entry.GetComponent<RectTransform>(),
+            blood_award_entry.GetComponent<RectTransform>(),
+            equipment_award_entry.GetComponent<RectTransform>(),
+            elixir_award_entry.GetComponent<RectTransform>(),
+            possession_entry.GetComponent<RectTransform>(),
+            child_born_entry.GetComponent<RectTransform>()
+        }, LM.Get("Award"), LM.Get("Award Description"), new Vector2(364, 140));
+        award_select_window.GetComponent<VerticalLayoutGroup>().spacing = 8;
+
+
+        var award_entry = Object.Instantiate(SimpleButton.Prefab, background_transform);
+        award_entry.transform.localPosition = new Vector3(-125, 100);
+        award_entry.transform.localScale = Vector3.one;
+        award_entry.Setup([Hotfixable]() =>
+        {
+            award_select_window.transform.SetAsLastSibling();
+            award_select_window.gameObject.SetActive(true);
+        }, SpriteTextureLoader.getSprite("ui/cw_icons/iconAwardUnit"), pSize: new Vector2(28, 28));
+        award_entry.TipButton.enabled = true;
+        award_entry.TipButton.textOnClick = "Award";
+        award_entry.TipButton.textOnClickDescription = "Award Description";
+        var anim = award_entry.gameObject.AddComponent<IconRotationAnimation>();
+        anim.image = award_entry.Background;
+        anim.delay = 1.5f;
+        anim.initScale = new Vector3(1, 1, 1);
+        anim.scaleTo = new Vector3(1.1f, 1.1f, 1.1f);
+
+
+        EventTrigger.Entry entry;
+        EventTrigger event_trigger;
+
+        #region Cultibook Draggable
+
+        event_trigger = cultibook.GetComponent<EventTrigger>();
+        if (event_trigger == null) event_trigger = cultibook.gameObject.AddComponent<EventTrigger>();
+
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.BeginDrag;
+        entry.callback.AddListener([Hotfixable](data) =>
+        {
+            if (data is not PointerEventData pointerEventData) return;
+
+            drag_receiver_text.color = Color.white;
+            drag_receiver.gameObject.SetActive(true);
+            cultibook.transform.SetParent(background_transform);
+            cultibook.transform.localScale = Vector3.one;
+            cultibook.transform.position = pointerEventData.position;
+        });
+        event_trigger.triggers.Add(entry);
+
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Drag;
+        entry.callback.AddListener([Hotfixable](data) =>
+        {
+            if (data is not PointerEventData pointerEventData) return;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(drag_receiver, pointerEventData.position))
+                drag_receiver_text.color = Color.yellow;
+            else
+                drag_receiver_text.color = Color.white;
+
+            cultibook.transform.position = pointerEventData.position;
+        });
+        event_trigger.triggers.Add(entry);
+
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.EndDrag;
+        entry.callback.AddListener([Hotfixable](data) =>
+        {
+            if (data is not PointerEventData pointerEventData) return;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(drag_receiver, pointerEventData.position))
+            {
+                var copied = new Cultibook();
+                copied.copy_from(Config.selectedUnit.data.GetCultibook());
+
+                WindowCultibookLibrary.Instance.PushData(copied);
+            }
+
+            cultibook.transform.SetParent(left_part.transform);
+            cultibook.transform.SetSiblingIndex(1);
+            drag_receiver.gameObject.SetActive(false);
+        });
+        event_trigger.triggers.Add(entry);
+
+        #endregion
+
+        #region Blood Draggable
+
+        event_trigger = blood.GetComponent<EventTrigger>();
+        if (event_trigger == null) event_trigger = blood.gameObject.AddComponent<EventTrigger>();
+
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.BeginDrag;
+        entry.callback.AddListener([Hotfixable](data) =>
+        {
+            if (data is not PointerEventData pointerEventData) return;
+
+            drag_receiver_text.color = Color.white;
+            drag_receiver.gameObject.SetActive(true);
+            blood.transform.SetParent(background_transform);
+            blood.transform.localScale = Vector3.one;
+            blood.transform.position = pointerEventData.position;
+        });
+        event_trigger.triggers.Add(entry);
+
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.Drag;
+        entry.callback.AddListener([Hotfixable](data) =>
+        {
+            if (data is not PointerEventData pointerEventData) return;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(drag_receiver, pointerEventData.position))
+                drag_receiver_text.color = Color.yellow;
+            else
+                drag_receiver_text.color = Color.white;
+
+            blood.transform.position = pointerEventData.position;
+        });
+        event_trigger.triggers.Add(entry);
+
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.EndDrag;
+        entry.callback.AddListener([Hotfixable](data) =>
+        {
+            if (data is not PointerEventData pointerEventData) return;
+
+            if (RectTransformUtility.RectangleContainsScreenPoint(drag_receiver, pointerEventData.position))
+                WindowBloodLibrary.Instance.PushData(Config.selectedUnit.data.GetBloodNodes());
+
+            blood.transform.SetParent(left_part.transform);
+            blood.transform.SetSiblingIndex(2);
+            drag_receiver.gameObject.SetActive(false);
+        });
+        event_trigger.triggers.Add(entry);
+
+        #endregion
+
         initialized = true;
     }
 
@@ -259,6 +530,9 @@ internal class WindowCreatureInfoHelper
     public static void OnEnable_postfix(WindowCreatureInfo window_creature_info)
     {
         if (!initialized) return;
+
+        award_select_window.gameObject.SetActive(false);
+
         CW_Actor actor = (CW_Actor)window_creature_info.actor;
 
         actor.setStatsDirty();
@@ -293,8 +567,8 @@ internal class WindowCreatureInfoHelper
         knockback_reduction.setValue(actor.stats[S.knockback_reduction]);
         health_regen.setValue(actor.stats[CW_S.health_regen]);
         shield_regen.setValue(actor.stats[CW_S.shield_regen]);
-        wakan_regen.setValue(0);
-        culti_velo_co.setValue((1 + actor.stats[CW_S.mod_cultivelo]) * actor.cw_asset.culti_velo);
+        wakan_regen.setValue(actor.stats[CW_S.wakan_regen]);
+        culti_velo_co.setValue((1 + actor.stats[CW_S.mod_cultivelo]) * actor.cw_asset.culti_velo * 100, "%");
 
         #endregion
 
@@ -332,7 +606,103 @@ internal class WindowCreatureInfoHelper
             }
         }
 
+        drag_receiver_text.text = LM.Get("DragItemOrActorHere");
         load_cw_statuses(actor, window_creature_info);
+        patch_equipment_buttons_as_draggable(window_creature_info);
+    }
+
+    private static void patch_equipment_buttons_as_draggable(WindowCreatureInfo pWindowCreatureInfo)
+    {
+        foreach (var component in pWindowCreatureInfo.equipmentParent.GetComponentsInChildren(typeof(EquipmentButton),
+                     false))
+        {
+            var equip_button = (EquipmentButton)component;
+            EventTrigger button = equip_button.GetComponent<EventTrigger>();
+            if (button == null)
+            {
+                button = equip_button.gameObject.AddComponent<EventTrigger>();
+            }
+
+            bool need_add_trigger = true;
+            foreach (var trigger in button.triggers)
+            {
+                if (trigger.eventID == EventTriggerType.EndDrag)
+                {
+                    need_add_trigger = false;
+                    break;
+                }
+            }
+
+            if (!need_add_trigger) continue;
+            EventTrigger.Entry entry;
+
+            entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.BeginDrag;
+            entry.callback.AddListener([Hotfixable](data) =>
+            {
+                if (data is not PointerEventData pointerEventData)
+                {
+                    return;
+                }
+
+                drag_receiver_text.color = Color.white;
+                drag_receiver.gameObject.SetActive(true);
+                equip_button.transform.SetParent(background_transform);
+                equip_button.transform.localScale = Vector3.one;
+                equip_button.transform.position = pointerEventData.position;
+            });
+            button.triggers.Add(entry);
+
+            entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.Drag;
+            entry.callback.AddListener([Hotfixable](data) =>
+            {
+                if (data is not PointerEventData pointerEventData)
+                {
+                    return;
+                }
+
+                if (RectTransformUtility.RectangleContainsScreenPoint(drag_receiver, pointerEventData.position))
+                {
+                    drag_receiver_text.color = Color.yellow;
+                }
+                else
+                {
+                    drag_receiver_text.color = Color.white;
+                }
+
+                equip_button.transform.position = pointerEventData.position;
+            });
+            button.triggers.Add(entry);
+
+            entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.EndDrag;
+            entry.callback.AddListener([Hotfixable](data) =>
+            {
+                if (data is not PointerEventData pointerEventData)
+                {
+                    return;
+                }
+
+                if (RectTransformUtility.RectangleContainsScreenPoint(drag_receiver, pointerEventData.position))
+                {
+                    equip_button.gameObject.SetActive(false);
+                    pWindowCreatureInfo.pool_equipment._elements_inactive.Push(equip_button);
+
+                    ItemData item_data = equip_button.item_data;
+                    ItemAsset item_asset = AssetManager.items.get(item_data.id);
+
+                    WindowItemLibrary.CollectItem(item_data);
+
+                    pWindowCreatureInfo.actor.equipment.getSlot(item_asset.equipmentType).emptySlot();
+                    pWindowCreatureInfo.actor.setStatsDirty();
+                }
+
+                equip_button.transform.SetParent(pWindowCreatureInfo.equipmentParent);
+                drag_receiver.gameObject.SetActive(false);
+            });
+            button.triggers.Add(entry);
+        }
     }
 
     private static void load_cw_statuses(CW_Actor actor, WindowCreatureInfo window_creature_info)

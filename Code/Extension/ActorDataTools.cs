@@ -123,6 +123,8 @@ public static class ActorDataTools
             CultisysType.BODY => "BODY",
             CultisysType.SOUL => "SOUL",
             CultisysType.WAKAN => "WAKAN",
+            CultisysType.BLOOD => "BLOOD",
+            CultisysType.HIDDEN => "HIDDEN",
             _ => throw new ArgumentOutOfRangeException(nameof(pType), pType, null)
         };
         pData.get(pTypeStr, out string cultisys_id);

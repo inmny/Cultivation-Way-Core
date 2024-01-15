@@ -59,18 +59,176 @@ internal static class Spells
         add_default_lightning_spell();
         add_positive_quintuple_lightning_spell();
         add_negative_quintuple_lightning_spell();
+
+        add_violet_gold_gourd_spell();
+    }
+
+    private static void add_violet_gold_gourd_spell()
+    {
+        AnimationSetting anim_setting = new()
+        {
+            loop_limit_type = AnimationLoopLimitType.NO_LIMIT,
+            loop_nr_limit = -1,
+            frame_interval = 0.05f,
+            trace_grad = 8f,
+            free_val = 40f,
+            layer_name = "Objects",
+            frame_action = [Hotfixable](int idx, ref Vector2 vec, ref Vector2 dst_vec,
+                Animation.SpriteAnimation anim) =>
+            {
+                if (anim.data.hasFlag("go_back")) return;
+                if (anim.dst_object == null || !anim.dst_object.isActor() || !anim.dst_object.isAlive())
+                {
+                    anim.data.addFlag("go_back");
+                    return;
+                }
+
+                var dst_actor = (CW_Actor)anim.dst_object;
+
+                if (!anim.data.hasFlag("stop_scale_up"))
+                {
+                    anim.change_scale(1.02f);
+                    if (anim.get_scale() > 1.07f) anim.data.addFlag("stop_scale_up");
+                }
+
+                if (!anim.data.hasFlag("stop_rotate"))
+                {
+                    var target_z_angle =
+                        Toolbox.getAngle(vec.x, vec.y, dst_actor.currentPosition.x, dst_actor.currentPosition.y) *
+                        57.29578f - 45;
+                    if (target_z_angle < 0) target_z_angle += 360;
+                    var current_z_angle = anim.gameObject.transform.rotation.eulerAngles.z;
+                    var delta_z_angle = target_z_angle - current_z_angle;
+                    if (delta_z_angle > 180) delta_z_angle -= 360;
+                    if (delta_z_angle < -180) delta_z_angle += 360;
+                    /*
+                    CW_Core.LogInfo("====================================");
+                    CW_Core.LogInfo("delta_z_angle: " + delta_z_angle);
+                    CW_Core.LogInfo("target_z_angle: " + target_z_angle);
+                    CW_Core.LogInfo("current_z_angle: " + current_z_angle);
+                    */
+                    if (Mathf.Abs(delta_z_angle) < 0.1f)
+                        anim.data.addFlag("stop_rotate");
+                    else
+                        anim.gameObject.transform.Rotate(0, 0, delta_z_angle * 0.1f);
+                }
+
+                if (!anim.data.hasFlag("started")) return;
+
+                dst_actor.is_in_magnet = true;
+
+                if (anim.data.hasFlag("refining"))
+                {
+                    dst_actor.is_visible = false;
+                    anim.data.get(DataS.spell_cost, out var spell_cost, 1f);
+                    spell_cost = MiscUtils.WakanCostToDamage(spell_cost, anim.src_object);
+                    //CW_Core.LogInfo("Cause damage: " + spell_cost);
+                    dst_actor.getHit(spell_cost, false, (AttackType)CW_AttackType.Spell, anim.src_object, false);
+
+                    anim.data.get("refining_time", out float time);
+                    time += anim.cur_elapsed;
+                    if (time > 10)
+                    {
+                        dst_actor.is_in_magnet = false;
+                        anim.force_stop();
+                        return;
+                    }
+
+                    anim.data.set("refining_time", time);
+                    return;
+                }
+
+                dst_actor.data.health = int.MaxValue / 100;
+                dst_actor.currentPosition =
+                    new Vector2(Mathf.Lerp(dst_actor.currentPosition.x, vec.x, anim.cur_elapsed),
+                        Mathf.Lerp(dst_actor.currentPosition.y, vec.y, anim.cur_elapsed));
+                dst_actor.transform.position = dst_actor.currentPosition;
+                if (Toolbox.DistVec2Float(vec, dst_actor.currentPosition) < 0.1f) anim.data.addFlag("refining");
+            },
+            end_action = [Hotfixable](int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
+            {
+            }
+        };
+        anim_setting.set_trace([Hotfixable](ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim,
+            ref float delta_x, ref float delta_y) =>
+        {
+            if (anim.data.hasFlag("go_back"))
+            {
+                anim.change_scale(0.9f);
+                if (anim.get_scale() < 0.01f) anim.force_stop();
+                var current_position = anim.gameObject.transform.position;
+                delta_x = (anim.src_object.currentPosition.x - current_position.x) * 3;
+                delta_y = (anim.src_object.currentPosition.y - current_position.y) * 3;
+                return;
+            }
+
+            if (!anim.data.hasFlag("prepare"))
+            {
+                anim.set_position(anim.src_object.currentPosition);
+                src_vec.x = anim.src_object.currentPosition.x;
+                src_vec.y = anim.src_object.currentPosition.y + anim_setting.free_val;
+                anim.data.addFlag("prepare");
+                return;
+            }
+
+            if (!anim.data.hasFlag("started"))
+            {
+                var current_position = anim.gameObject.transform.position;
+
+                var dist = Toolbox.DistVec2Float(src_vec, current_position);
+                if (dist < 1f)
+                {
+                    anim.data.addFlag("started");
+                    return;
+                }
+
+                delta_x = (src_vec.x - current_position.x) * 3;
+                delta_y = (src_vec.y - current_position.y) * 3;
+            }
+        });
+
+        EffectManager.instance.load_as_controller("violet_gold_gourd_anim", "effects/violet_gold_gourd/",
+            controller_setting: anim_setting, base_scale: 0.25f);
+        CW_SpellAsset spell_asset = new()
+        {
+            id = "violet_gold_gourd",
+            rarity = 99,
+            element = new CW_Element(new[]
+            {
+                30, 30, 0, 40, 0
+            }),
+            anim_id = "violet_gold_gourd_anim",
+            anim_type = SpellAnimType.ON_TARGET,
+            anim_action = AnimActions.fall_to_ground,
+            target_camp = SpellTargetCamp.ENEMY,
+            target_type = SpellTargetType.ACTOR,
+            spell_cost_action = CostChecks.generate_spell_cost_action(new KeyValuePair<string, float>[]
+            {
+                new(DataS.wakan, Content_Constants.default_spell_cost)
+            }),
+            spell_learn_check = LearnChecks.default_learn_check
+        };
+        spell_asset.add_trigger_tags(new[]
+        {
+            SpellTriggerTag.ATTACK, SpellTriggerTag.NAMED_DEFEND
+        });
+        Library.Manager.spells.add(spell_asset);
     }
 
     private static void add_call_spells()
     {
         CW_SpellAsset call_ancestor = new()
         {
-            id = "call_ancestor", rarity = 99,
+            id = "call_ancestor",
+            rarity = 99,
             anim_action = null,
             anim_id = "",
             anim_type = SpellAnimType.CUSTOM,
             cultisys_require = 0,
-            element = new CW_Element(new[] { 20, 20, 20, 20, 20 }),
+            element = new CW_Element(new[]
+            {
+                20, 20, 20, 20, 20
+            }),
             spell_action = (spell_asset, user, target, tile, cost) =>
             {
                 if (user.objectType != MapObjectType.Actor || user.city == null) return;
@@ -118,11 +276,13 @@ internal static class Spells
                     cw_actor.unit_group.addUnit(ancestor_actor);
                 }
             },
-            spell_cost_action = (asset, user) => { return -1; },
-            spell_learn_check = (asset, user) => { return 0; }
+            spell_cost_action = (asset, user, target) => { return -1; },
+            spell_learn_check = (asset, user, target) => { return 0; }
         };
         call_ancestor.add_trigger_tags(new[]
-            { SpellTriggerTag.ATTACK, SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND });
+        {
+            SpellTriggerTag.ATTACK, SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND
+        });
         Library.Manager.spells.add(call_ancestor);
     }
 
@@ -139,14 +299,21 @@ internal static class Spells
     {
         CW_SpellAsset spell_asset = new()
         {
-            id = spell_id, rarity = rarity, element = new CW_Element(element),
-            anim_id = anim_id, anim_type = SpellAnimType.ON_USER,
+            id = spell_id,
+            rarity = rarity,
+            element = new CW_Element(element),
+            anim_id = anim_id,
+            anim_type = SpellAnimType.ON_USER,
             anim_action = AnimActions.on_something_auto_scale,
-            target_camp = SpellTargetCamp.ALIAS, target_type = SpellTargetType.ACTOR,
+            target_camp = SpellTargetCamp.ALIAS,
+            target_type = SpellTargetType.ACTOR,
             spell_cost_action = CostChecks.generate_spell_cost_action(spell_cost_list),
             spell_learn_check = LearnChecks.default_learn_check
         };
-        spell_asset.add_trigger_tags(new[] { SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND });
+        spell_asset.add_trigger_tags(new[]
+        {
+            SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND
+        });
         spell_asset.add_cultisys_require(CultisysType.WAKAN);
         Library.Manager.spells.add(spell_asset);
 
@@ -209,10 +376,14 @@ internal static class Spells
     {
         CW_SpellAsset spell_asset = new()
         {
-            id = spell_id, rarity = rarity, element = new CW_Element(element),
-            anim_id = anim_id, anim_type = SpellAnimType.USER_TO_TARGET,
+            id = spell_id,
+            rarity = rarity,
+            element = new CW_Element(element),
+            anim_id = anim_id,
+            anim_type = SpellAnimType.USER_TO_TARGET,
             anim_action = AnimActions.simple_user_to_target,
-            target_camp = SpellTargetCamp.ENEMY, target_type = SpellTargetType.TILE,
+            target_camp = SpellTargetCamp.ENEMY,
+            target_type = SpellTargetType.TILE,
             spell_cost_action = CostChecks.generate_spell_cost_action(spell_cost_list),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -242,7 +413,10 @@ internal static class Spells
     {
         add_escape_spell(
             "gold_escape", 5,
-            new[] { 0, 0, 0, 100, 0 },
+            new[]
+            {
+                0, 0, 0, 100, 0
+            },
             "gold_escape_anim", "effects/gold_escape",
             new KeyValuePair<string, float>[]
             {
@@ -252,7 +426,10 @@ internal static class Spells
         );
         add_escape_spell(
             "ground_escape", 5,
-            new[] { 0, 0, 0, 0, 100 },
+            new[]
+            {
+                0, 0, 0, 0, 100
+            },
             "ground_escape_anim", "effects/ground_escape",
             new KeyValuePair<string, float>[]
             {
@@ -262,7 +439,10 @@ internal static class Spells
         );
         add_escape_spell(
             "wood_escape", 5,
-            new[] { 0, 0, 100, 0, 0 },
+            new[]
+            {
+                0, 0, 100, 0, 0
+            },
             "wood_escape_anim", "effects/wood_escape",
             new KeyValuePair<string, float>[]
             {
@@ -272,7 +452,10 @@ internal static class Spells
         );
         add_escape_spell(
             "water_escape", 5,
-            new[] { 100, 0, 0, 0, 0 },
+            new[]
+            {
+                100, 0, 0, 0, 0
+            },
             "water_escape_anim", "effects/water_escape",
             new KeyValuePair<string, float>[]
             {
@@ -282,7 +465,10 @@ internal static class Spells
         );
         add_escape_spell(
             "fire_escape", 5,
-            new[] { 0, 100, 0, 0, 0 },
+            new[]
+            {
+                0, 100, 0, 0, 0
+            },
             "fire_escape_anim", "effects/fire_escape",
             new KeyValuePair<string, float>[]
             {
@@ -296,7 +482,10 @@ internal static class Spells
     private static void add_blade_spells()
     {
         add_blade_spell(
-            "gold_blade", 3, new[] { 0, 0, 100, 0, 0 },
+            "gold_blade", 3, new[]
+            {
+                0, 0, 100, 0, 0
+            },
             "gold_blade_anim", "effects/gold_blade", new KeyValuePair<string, float>[]
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 3f)
@@ -327,7 +516,10 @@ internal static class Spells
             }
         );
         add_blade_spell(
-            "water_blade", 3, new[] { 100, 0, 0, 0, 0 },
+            "water_blade", 3, new[]
+            {
+                100, 0, 0, 0, 0
+            },
             "water_blade_anim", "effects/water_blade", new KeyValuePair<string, float>[]
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 3f)
@@ -368,7 +560,10 @@ internal static class Spells
         );
         // TODO: 补充火刃燃烧效果
         add_blade_spell(
-            "fire_blade", 3, new[] { 0, 100, 0, 0, 0 },
+            "fire_blade", 3, new[]
+            {
+                0, 100, 0, 0, 0
+            },
             "fire_blade_anim", "effects/fire_blade", new KeyValuePair<string, float>[]
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 3f)
@@ -399,7 +594,10 @@ internal static class Spells
             }
         );
         add_blade_spell(
-            "wind_blade", 3, new[] { 40, 40, 20, 0, 0 },
+            "wind_blade", 3, new[]
+            {
+                40, 40, 20, 0, 0
+            },
             "wind_blade_anim", "effects/wind_blade", new KeyValuePair<string, float>[]
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 3f)
@@ -446,8 +644,14 @@ internal static class Spells
         // 玄武之甲
         FormatSpells.create_give_self_status_spell(
             "basalt_armor", "status_basalt_armor",
-            rarity: 3, element_container: new[] { 100, 0, 0, 0, 0 },
-            trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND },
+            rarity: 3, element_container: new[]
+            {
+                100, 0, 0, 0, 0
+            },
+            trigger_tags: new[]
+            {
+                SpellTriggerTag.NAMED_DEFEND
+            },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
@@ -456,8 +660,14 @@ internal static class Spells
         // 青龙之鳞
         FormatSpells.create_give_self_status_spell(
             "gloong_scale", "status_gloong_scale",
-            rarity: 3, element_container: new[] { 0, 0, 100, 0, 0 },
-            trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND },
+            rarity: 3, element_container: new[]
+            {
+                0, 0, 100, 0, 0
+            },
+            trigger_tags: new[]
+            {
+                SpellTriggerTag.NAMED_DEFEND
+            },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
@@ -466,8 +676,14 @@ internal static class Spells
         // 朱雀之羽
         FormatSpells.create_give_self_status_spell(
             "rosefinch_feather", "status_rosefinch_feather",
-            rarity: 3, element_container: new[] { 0, 100, 0, 0, 0 },
-            trigger_tags: new[] { SpellTriggerTag.ATTACK },
+            rarity: 3, element_container: new[]
+            {
+                0, 100, 0, 0, 0
+            },
+            trigger_tags: new[]
+            {
+                SpellTriggerTag.ATTACK
+            },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
@@ -476,8 +692,14 @@ internal static class Spells
         // 麒麟之角
         FormatSpells.create_give_self_status_spell(
             "unicorn_horn", "status_unicorn_horn",
-            rarity: 3, element_container: new[] { 0, 0, 0, 0, 100 },
-            trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND },
+            rarity: 3, element_container: new[]
+            {
+                0, 0, 0, 0, 100
+            },
+            trigger_tags: new[]
+            {
+                SpellTriggerTag.NAMED_DEFEND
+            },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
@@ -486,8 +708,14 @@ internal static class Spells
         // 白虎之牙
         FormatSpells.create_give_self_status_spell(
             "wtiger_tooth", "status_wtiger_tooth",
-            rarity: 3, element_container: new[] { 0, 0, 0, 100, 0 },
-            trigger_tags: new[] { SpellTriggerTag.ATTACK },
+            rarity: 3, element_container: new[]
+            {
+                0, 0, 0, 100, 0
+            },
+            trigger_tags: new[]
+            {
+                SpellTriggerTag.ATTACK
+            },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
@@ -496,8 +724,14 @@ internal static class Spells
         // 金刚护体
         FormatSpells.create_give_self_status_spell(
             "gold_shield", "status_gold_shield",
-            rarity: 3, element_container: new[] { 0, 0, 0, 100, 0 },
-            trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND },
+            rarity: 3, element_container: new[]
+            {
+                0, 0, 0, 100, 0
+            },
+            trigger_tags: new[]
+            {
+                SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND
+            },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
@@ -506,8 +740,14 @@ internal static class Spells
         // 水甲
         FormatSpells.create_give_self_status_spell(
             "water_shield", "status_water_shield",
-            rarity: 3, element_container: new[] { 100, 0, 0, 0, 0 },
-            trigger_tags: new[] { SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND },
+            rarity: 3, element_container: new[]
+            {
+                100, 0, 0, 0, 0
+            },
+            trigger_tags: new[]
+            {
+                SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND
+            },
             spell_cost_list: new KeyValuePair<string, float>[]
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 2f)
@@ -516,12 +756,17 @@ internal static class Spells
         // 兽化
         spell_asset = FormatSpells.create_give_self_status_spell(
             "brutalize", "status_brutalize",
-            rarity: 1, element_container: new[] { 20, 20, 20, 20, 20 },
+            rarity: 1, element_container: new[]
+            {
+                20, 20, 20, 20, 20
+            },
             trigger_tags: new[]
-                { SpellTriggerTag.ATTACK, SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND },
+            {
+                SpellTriggerTag.ATTACK, SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND
+            },
             spell_cost_list: new KeyValuePair<string, float>[0]
         );
-        spell_asset.spell_learn_check = (asset, user) => -1;
+        spell_asset.spell_learn_check = (asset, user, target) => -1;
     }
 
     [SuppressMessage("ReSharper", "JoinDeclarationAndInitializer")]
@@ -541,7 +786,10 @@ internal static class Spells
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 6f)
             },
-            element_container: new[] { 0, 0, 0, 100, 0 }
+            element_container: new[]
+            {
+                0, 0, 0, 100, 0
+            }
         );
         effect_controller = CW_Core.mod_state.anim_manager.get_controller(spell_asset.anim_id);
         effect_controller.anim_limit = 1000;
@@ -561,7 +809,10 @@ internal static class Spells
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 6f)
             },
-            element_container: new[] { 0, 0, 100, 0, 0 }
+            element_container: new[]
+            {
+                0, 0, 100, 0, 0
+            }
         );
         effect_controller = CW_Core.mod_state.anim_manager.get_controller(spell_asset.anim_id);
         effect_controller.base_scale = 0.15f;
@@ -582,7 +833,10 @@ internal static class Spells
             {
                 new(DataS.wakan, Content_Constants.default_spell_cost / 6f)
             },
-            element_container: new[] { 100, 0, 0, 0, 0 }
+            element_container: new[]
+            {
+                100, 0, 0, 0, 0
+            }
         );
         effect_controller = CW_Core.mod_state.anim_manager.get_controller(spell_asset.anim_id);
         effect_controller.base_scale = 0.15f;
@@ -671,9 +925,14 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
-            id = "tornado", rarity = 16,
-            element = new CW_Element(new[] { 40, 40, 20, 0, 0 }),
-            anim_id = "simple_tornado_anim", anim_type = SpellAnimType.USER_TO_TARGET,
+            id = "tornado",
+            rarity = 16,
+            element = new CW_Element(new[]
+            {
+                40, 40, 20, 0, 0
+            }),
+            anim_id = "simple_tornado_anim",
+            anim_type = SpellAnimType.USER_TO_TARGET,
             anim_action = AnimActions.simple_user_to_target,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -693,8 +952,12 @@ internal static class Spells
     {
         CW_SpellAsset spell = new()
         {
-            id = "regen", rarity = 5,
-            element = new CW_Element(new[] { 0, 0, 100, 0, 0 }),
+            id = "regen",
+            rarity = 5,
+            element = new CW_Element(new[]
+            {
+                0, 0, 100, 0, 0
+            }),
             anim_id = "",
             anim_type = SpellAnimType.CUSTOM,
             anim_action = (asset, user, target, tile, cost) => { user.a.spawnParticle(Color.green); },
@@ -759,9 +1022,14 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
-            id = "fall_wood", rarity = 3,
-            element = new CW_Element(new[] { 0, 0, 100, 0, 0 }),
-            anim_id = "fall_wood_anim", anim_type = SpellAnimType.ON_TARGET,
+            id = "fall_wood",
+            rarity = 3,
+            element = new CW_Element(new[]
+            {
+                0, 0, 100, 0, 0
+            }),
+            anim_id = "fall_wood_anim",
+            anim_type = SpellAnimType.ON_TARGET,
             anim_action = AnimActions.fall_to_ground,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -819,9 +1087,14 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
-            id = "fall_rock", rarity = 3,
-            element = new CW_Element(new[] { 0, 0, 0, 0, 100 }),
-            anim_id = "fall_rock_anim", anim_type = SpellAnimType.ON_TARGET,
+            id = "fall_rock",
+            rarity = 3,
+            element = new CW_Element(new[]
+            {
+                0, 0, 0, 0, 100
+            }),
+            anim_id = "fall_rock_anim",
+            anim_type = SpellAnimType.ON_TARGET,
             anim_action = AnimActions.fall_to_ground,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -972,9 +1245,14 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
-            id = $"fall_{name}_mountain", rarity = 95,
-            element = new CW_Element(new[] { 0, 0, 0, 0, 100 }),
-            anim_id = $"fall_{name}_anim", anim_type = SpellAnimType.ON_TARGET,
+            id = $"fall_{name}_mountain",
+            rarity = 95,
+            element = new CW_Element(new[]
+            {
+                0, 0, 0, 0, 100
+            }),
+            anim_id = $"fall_{name}_anim",
+            anim_type = SpellAnimType.ON_TARGET,
             anim_action = AnimActions.fall_to_ground,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -1036,9 +1314,14 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.3f);
         CW_SpellAsset spell = new()
         {
-            id = "ground_thorn", rarity = 3,
-            element = new CW_Element(new[] { 0, 0, 0, 0, 100 }),
-            anim_id = "ground_thorn_anim", anim_type = SpellAnimType.ON_TARGET,
+            id = "ground_thorn",
+            rarity = 3,
+            element = new CW_Element(new[]
+            {
+                0, 0, 0, 0, 100
+            }),
+            anim_id = "ground_thorn_anim",
+            anim_type = SpellAnimType.ON_TARGET,
             anim_action = AnimActions.simple_on_something,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -1103,9 +1386,14 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.3f);
         CW_SpellAsset spell = new()
         {
-            id = "wood_thorn", rarity = 3,
-            element = new CW_Element(new[] { 0, 0, 100, 0, 0 }),
-            anim_id = "wood_thorn_anim", anim_type = SpellAnimType.ON_TARGET,
+            id = "wood_thorn",
+            rarity = 3,
+            element = new CW_Element(new[]
+            {
+                0, 0, 100, 0, 0
+            }),
+            anim_id = "wood_thorn_anim",
+            anim_type = SpellAnimType.ON_TARGET,
             anim_action = AnimActions.simple_on_something,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -1125,9 +1413,14 @@ internal static class Spells
     {
         CW_SpellAsset spell = new()
         {
-            id = "vine_bound", rarity = 5,
-            element = new CW_Element(new[] { 0, 0, 100, 0, 0 }),
-            anim_id = "", anim_type = SpellAnimType.CUSTOM,
+            id = "vine_bound",
+            rarity = 5,
+            element = new CW_Element(new[]
+            {
+                0, 0, 100, 0, 0
+            }),
+            anim_id = "",
+            anim_type = SpellAnimType.CUSTOM,
             anim_action = null,
             spell_action = SpellActions.generate_give_status_spell_action("status_vine_bound"),
             target_camp = SpellTargetCamp.ENEMY,
@@ -1148,9 +1441,14 @@ internal static class Spells
     {
         CW_SpellAsset spell = new()
         {
-            id = "landificate", rarity = 30,
-            element = new CW_Element(new[] { 0, 0, 0, 0, 100 }),
-            anim_id = "", anim_type = SpellAnimType.CUSTOM,
+            id = "landificate",
+            rarity = 30,
+            element = new CW_Element(new[]
+            {
+                0, 0, 0, 0, 100
+            }),
+            anim_id = "",
+            anim_type = SpellAnimType.CUSTOM,
             anim_action = null,
             spell_action = SpellActions.generate_give_status_spell_action("status_landificate"),
             target_camp = SpellTargetCamp.ENEMY,
@@ -1171,9 +1469,14 @@ internal static class Spells
     {
         CW_SpellAsset spell = new()
         {
-            id = "ice_bound", rarity = 5,
-            element = new CW_Element(new[] { 100, 0, 0, 0, 0 }),
-            anim_id = "", anim_type = SpellAnimType.CUSTOM,
+            id = "ice_bound",
+            rarity = 5,
+            element = new CW_Element(new[]
+            {
+                100, 0, 0, 0, 0
+            }),
+            anim_id = "",
+            anim_type = SpellAnimType.CUSTOM,
             anim_action = null,
             spell_action = SpellActions.generate_give_status_spell_action("status_ice_bound"),
             target_camp = SpellTargetCamp.ENEMY,
@@ -1227,9 +1530,14 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.08f);
         CW_SpellAsset spell = new()
         {
-            id = "wind_polo", rarity = 3,
-            element = new CW_Element(new[] { 40, 40, 20, 0, 0 }),
-            anim_id = "wind_polo_anim", anim_type = SpellAnimType.USER_TO_TARGET,
+            id = "wind_polo",
+            rarity = 3,
+            element = new CW_Element(new[]
+            {
+                40, 40, 20, 0, 0
+            }),
+            anim_id = "wind_polo_anim",
+            anim_type = SpellAnimType.USER_TO_TARGET,
             anim_action = AnimActions.simple_user_to_target,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -1279,9 +1587,14 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.08f);
         CW_SpellAsset spell = new()
         {
-            id = "lightning_polo", rarity = 3,
-            element = new CW_Element(new[] { 40, 40, 0, 20, 0 }),
-            anim_id = "lightning_polo_anim", anim_type = SpellAnimType.USER_TO_TARGET,
+            id = "lightning_polo",
+            rarity = 3,
+            element = new CW_Element(new[]
+            {
+                40, 40, 0, 20, 0
+            }),
+            anim_id = "lightning_polo_anim",
+            anim_type = SpellAnimType.USER_TO_TARGET,
             anim_action = AnimActions.simple_user_to_target,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -1337,9 +1650,14 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.08f);
         CW_SpellAsset spell = new()
         {
-            id = "water_polo", rarity = 3,
-            element = new CW_Element(new[] { 100, 0, 0, 0, 0 }),
-            anim_id = "water_polo_anim", anim_type = SpellAnimType.USER_TO_TARGET,
+            id = "water_polo",
+            rarity = 3,
+            element = new CW_Element(new[]
+            {
+                100, 0, 0, 0, 0
+            }),
+            anim_id = "water_polo_anim",
+            anim_type = SpellAnimType.USER_TO_TARGET,
             anim_action = AnimActions.simple_user_to_target,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -1398,9 +1716,14 @@ internal static class Spells
             base_scale: 1f);
         CW_SpellAsset spell = new()
         {
-            id = "fire_polo", rarity = 3,
-            element = new CW_Element(new[] { 0, 100, 0, 0, 0 }),
-            anim_id = "fire_polo_anim", anim_type = SpellAnimType.USER_TO_TARGET,
+            id = "fire_polo",
+            rarity = 3,
+            element = new CW_Element(new[]
+            {
+                0, 100, 0, 0, 0
+            }),
+            anim_id = "fire_polo_anim",
+            anim_type = SpellAnimType.USER_TO_TARGET,
             anim_action = AnimActions.simple_user_to_target,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -1454,9 +1777,14 @@ internal static class Spells
 
         CW_SpellAsset spell = new()
         {
-            id = "negative_quintuple_lightning", rarity = 30,
-            element = new CW_Element(new[] { 40, 40, 0, 20, 0 }),
-            anim_id = "negative_quintuple_lightning_anim", anim_type = SpellAnimType.ON_TARGET,
+            id = "negative_quintuple_lightning",
+            rarity = 30,
+            element = new CW_Element(new[]
+            {
+                40, 40, 0, 20, 0
+            }),
+            anim_id = "negative_quintuple_lightning_anim",
+            anim_type = SpellAnimType.ON_TARGET,
             anim_action = AnimActions.simple_on_something,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -1507,9 +1835,14 @@ internal static class Spells
 
         CW_SpellAsset spell = new()
         {
-            id = "positive_quintuple_lightning", rarity = 30,
-            element = new CW_Element(new[] { 40, 40, 0, 20, 0 }),
-            anim_id = "positive_quintuple_lightning_anim", anim_type = SpellAnimType.ON_TARGET,
+            id = "positive_quintuple_lightning",
+            rarity = 30,
+            element = new CW_Element(new[]
+            {
+                40, 40, 0, 20, 0
+            }),
+            anim_id = "positive_quintuple_lightning_anim",
+            anim_type = SpellAnimType.ON_TARGET,
             anim_action = AnimActions.simple_on_something,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -1557,9 +1890,14 @@ internal static class Spells
 
         CW_SpellAsset spell = new()
         {
-            id = "default_lightning", rarity = 4,
-            element = new CW_Element(new[] { 40, 40, 0, 20, 0 }),
-            anim_id = "default_lightning_anim", anim_type = SpellAnimType.ON_TARGET,
+            id = "default_lightning",
+            rarity = 4,
+            element = new CW_Element(new[]
+            {
+                40, 40, 0, 20, 0
+            }),
+            anim_id = "default_lightning_anim",
+            anim_type = SpellAnimType.ON_TARGET,
             anim_action = AnimActions.simple_on_something,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.TILE,
@@ -1646,9 +1984,14 @@ internal static class Spells
 
         CW_SpellAsset spell = new()
         {
-            id = "void_fire", rarity = 95,
-            element = new CW_Element(new[] { 0, 100, 0, 0, 0 }),
-            anim_id = "void_fire_anim", anim_type = SpellAnimType.USER_TO_TARGET,
+            id = "void_fire",
+            rarity = 95,
+            element = new CW_Element(new[]
+            {
+                0, 100, 0, 0, 0
+            }),
+            anim_id = "void_fire_anim",
+            anim_type = SpellAnimType.USER_TO_TARGET,
             anim_action = AnimActions.simple_user_to_target,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.ACTOR,
@@ -1695,9 +2038,14 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.12f);
         CW_SpellAsset spell = new()
         {
-            id = "samadhi_fire", rarity = 95,
-            element = new CW_Element(new[] { 0, 100, 0, 0, 0 }),
-            anim_id = "samadhi_fire_anim", anim_type = SpellAnimType.USER_TO_TARGET,
+            id = "samadhi_fire",
+            rarity = 95,
+            element = new CW_Element(new[]
+            {
+                0, 100, 0, 0, 0
+            }),
+            anim_id = "samadhi_fire_anim",
+            anim_type = SpellAnimType.USER_TO_TARGET,
             anim_action = AnimActions.simple_user_to_target,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.ACTOR,
@@ -1747,9 +2095,14 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.12f);
         CW_SpellAsset spell = new()
         {
-            id = "loltus_fire", rarity = 95,
-            element = new CW_Element(new[] { 0, 100, 0, 0, 0 }),
-            anim_id = "loltus_fire_anim", anim_type = SpellAnimType.USER_TO_TARGET,
+            id = "loltus_fire",
+            rarity = 95,
+            element = new CW_Element(new[]
+            {
+                0, 100, 0, 0, 0
+            }),
+            anim_id = "loltus_fire_anim",
+            anim_type = SpellAnimType.USER_TO_TARGET,
             anim_action = AnimActions.simple_user_to_target,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.ACTOR,
@@ -1796,9 +2149,14 @@ internal static class Spells
             controller_setting: anim_setting, base_scale: 0.12f);
         CW_SpellAsset spell = new()
         {
-            id = "fen_fire", rarity = 95,
-            element = new CW_Element(new[] { 0, 100, 0, 0, 0 }),
-            anim_id = "fen_fire_anim", anim_type = SpellAnimType.USER_TO_TARGET,
+            id = "fen_fire",
+            rarity = 95,
+            element = new CW_Element(new[]
+            {
+                0, 100, 0, 0, 0
+            }),
+            anim_id = "fen_fire_anim",
+            anim_type = SpellAnimType.USER_TO_TARGET,
             anim_action = AnimActions.simple_user_to_target,
             target_camp = SpellTargetCamp.ENEMY,
             target_type = SpellTargetType.ACTOR,

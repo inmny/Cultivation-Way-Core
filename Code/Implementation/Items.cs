@@ -27,6 +27,23 @@ internal static class Items
         Library.Manager.items.AddCreatableItem(item);
 
         add_five_mountain_seals();
+        add_violet_gold_gourd();
+    }
+
+    private static void add_violet_gold_gourd()
+    {
+        CW_ItemAsset item;
+        item = new CW_SpecialWeaponAsset("紫金葫芦", CW_SpecialWeaponType.葫芦);
+        item.VanillaAsset =
+            ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
+                new List<string> { "base" }, equipment_value: 1000, name_class: "item_class_gourd");
+        item.BaseLevel = 35;
+        item.MainMaterials[CW_SR.violet_gold] = 256;
+        item.NecessaryResourceCost[SR.adamantine] = 32;
+        item.BaseSpells.Add("violet_gold_gourd");
+        item.BaseElement = new CW_Element(new[] { 0, 0, 0, 15, 85 });
+
+        Library.Manager.items.add(item);
     }
 
     private static void add_five_mountain_seals()

@@ -20,6 +20,7 @@ internal static class FastVisit
     private static Sprite window_bar_90;
     private static Sprite window_big_close;
     private static Sprite window_inner_sliced;
+    private static Sprite window_library;
     private static Sprite red_button;
     private static Sprite button_1;
     private static Sprite info_bg;
@@ -51,6 +52,15 @@ internal static class FastVisit
     public static Material get_color_material(string color_id)
     {
         color_materials.TryGetValue(color_id, out Material ret);
+
+        if (ret == null)
+        {
+            ret = new Material(LibraryMaterials.instance.matHighLighted.shader);
+            ret.CopyPropertiesFromMaterial(LibraryMaterials.instance.matHighLighted);
+            ret.color = Colors.GetColor(color_id);
+            color_materials[color_id] = ret;
+        }
+
         return ret;
     }
 
@@ -147,6 +157,16 @@ internal static class FastVisit
             SpriteMeshType.Tight, new Vector4(5, 6, 5, 6));
         window_inner_sliced.name = "windowInnerSliced";
         return window_inner_sliced;
+    }
+
+    public static Sprite get_window_library()
+    {
+        if (window_library != null) return window_library;
+        var _orig = SpriteTextureLoader.getSprite("ui/cw_window/windowLibrary");
+        window_library = Sprite.Create(_orig.texture, _orig.rect, new Vector2(0, 0), _orig.pixelsPerUnit, 0,
+            SpriteMeshType.Tight, new Vector4(18, 56, 18, 28));
+        window_library.name = "window_library";
+        return window_library;
     }
 
     private static void get_actor_prefabs()

@@ -1,12 +1,9 @@
-using Cultivation_Way.Code.UI.prefabs;
-using Cultivation_Way.Library;
-using NCMS.Utils;
-using NeoModLoader.General;
-using NeoModLoader.General.UI.Prefabs;
 using System.Collections.Generic;
+using Cultivation_Way.Library;
+using Cultivation_Way.UI.prefabs;
+using NeoModLoader.General;
 using UnityEngine;
 using UnityEngine.UI;
-
 namespace Cultivation_Way.UI;
 
 public class WindowCultisysLevelConfig : AbstractWindow<WindowCultisysLevelConfig>
@@ -14,6 +11,8 @@ public class WindowCultisysLevelConfig : AbstractWindow<WindowCultisysLevelConfi
     private CultisysAsset editing_cultisys_asset;
     private int editing_cultisys_level;
     private List<GameObject> invisible_obj_at_level_one = new List<GameObject>();
+    private InputField level_difficulty_field;
+    private InputField level_limit_field;
     private ObjectPoolGenericMono<StatSliderBar> slider_bar_pool;
     private void OnEnable()
     {
@@ -22,7 +21,7 @@ public class WindowCultisysLevelConfig : AbstractWindow<WindowCultisysLevelConfi
             return;
         }
 
-        foreach(GameObject obj in invisible_obj_at_level_one)
+        foreach (GameObject obj in invisible_obj_at_level_one)
         {
             obj.SetActive(editing_cultisys_level != 0);
         }
@@ -32,7 +31,7 @@ public class WindowCultisysLevelConfig : AbstractWindow<WindowCultisysLevelConfi
 
         transform.Find("Background/Title").GetComponent<LocalizedText>().updateText();
 
-        var last_stats = editing_cultisys_level==0 ? null : editing_cultisys_asset.bonus_stats[editing_cultisys_level - 1];
+        var last_stats = editing_cultisys_level == 0 ? null : editing_cultisys_asset.bonus_stats[editing_cultisys_level - 1];
         var next_stats = editing_cultisys_level == editing_cultisys_asset.bonus_stats.Length - 1 ? null : editing_cultisys_asset.bonus_stats[editing_cultisys_level + 1];
 
         foreach (BaseStatsContainer stats in editing_cultisys_asset.bonus_stats[editing_cultisys_level].stats_list)
@@ -42,12 +41,23 @@ public class WindowCultisysLevelConfig : AbstractWindow<WindowCultisysLevelConfi
             float max = next_stats == null ? Mathf.Min(int.MaxValue, 10 * stats.value) : next_stats[stats.id];
             bar.Setup(stats, min, max, new Vector2(190, 40));
         }
-        
+
         level_limit_field.text = editing_cultisys_asset.number_limit_per_level[editing_cultisys_level].ToString();
         level_difficulty_field.text = editing_cultisys_asset.difficulty_per_level[editing_cultisys_level].ToString();
     }
-    private InputField level_limit_field;
-    private InputField level_difficulty_field;
+    private void OnDisable()
+    {
+        if (!initialized) return;
+        slider_bar_pool.clear();
+        var list = World.world.units.getSimpleList();
+        foreach (var unit in list)
+        {
+            if (unit == null || !unit.isAlive()) continue;
+            unit.data.get(editing_cultisys_asset.id, out int level, -1);
+            if (level != editing_cultisys_level) continue;
+            unit.setStatsDirty();
+        }
+    }
     internal static void init()
     {
         base_init(Constants.Core.cultisys_level_config_window);
@@ -71,7 +81,7 @@ public class WindowCultisysLevelConfig : AbstractWindow<WindowCultisysLevelConfi
         {
             if (int.TryParse(value, out int result))
             {
-                if(result < 0)
+                if (result < 0)
                 {
                     instance.level_limit_field.textComponent.color = Color.red;
                     return;
@@ -120,19 +130,6 @@ public class WindowCultisysLevelConfig : AbstractWindow<WindowCultisysLevelConfi
 
         instance.slider_bar_pool = new ObjectPoolGenericMono<StatSliderBar>(StatSliderBar.Prefab, stats_grid.transform);
         initialized = true;
-    }
-    private void OnDisable()
-    {
-        if (!initialized) return;
-        slider_bar_pool.clear();
-        var list = World.world.units.getSimpleList();
-        foreach(var unit in list)
-        {
-            if (unit == null || !unit.isAlive()) continue;
-            unit.data.get(editing_cultisys_asset.id, out int level, -1);
-            if (level != editing_cultisys_level) continue;
-            unit.setStatsDirty();
-        }
     }
 
     internal static void select_cultisys_level(CultisysAsset cultisys_asset, int level)

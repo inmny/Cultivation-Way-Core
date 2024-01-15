@@ -45,7 +45,7 @@ internal static class H_Actor
      *  if (base.hasAnyStatusEffect())
      *  </code>
      * 中指定位置插入调用cw_updateStats(this)函数
-     * 
+     *
      * 恰好在统计完生物类型属性、心情、数据中的四维属性、等级、默认武器、状态效果、特质后
      * 忽略了装备目的是为了统计作为血脉主导者在血脉中记录的属性加成
      */
@@ -116,7 +116,7 @@ internal static class H_Actor
 
         // 载入法术
         cw_actor.cur_spells.Clear();
-        cw_actor.cur_spells.AddRange(cw_actor.__data_spells);
+        cw_actor.cur_spells.AddRange(cw_actor.data_spells);
 
         if (cw_actor.asset.use_items)
         {
@@ -256,10 +256,7 @@ internal static class H_Actor
     private static CW_Actor ActorManager_base_loadObject(ActorManager instance, ActorData data, CW_Actor prefab)
     {
         CW_Actor tobject = Object.Instantiate(prefab);
-        BaseSimObject baseSimObject = tobject;
-        int latest_hash = instance._latest_hash;
-        instance._latest_hash = latest_hash + 1;
-        baseSimObject.setHash(latest_hash);
+        tobject.setHash(instance._latest_hash++);
         tobject.loadData(data);
         instance.addObject(tobject);
         return tobject;
@@ -368,7 +365,7 @@ internal static class H_Actor
     public static bool tryToAttack_prefix(Actor __instance, BaseSimObject pTarget, ref bool pDoChecks,
         ref bool __result)
     {
-        if (((CW_Actor)__instance).__data_spells.Count == 0) return true;
+        if (((CW_Actor)__instance).data_spells.Count == 0) return true;
 
         __result = false;
         bool can_continue_check = true;
@@ -389,7 +386,7 @@ internal static class H_Actor
         }
 
         CW_Actor actor = (CW_Actor)__instance;
-        CW_SpellAsset spell = Library.Manager.spells.get(actor.__data_spells.GetRandom());
+        CW_SpellAsset spell = Library.Manager.spells.get(actor.data_spells.GetRandom());
 
         if (spell.can_trigger(SpellTriggerTag.ATTACK) && actor.CastSpell(spell, pTarget, pTarget.currentTile))
         {

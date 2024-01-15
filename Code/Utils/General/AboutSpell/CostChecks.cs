@@ -2,7 +2,6 @@
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using Cultivation_Way.Test;
-
 namespace Cultivation_Way.General.AboutSpell;
 
 public static class CostChecks
@@ -51,7 +50,7 @@ public static class CostChecks
 
         #endregion
 
-        SpellCheck delegate_ret = delegate(CW_SpellAsset spell_asset, BaseSimObject user)
+        SpellCheck delegate_ret = delegate(CW_SpellAsset spell_asset, BaseSimObject user, BaseSimObject target)
         {
             foreach (KeyValuePair<string, float> key_cost_pair in cost_list)
             {
@@ -70,17 +69,20 @@ public static class CostChecks
             float cost = 0;
             foreach (KeyValuePair<string, float> key_cost_pair in cost_list)
             {
-                cost += key_cost_pair.Value;
+                float tmp;
                 switch (key_cost_pair.Key)
                 {
                     case "health":
-                        user.base_data.health -= (int)(key_cost_pair.Value * user.base_data.health);
+                        tmp = user.base_data.health * key_cost_pair.Value;
+                        user.base_data.health -= (int)tmp;
                         break;
                     default:
                         user.base_data.get(key_cost_pair.Key, out float _value, -1);
-                        user.base_data.set(key_cost_pair.Key, _value * (1 - key_cost_pair.Value));
+                        tmp = _value * key_cost_pair.Value;
+                        user.base_data.set(key_cost_pair.Key, _value - tmp);
                         break;
                 }
+                cost += tmp;
             }
 
             return cost;

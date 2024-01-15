@@ -1,6 +1,7 @@
 using System.IO;
 using Assets.SimpleZip;
 using Cultivation_Way.Save;
+using Cultivation_Way.Utils;
 using HarmonyLib;
 using Newtonsoft.Json;
 
@@ -8,19 +9,14 @@ namespace Cultivation_Way.HarmonySpace;
 
 internal static class H_SaveManager
 {
-    private static AbstractSavedData _saved_data;
-
     [HarmonyPostfix]
     [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.getMapFromPath))]
     public static void get_cw_saved_data(string pMainPath, SavedMap __result)
     {
-        _saved_data = null;
         if (__result == null) return;
         string dir_path = SaveManager.folderPath(pMainPath);
 
-        string file_path;
-
-        file_path = dir_path + "cw_map.wbox";
+        var file_path = dir_path + "cw_map.wbox";
 
         if (File.Exists(file_path))
         {
@@ -39,49 +35,42 @@ internal static class H_SaveManager
             return;
         }
 
-        _saved_data = new SavedDataVerCur();
+        CW_SaveManager._data = new SavedDataVerCur();
     }
 
-    [HarmonyPrefix]
+    [HarmonyPostfix]
     [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.loadData))]
-    public static bool load_cw_data(SaveManager __instance, SavedMap pData)
+    public static void load_cw_data(SaveManager __instance, SavedMap pData)
     {
-        _saved_data.load_to_world(__instance, pData);
-        return false;
+        CW_SaveManager._data ??= new SavedDataVerCur();
+        CW_SaveManager.PatchLoadMethods(__instance, pData, CW_SaveManager._data);
     }
 
     private static void read_save_data(string file_path, bool is_compressed = true)
     {
         string save_text;
-        if (is_compressed)
-        {
-            save_text = Zip.Decompress(File.ReadAllBytes(file_path));
-        }
-        else
-        {
-            save_text = File.ReadAllText(file_path);
-        }
+        save_text = is_compressed ? Zip.Decompress(File.ReadAllBytes(file_path)) : File.ReadAllText(file_path);
 
-        _saved_data = JsonConvert.DeserializeObject<AbstractSavedData>(save_text);
-        switch (_saved_data.cw_save_version)
+        CW_SaveManager._data = JsonConvert.DeserializeObject<EmptySavedData>(save_text);
+        switch (CW_SaveManager._data.cw_save_version)
         {
             case 1:
-                _saved_data = JsonConvert.DeserializeObject<SavedDataVer1>(save_text);
+                CW_SaveManager._data = GeneralHelper.from_json<SavedDataVer1>(save_text, true);
                 break;
             case Constants.Core.save_version:
-                _saved_data = JsonConvert.DeserializeObject<SavedDataVerCur>(save_text);
+                CW_SaveManager._data = GeneralHelper.from_json<SavedDataVerCur>(save_text, true);
                 break;
         }
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(SaveManager), nameof(SaveManager.saveMapData))]
-    public static void save_cw_data(string pFolder, bool pCompress)
+    public static void save_cw_data(string pFolder, bool pCompress, SavedMap __result)
     {
         string save_dir = SaveManager.folderPath(pFolder);
         string save_path;
         SavedDataVerCur saved_data = new();
-        saved_data.initialize();
+        saved_data.Initialize(__result);
         if (pCompress)
         {
             save_path = save_dir + "cw_map.wbox";

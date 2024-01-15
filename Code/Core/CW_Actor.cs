@@ -8,6 +8,7 @@ using Cultivation_Way.Extension;
 using Cultivation_Way.General.AboutNameGenerate;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
+using Cultivation_Way.Test;
 using NeoModLoader.api.attributes;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -29,7 +30,9 @@ public partial class CW_Actor : Actor
     /// <summary>
     ///     data中的法术的拷贝, 用于快速访问
     /// </summary>
-    internal HashSet<string> __data_spells = new();
+    internal readonly HashSet<string> data_spells = new();
+
+    private bool cleaned_after_dead;
 
     /// <summary>
     ///     ActorAsset拓展部分, 在生物创建时已经初始化
@@ -41,7 +44,7 @@ public partial class CW_Actor : Actor
     /// </summary>
     public Dictionary<string, CW_StatusEffectData> statuses;
 
-    public void StartColorEffect(string pColorID, float pRewrtieTimer = -1)
+    public void StartColorEffect(string pColorID, float pRewriteTimer = -1)
     {
         if (!asset.effectDamage)
         {
@@ -54,7 +57,7 @@ public partial class CW_Actor : Actor
         }
 
         batch.c_color_effect.Add(this);
-        colorEffect = pRewrtieTimer < 0 ? 0.3f : pRewrtieTimer;
+        colorEffect = pRewriteTimer < 0 ? 0.3f : pRewriteTimer;
         Material material = FastVisit.get_color_material(pColorID);
         if (material == null)
         {
@@ -64,7 +67,7 @@ public partial class CW_Actor : Actor
 
         setSpriteSharedMaterial(material);
     }
-    private bool cleaned_after_dead = false;
+
     /// <summary>
     ///     死后保留需要保留的数据
     /// </summary>
@@ -74,26 +77,37 @@ public partial class CW_Actor : Actor
 
         cleaned_after_dead = true;
 
-        CultisysAsset cultisys = null;
+        CultisysAsset cultisys;
         int level;
 
         cultisys = data.GetCultisys(CultisysType.WAKAN);
         if (cultisys != null)
         {
             data.get(cultisys.id, out level, 0);
-            cultisys.number_per_level[level]--;
+            if (cultisys.number_per_level[level] > 0)
+            {
+                cultisys.number_per_level[level]--;
+            }
         }
+
         cultisys = data.GetCultisys(CultisysType.BODY);
         if (cultisys != null)
         {
             data.get(cultisys.id, out level, 0);
-            cultisys.number_per_level[level]--;
+            if (cultisys.number_per_level[level] > 0)
+            {
+                cultisys.number_per_level[level]--;
+            }
         }
+
         cultisys = data.GetCultisys(CultisysType.SOUL);
         if (cultisys != null)
         {
             data.get(cultisys.id, out level, 0);
-            cultisys.number_per_level[level]--;
+            if (cultisys.number_per_level[level] > 0)
+            {
+                cultisys.number_per_level[level]--;
+            }
         }
 
         BloodNodeAsset blood = data.GetMainBlood();
@@ -142,7 +156,7 @@ public partial class CW_Actor : Actor
         if ((pSpell.target_camp == SpellTargetCamp.ALIAS && is_enemy) ||
             (pSpell.target_camp == SpellTargetCamp.ENEMY && !is_enemy)) return false;
 
-        float cost = pSpell.spell_cost_action(pSpell, this);
+        float cost = pSpell.spell_cost_action(pSpell, this, pTarget);
         if (cost < 0) return false;
 
         CW_Core.mod_state.spell_manager.enqueue_spell(pSpell, this, pTarget, pTargetTile, cost);
@@ -375,6 +389,7 @@ public partial class CW_Actor : Actor
     /// <summary>
     ///     重写getHit, 并应用属性
     /// </summary>
+    [Hotfixable]
     public override void getHit(float pDamage, bool pFlash = true, AttackType pAttackType = AttackType.Other,
         BaseSimObject pAttacker = null, bool pSkipIfShake = true, bool pMetallicWeapon = false)
     {
@@ -409,30 +424,26 @@ public partial class CW_Actor : Actor
         #region 伤害计算
 
         float num = 1f;
-        CultisysAsset cultisys = null;
+        CultisysAsset cultisys;
         Actor attacker = null;
         if (pAttacker != null && pAttacker.isActor())
         {
             attacker = pAttacker.a;
         }
 
+        int attacker_level = -1;
+        int defender_level = -1;
+        float armor_reduce = 1;
+        float level_reduce = 1;
         switch (attack_type)
         {
             case CW_AttackType.Spell:
-                num = 1f - stats[CW_S.spell_armor] / (stats[CW_S.spell_armor] + 100);
+                armor_reduce = 100 / (stats[CW_S.spell_armor] + 100);
                 cultisys = data.GetCultisys(CultisysType.WAKAN);
                 if (cultisys != null)
                 {
-                    data.get(cultisys.id, out int level);
-                    num /= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
-                }
-
-                if (attacker == null) break;
-                cultisys = attacker.data.GetCultisys(CultisysType.WAKAN);
-                if (cultisys != null)
-                {
-                    attacker.data.get(cultisys.id, out int level);
-                    num *= Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1);
+                    data.get(cultisys.id, out defender_level);
+                    level_reduce /= Mathf.Pow(cultisys.power_base, cultisys.power_level[defender_level] - 1);
                 }
 
                 break;
@@ -474,50 +485,31 @@ public partial class CW_Actor : Actor
             case CW_AttackType.AshFever:
             case CW_AttackType.Other:
             case CW_AttackType.Weapon:
-                num = 1f - stats[S.armor] / (stats[S.armor] + 100);
+                armor_reduce = 100 / (stats[S.armor] + 100);
 
-                float best_reduce = 1;
                 cultisys = data.GetCultisys(CultisysType.BODY);
                 if (cultisys != null)
                 {
-                    data.get(cultisys.id, out int level);
-                    best_reduce = Mathf.Max(best_reduce,
-                        Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                    data.get(cultisys.id, out defender_level);
+                    level_reduce = Mathf.Min(level_reduce,
+                        Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
                 }
 
                 cultisys = data.GetCultisys(CultisysType.WAKAN);
                 if (cultisys != null)
                 {
-                    data.get(cultisys.id, out int level);
-                    best_reduce = Mathf.Max(best_reduce,
-                        Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
+                    data.get(cultisys.id, out defender_level);
+                    level_reduce = Mathf.Min(level_reduce,
+                        Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
                 }
-
-                if (attacker != null)
-                {
-                    cultisys = attacker.data.GetCultisys(CultisysType.WAKAN);
-                    if (cultisys != null)
-                    {
-                        attacker.data.get(cultisys.id, out int level);
-                        best_reduce = Mathf.Min(best_reduce,
-                            best_reduce / Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
-                    }
-
-                    cultisys = attacker.data.GetCultisys(CultisysType.BODY);
-                    if (cultisys != null)
-                    {
-                        attacker.data.get(cultisys.id, out int level);
-                        best_reduce = Mathf.Min(best_reduce,
-                            best_reduce / Mathf.Pow(cultisys.power_base, cultisys.power_level[level] - 1));
-                    }
-                }
-
-                num /= best_reduce;
 
                 break;
         }
 
-        pDamage *= num;
+        DamageRecordManager.AddDamageRecord(attack_type, pDamage, attacker_level, defender_level,
+            attack_type == CW_AttackType.Spell ? stats[CW_S.spell_armor] : stats[S.armor], armor_reduce, level_reduce);
+
+        pDamage *= armor_reduce * level_reduce;
 
         #endregion
 
@@ -554,9 +546,9 @@ public partial class CW_Actor : Actor
             statuses_list.Clear();
         }
 
-        if (__data_spells.Count > 0)
+        if (data_spells.Count > 0)
         {
-            CW_SpellAsset spell = Manager.spells.get(__data_spells.GetRandom());
+            CW_SpellAsset spell = Manager.spells.get(data_spells.GetRandom());
             if ((pAttacker != null && (spell.can_trigger(SpellTriggerTag.NAMED_DEFEND) ||
                                        (spell.can_trigger(SpellTriggerTag.ATTACK) && Toolbox.randomChance(0.3f)))) ||
                 (pAttacker == null && spell.can_trigger(SpellTriggerTag.UNNAMED_DEFEND)))
@@ -655,17 +647,24 @@ public partial class CW_Actor : Actor
     /// </summary>
     public void CreateBlood()
     {
-        if (data.GetMainBloodID() == data.id) return;
+        var blood_id = data.GetMainBloodID();
+        if (!string.IsNullOrEmpty(blood_id))
+        {
+            var blood = Manager.bloods.get(blood_id);
+            if (blood != null && blood.ancestor_data.id == data.id && blood.ancestor_data.asset_id == asset.id) return;
+        }
 
         BloodNodeAsset blood_asset = new()
         {
-            id = data.id,
+            id = Guid.NewGuid().ToString(),
             ancestor_data = data
         };
         Manager.bloods.add(blood_asset);
         data.SetBloodNodes(new Dictionary<string, float>
         {
-            { blood_asset.id, 1f }
+            {
+                blood_asset.id, 1f
+            }
         });
 
         setStatsDirty();
@@ -708,10 +707,10 @@ public partial class CW_Actor : Actor
         }
 
         // 功法内法术更新
-        if (__data_spells.Count > 0)
+        if (data_spells.Count > 0)
         {
             HashSet<string> can_be_add_spells = new();
-            can_be_add_spells.UnionWith(__data_spells);
+            can_be_add_spells.UnionWith(data_spells);
             can_be_add_spells.ExceptWith(new_cultibook.spells);
 
             if (can_be_add_spells.Count > 0)
@@ -747,8 +746,8 @@ public partial class CW_Actor : Actor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void LearnSpell(CW_SpellAsset spell)
     {
-        if (__data_spells.Contains(spell.id)) return;
-        __data_spells.Add(spell.id);
+        if (data_spells.Contains(spell.id)) return;
+        data_spells.Add(spell.id);
         data.AddSpell(spell.id);
     }
 
@@ -781,7 +780,8 @@ public partial class CW_Actor : Actor
             if (cultisys_levels[i] < 0) continue;
             CultisysAsset cultisys = Manager.cultisys.list[i];
 
-            if (cultisys.can_levelup(this, cultisys, cultisys_levels[i] + 1)) __level_up_and_get_bonus(cultisys, cultisys_levels[i]);
+            if (cultisys.can_levelup(this, cultisys, cultisys_levels[i] + 1))
+                __level_up_and_get_bonus(cultisys, cultisys_levels[i]);
         }
     }
 
@@ -793,9 +793,14 @@ public partial class CW_Actor : Actor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void __level_up_and_get_bonus(CultisysAsset cultisys, int curr_level)
     {
+        if (cultisys.number_per_level[curr_level] > 0)
+        {
+            cultisys.number_per_level[curr_level]--;
+        }
+
         curr_level++;
         data.set(cultisys.id, curr_level);
-
+        cultisys.number_per_level[curr_level]++;
         if (!__learn_spell_from_cultibook()) __learn_spell_generally();
         if (__can_create_blood_on_levelup(cultisys, curr_level)) CreateBlood();
         if (__can_create_cultibook_on_levelup(cultisys, curr_level)) CreateCultibook();
@@ -823,7 +828,7 @@ public partial class CW_Actor : Actor
         Dictionary<CW_SpellAsset, float> spell_float = new();
         foreach (CW_SpellAsset spell in spells)
         {
-            if (__data_spells.Contains(spell.id)) continue;
+            if (data_spells.Contains(spell.id)) continue;
             float chance = spell.learn_check(this, cultisys_types);
             if (chance < 0) continue;
             spell_float.Add(spell, chance);
@@ -861,7 +866,7 @@ public partial class CW_Actor : Actor
 
         foreach (string t in cultibook.spells)
         {
-            if (__data_spells.Contains(t)) continue;
+            if (data_spells.Contains(t)) continue;
             CW_SpellAsset spell = Manager.spells.get(t);
 
             float learn_chance = spell.learn_check(this, cultisys_types);

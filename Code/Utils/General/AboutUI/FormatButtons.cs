@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cultivation_Way.Constants;
 using Cultivation_Way.UI;
 using NCMS.Utils;
 
@@ -10,8 +11,10 @@ public static class FormatButtons
     ///     添加生物到生物放置区域
     /// </summary>
     /// <param name="actor_id">需要放置的生物的id</param>
+    /// <param name="pTargetType">按钮类型，建议: <see cref="ButtonContainerType.ACTOR"/>或<see cref="ButtonContainerType.RACE"/>或<see cref="ButtonContainerType.BOSS"/></param>
     /// <returns></returns>
-    public static PowerButton add_actor_button(string actor_id)
+    public static PowerButton add_actor_button(string actor_id,
+        ButtonContainerType pTargetType = ButtonContainerType.ACTOR)
     {
         ActorAsset actor_asset = AssetManager.actor_library.get(actor_id);
         if (actor_asset == null)
@@ -28,7 +31,7 @@ public static class FormatButtons
             god_power.id, "ui/Icons/" + actor_asset.icon,
             null, ButtonType.GodPower
         );
-        CWTab.add_button(button);
+        CWTab.add_button(button, pTargetType);
         return button;
     }
 
@@ -38,8 +41,10 @@ public static class FormatButtons
     /// <param name="actor_ids">需要放置的生物的id</param>
     /// <param name="name_locale">按钮名的key</param>
     /// <param name="icon">图标名, 具体访问路径为$"ui/Icons/{icon}"</param>
+    /// <param name="pTargetType">按钮类型，建议: <see cref="ButtonContainerType.ACTOR"/>或<see cref="ButtonContainerType.RACE"/>或<see cref="ButtonContainerType.BOSS"/></param>
     /// <returns></returns>
-    public static PowerButton add_actors_button(List<string> actor_ids, string name_locale, string icon)
+    public static PowerButton add_actors_button(List<string> actor_ids, string name_locale, string icon,
+        ButtonContainerType pTargetType = ButtonContainerType.ACTOR)
     {
         foreach (string actor_id in actor_ids)
         {
@@ -59,7 +64,7 @@ public static class FormatButtons
             god_power.id, "ui/Icons/" + icon,
             null, ButtonType.GodPower
         );
-        CWTab.add_button(button);
+        CWTab.add_button(button, pTargetType);
         return button;
     }
 }

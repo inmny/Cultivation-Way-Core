@@ -3,12 +3,22 @@ using Cultivation_Way.Library;
 
 namespace Cultivation_Way.Save;
 
-internal class AbstractSavedData
+public abstract class AbstractSavedData
 {
     public int cw_save_version = Constants.Core.save_version;
-    public int origin_save_version = 0;
+    public int origin_save_version;
 
     public virtual void load_to_world(SaveManager save_manager, SavedMap origin_data)
+    {
+    }
+
+    public abstract void LoadWorld();
+
+    public virtual void BeforeAll(SaveManager pSaveManager, SavedMap pVanillaData)
+    {
+    }
+
+    public virtual void AfterAll(SaveManager pSaveManager)
     {
     }
 
@@ -16,6 +26,7 @@ internal class AbstractSavedData
     {
         Manager.cultibooks.reset();
         Manager.bloods.reset();
+        Manager.cultisys.ClearForNewGame();
         EffectManager.instance.clear();
         CW_Core.mod_state.spell_manager.clear();
     }

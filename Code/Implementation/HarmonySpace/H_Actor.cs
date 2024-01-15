@@ -1,9 +1,9 @@
 ﻿using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
+using Cultivation_Way.Library;
 using HarmonyLib;
 using UnityEngine;
-
 namespace Cultivation_Way.Implementation.HarmonySpace;
 
 internal static class H_Actor
@@ -108,7 +108,26 @@ internal static class H_Actor
         SOUL_CHECK:
         actor.CheckLevelUp(Content_Constants.soul_id);
     }
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(CW_Actor), nameof(CW_Actor.leave_data))]
+    public static void leaveWakan(CW_Actor __instance)
+    {
+        CultisysAsset cultisys = __instance.data.GetCultisys(CultisysType.WAKAN);
+        if (cultisys == null) return;
+        __instance.data.get(cultisys.id, out int level, -1);
+        if (level < 0) return;
 
+        if (level == cultisys.power_level.Length - 1)
+        {
+
+        }
+
+        __instance.data.get(DataS.wakan, out float wakan);
+        if (wakan <= 0) return;
+        CW_EnergyMapTile energy_tile = __instance.currentTile.GetEnergyTile(Content_Constants.energy_wakan_id);
+        if (energy_tile == null) return;
+        energy_tile.UpdateValue(energy_tile.value + wakan * Mathf.Pow(cultisys.power_base, cultisys.power_level[level]));
+    }
     [HarmonyPrefix]
     [HarmonyPatch(typeof(ActorBase), nameof(ActorBase.getUnitTexturePath))]
     public static bool actor_getUnitTexture(ActorBase __instance, ref string __result)

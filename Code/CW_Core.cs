@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Cultivation_Way.Animation;
+using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Implementation;
 using Cultivation_Way.Others;
+using Cultivation_Way.Test;
 using Cultivation_Way.UI;
 using ModDeclaration;
 using NeoModLoader.api;
@@ -33,6 +36,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         addons_initialized = false,
         all_initialized = false,
         editor_inmny = false,
+        is_awarding = false,
         update_nr = 0,
         mod_info = null,
         addons = new List<IMod>(),
@@ -67,6 +71,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
                 state.library_manager.post_init();
                 state.energy_map_manager.init(256, 256);
 
+                World.world.units.clear();
                 state.all_initialized = true;
             }
 
@@ -106,14 +111,29 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
     public void Reload()
     {
         LogInfo("Reloaded");
+        var locale_dir = GetLocaleFilesDirectory(GetDeclaration());
+        foreach (var file in Directory.GetFiles(locale_dir))
+            if (file.EndsWith(".json"))
+                LM.LoadLocale(Path.GetFileNameWithoutExtension(file), file);
+            else if (file.EndsWith(".csv")) LM.LoadLocales(file);
+        LM.ApplyLocale();
+
         Manager.item_materials.init();
         Items.init();
+
+        foreach (var cultisys in Manager.cultisys.list)
+        {
+            cultisys.init_action.Invoke(cultisys);
+        }
 
         foreach (Actor actor in World.world.units)
         {
             if (!actor.isAlive()) continue;
             actor.setStatsDirty();
         }
+
+        DamageRecordManager.Save();
+        DamageRecordManager.Clear();
     }
 
     /// <summary>
@@ -123,11 +143,26 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
     {
         Type.GetType("Cultivation_Way.Implementation.Manager")
             ?.GetMethod("init", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)
-            ?.Invoke(null, new object[] { });
+            ?.Invoke(null, new object[]
+            {
+            });
     }
 
     private void initialize()
     {
+        if (!Directory.Exists(Paths.DataPath))
+        {
+            try
+            {
+                Directory.CreateDirectory(Paths.DataPath);
+            }
+            catch (Exception e)
+            {
+                LogWarning(e.Message);
+                LogWarning(e.StackTrace);
+            }
+        }
+
         state.anim_manager = gameObject.AddComponent<EffectManager>();
         state.spell_manager = new SpellManager();
         state.library_manager = new Manager();
@@ -162,6 +197,13 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         state.library_manager.init();
         CWTab.init();
         action_on_windows("init");
+        WindowItemLibrary.CreateWindow(nameof(WindowItemLibrary),
+            nameof(WindowItemLibrary));
+        WindowCultibookLibrary.CreateWindow(nameof(WindowCultibookLibrary),
+            nameof(WindowCultibookLibrary));
+        WindowBloodLibrary.CreateWindow(nameof(WindowBloodLibrary),
+            nameof(WindowBloodLibrary));
+        WindowModInfo.CreateWindow(nameof(WindowModInfo), nameof(WindowModInfo));
 
         new Thread(() =>
         {
@@ -171,7 +213,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
                 {
                     state.energy_map_manager.update_per_year();
                 }
-                    
+
                 Thread.Sleep((int)(500 / Math.Max(Config.timeScale, 1)));
             }
         }).Start();
@@ -187,7 +229,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 LogService.LogInfoConcurrent(e.Message);
                 LogService.LogInfoConcurrent(e.StackTrace);
@@ -221,6 +263,7 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
 
         if (Environment.UserName != "Inmny") return;
         state.editor_inmny = true;
+        Config.isEditor = true;
     }
 
     protected override void OnModLoad()
@@ -246,11 +289,12 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         public EffectManager anim_manager;
         public bool core_initialized;
         internal bool editor_inmny;
+        public CW_EnergyMapLayer energy_map_layer;
         public CW_EnergyMapManager energy_map_manager;
+        internal bool is_awarding;
         public Manager library_manager;
         internal Info mod_info;
         internal SpellManager spell_manager;
         internal long update_nr;
-        public CW_EnergyMapLayer energy_map_layer;
     }
 }

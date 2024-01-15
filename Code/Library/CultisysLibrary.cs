@@ -5,6 +5,7 @@ using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Others;
 using Cultivation_Way.UI;
+using Cultivation_Way.Utils;
 using NeoModLoader.General;
 using Newtonsoft.Json;
 
@@ -21,6 +22,11 @@ public class CultisysAsset : Asset
     [NonSerialized, JsonIgnore] public CultisysJudge allow;
 
     /// <summary>
+    ///     基础属性加成, 单境界, 不累加
+    /// </summary>
+    public BaseStats[] bonus_stats;
+
+    /// <summary>
     ///     能否升级判定
     /// </summary>
     [NonSerialized, JsonIgnore] public CultisysJudge can_levelup;
@@ -29,6 +35,11 @@ public class CultisysAsset : Asset
     ///     当前修炼进度
     /// </summary>
     [NonSerialized, JsonIgnore] public CultisysCheck curr_progress;
+
+    /// <summary>
+    ///     各个境界的突破难度
+    /// </summary>
+    public float[] difficulty_per_level;
 
     /// <summary>
     ///     [选填]额外升级奖励/惩罚, 返回值无所谓, 参数level为升级后的等级
@@ -51,6 +62,16 @@ public class CultisysAsset : Asset
     [NonSerialized, JsonIgnore] public CultisysCheck monthly_update_action;
 
     /// <summary>
+    ///     各个境界人数限制
+    /// </summary>
+    public int[] number_limit_per_level;
+
+    /// <summary>
+    ///     各个境界当前人数
+    /// </summary>
+    [JsonIgnore] public int[] number_per_level;
+
+    /// <summary>
     ///     在list中的位置
     /// </summary>
     [NonSerialized, JsonIgnore] internal int pid;
@@ -69,20 +90,9 @@ public class CultisysAsset : Asset
     ///     获取额外的属性加成数据
     /// </summary>
     [NonSerialized] public CultisysStats stats_action;
-    /// <summary>
-    ///     各个境界人数限制
-    /// </summary>
-    public int[] number_limit_per_level;
-    /// <summary>
-    ///     各个境界当前人数
-    /// </summary>
-    [JsonIgnore] public int[] number_per_level;
-    /// <summary>
-    ///     各个境界的突破难度
-    /// </summary>
-    public float[] difficulty_per_level;
 
-    public CultisysAsset(string id, string culti_energy_id, CultisysType type, int max_level, CultisysInit init_action = null)
+    public CultisysAsset(string id, string culti_energy_id, CultisysType type, int max_level,
+        CultisysInit init_action = null)
     {
         this.id = id;
         this.type = type;
@@ -104,18 +114,6 @@ public class CultisysAsset : Asset
 
         this.init_action = init_action;
     }
-    public bool CanLevelUp(CW_Actor pActor, CultisysAsset pAsset, int pLevel)
-    {
-        if (pLevel >= number_per_level.Length || number_per_level[pLevel] >= number_limit_per_level[pLevel])
-        {
-            return false;
-        }
-        if (difficulty_per_level[pLevel] >= 1 && !Toolbox.randomChance(1 / difficulty_per_level[pLevel]))
-        {
-            return false;
-        }
-        return can_levelup(pActor, pAsset, pLevel);
-    }
 
     /// <summary>
     ///     力量层次, b^l
@@ -125,23 +123,37 @@ public class CultisysAsset : Asset
     /// <summary>
     ///     体系类型
     /// </summary>
-    [JsonIgnore]public CultisysType type { get; internal set; }
+    [JsonIgnore]
+    public CultisysType type { get; internal set; }
 
     /// <summary>
     ///     修炼的能量
     /// </summary>
-    [JsonIgnore] public EnergyAsset culti_energy { get; internal set; }
+    [JsonIgnore]
+    public EnergyAsset culti_energy { get; internal set; }
 
     /// <summary>
     ///     临时存储的修炼能量ID
     /// </summary>
-    [JsonIgnore] internal string culti_energy_id { get; }
+    [JsonIgnore]
+    internal string culti_energy_id { get; }
 
-    /// <summary>
-    ///     基础属性加成, 单境界, 不累加
-    /// </summary>
-    public BaseStats[] bonus_stats;
     [JsonIgnore] public CultisysInit init_action { get; internal set; }
+
+    public bool CanLevelUp(CW_Actor pActor, CultisysAsset pAsset, int pLevel)
+    {
+        if (pLevel >= number_per_level.Length || number_per_level[pLevel] >= number_limit_per_level[pLevel])
+        {
+            return false;
+        }
+
+        if (difficulty_per_level[pLevel] >= 1 && !Toolbox.randomChance(1 / difficulty_per_level[pLevel]))
+        {
+            return false;
+        }
+
+        return can_levelup(pActor, pAsset, pLevel);
+    }
 
     /// <summary>
     ///     获取修炼等级对应的力量
@@ -196,6 +208,7 @@ public class CultisysLibrary : CW_Library<CultisysAsset>
                 () => { WindowCultisysConfig.select_cultisys(cultisys); }
             );
         }
+
         LM.ApplyLocale();
     }
 
@@ -212,16 +225,25 @@ public class CultisysLibrary : CW_Library<CultisysAsset>
         {
             return;
         }
-        CultisysAsset loaded = Utils.GeneralHelper.from_json<CultisysAsset>(File.ReadAllText(cultisys_path), true);
+
+        CultisysAsset loaded = GeneralHelper.from_json<CultisysAsset>(File.ReadAllText(cultisys_path), true);
         if (loaded == null) return;
-        foreach(BaseStats stats in loaded.bonus_stats)
+        foreach (BaseStats stats in loaded.bonus_stats)
         {
             stats.AfterDeserialize();
         }
+
         cultisys.bonus_stats = loaded.bonus_stats;
         cultisys.difficulty_per_level = loaded.difficulty_per_level;
         cultisys.number_limit_per_level = loaded.number_limit_per_level;
         cultisys.power_base = loaded.power_base;
         cultisys.power_level = loaded.power_level;
+    }
+
+    internal void ClearForNewGame()
+    {
+        foreach (var cultisys in list)
+            for (var i = 0; i < cultisys.number_per_level.Length; i++)
+                cultisys.number_per_level[i] = 0;
     }
 }
