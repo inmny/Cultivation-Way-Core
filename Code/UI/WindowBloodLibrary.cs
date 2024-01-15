@@ -7,6 +7,7 @@ using Cultivation_Way.Utils;
 using NeoModLoader.api.attributes;
 using NeoModLoader.General;
 using NeoModLoader.General.UI.Window;
+using NeoModLoader.General.UI.Window.Utils.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -77,7 +78,7 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
     [Hotfixable]
     private void CreateGroup()
     {
-        var group = blood_grid_pool.getNext(create_group_obj.transform.GetSiblingIndex());
+        var group = blood_grid_pool.getNext(0);
         group.Setup($"group_{group_code++}");
 
         blood_group.Add(group.name, new List<Dictionary<string, float>>());
@@ -125,7 +126,8 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
 
     protected override void Init()
     {
-        blood_grid_pool = new ObjectPoolGenericMono<BloodLibraryGrid>(BloodLibraryGrid.Prefab, ContentTransform);
+        var grid_part = this.BeginVertGroup();
+        blood_grid_pool = new ObjectPoolGenericMono<BloodLibraryGrid>(BloodLibraryGrid.Prefab, grid_part.transform);
         var default_grid = blood_grid_pool.getNext(0);
         default_grid.Setup(LM.Get("default"));
         default_grid.clear_button.Button.enabled = false;
@@ -155,6 +157,9 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
         LocalizedTextManager.addTextField(create_group_text.GetComponent<LocalizedText>());
 
         blood_merge_panel = Instantiate(BloodMergePanel.Prefab, BackgroundTransform);
+        var panel_transform = blood_merge_panel.transform;
+        panel_transform.localPosition = new Vector3(-200, 0);
+        panel_transform.localScale = Vector3.one;
         Instance = this;
     }
 
