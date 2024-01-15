@@ -5,6 +5,7 @@ using Cultivation_Way.Factory;
 using Cultivation_Way.Library;
 using NeoModLoader.api.attributes;
 using NeoModLoader.services;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Cultivation_Way.Core;
@@ -19,7 +20,9 @@ public class CW_Element : FactoryItem<CW_Element>
     private static readonly Color iron = Color.yellow;
     private static readonly Color ground = Toolbox.makeColor("#603700");
     private static readonly Color[] element_colors = { water, fire, wood, iron, ground };
-    public int[] BaseElements = new int[Constants.Core.element_type_nr];
+
+    [JsonProperty("base_elements")] public int[] BaseElements = new int[Constants.Core.element_type_nr];
+
     private string type_id;
 
     public CW_Element()

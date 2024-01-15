@@ -35,117 +35,119 @@ internal class SavedDataVer1 : AbstractSavedData
 
     public int world_width;
 
-    public override void load_to_world(SaveManager save_manager, SavedMap origin_data)
+    public override void BeforeAll(SaveManager pSaveManager, SavedMap pVanillaData)
     {
-        SavedMap converted_data = convert();
-        save_manager.data = converted_data;
-        if (save_manager.data.saveVersion < 12)
+        base.BeforeAll(pSaveManager, pVanillaData);
+        // Load Cultibooks
+        foreach (var cultibook in cultibooks)
         {
-            save_manager.convertOldAges();
-        }
-
-        if (save_manager.data.saveVersion < 13)
-        {
-            save_manager.checkOldBuildingID();
-        }
-
-        load_cw_actor_data(converted_data.actors_data);
-        World.world.addClearWorld(origin_data.width, origin_data.height);
-        SmoothLoader.add(delegate { clear_cw_world(); }, "Clearing CW Map");
-        SmoothLoader.add(delegate
-        {
-            World.world.setMapSize(origin_data.width, origin_data.height);
-            World.world.mapStats = origin_data.mapStats;
-            World.world.mapStats.load();
-            World.world.worldLaws = origin_data.worldLaws;
-            World.world.eraManager.loadEra(origin_data.mapStats.era_id, origin_data.mapStats.era_next_id);
-        }, "Setting Map Size");
-        if (origin_data.saveVersion > 0 && origin_data.saveVersion < 8)
-        {
-            SmoothLoader.add(delegate { save_manager.loadTiles(origin_data.tileString); },
-                "Loading Very Old Tiles. Like super old. Maybe you should like, re-save your world?");
-        }
-        else if (origin_data.saveVersion > 7)
-        {
-            SmoothLoader.add(delegate { save_manager.loadTileArray(origin_data); }, "Loading Tiles");
-            SmoothLoader.add(delegate { save_manager.loadFrozen(origin_data.frozen_tiles); }, "Loading Frozen");
-            SmoothLoader.add(delegate { save_manager.loadFire(origin_data.fire); }, "Loading Fires");
-            SmoothLoader.add(delegate { save_manager.loadConway(origin_data.conwayEater, origin_data.conwayCreator); },
-                "Loading Conway");
-        }
-        else
-        {
-            SmoothLoader.add(save_manager.loadOldTiles, "Loading Old Tiles");
-        }
-
-        SmoothLoader.add(delegate
-        {
-            CW_EnergyMapManager manager = CW_Core.mod_state.energy_map_manager;
-            int width = World.world.tilesMap.GetLength(0);
-            int height = World.world.tilesMap.GetLength(1);
-            foreach (string energy_id in manager.maps.Keys)
+            cultibook.cur_culti_nr = 0;
+            var new_spells = cultibook.spells.ToList();
+            new_spells.RemoveAll(spell => !Manager.spells.contains(spell));
+            cultibook.spells = new_spells.ToArray();
+            Manager.cultibooks.add(new Cultibook
             {
-                manager.maps[energy_id].init(width, height);
-                if (energy_id != "cw_energy_wakan") continue;
-                for (int x = 0; x < width; x++)
-                {
-                    for (int y = 0; y < height; y++)
-                    {
-                        manager.maps[energy_id].map[x, y].value = chunks[x / 16 + y / 16 * (width / 16)].wakan;
-                        manager.maps[energy_id].map[x, y].density = chunks[x / 16 + y / 16 * (width / 16)].wakan_level;
-                    }
-                }
-            }
-        }, "Loading Energy Maps");
-        SmoothLoader.add(delegate
+                author_name = cultibook.author_name,
+                bonus_stats = convert_stats(cultibook.bonus_stats),
+                cur_users = cultibook.cur_culti_nr,
+                description = cultibook.content,
+                editor_name = cultibook.author_name,
+                id = cultibook.id,
+                level = cultibook.level + cultibook.order * 10,
+                max_users = cultibook.histroy_culti_nr,
+                max_spell_nr = Math.Max((cultibook.level + cultibook.order * 10) / 4, cultibook.spells.Length),
+                name = cultibook.name,
+                spells = cultibook.spells.ToList()
+            });
+        }
+
+        // Convert Actor Data
+        ConvertToNew(pVanillaData);
+        pSaveManager.convertOldAges();
+        pSaveManager.checkOldBuildingID();
+
+        GenerateCW_ActorData(pVanillaData.actors_data);
+    }
+
+    private void ConvertToNew(SavedMap pVanillaData)
+    {
+        // 由于该版本的actor_datas同样过时, 故无视过时警告
+        pVanillaData.actors = actor_datas;
+        pVanillaData.actors_data = new List<ActorData>();
+        pVanillaData.alliances = new List<AllianceData>();
+        pVanillaData.buildings = building_datas;
+        pVanillaData.cities = cities;
+        foreach (var city_data in cities)
         {
-            foreach (CW_CultiBookAsset cultibook in cultibooks)
+            city_data.race = city_data.race switch
             {
-                Manager.cultibooks.add(new Cultibook
-                {
-                    author_name = cultibook.author_name,
-                    bonus_stats = convert_stats(cultibook.bonus_stats),
-                    cur_users = 0,
-                    description = cultibook.content,
-                    editor_name = cultibook.author_name,
-                    id = cultibook.id,
-                    level = cultibook.level + cultibook.order * 10,
-                    max_users = cultibook.histroy_culti_nr,
-                    max_spell_nr = Math.Max((cultibook.level + cultibook.order * 10) / 4, cultibook.spells.Length),
-                    name = cultibook.name,
-                    spells = cultibook.spells.ToList()
-                });
-            }
-        }, "Loading Cultibooks");
-        SmoothLoader.add(save_manager.loadCultures, "Loading Cultures");
-        SmoothLoader.add(save_manager.loadKingdoms, "Loading Kingdoms");
-        SmoothLoader.add(save_manager.loadCities, "Loading Cities");
-        SmoothLoader.add(save_manager.loadActors, "Finish Loading Actors");
-        SmoothLoader.add(save_manager.checkOldCityZones, "Check Old City Zones");
-        SmoothLoader.add(save_manager.loadBuildings, "Load Buildings");
-        SmoothLoader.add(save_manager.setHomeBuildings, "Set Home Buildings");
-        SmoothLoader.add(save_manager.loadCivs02, "Loading Civs");
-        SmoothLoader.add(save_manager.loadLeaders, "Loading Leaders");
-        SmoothLoader.add(save_manager.loadClans, "Loading Clans");
-        SmoothLoader.add(save_manager.loadAlliances, "Loading Alliances");
-        SmoothLoader.add(save_manager.loadWars, "Loading Wars");
-        SmoothLoader.add(save_manager.loadPlots, "Loading Plots");
-        SmoothLoader.add(save_manager.loadDiplomacy, "Loading Diplomacy");
-        World.world.addUnloadResources();
-        SmoothLoader.add(delegate { World.world.mapChunkManager.allDirty(); }, "Map Chunk Manager (1/2)");
-        SmoothLoader.add(delegate { World.world.mapChunkManager.update(0f, true); }, "Map Chunk Manager (2/2)");
-        SmoothLoader.add(save_manager.loadBoatStates, "Loading Boats. Ahoy Ahoy");
-        SmoothLoader.add(delegate { World.world.finishMakingWorld(); }, "Tidying Up the World");
-        World.world.addKillAllUnits();
-        SmoothLoader.add(delegate { save_manager.data = null; }, "Finishing up...", false, 0.2f);
+                "EasternHuman" => "eastern_human",
+                "Yao" => "yao",
+                _ => city_data.race
+            };
+            city_data.pop_points.Clear();
+        }
+
+        pVanillaData.clans = new List<ClanData>();
+        pVanillaData.conwayCreator = conway_creator;
+        pVanillaData.conwayEater = conway_eater;
+        pVanillaData.cultures = cultures;
+        foreach (var culture in cultures)
+        {
+            culture.race = culture.race switch
+            {
+                "EasternHuman" => "eastern_human",
+                "Yao" => "yao",
+                _ => culture.race
+            };
+
+            var race = AssetManager.raceLibrary.get(culture.race);
+            if (culture.banner_decor_id >= race.culture_decors.Count) culture.banner_decor_id = 0;
+            if (culture.banner_element_id >= race.culture_elements.Count) culture.banner_element_id = 0;
+        }
+
+        pVanillaData.fire = fire;
+        pVanillaData.frozen_tiles = new List<int>();
+        pVanillaData.height = world_height;
+        pVanillaData.kingdoms = kingdoms;
+        foreach (var kingdom_data in kingdoms)
+            kingdom_data.raceID = kingdom_data.raceID switch
+            {
+                "EasternHuman" => "eastern_human",
+                "Yao" => "yao",
+                _ => kingdom_data.raceID
+            };
+
+        pVanillaData.mapStats = map_stats;
+        pVanillaData.plots = new List<PlotData>();
+        pVanillaData.relations = relations;
+        pVanillaData.tiles = tiles;
+        pVanillaData.tileAmounts = tile_amounts;
+        pVanillaData.tileArray = tile_array;
+        pVanillaData.tileMap = tile_map;
+        pVanillaData.tileString = tile_str;
+        pVanillaData.wars = new List<WarData>();
+        pVanillaData.width = world_width;
+        pVanillaData.worldLaws = world_laws;
+        world_laws.init();
     }
 
     public override void LoadWorld()
     {
-        throw new NotImplementedException();
+        // Load Energy Maps
+        Dictionary<string, EnergyTileData[,]> energy_tiles = new();
+        energy_tiles["cw_energy_wakan"] = new EnergyTileData[MapBox.width, MapBox.height];
+        for (var x = 0; x < MapBox.width; x++)
+        for (var y = 0; y < MapBox.height; y++)
+            energy_tiles["cw_energy_wakan"][x, y] = new EnergyTileData
+            {
+                value = chunks[x / 16 + y / 16 * (MapBox.width / 16)].wakan,
+                density = chunks[x / 16 + y / 16 * (MapBox.width / 16)].wakan_level
+            };
+        CW_Core.mod_state.energy_map_manager.replace_new_map(energy_tiles, MapBox.width, MapBox.height);
     }
 
-    private void load_cw_actor_data(List<ActorData> actors_data)
+    private void GenerateCW_ActorData(List<ActorData> actors_data)
     {
         if (actors_data == null) return;
         for (int i = 0; i < actors_data.Count; i++)
@@ -153,18 +155,11 @@ internal class SavedDataVer1 : AbstractSavedData
             ActorData actor_data = actors_data[i];
             CW_ActorData cw_actor_data = cw_actor_datas[i];
             cw_actor_data.element.ComputeType();
-            //Logger.Log(
-            //    $"{cw_actor_data.element.comp_type()}: {cw_actor_data.element.base_elements[0]},{cw_actor_data.element.base_elements[1]},{cw_actor_data.element.base_elements[2]},{cw_actor_data.element.base_elements[3]},{cw_actor_data.element.base_elements[4]}");
             actor_data.SetElement(cw_actor_data.element);
             if (cw_actor_data.spells != null)
             {
-                foreach (string spell_id in cw_actor_data.spells)
-                {
-                    if (Manager.spells.contains(spell_id))
-                    {
-                        actor_data.AddSpell(spell_id);
-                    }
-                }
+                foreach (var spell_id in cw_actor_data.spells.Where(spell_id => Manager.spells.contains(spell_id)))
+                    actor_data.AddSpell(spell_id);
             }
 
             if (!string.IsNullOrEmpty(cw_actor_data.cultibook_id) &&
@@ -174,88 +169,16 @@ internal class SavedDataVer1 : AbstractSavedData
                 actor_data.SetCultibook(Manager.cultibooks.get(cw_actor_data.cultibook_id));
             }
 
-            if (cw_actor_data.cultisys_level != null)
+            if (cw_actor_data.cultisys_level == null) continue;
+
+            for (var cultisys_idx = 0; cultisys_idx < cw_actor_data.cultisys_level.Length; cultisys_idx++)
             {
-                for (int cultisys_idx = 0; cultisys_idx < cw_actor_data.cultisys_level.Length; cultisys_idx++)
-                {
-                    if (cultisys_idx >= Manager.cultisys.size) break;
-                    CultisysAsset cultisys = Manager.cultisys.list[cultisys_idx];
-                    actor_data.set(cultisys.id,
-                        Math.Min(cultisys.max_level - 1, cw_actor_data.cultisys_level[cultisys_idx] - 1));
-                }
+                if (cultisys_idx >= Manager.cultisys.size) break;
+                var cultisys = Manager.cultisys.list[cultisys_idx];
+                actor_data.set(cultisys.id,
+                    Math.Min(cultisys.max_level - 1, cw_actor_data.cultisys_level[cultisys_idx] - 1));
             }
         }
-    }
-
-    private SavedMap convert()
-    {
-        SavedMap converted_data = new();
-        // 由于该版本的actor_datas同样过时, 故无视过时警告
-        converted_data.actors = actor_datas;
-        converted_data.actors_data = new List<ActorData>();
-        converted_data.alliances = new List<AllianceData>();
-        converted_data.buildings = building_datas;
-        converted_data.cities = cities;
-        foreach (CityData city_data in cities)
-        {
-            if (city_data.race == "EasternHuman")
-            {
-                city_data.race = "eastern_human";
-            }
-            else if (city_data.race == "Yao")
-            {
-                city_data.race = "yao";
-            }
-        }
-
-        converted_data.clans = new List<ClanData>();
-        converted_data.conwayCreator = conway_creator;
-        converted_data.conwayEater = conway_eater;
-        converted_data.cultures = cultures;
-        foreach (CultureData culture in cultures)
-        {
-            if (culture.race == "EasternHuman")
-            {
-                culture.race = "eastern_human";
-            }
-            else if (culture.race == "Yao")
-            {
-                culture.race = "yao";
-            }
-
-            Race race = AssetManager.raceLibrary.get(culture.race);
-            if (culture.banner_decor_id >= race.culture_decors.Count) culture.banner_decor_id = 0;
-            if (culture.banner_element_id >= race.culture_elements.Count) culture.banner_element_id = 0;
-        }
-
-        converted_data.fire = fire;
-        converted_data.frozen_tiles = new List<int>();
-        converted_data.height = world_height;
-        converted_data.kingdoms = kingdoms;
-        foreach (KingdomData kingdom_data in kingdoms)
-        {
-            if (kingdom_data.raceID == "EasternHuman")
-            {
-                kingdom_data.raceID = "eastern_human";
-            }
-            else if (kingdom_data.raceID == "Yao")
-            {
-                kingdom_data.raceID = "yao";
-            }
-        }
-
-        converted_data.mapStats = map_stats;
-        converted_data.plots = new List<PlotData>();
-        converted_data.relations = relations;
-        converted_data.tiles = tiles;
-        converted_data.tileAmounts = tile_amounts;
-        converted_data.tileArray = tile_array;
-        converted_data.tileMap = tile_map;
-        converted_data.tileString = tile_str;
-        converted_data.wars = new List<WarData>();
-        converted_data.width = world_width;
-        converted_data.worldLaws = world_laws;
-        return converted_data;
     }
 
     private BaseStats convert_stats(CW_BaseStats cw_base_stats)

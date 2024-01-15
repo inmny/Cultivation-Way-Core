@@ -24,7 +24,7 @@ public class CW_Library<T> : AssetLibrary<T> where T : Asset
 
     public virtual bool contains(string pID)
     {
-        return dict.ContainsKey(pID);
+        return !string.IsNullOrEmpty(pID) && dict.ContainsKey(pID);
     }
 }
 
