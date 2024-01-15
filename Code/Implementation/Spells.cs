@@ -84,7 +84,7 @@ internal static class Spells
                 }
 
                 var dst_actor = (CW_Actor)anim.dst_object;
-
+                var curr_pos = anim.gameObject.transform.localPosition;
                 if (!anim.data.hasFlag("stop_scale_up"))
                 {
                     anim.change_scale(1.02f);
@@ -94,19 +94,14 @@ internal static class Spells
                 if (!anim.data.hasFlag("stop_rotate"))
                 {
                     var target_z_angle =
-                        Toolbox.getAngle(vec.x, vec.y, dst_actor.currentPosition.x, dst_actor.currentPosition.y) *
+                        Toolbox.getAngle(curr_pos.x, curr_pos.y, dst_actor.currentPosition.x,
+                            dst_actor.currentPosition.y + dst_actor.zPosition.y) *
                         57.29578f - 45;
                     if (target_z_angle < 0) target_z_angle += 360;
                     var current_z_angle = anim.gameObject.transform.rotation.eulerAngles.z;
                     var delta_z_angle = target_z_angle - current_z_angle;
                     if (delta_z_angle > 180) delta_z_angle -= 360;
                     if (delta_z_angle < -180) delta_z_angle += 360;
-                    /*
-                    CW_Core.LogInfo("====================================");
-                    CW_Core.LogInfo("delta_z_angle: " + delta_z_angle);
-                    CW_Core.LogInfo("target_z_angle: " + target_z_angle);
-                    CW_Core.LogInfo("current_z_angle: " + current_z_angle);
-                    */
                     if (Mathf.Abs(delta_z_angle) < 0.1f)
                         anim.data.addFlag("stop_rotate");
                     else
@@ -117,20 +112,42 @@ internal static class Spells
 
                 dst_actor.is_in_magnet = true;
 
+                dst_actor.currentPosition =
+                    new Vector2(Mathf.Lerp(anim.src_object.currentPosition.x, curr_pos.x, anim.cur_elapsed * 10),
+                        Mathf.Lerp(anim.src_object.currentPosition.y, curr_pos.y - anim.setting.free_val,
+                            anim.cur_elapsed * 10));
+                dst_actor.zPosition.y = Mathf.Lerp(dst_actor.zPosition.y, anim.setting.free_val, anim.cur_elapsed * 10);
+
+                dst_actor.findCurrentTile();
+                dst_actor.transform.localPosition = new Vector3(dst_actor.currentPosition.x,
+                    dst_actor.currentPosition.y + dst_actor.zPosition.y, dst_actor.zPosition.y);
+
                 if (anim.data.hasFlag("refining"))
                 {
-                    dst_actor.is_visible = false;
                     anim.data.get(DataS.spell_cost, out var spell_cost, 1f);
                     spell_cost = MiscUtils.WakanCostToDamage(spell_cost, anim.src_object);
-                    //CW_Core.LogInfo("Cause damage: " + spell_cost);
+
+
+                    anim.data.get("shake_time", out float shake_time, -1);
+                    anim.data.get("shake_dir", out var shake_dir, 1);
+                    if (shake_time <= 0)
+                    {
+                        shake_dir = -shake_dir;
+                        shake_time = 1;
+                    }
+
+                    shake_time -= anim.cur_elapsed;
+                    anim.data.set("shake_time", shake_time);
+                    anim.data.set("shake_dir", shake_dir);
+                    anim.gameObject.transform.Rotate(0, 0, shake_time * shake_dir);
+
                     dst_actor.getHit(spell_cost, false, (AttackType)CW_AttackType.Spell, anim.src_object, false);
 
                     anim.data.get("refining_time", out float time);
                     time += anim.cur_elapsed;
                     if (time > 10)
                     {
-                        dst_actor.is_in_magnet = false;
-                        anim.force_stop();
+                        anim.data.addFlag("go_back");
                         return;
                     }
 
@@ -138,53 +155,53 @@ internal static class Spells
                     return;
                 }
 
-                dst_actor.data.health = int.MaxValue / 100;
-                dst_actor.currentPosition =
-                    new Vector2(Mathf.Lerp(dst_actor.currentPosition.x, vec.x, anim.cur_elapsed),
-                        Mathf.Lerp(dst_actor.currentPosition.y, vec.y, anim.cur_elapsed));
-                dst_actor.transform.position = dst_actor.currentPosition;
-                if (Toolbox.DistVec2Float(vec, dst_actor.currentPosition) < 0.1f) anim.data.addFlag("refining");
+                if (Toolbox.Dist(curr_pos.x, curr_pos.y, dst_actor.currentPosition.x,
+                        dst_actor.currentPosition.y + dst_actor.zPosition.y) < 3f)
+                {
+                    anim.data.addFlag("refining");
+                    anim.data.addFlag("stop_rotate");
+                    anim.gameObject.transform.rotation = new Quaternion(0, 0, 0, 0);
+                    CW_Core.LogInfo($"refining started {dst_actor.data.id}");
+                }
             },
             end_action = [Hotfixable](int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) =>
             {
+                if (anim.dst_object == null || !anim.dst_object.isActor() || !anim.dst_object.isAlive()) return;
+                anim.dst_object.a.is_in_magnet = false;
             }
         };
         anim_setting.set_trace([Hotfixable](ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim,
             ref float delta_x, ref float delta_y) =>
         {
+            var curr_pos = anim.gameObject.transform.position;
             if (anim.data.hasFlag("go_back"))
             {
                 anim.change_scale(0.9f);
                 if (anim.get_scale() < 0.01f) anim.force_stop();
-                var current_position = anim.gameObject.transform.position;
-                delta_x = (anim.src_object.currentPosition.x - current_position.x) * 3;
-                delta_y = (anim.src_object.currentPosition.y - current_position.y) * 3;
+                delta_x = (anim.src_object.currentPosition.x - curr_pos.x) * 3;
+                delta_y = (anim.src_object.currentPosition.y - curr_pos.y) * 3;
                 return;
             }
+
+            dst_vec.x = anim.src_object.currentPosition.x;
+            dst_vec.y = anim.src_object.currentPosition.y + anim_setting.free_val;
 
             if (!anim.data.hasFlag("prepare"))
             {
                 anim.set_position(anim.src_object.currentPosition);
-                src_vec.x = anim.src_object.currentPosition.x;
-                src_vec.y = anim.src_object.currentPosition.y + anim_setting.free_val;
                 anim.data.addFlag("prepare");
                 return;
             }
 
-            if (!anim.data.hasFlag("started"))
+            var dist = Toolbox.DistVec2Float(dst_vec, curr_pos);
+            if (dist < 1f)
             {
-                var current_position = anim.gameObject.transform.position;
-
-                var dist = Toolbox.DistVec2Float(src_vec, current_position);
-                if (dist < 1f)
-                {
-                    anim.data.addFlag("started");
-                    return;
-                }
-
-                delta_x = (src_vec.x - current_position.x) * 3;
-                delta_y = (src_vec.y - current_position.y) * 3;
+                anim.data.addFlag("started");
+                return;
             }
+
+            delta_x = (dst_vec.x - curr_pos.x) * 3;
+            delta_y = (dst_vec.y - curr_pos.y) * 3;
         });
 
         EffectManager.instance.load_as_controller("violet_gold_gourd_anim", "effects/violet_gold_gourd/",
