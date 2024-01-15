@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Assets.SimpleZip;
+using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
+using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
-using Newtonsoft.Json;
+using Cultivation_Way.Utils;
 
 namespace Cultivation_Way.Save;
 
@@ -18,11 +21,13 @@ internal class EnergyTileData
 [Serializable]
 internal class SavedDataVerCur : AbstractSavedData
 {
+    public Dictionary<string, ActorAdditionSave> actor_addition_savedata = new();
     public List<BloodNodeAsset> bloods = new();
+    public Dictionary<string, CityAdditionSave> city_addition_savedata = new();
     public List<Cultibook> cultibooks = new();
     public Dictionary<string, EnergyTileData[,]> energy_tiles = new();
 
-    public void initialize()
+    public void Initialize(SavedMap pSavedMap)
     {
         bloods.AddRange(Manager.bloods.list);
         cultibooks.AddRange(Manager.cultibooks.list);
@@ -42,11 +47,34 @@ internal class SavedDataVerCur : AbstractSavedData
                 }
             }
         }
+
+        foreach (var data in pSavedMap.actors_data.Where(data => data.items != null && data.items.Count != 0))
+            actor_addition_savedata.Add(data.id, new ActorAdditionSave
+            {
+                CW_Items = data.items.Where(item => item is CW_ItemData).Cast<CW_ItemData>().ToList()
+            });
+
+        foreach (var data in pSavedMap.cities.Where(data => data.storage != null))
+        {
+            city_addition_savedata.Add(data.id, new CityAdditionSave());
+            foreach (var equipment_type in Enum.GetValues(typeof(EquipmentType)))
+                city_addition_savedata[data.id].CW_Equipments.Add((EquipmentType)equipment_type,
+                    data.storage.items_dicts[(EquipmentType)equipment_type]
+                        .Where(item => item is CW_ItemData).Cast<CW_ItemData>().ToList());
+        }
+
+        foreach (var blood in bloods
+                     .Where(blood => blood.ancestor_data.items != null && blood.ancestor_data.items.Count != 0)
+                     .Where(blood => !actor_addition_savedata.ContainsKey(blood.ancestor_data.id)))
+            actor_addition_savedata.Add(blood.ancestor_data.id, new ActorAdditionSave
+            {
+                CW_Items = blood.ancestor_data.items.Where(item => item is CW_ItemData).Cast<CW_ItemData>().ToList()
+            });
     }
 
     public string to_json()
     {
-        return JsonConvert.SerializeObject(this);
+        return GeneralHelper.to_json(this, true);
     }
 
     public void save_to_as_json(string path)
@@ -59,100 +87,126 @@ internal class SavedDataVerCur : AbstractSavedData
         File.WriteAllBytes(path, Zip.Compress(to_json()));
     }
 
-    public override void load_to_world(SaveManager save_manager, SavedMap origin_data)
+    public override void LoadWorld()
     {
-        save_manager.data = origin_data;
-        if (save_manager.data.saveVersion < 12)
+        foreach (var blood in bloods)
         {
-            save_manager.convertOldAges();
+            Manager.bloods.add(blood);
         }
 
-        if (save_manager.data.saveVersion < 13)
+        bloods = null;
+        foreach (var cultibook in cultibooks) Manager.cultibooks.add(cultibook);
+
+        cultibooks = null;
+
+        CW_Core.mod_state.energy_map_manager.replace_new_map(energy_tiles, MapBox.width, MapBox.height);
+
+        energy_tiles = null;
+        actor_addition_savedata = null;
+        city_addition_savedata = null;
+    }
+
+    public override void BeforeAll(SaveManager pSaveManager, SavedMap pVanillaData)
+    {
+        base.BeforeAll(pSaveManager, pVanillaData);
+
+        AllStatsAfterDeserialization();
+
+        // Convert Actor Equipment and City Equipments
+        foreach (var data in pVanillaData.actors_data)
         {
-            save_manager.checkOldBuildingID();
+            if (data.items == null || data.items.Count == 0) continue;
+            UpdateActorEquipment(data);
         }
 
-        World.world.addClearWorld(origin_data.width, origin_data.height);
-        SmoothLoader.add(delegate { clear_cw_world(); }, "Clearing CW Map");
-        SmoothLoader.add(delegate
+        foreach (var blood in bloods)
         {
-            World.world.setMapSize(origin_data.width, origin_data.height);
-            World.world.mapStats = origin_data.mapStats;
-            World.world.mapStats.load();
-            World.world.worldLaws = origin_data.worldLaws;
-            World.world.eraManager.loadEra(origin_data.mapStats.era_id, origin_data.mapStats.era_next_id);
-        }, "Setting Map Size");
-        if (origin_data.saveVersion > 0 && origin_data.saveVersion < 8)
-        {
-            SmoothLoader.add(delegate { save_manager.loadTiles(origin_data.tileString); },
-                "Loading Very Old Tiles. Like super old. Maybe you should like, re-save your world?");
-        }
-        else if (origin_data.saveVersion > 7)
-        {
-            SmoothLoader.add(delegate { save_manager.loadTileArray(origin_data); }, "Loading Tiles");
-            SmoothLoader.add(delegate { save_manager.loadFrozen(origin_data.frozen_tiles); }, "Loading Frozen");
-            SmoothLoader.add(delegate { save_manager.loadFire(origin_data.fire); }, "Loading Fires");
-            SmoothLoader.add(delegate { save_manager.loadConway(origin_data.conwayEater, origin_data.conwayCreator); },
-                "Loading Conway");
-        }
-        else
-        {
-            SmoothLoader.add(save_manager.loadOldTiles, "Loading Old Tiles");
+            if (blood.ancestor_data.items == null || blood.ancestor_data.items.Count == 0) continue;
+            UpdateActorEquipment(blood.ancestor_data);
         }
 
-        SmoothLoader.add(delegate
+        foreach (var data in pVanillaData.cities)
         {
-            CW_EnergyMapManager manager = CW_Core.mod_state.energy_map_manager;
-            int width = World.world.tilesMap.GetLength(0);
-            int height = World.world.tilesMap.GetLength(1);
-            foreach (string energy_id in manager.maps.Keys)
+            if (!city_addition_savedata.TryGetValue(data.id, out var addition_save)) continue;
+
+            data.storage.init(null);
+            foreach (var equipment_type in Enum.GetValues(typeof(EquipmentType)))
             {
-                manager.maps[energy_id].init(width, height);
-                if (!energy_tiles.ContainsKey(energy_id)) continue;
-                for (int x = 0; x < width; x++)
-                {
-                    for (int y = 0; y < height; y++)
-                    {
-                        manager.maps[energy_id].map[x, y].value = energy_tiles[energy_id][x, y].value;
-                        manager.maps[energy_id].map[x, y].density = energy_tiles[energy_id][x, y].density;
-                    }
-                }
+                if (!addition_save.CW_Equipments.TryGetValue((EquipmentType)equipment_type, out var equipments))
+                    continue;
+                foreach (var item in equipments.Where(item => Manager.items.contains(item.id)))
+                    ReplaceItemData(data.storage.items_dicts[(EquipmentType)equipment_type], item);
             }
-        }, "Loading Energy Maps");
-        SmoothLoader.add(delegate
+        }
+    }
+
+    public override void AfterAll(SaveManager pSaveManager)
+    {
+        base.AfterAll(pSaveManager);
+        var actors = World.world.units.getSimpleList();
+        foreach (var actor in actors)
         {
-            foreach (BloodNodeAsset blood in bloods)
-            {
-                Manager.bloods.add(blood);
-            }
-        }, "Loading Blood Nodes");
-        SmoothLoader.add(delegate
+            CountCultisysLevel(actor, CultisysType.BODY);
+            CountCultisysLevel(actor, CultisysType.SOUL);
+            CountCultisysLevel(actor, CultisysType.BLOOD);
+            CountCultisysLevel(actor, CultisysType.WAKAN);
+            CountCultisysLevel(actor, CultisysType.HIDDEN);
+        }
+
+        void CountCultisysLevel(Actor pActor, CultisysType pType)
         {
-            foreach (Cultibook cultibook in cultibooks)
-            {
-                Manager.cultibooks.add(cultibook);
-            }
-        }, "Loading Cultibooks");
-        SmoothLoader.add(save_manager.loadCultures, "Loading Cultures");
-        SmoothLoader.add(save_manager.loadKingdoms, "Loading Kingdoms");
-        SmoothLoader.add(save_manager.loadCities, "Loading Cities");
-        SmoothLoader.add(save_manager.loadActors, "Finish Loading Actors");
-        SmoothLoader.add(save_manager.checkOldCityZones, "Check Old City Zones");
-        SmoothLoader.add(save_manager.loadBuildings, "Load Buildings");
-        SmoothLoader.add(save_manager.setHomeBuildings, "Set Home Buildings");
-        SmoothLoader.add(save_manager.loadCivs02, "Loading Civs");
-        SmoothLoader.add(save_manager.loadLeaders, "Loading Leaders");
-        SmoothLoader.add(save_manager.loadClans, "Loading Clans");
-        SmoothLoader.add(save_manager.loadAlliances, "Loading Alliances");
-        SmoothLoader.add(save_manager.loadWars, "Loading Wars");
-        SmoothLoader.add(save_manager.loadPlots, "Loading Plots");
-        SmoothLoader.add(save_manager.loadDiplomacy, "Loading Diplomacy");
-        World.world.addUnloadResources();
-        SmoothLoader.add(delegate { World.world.mapChunkManager.allDirty(); }, "Map Chunk Manager (1/2)");
-        SmoothLoader.add(delegate { World.world.mapChunkManager.update(0f, true); }, "Map Chunk Manager (2/2)");
-        SmoothLoader.add(save_manager.loadBoatStates, "Loading Boats. Ahoy Ahoy");
-        SmoothLoader.add(delegate { World.world.finishMakingWorld(); }, "Tidying Up the World");
-        World.world.addKillAllUnits();
-        SmoothLoader.add(delegate { save_manager.data = null; }, "Finishing up...", false, 0.2f);
+            var cultisys = pActor.data.GetCultisys(pType);
+            if (cultisys == null) return;
+            pActor.data.get(cultisys.id, out int level);
+            cultisys.number_per_level[level]++;
+        }
+    }
+
+    private void UpdateActorEquipment(ActorData pData)
+    {
+        if (!actor_addition_savedata.TryGetValue(pData.id, out var addition_save)) return;
+
+        foreach (var item in addition_save.CW_Items)
+        {
+            if (!Manager.items.contains(item.id)) continue;
+            ReplaceItemData(pData.items, item);
+        }
+    }
+
+    private void AllStatsAfterDeserialization()
+    {
+        foreach (var blood in bloods) blood.ancestor_stats.AfterDeserialize();
+
+        foreach (var cultibook in cultibooks) cultibook.bonus_stats.AfterDeserialize();
+
+        foreach (var item in actor_addition_savedata.Values.SelectMany(addition_data => addition_data.CW_Items))
+            item.addition_stats.AfterDeserialize();
+
+        foreach (var item in from addition_data in city_addition_savedata.Values
+                 from equipments in addition_data.CW_Equipments.Values
+                 from item in equipments
+                 select item)
+            item.addition_stats.AfterDeserialize();
+    }
+
+    private static void ReplaceItemData(IList<ItemData> pItems, ItemData pNewData)
+    {
+        for (var i = 0; i < pItems.Count; i++)
+        {
+            if (pItems[i].id != pNewData.id || pItems[i].material != pNewData.material ||
+                pItems[i] is CW_ItemData) continue;
+            pItems[i] = pNewData;
+            return;
+        }
+    }
+
+    public class ActorAdditionSave
+    {
+        public List<CW_ItemData> CW_Items = new();
+    }
+
+    public class CityAdditionSave
+    {
+        public Dictionary<EquipmentType, List<CW_ItemData>> CW_Equipments = new();
     }
 }

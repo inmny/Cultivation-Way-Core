@@ -11,6 +11,7 @@ using Cultivation_Way.Others;
 using HarmonyLib;
 using NeoModLoader.api.attributes;
 using UnityEngine;
+
 namespace Cultivation_Way.HarmonySpace;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -255,10 +256,7 @@ internal static class H_Actor
     private static CW_Actor ActorManager_base_loadObject(ActorManager instance, ActorData data, CW_Actor prefab)
     {
         CW_Actor tobject = Object.Instantiate(prefab);
-        BaseSimObject baseSimObject = tobject;
-        int latest_hash = instance._latest_hash;
-        instance._latest_hash = latest_hash + 1;
-        baseSimObject.setHash(latest_hash);
+        tobject.setHash(instance._latest_hash++);
         tobject.loadData(data);
         instance.addObject(tobject);
         return tobject;

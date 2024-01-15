@@ -51,7 +51,7 @@ public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWi
         var read_data = GeneralHelper.from_json<List<CW_ItemData>>(File.ReadAllText(Paths.ItemLibraryPath));
         Data.Clear();
         foreach (var data in read_data)
-            if (Manager.items.dict.ContainsKey(data.id))
+            if (Manager.items.contains(data.id))
             {
                 data.addition_stats.AfterDeserialize();
                 Data.Add(data);

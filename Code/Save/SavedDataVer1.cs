@@ -140,6 +140,11 @@ internal class SavedDataVer1 : AbstractSavedData
         SmoothLoader.add(delegate { save_manager.data = null; }, "Finishing up...", false, 0.2f);
     }
 
+    public override void LoadWorld()
+    {
+        throw new NotImplementedException();
+    }
+
     private void load_cw_actor_data(List<ActorData> actors_data)
     {
         if (actors_data == null) return;
@@ -242,7 +247,6 @@ internal class SavedDataVer1 : AbstractSavedData
         converted_data.mapStats = map_stats;
         converted_data.plots = new List<PlotData>();
         converted_data.relations = relations;
-        converted_data.saveVersion = origin_save_version;
         converted_data.tiles = tiles;
         converted_data.tileAmounts = tile_amounts;
         converted_data.tileArray = tile_array;

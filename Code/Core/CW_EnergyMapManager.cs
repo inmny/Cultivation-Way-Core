@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Threading.Tasks;
 using Cultivation_Way.Library;
+using Cultivation_Way.Save;
 using UnityEngine;
 
 namespace Cultivation_Way.Core;
@@ -35,6 +35,7 @@ public class CW_EnergyMapTile
     {
         this.value = value;
     }
+
     [MethodImpl(MethodImplOptions.Synchronized | MethodImplOptions.AggressiveInlining)]
     public void Update(EnergyAsset energy_asset, bool pRedraw = false)
     {
@@ -63,7 +64,6 @@ public class CW_EnergyMapTile
 /// </summary>
 public class CW_EnergyMap
 {
-
     private static readonly List<KeyValuePair<int, int>> _forward_dirs = new()
     {
         new KeyValuePair<int, int>(0, 1),
@@ -132,6 +132,7 @@ public class CW_EnergyMap
                 _tmp_map[x, y].value = map[x, y].value;
             }
         }
+
         for (int x = 0; x < width - 1; x++)
         {
             for (int y = 0; y < height - 1; y++)
@@ -150,6 +151,7 @@ public class CW_EnergyMap
                 }
             }
         }
+
         for (int x = 0; x < width - 1; x++)
         {
             var dir = _forward_dirs[1];
@@ -163,6 +165,7 @@ public class CW_EnergyMap
             _tmp_map[x, height - 1].value += delta_value;
             _tmp_map[x + dir.Key, height - 1 + dir.Value].value -= delta_value;
         }
+
         for (int y = 0; y < height - 1; y++)
         {
             var dir = _forward_dirs[0];
@@ -176,6 +179,7 @@ public class CW_EnergyMap
             _tmp_map[width - 1, y].value += delta_value;
             _tmp_map[width - 1 + dir.Key, y + dir.Value].value -= delta_value;
         }
+
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -191,6 +195,8 @@ public class CW_EnergyMap
 public class CW_EnergyMapManager
 {
     public readonly Dictionary<string, CW_EnergyMap> maps = new();
+
+    private readonly object update_lock = new();
 
     public int height;
     public int width;
@@ -236,11 +242,49 @@ public class CW_EnergyMapManager
             }
         }
     }
+
     internal void update_per_year()
     {
+        Monitor.Enter(update_lock);
         foreach (CW_EnergyMap map in maps.Values)
         {
             map.update(width, height);
         }
+
+        Monitor.Exit(update_lock);
+    }
+
+    internal void replace_new_map(Dictionary<string, EnergyTileData[,]> pData, int pWidth, int pHeight)
+    {
+        Monitor.Enter(update_lock);
+
+        foreach (var map_id in pData.Keys)
+        {
+            if (!maps.ContainsKey(map_id)) continue;
+            var map = maps[map_id];
+            var data = pData[map_id];
+            var energy = Manager.energies.get(map_id);
+            PlayerConfig.dict[Constants.Core.energy_maps_toggle_name].stringVal = map_id;
+            map.init(pWidth, pHeight);
+            for (var x = 0; x < pWidth; x++)
+            for (var y = 0; y < pHeight; y++)
+            {
+                map.map[x, y].value = data[x, y].value;
+                map.map[x, y].density = data[x, y].density;
+                map.map[x, y].Update(energy);
+            }
+        }
+
+        foreach (var map_id in maps.Keys)
+        {
+            if (pData.ContainsKey(map_id)) continue;
+            var map = maps[map_id];
+            map.init(pWidth, pHeight);
+        }
+
+        width = pWidth;
+        height = pHeight;
+
+        Monitor.Exit(update_lock);
     }
 }
