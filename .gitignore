@@ -10,7 +10,6 @@
 *.userosscache
 *.sln
 *.sln.docstates
-*.csproj
 *.csproj.DotSettings
 
 # User-specific files (MonoDevelop/Xamarin Studio)

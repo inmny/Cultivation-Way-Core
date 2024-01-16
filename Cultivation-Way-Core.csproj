@@ -1,0 +1,88 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>11</LangVersion>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+        <OutputType>Library</OutputType>
+        <RootNamespace>Cultivation_Way</RootNamespace>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <DefineConstants>一米_中文名</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="0Harmony">
+            <HintPath>..\..\worldbox_Data\StreamingAssets\mods\NML\Assemblies\0Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>..\..\worldbox_Data\StreamingAssets\mods\NML\Assembly-CSharp-Publicized.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp-firstpass">
+            <HintPath>..\..\worldbox_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+        </Reference>
+        <Reference Include="DOTween">
+            <HintPath>..\..\worldbox_Data\Managed\DOTween.dll</HintPath>
+        </Reference>
+        <Reference Include="Ionic.Zlib.CF">
+            <HintPath>..\..\worldbox_Data\Managed\Ionic.Zlib.CF.dll</HintPath>
+        </Reference>
+        <Reference Include="NeoModLoader">
+            <HintPath>..\..\worldbox_Data\StreamingAssets\mods\NeoModLoader.dll</HintPath>
+        </Reference>
+        <Reference Include="Purchasing.Common">
+            <HintPath>..\..\worldbox_Data\Managed\Purchasing.Common.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>..\..\worldbox_Data\Managed\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AssetBundleModule">
+            <HintPath>..\..\worldbox_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>..\..\worldbox_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.JSONSerializeModule">
+            <HintPath>..\..\worldbox_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextCoreModule">
+            <HintPath>..\..\worldbox_Data\Managed\UnityEngine.TextCoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+            <HintPath>..\..\worldbox_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TilemapModule">
+            <HintPath>..\..\worldbox_Data\Managed\UnityEngine.TilemapModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+            <HintPath>..\..\worldbox_Data\Managed\UnityEngine.UI.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UIModule">
+            <HintPath>..\..\worldbox_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Chinese_Name\Chinese_Name.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="GameResources\**"/>
+        <EmbeddedResource Remove="GameResources\**"/>
+        <None Include="GameResources\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include=".github\ISSUE_TEMPLATE\bug-report-en.yaml"/>
+        <Content Include=".github\ISSUE_TEMPLATE\bug-report-zh.yaml"/>
+        <Content Include=".github\ISSUE_TEMPLATE\feature_request.md"/>
+    </ItemGroup>
+
+</Project>
