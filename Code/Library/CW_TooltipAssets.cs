@@ -4,7 +4,9 @@ using System.Text;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Others;
+using Cultivation_Way.UI;
 using Cultivation_Way.Utils;
+using Cultivation_Way.Utils.General.AboutBlood;
 using NeoModLoader.api.attributes;
 using NeoModLoader.General;
 using UnityEngine;
@@ -40,6 +42,12 @@ internal static class CW_TooltipAssets
             id = Constants.Core.mod_prefix + "cultisys",
             prefab_id = "tooltips/tooltip_" + Constants.Core.mod_prefix + "cultisys",
             callback = show_cultisys
+        });
+        AssetManager.tooltips.add(new TooltipAsset
+        {
+            id = Constants.Core.mod_prefix + "library_blood_node",
+            prefab_id = "tooltips/tooltip_" + Constants.Core.mod_prefix + "blood_nodes",
+            callback = show_library_blood_node
         });
         var equipment_tooltip = AssetManager.tooltips.get("equipment");
         equipment_tooltip.callback =
@@ -288,6 +296,38 @@ internal static class CW_TooltipAssets
         if (CW_Core.mod_state.editor_inmny)
         {
             //tooltip.showBaseStats(main_blood.ancestor_stats);
+        }
+    }
+
+    /// <summary>
+    ///     约定
+    ///     <list type="table">
+    ///         <item>
+    ///             <term>tip_name</term><description><see cref="Dictionary{String,Single}" />JSON字符串</description>
+    ///         </item>
+    ///     </list>
+    /// </summary>
+    /// <param name="pTooltip"></param>
+    /// <param name="pType"></param>
+    /// <param name="pData"></param>
+    private static void show_library_blood_node(Tooltip pTooltip, string pType, TooltipData pData)
+    {
+        pTooltip.name.text = LM.Get("blood");
+        var blood = GeneralHelper.from_json<Dictionary<string, float>>(pData.tip_name);
+        pTooltip.addDescription(LM.Get("blood_desc")
+            .Replace("$main_blood_name$",
+                WindowBloodLibrary.Instance.node_dict[MiscUtils.MaxBlood(blood).Key].ancestor_data.name)
+            .Replace("$main_blood_purity$", ((int)(MiscUtils.MaxBlood(blood).Value * 100)).ToString()));
+
+        var is_first = true;
+        foreach (var blood_id in blood.Keys)
+        {
+            if (is_first)
+                is_first = false;
+            else
+                pTooltip.addLineBreak();
+            pTooltip.addStatValues(WindowBloodLibrary.Instance.node_dict[blood_id].ancestor_data.name,
+                (int)(blood[blood_id] * 100) + "%");
         }
     }
 }

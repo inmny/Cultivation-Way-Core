@@ -654,6 +654,8 @@ public partial class CW_Actor : Actor
             if (blood != null && blood.ancestor_data.id == data.id && blood.ancestor_data.asset_id == asset.id) return;
         }
 
+        data.asset_id = asset.id;
+
         BloodNodeAsset blood_asset = new()
         {
             id = Guid.NewGuid().ToString(),

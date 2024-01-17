@@ -10,6 +10,7 @@ namespace Cultivation_Way.UI.prefabs;
 public class BloodLibraryGrid : APrefab<BloodLibraryGrid>
 {
     public SimpleButton clear_button;
+    public RectTransform GridTransform;
     private ObjectPoolGenericMono<SimpleBloodButton> blood_button_pool;
     private InputField title_input;
 
@@ -36,8 +37,9 @@ public class BloodLibraryGrid : APrefab<BloodLibraryGrid>
         title_input = transform.Find("Top/Title/InputField").GetComponent<InputField>();
         transform.Find("Top/Title").GetComponent<TextInput>().Setup("Group Name",
             new_title => { WindowBloodLibrary.Instance.RenameGroup(this, new_title); });
+        GridTransform = transform.Find("Grid").GetComponent<RectTransform>();
         blood_button_pool =
-            new ObjectPoolGenericMono<SimpleBloodButton>(SimpleBloodButton.Prefab, transform.Find("Grid"));
+            new ObjectPoolGenericMono<SimpleBloodButton>(SimpleBloodButton.Prefab, GridTransform);
         base.Init();
     }
 

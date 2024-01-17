@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
@@ -17,7 +18,9 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
 {
     private readonly Dictionary<string, BloodLibraryGrid> blood_grids = new();
     private readonly Dictionary<string, List<Dictionary<string, float>>> blood_group = new();
-    private readonly Dictionary<string, BloodNodeAsset> node_dict = new();
+    public readonly Dictionary<string, BloodNodeAsset> node_dict = new();
+    private bool all_enabled = true;
+
     private ObjectPoolGenericMono<BloodLibraryGrid> blood_grid_pool;
     private BloodMergePanel blood_merge_panel;
     private GameObject create_group_obj;
@@ -27,6 +30,8 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
     private int group_code;
 
     private bool is_dirty;
+    private int skip_frame = 4;
+    public RectTransform background_transform => BackgroundTransform as RectTransform;
     public static WindowBloodLibrary Instance { get; private set; }
 
     private void Update()
@@ -34,15 +39,19 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
         if (!Initialized) return;
         if (is_dirty)
         {
-            if (layout.enabled)
+            if (skip_frame > 0)
             {
-                layout.enabled = false;
+                skip_frame--;
+                return;
             }
-            else
-            {
-                layout.enabled = true;
-                is_dirty = false;
-            }
+
+            all_enabled = !all_enabled;
+            UpdateLayoutState();
+
+            if (!all_enabled) return;
+
+            skip_frame = 4;
+            is_dirty = false;
         }
     }
 
@@ -68,23 +77,30 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
             var copy = GeneralHelper.from_json<BloodNodeAsset>(GeneralHelper.to_json(node, true), true);
             copy.ancestor_stats.AfterDeserialize();
 
-            node_dict.Add(copy.id, copy);
+            node_dict[copy.id] = copy;
         }
 
         Data.Add(pData);
         DefaultGroup.AddBloodNode(pData);
     }
 
+    private void UpdateLayoutState()
+    {
+        var layoutGroups = gameObject.GetComponentsInChildren<LayoutGroup>().Reverse();
+        foreach (var layoutGroup in layoutGroups) layoutGroup.enabled = all_enabled;
+        layout.enabled = all_enabled;
+    }
+
     [Hotfixable]
     private void CreateGroup()
     {
-        var group = blood_grid_pool.getNext(0);
+        var group = blood_grid_pool.getNext();
         group.Setup($"group_{group_code++}");
+        group.transform.SetAsLastSibling();
 
         blood_group.Add(group.name, new List<Dictionary<string, float>>());
         blood_grids.Add(group.name, group);
 
-        create_group_obj.transform.SetAsLastSibling();
         is_dirty = true;
     }
 
@@ -116,8 +132,80 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
         pGroup.name = pNewName;
     }
 
+    internal bool CheckOnReceiver(SimpleBloodButton pButton)
+    {
+        if (RectTransformUtility.RectangleContainsScreenPoint(blood_merge_panel.input_rect_left,
+                pButton.transform.position)
+            || RectTransformUtility.RectangleContainsScreenPoint(blood_merge_panel.input_rect_right,
+                pButton.transform.position))
+            return true;
+
+        foreach (var grid in blood_grids.Values)
+            if (RectTransformUtility.RectangleContainsScreenPoint(grid.GetComponent<RectTransform>(),
+                    pButton.transform.position))
+                return true;
+        return false;
+    }
+
+    [Hotfixable]
+    internal void SetButtonToReceiver(SimpleBloodButton pButton)
+    {
+        if (blood_merge_panel.input_left == pButton)
+            blood_merge_panel.input_left = null;
+        else if (blood_merge_panel.input_right == pButton)
+            blood_merge_panel.input_right = null;
+        else if (blood_merge_panel.output == pButton) blood_merge_panel.output = null;
+        var set = false;
+
+        if (RectTransformUtility.RectangleContainsScreenPoint(blood_merge_panel.input_rect_left,
+                pButton.transform.position))
+        {
+            blood_merge_panel.input_left = pButton;
+            pButton.transform.SetParent(blood_merge_panel.input_rect_left);
+            set = true;
+        }
+        else if (RectTransformUtility.RectangleContainsScreenPoint(blood_merge_panel.input_rect_right,
+                     pButton.transform.position))
+        {
+            blood_merge_panel.input_right = pButton;
+            pButton.transform.SetParent(blood_merge_panel.input_rect_right);
+            set = true;
+        }
+        else
+        {
+            foreach (var grid_id in blood_grids.Keys.Where(grid_id => RectTransformUtility.RectangleContainsScreenPoint(
+                         blood_grids[grid_id].GetComponent<RectTransform>(),
+                         pButton.transform.position)))
+            {
+                if (!blood_group[grid_id].Contains(pButton.Blood))
+                {
+                    foreach (var group in blood_group.Values.Where(group => group.Contains(pButton.Blood)))
+                    {
+                        group.Remove(pButton.Blood);
+                        break;
+                    }
+
+                    blood_group[grid_id].Add(pButton.Blood);
+                }
+
+                pButton.transform.SetParent(blood_grids[grid_id].GridTransform);
+                set = true;
+                break;
+            }
+        }
+
+        if (set)
+        {
+            pButton.transform.localPosition = Vector3.zero;
+            pButton.transform.localScale = Vector3.one;
+        }
+
+        is_dirty = true;
+    }
+
     public override void OnNormalEnable()
     {
+        is_dirty = true;
         if (CW_Core.mod_state.is_awarding)
             blood_merge_panel.gameObject.SetActive(false);
         else
@@ -132,7 +220,7 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
         default_grid.Setup(LM.Get("default"));
         default_grid.clear_button.Button.enabled = false;
         DefaultGroup = default_grid;
-        AddChild(default_grid.gameObject);
+        grid_part.AddChild(default_grid.gameObject);
 
         blood_group.Add(default_grid.name, new List<Dictionary<string, float>>());
         blood_grids.Add(default_grid.name, default_grid);
@@ -157,6 +245,7 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
         LocalizedTextManager.addTextField(create_group_text.GetComponent<LocalizedText>());
 
         blood_merge_panel = Instantiate(BloodMergePanel.Prefab, BackgroundTransform);
+        blood_merge_panel.Setup();
         var panel_transform = blood_merge_panel.transform;
         panel_transform.localPosition = new Vector3(-200, 0);
         panel_transform.localScale = Vector3.one;
