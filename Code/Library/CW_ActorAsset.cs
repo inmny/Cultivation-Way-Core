@@ -113,6 +113,8 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
         if (from_asset.vanllia_asset == null)
         {
             Logger.Warn($"CW_ActorAsset {pFrom} has no vanilla asset!");
+            new_asset.vanllia_asset.id = pNew;
+            AssetManager.actor_library.add(new_asset.vanllia_asset);
         }
         else
         {
@@ -219,12 +221,13 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
             }
         }
     }
+
     [Hotfixable]
     public HashSet<CW_ActorAsset> SearchByID(string pID)
     {
         string id = pID.ToLower();
         HashSet<CW_ActorAsset> res = new();
-        foreach(var asset in AssetManager.actor_library.list)
+        foreach (var asset in AssetManager.actor_library.list)
         {
             if (asset.id.StartsWith("_")) continue;
             if (asset.id.ToLower().Contains(id))
@@ -232,8 +235,10 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
                 res.Add(get(asset.id));
             }
         }
+
         return res;
     }
+
     [Hotfixable]
     public HashSet<CW_ActorAsset> SearchByName(string pName)
     {
@@ -242,13 +247,16 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
         foreach (var asset in AssetManager.actor_library.list)
         {
             if (asset.id.StartsWith("_")) continue;
-            if (LocalizedTextManager.stringExists(asset.nameLocale) && LM.Get(asset.nameLocale).ToLower().Contains(name))
+            if (LocalizedTextManager.stringExists(asset.nameLocale) &&
+                LM.Get(asset.nameLocale).ToLower().Contains(name))
             {
                 res.Add(get(asset.id));
             }
         }
+
         return res;
     }
+
     [Hotfixable]
     public HashSet<CW_ActorAsset> SearchByRaceID(string pRaceID)
     {
@@ -262,8 +270,10 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
                 res.Add(get(asset.id));
             }
         }
+
         return res;
     }
+
     [Hotfixable]
     public HashSet<CW_ActorAsset> SearchByRaceName(string pRaceName)
     {
@@ -280,6 +290,7 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
                 res.Add(get(asset.id));
             }
         }
+
         return res;
     }
 }
