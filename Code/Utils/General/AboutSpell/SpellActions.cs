@@ -3,7 +3,7 @@ using Cultivation_Way.Core;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 
-namespace Cultivation_Way.General.AboutSpell;
+namespace Cultivation_Way.Utils.General.AboutSpell;
 
 /// <summary>
 ///     提供一般法术的spell_action

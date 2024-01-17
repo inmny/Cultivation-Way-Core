@@ -2,7 +2,7 @@
 using NeoModLoader.api.attributes;
 using UnityEngine;
 
-namespace Cultivation_Way.General.AboutAnim;
+namespace Cultivation_Way.Utils.General.AboutAnim;
 
 /// <summary>
 ///     一般动画的trace_updater

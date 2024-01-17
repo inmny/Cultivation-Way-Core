@@ -1,11 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using NeoModLoader.api.attributes;
 using NeoModLoader.General;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +12,7 @@ namespace Cultivation_Way.UI;
 
 public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
 {
+    private List<Button> cultisys_buttons = new();
     private Transform cultisys_select_grid;
     private HashSet<CW_ActorAsset> found_actor_assets = new();
 
@@ -78,6 +78,7 @@ public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
                     instance.update_configure();
                     return;
                 }
+
                 HashSet<CW_ActorAsset> searched_actor_assets = new();
 
                 searched_actor_assets.UnionWith(Manager.actors.SearchByID(str));
@@ -98,12 +99,14 @@ public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
                     search_count.GetComponent<Text>().color = Color.white;
                     search_result.GetComponent<LocalizedText>().setKeyAndUpdate(actor_asset.vanllia_asset.nameLocale);
                 }
+
                 StringBuilder sb = new StringBuilder();
                 sb.Append(LM.Get("found_count").Replace("$count$", searched_actor_assets.Count.ToString()));
                 sb.Append(':');
                 foreach (CW_ActorAsset actor_asset in searched_actor_assets)
                 {
-                    if(string.IsNullOrEmpty(actor_asset.vanllia_asset.nameLocale) || !LocalizedTextManager.stringExists(actor_asset.vanllia_asset.nameLocale))
+                    if (string.IsNullOrEmpty(actor_asset.vanllia_asset.nameLocale) ||
+                        !LocalizedTextManager.stringExists(actor_asset.vanllia_asset.nameLocale))
                     {
                         sb.Append(actor_asset.vanllia_asset.id);
                     }
@@ -111,8 +114,10 @@ public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
                     {
                         sb.Append(LM.Get(actor_asset.vanllia_asset.nameLocale));
                     }
+
                     sb.Append(';');
                 }
+
                 search_count.GetComponent<Text>().text = sb.ToString();
 
                 instance.found_actor_assets = searched_actor_assets;
@@ -191,30 +196,33 @@ public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
 
         #endregion
     }
+
     [Hotfixable]
     private void update_configure()
     {
-        foreach(Button button in cultisys_buttons)
+        foreach (Button button in cultisys_buttons)
         {
             GameObject button_icon = button.transform.Find("Icon").gameObject;
             if (button_icon.activeSelf)
             {
                 button_icon.SetActive(false);
             }
+
             button.GetComponent<Image>().color = Color.white;
         }
+
         if (found_actor_assets.Count == 0) return;
 
         HashSet<CultisysAsset> allowed = new(found_actor_assets.First().allowed_cultisys);
         HashSet<CultisysAsset> implicits = new();
 
-        foreach(var asset in found_actor_assets)
+        foreach (var asset in found_actor_assets)
         {
             allowed.IntersectWith(asset.allowed_cultisys);
             implicits.UnionWith(asset.allowed_cultisys);
         }
 
-        foreach(Transform cultisys_select_tsf in cultisys_select_grid)
+        foreach (Transform cultisys_select_tsf in cultisys_select_grid)
         {
             GameObject select_button = cultisys_select_tsf.Find("Button").gameObject;
             GameObject select_button_icon = select_button.transform.Find("Icon").gameObject;
@@ -230,11 +238,11 @@ public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
             }
         }
     }
-    private List<Button> cultisys_buttons = new();
 
     internal static void post_init()
     {
-        General.AboutUI.WorldLaws.add_setting_law(Constants.Core.actorasset_config_window, "worldlaw_creature_grid",
+        Utils.General.AboutUI.WorldLaws.add_setting_law(Constants.Core.actorasset_config_window,
+            "worldlaw_creature_grid",
             "ui/icons/iconYaos", Constants.Core.actorasset_config_window);
         foreach (CultisysAsset cultisys in Manager.cultisys.list)
         {
@@ -272,7 +280,7 @@ public class WindowActorAssetConfig : AbstractWindow<WindowActorAssetConfig>
                 select_button_icon.SetActive(!select_button_icon.activeSelf);
                 if (instance.found_actor_assets.Count == 0) return;
                 bool active = select_button_icon.activeSelf;
-                foreach(CW_ActorAsset asset in instance.found_actor_assets)
+                foreach (CW_ActorAsset asset in instance.found_actor_assets)
                 {
                     CultisysAsset cultisys_asset = Manager.cultisys.get(tmp_cultisys_id);
                     if (active)

@@ -4,7 +4,7 @@ using Cultivation_Way.Constants;
 using Cultivation_Way.Library;
 using UnityEngine;
 
-namespace Cultivation_Way.General.AboutSpell;
+namespace Cultivation_Way.Utils.General.AboutSpell;
 
 /// <summary>
 ///     提供一般法术的anim_action

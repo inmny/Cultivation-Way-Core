@@ -1,4 +1,4 @@
-namespace Cultivation_Way.General.AboutBlood;
+namespace Cultivation_Way.Utils.General.AboutBlood;
 
 public static class StaticBlood
 {

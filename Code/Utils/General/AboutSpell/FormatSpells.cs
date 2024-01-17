@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using Cultivation_Way.Animation;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
-using Cultivation_Way.General.AboutAnim;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
+using Cultivation_Way.Utils.General.AboutAnim;
 
-namespace Cultivation_Way.General.AboutSpell;
+namespace Cultivation_Way.Utils.General.AboutSpell;
 
 /// <summary>
 ///     提供格式化的简单法术的一键创建

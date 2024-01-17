@@ -103,12 +103,13 @@ public class EnergyLibrary : CW_Library<EnergyAsset>
             if (energy_asset.is_dissociative)
             {
                 // 限制传播法则
-                General.AboutUI.WorldLaws.add_switch_law($"{energy_asset.id}_spread_limit", "worldlaw_energy_grid",
+                Utils.General.AboutUI.WorldLaws.add_switch_law($"{energy_asset.id}_spread_limit",
+                    "worldlaw_energy_grid",
                     "ui/icons/iconNo_Wakan_Spread", false);
             }
         }
 
-        General.AboutUI.WorldLaws.add_switch_law("show_detailed_energy_info", "worldlaw_energy_grid",
+        Utils.General.AboutUI.WorldLaws.add_switch_law("show_detailed_energy_info", "worldlaw_energy_grid",
             "ui/cw_icons/iconInspectWakan", false);
     }
 }

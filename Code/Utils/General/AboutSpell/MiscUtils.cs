@@ -3,7 +3,8 @@ using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using NeoModLoader.api.attributes;
 using UnityEngine;
-namespace Cultivation_Way.General.AboutSpell;
+
+namespace Cultivation_Way.Utils.General.AboutSpell;
 
 public static class MiscUtils
 {

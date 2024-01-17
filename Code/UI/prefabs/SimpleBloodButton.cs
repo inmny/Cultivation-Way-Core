@@ -6,8 +6,11 @@ namespace Cultivation_Way.UI.prefabs;
 
 public class SimpleBloodButton : APrefab<SimpleBloodButton>
 {
+    public Dictionary<string, float> Blood { get; private set; }
+
     public void Setup(Dictionary<string, float> pBlood)
     {
+        Blood = pBlood;
     }
 
     private static void _init()

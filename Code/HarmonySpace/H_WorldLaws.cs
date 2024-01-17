@@ -11,17 +11,17 @@ internal static class H_WorldLaws
         foreach (PlayerOptionData world_law in __instance.list)
         {
             if (__instance.dict.ContainsKey(world_law.name) ||
-                !General.AboutUI.WorldLaws.switch_laws.ContainsKey(world_law.name)) continue;
+                !Utils.General.AboutUI.WorldLaws.switch_laws.ContainsKey(world_law.name)) continue;
             __instance.dict[world_law.name] = world_law;
         }
 
-        foreach (string law_key in General.AboutUI.WorldLaws.switch_laws.Keys)
+        foreach (var law_key in Utils.General.AboutUI.WorldLaws.switch_laws.Keys)
         {
             if (__instance.dict.ContainsKey(law_key)) continue;
 
             __instance.dict[law_key] = new PlayerOptionData(law_key)
             {
-                boolVal = General.AboutUI.WorldLaws.switch_laws[law_key]
+                boolVal = Utils.General.AboutUI.WorldLaws.switch_laws[law_key]
             };
             __instance.list.Add(__instance.dict[law_key]);
         }

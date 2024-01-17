@@ -2,7 +2,8 @@
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using Cultivation_Way.Test;
-namespace Cultivation_Way.General.AboutSpell;
+
+namespace Cultivation_Way.Utils.General.AboutSpell;
 
 public static class CostChecks
 {
@@ -82,6 +83,7 @@ public static class CostChecks
                         user.base_data.set(key_cost_pair.Key, _value - tmp);
                         break;
                 }
+
                 cost += tmp;
             }
 

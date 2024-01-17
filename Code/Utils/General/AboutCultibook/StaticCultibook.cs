@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Cultivation_Way.Library;
 
-namespace Cultivation_Way.General.AboutCultibook;
+namespace Cultivation_Way.Utils.General.AboutCultibook;
 
 public static class StaticCultibook
 {

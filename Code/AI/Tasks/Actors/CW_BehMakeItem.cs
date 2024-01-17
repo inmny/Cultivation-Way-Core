@@ -4,9 +4,9 @@ using ai.behaviours;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
-using Cultivation_Way.General.AboutNameGenerate;
 using Cultivation_Way.Library;
 using Cultivation_Way.Utils;
+using Cultivation_Way.Utils.General.AboutNameGenerate;
 using NeoModLoader.api.attributes;
 
 namespace Cultivation_Way.AI.Tasks.Actors;

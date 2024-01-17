@@ -202,7 +202,7 @@ public class CultisysLibrary : CW_Library<CultisysAsset>
 
             try_to_load_cultisys_config(cultisys);
 
-            General.AboutUI.WorldLaws.add_setting_law(
+            Utils.General.AboutUI.WorldLaws.add_setting_law(
                 $"worldlaw_config_{cultisys.id}", "worldlaw_cultisys_grid",
                 cultisys.sprite_path, Constants.Core.cultisys_config_window,
                 () => { WindowCultisysConfig.select_cultisys(cultisys); }

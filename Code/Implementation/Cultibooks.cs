@@ -1,6 +1,6 @@
 using Cultivation_Way.Constants;
-using Cultivation_Way.General.AboutCultibook;
 using Cultivation_Way.Library;
+using Cultivation_Way.Utils.General.AboutCultibook;
 
 namespace Cultivation_Way.Implementation;
 

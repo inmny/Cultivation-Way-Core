@@ -1,5 +1,5 @@
-﻿using Cultivation_Way.General.AboutAnim;
-using Cultivation_Way.Others;
+﻿using Cultivation_Way.Others;
+using Cultivation_Way.Utils.General.AboutAnim;
 using UnityEngine;
 
 namespace Cultivation_Way.Animation;

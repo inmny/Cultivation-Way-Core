@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Cultivation_Way.Constants;
-using Cultivation_Way.General.AboutSpell;
-using Cultivation_Way.Utils;
+using Cultivation_Way.Utils.General.AboutSpell;
 using UnityEngine;
 
-namespace Cultivation_Way.General.AboutAnim;
+namespace Cultivation_Way.Utils.General.AboutAnim;
 
 /// <summary>
 ///     一般动画的setting.end_action

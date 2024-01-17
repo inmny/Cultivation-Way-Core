@@ -2,8 +2,8 @@ using Cultivation_Way.Animation;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
-using Cultivation_Way.General.AboutStatusEffect;
 using Cultivation_Way.Library;
+using Cultivation_Way.Utils.General.AboutStatusEffect;
 using UnityEngine;
 
 namespace Cultivation_Way.Implementation;

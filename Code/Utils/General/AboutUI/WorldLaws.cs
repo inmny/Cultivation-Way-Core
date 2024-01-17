@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cultivation_Way.UI;
 
-namespace Cultivation_Way.General.AboutUI;
+namespace Cultivation_Way.Utils.General.AboutUI;
 
 public static class WorldLaws
 {

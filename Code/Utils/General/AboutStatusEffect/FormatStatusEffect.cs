@@ -6,7 +6,7 @@ using Cultivation_Way.Library;
 using NeoModLoader.api.attributes;
 using UnityEngine;
 
-namespace Cultivation_Way.General.AboutStatusEffect;
+namespace Cultivation_Way.Utils.General.AboutStatusEffect;
 
 public static class FormatStatusEffect
 {
