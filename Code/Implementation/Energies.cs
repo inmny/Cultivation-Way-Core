@@ -17,6 +17,11 @@ internal static class Energies
     private static readonly Color inforce_level_2 = Color.white;
     private static readonly Color inforce_level_3 = Color.yellow;
 
+    private static readonly Color blood_level_0 = new(1, 0.31f, 0.26f);
+    private static readonly Color blood_level_1 = Color.red;
+    private static readonly Color blood_level_2 = Color.white;
+    private static readonly Color blood_level_3 = Color.yellow;
+
     private static readonly Color soul_level_0 = Color.white;
     private static readonly Color soul_level_1 = Color.green;
     private static readonly Color soul_level_2 = Color.blue;
@@ -27,6 +32,32 @@ internal static class Energies
         add_wakan();
         add_soul();
         add_inforce();
+        add_blood();
+    }
+
+    private static void add_blood()
+    {
+        EnergyAsset energy = new()
+        {
+            id = Content_Constants.energy_blood_id,
+            type = CultisysType.BLOOD,
+            base_value = 1,
+            power_base_value = 1000,
+            is_dissociative = false,
+            color_calc = (energy, value, density) =>
+            {
+                var color_to_ret = density switch
+                {
+                    1 => Toolbox.blendColor(blood_level_0, blood_level_1, 100 / (100 + value)),
+                    <= 2 => Toolbox.blendColor(blood_level_1, blood_level_2, 2 - density),
+                    <= 3 => Toolbox.blendColor(blood_level_2, blood_level_3, 3 - density),
+                    _ => blood_level_3
+                };
+
+                return color_to_ret;
+            }
+        };
+        Library.Manager.energies.add(energy);
     }
 
     private static void add_inforce()
@@ -49,10 +80,6 @@ internal static class Energies
                 };
 
                 return color_to_ret;
-            },
-            spread_grad_calc = (value, density, target_value, target_density, tile, target_tile) =>
-            {
-                return target_density - density;
             }
         };
         Library.Manager.energies.add(energy);

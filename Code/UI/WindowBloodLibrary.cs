@@ -59,6 +59,18 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
 
     public void SaveData()
     {
+        HashSet<string> available_bloods = new();
+        foreach (var blood in blood_group.Values.SelectMany(group => group))
+        foreach (var blood_id in blood.Keys)
+            available_bloods.Add(blood_id);
+
+        HashSet<string> bloods_to_remove = new();
+        foreach (var blood_id in node_dict.Keys)
+            if (!available_bloods.Contains(blood_id))
+                bloods_to_remove.Add(blood_id);
+
+        foreach (var blood_id in bloods_to_remove)
+            node_dict.Remove(blood_id);
     }
 
     public void LoadData()

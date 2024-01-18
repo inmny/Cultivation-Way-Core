@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Others;
@@ -273,6 +274,7 @@ internal static class CW_TooltipAssets
         tooltip.showBaseStats(cultibook.bonus_stats);
     }
 
+    [Hotfixable]
     private static void show_blood_nodes(Tooltip tooltip, string type, TooltipData data = default)
     {
         CW_Actor actor = (CW_Actor)data.actor;
@@ -280,18 +282,28 @@ internal static class CW_TooltipAssets
         Dictionary<string, float> blood_nodes = actor.data.GetBloodNodes();
         BloodNodeAsset main_blood = actor.data.GetMainBlood();
 
-        tooltip.name.text = "血脉";
-        StringBuilder str_builder = new();
-        str_builder.AppendLine($"占优血脉\t {main_blood.ancestor_data.name}({(int)(blood_nodes[main_blood.id] * 100)}%)");
-        str_builder.AppendLine($"{main_blood.alive_descendants_count}/{main_blood.max_descendants_count}");
+        var cultisys = actor.data.GetCultisys(CultisysType.BLOOD);
+        var cultisys_level = -1;
+        if (cultisys != null) actor.data.get(cultisys.id, out cultisys_level);
+
+        tooltip.name.text = cultisys == null ? LM.Get("blood") : LM.Get(cultisys.id + "_" + cultisys_level);
+
+        tooltip.addDescription(LM.Get("blood_desc")
+            .Replace("$main_blood_name$",
+                main_blood.ancestor_data.name)
+            .Replace("$main_blood_purity$", ((int)(actor.data.GetMainBloodPurity() * 100)).ToString()));
+        tooltip.addDescription($"\n{main_blood.alive_descendants_count}/{main_blood.max_descendants_count}");
+
+        var is_first = true;
         foreach (string blood_id in blood_nodes.Keys)
         {
-            if (blood_id == main_blood.id) continue;
-            BloodNodeAsset blood = Manager.bloods.get(blood_id);
-            str_builder.AppendLine($"{blood.ancestor_data.name}({(int)(blood_nodes[blood_id] * 100)}%)");
+            if (is_first)
+                is_first = false;
+            else
+                tooltip.addLineBreak();
+            tooltip.addStatValues(Manager.bloods.get(blood_id).ancestor_data.name,
+                (int)(blood_nodes[blood_id] * 100) + "%");
         }
-
-        tooltip.addDescription(str_builder.ToString());
 
         if (CW_Core.mod_state.editor_inmny)
         {

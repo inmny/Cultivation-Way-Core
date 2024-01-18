@@ -3,7 +3,9 @@ using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using HarmonyLib;
+using NeoModLoader.api.attributes;
 using UnityEngine;
+
 namespace Cultivation_Way.Implementation.HarmonySpace;
 
 internal static class H_Actor
@@ -28,7 +30,14 @@ internal static class H_Actor
 
         CW_Actor actor = (CW_Actor)__instance;
 
-        actor.data.get(Content_Constants.immortal_id, out int level, -1);
+        actor.data.get(Content_Constants.blood_id, out var level, -1);
+        if (level >= 0)
+        {
+            UpdateBlood(actor, level);
+            actor.CheckLevelUp(Content_Constants.blood_id);
+        }
+
+        actor.data.get(Content_Constants.immortal_id, out level, -1);
 
         if (level >= 0)
         {
@@ -108,6 +117,20 @@ internal static class H_Actor
         SOUL_CHECK:
         actor.CheckLevelUp(Content_Constants.soul_id);
     }
+
+    [Hotfixable]
+    private static void UpdateBlood(CW_Actor pActor, int pLevel)
+    {
+        var blood = pActor.data.GetBloodNodes();
+        if (blood == null || blood.Count == 0) return;
+        var main_blood_id = pActor.data.GetMainBloodID();
+        blood[main_blood_id] += Content_Constants.blood_cultivelo_co_t *
+                                Mathf.Log((pLevel + 2) / (float)(pLevel + 1), Content_Constants.blood_cultivelo_co_k) /
+                                (blood.Count * blood.Count);
+
+        pActor.data.SetBloodNodes(blood);
+    }
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(CW_Actor), nameof(CW_Actor.leave_data))]
     public static void leaveWakan(CW_Actor __instance)
@@ -119,15 +142,16 @@ internal static class H_Actor
 
         if (level == cultisys.power_level.Length - 1)
         {
-
         }
 
         __instance.data.get(DataS.wakan, out float wakan);
         if (wakan <= 0) return;
         CW_EnergyMapTile energy_tile = __instance.currentTile.GetEnergyTile(Content_Constants.energy_wakan_id);
         if (energy_tile == null) return;
-        energy_tile.UpdateValue(energy_tile.value + wakan * Mathf.Pow(cultisys.power_base, cultisys.power_level[level]));
+        energy_tile.UpdateValue(energy_tile.value +
+                                wakan * Mathf.Pow(cultisys.power_base, cultisys.power_level[level]));
     }
+
     [HarmonyPrefix]
     [HarmonyPatch(typeof(ActorBase), nameof(ActorBase.getUnitTexturePath))]
     public static bool actor_getUnitTexture(ActorBase __instance, ref string __result)

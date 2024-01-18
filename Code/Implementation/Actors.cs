@@ -28,6 +28,7 @@ internal static class Actors
         CW_ActorAsset cw_actor_asset = new(asset);
         add(cw_actor_asset);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.bushido_id);
+        cw_actor_asset.add_force_cultisys(Content_Constants.blood_id);
 
         cw_actor_asset.culti_velo = 1;
 
@@ -70,6 +71,7 @@ internal static class Actors
         cw_actor_asset = new CW_ActorAsset(baby_asset);
         add(cw_actor_asset);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.bushido_id);
+        cw_actor_asset.add_force_cultisys(Content_Constants.blood_id);
         AssetManager.actor_library.cloneColorSetFrom(Content_Constants.wu_id);
         AssetManager.actor_library.loadShadow(baby_asset);
     }

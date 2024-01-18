@@ -286,6 +286,7 @@ public static class ActorDataTools
 
         data.removeString(DataS.blood_nodes);
         data.removeString(DataS.main_blood_id);
+        data.removeString(DataS.main_blood_purity);
     }
 
     /// <summary>
@@ -294,6 +295,15 @@ public static class ActorDataTools
     public static string GetMainBloodID(this ActorData pData)
     {
         pData.get(DataS.main_blood_id, out string result, "");
+        return result;
+    }
+
+    /// <summary>
+    ///     读取占优血脉节点纯度
+    /// </summary>
+    public static float GetMainBloodPurity(this ActorData pData)
+    {
+        pData.get(DataS.main_blood_purity, out float result);
         return result;
     }
 

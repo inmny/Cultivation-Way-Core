@@ -24,6 +24,12 @@ internal class Content_Constants
     public const string energy_soul_id = energy_prefix + "soul";
     public const int soul_max_level = 20;
 
+    public const string blood_id = cultisys_prefix + "blood";
+    public const string energy_blood_id = energy_prefix + "blood";
+    public const int blood_max_level = 20;
+    public const float blood_cultivelo_co_t = 0.01f;
+    public const float blood_cultivelo_co_k = 10;
+
     public const float default_spell_cost = 0.03f;
     public const float call_ancestor_min_purity = 0.75f;
 

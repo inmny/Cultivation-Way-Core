@@ -893,7 +893,7 @@ public partial class CW_Actor : Actor
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private bool __can_create_blood_on_levelup(CultisysAsset cultisys, int curr_level)
     {
-        return curr_level == cultisys.max_level;
+        return curr_level == cultisys.max_level - 1;
     }
 
     /// <summary>
@@ -915,15 +915,14 @@ public partial class CW_Actor : Actor
         if (Constants.Others.new_creature_create_blood) CreateBlood();
     }
 
-    internal void cw_finalize()
+    public void CheckGetCultisys()
     {
-        data.health = int.MaxValue;
-        data.set(DataS.soul, float.MaxValue);
-        // 暂且不支持直接的血脉修炼体系
-        uint allow_cultisys_types = 0b111;
+        uint allow_cultisys_types = 0b11111;
         if (data.GetCultisys(CultisysType.WAKAN) != null) allow_cultisys_types &= ~(uint)CultisysType.WAKAN;
         if (data.GetCultisys(CultisysType.SOUL) != null) allow_cultisys_types &= ~(uint)CultisysType.SOUL;
         if (data.GetCultisys(CultisysType.BODY) != null) allow_cultisys_types &= ~(uint)CultisysType.BODY;
+        if (data.GetCultisys(CultisysType.BLOOD) != null) allow_cultisys_types &= ~(uint)CultisysType.BLOOD;
+        if (data.GetCultisys(CultisysType.HIDDEN) != null) allow_cultisys_types &= ~(uint)CultisysType.HIDDEN;
         // 强制添加的修炼体系
         foreach (CultisysAsset cultisys in cw_asset.force_cultisys)
         {
@@ -941,6 +940,13 @@ public partial class CW_Actor : Actor
             data.set(cultisys.id, 0);
             allow_cultisys_types &= ~(uint)cultisys.type;
         }
+    }
+
+    internal void cw_finalize()
+    {
+        data.health = int.MaxValue;
+        data.set(DataS.soul, float.MaxValue);
+        CheckGetCultisys();
 
         foreach (string spell_id in cw_asset.born_spells)
         {
