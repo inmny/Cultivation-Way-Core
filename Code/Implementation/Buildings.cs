@@ -99,6 +99,11 @@ internal static class Buildings
 
         foreach (BuildingAsset building in human_buildings)
         {
+            var test_path = building.sprite_path;
+            if (string.IsNullOrEmpty(test_path))
+                test_path = "buildings/" + building.id.Replace(SK.human, race);
+            if (UnityEngine.Resources.LoadAll<Sprite>(test_path) is not { Length: > 0 }) continue;
+
             BuildingAsset new_building =
                 AssetManager.buildings.clone(building.id.Replace(SK.human, race),
                     building.id);
