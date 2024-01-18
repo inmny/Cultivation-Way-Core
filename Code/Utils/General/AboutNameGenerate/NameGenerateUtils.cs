@@ -1,9 +1,11 @@
 using System.Collections.Generic;
-using Chinese_Name;
 using Cultivation_Way.Core;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using NeoModLoader.api.attributes;
+#if 一米_中文名
+using Chinese_Name;
+#endif
 
 namespace Cultivation_Way.Utils.General.AboutNameGenerate;
 
