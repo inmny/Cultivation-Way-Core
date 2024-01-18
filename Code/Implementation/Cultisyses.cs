@@ -3,6 +3,7 @@ using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using NeoModLoader.api.attributes;
 using UnityEngine;
+
 namespace Cultivation_Way.Implementation;
 
 internal static class Cultisyses
@@ -45,6 +46,7 @@ internal static class Cultisyses
                 immortal_power_co[i] = Mathf.Pow(cultisys.power_base, cultisys.power_level[i]);
             }
         }
+
         CultisysAsset cultisys = new("cw_cultisys_immortal", Content_Constants.energy_wakan_id, CultisysType.WAKAN,
             Content_Constants.immortal_max_level, init_immortal)
         {
@@ -86,6 +88,9 @@ internal static class Cultisyses
                     SpecialSpells.CastDoom(actor, (DoomType)(level / 5 - 1));
                 }
 
+                actor.data.get(DataS.wakan, out float wakan);
+                wakan *= immortal_power_co[level - 1] / immortal_power_co[level];
+                actor.data.set(DataS.wakan, wakan);
                 return 0;
             }
         };
@@ -116,6 +121,7 @@ internal static class Cultisyses
                 cultisys.bonus_stats[i][S.max_age] = (i + 1) * (i + 1);
             }
         }
+
         CultisysAsset cultisys = new("cw_cultisys_bushido", Content_Constants.energy_bushido_id, CultisysType.BODY,
             Content_Constants.bushido_max_level, init_bushido)
         {
@@ -183,6 +189,7 @@ internal static class Cultisyses
                 cultisys.bonus_stats[i][S.health] = i * 30;
             }
         }
+
         CultisysAsset cultisys = new("cw_cultisys_soul", Content_Constants.energy_soul_id, CultisysType.SOUL,
             Content_Constants.soul_max_level, init_soul)
         {
