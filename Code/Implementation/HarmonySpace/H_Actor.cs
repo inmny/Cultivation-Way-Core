@@ -10,6 +10,18 @@ namespace Cultivation_Way.Implementation.HarmonySpace;
 
 internal static class H_Actor
 {
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(Actor), nameof(Actor.newKillAction))]
+    public static void killTarget(Actor __instance, Actor pDeadUnit)
+    {
+        pDeadUnit.data.get(DataS.soul, out float get_soul);
+        get_soul *= 0.7f;
+        __instance.data.get(DataS.soul, out float soul);
+        soul += get_soul;
+        soul = Mathf.Min(soul, __instance.stats[CW_S.soul]);
+        __instance.data.set(DataS.soul, soul);
+    }
+
     /// <summary>
     ///     按年更新仙路修炼进度
     /// </summary>
