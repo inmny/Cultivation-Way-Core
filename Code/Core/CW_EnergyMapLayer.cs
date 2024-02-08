@@ -7,13 +7,13 @@ namespace Cultivation_Way.Core;
 
 public class CW_EnergyMapLayer : MapLayer
 {
-    private bool force_redraw = false;
-    private object force_redraw_obj = new object();
-    private bool last_enabled = false;
-    private object lock_pixels = new object();
-    private Color spr_color = Color.white;
-    private Color32[] tmp_pixels;
-    private bool to_update = false;
+    private readonly object    force_redraw_obj = new();
+    private readonly object    lock_pixels      = new();
+    private          bool      force_redraw;
+    private          bool      last_enabled;
+    private          Color     spr_color = Color.white;
+    private          Color32[] tmp_pixels;
+    private          bool      to_update;
 
     public override void create()
     {
@@ -48,6 +48,7 @@ public class CW_EnergyMapLayer : MapLayer
         if (!to_update) return;
         Monitor.Enter(lock_pixels);
         updatePixels();
+        to_update = false;
         Monitor.Exit(lock_pixels);
 
         base.update(pElapsed);
@@ -111,9 +112,7 @@ public class CW_EnergyMapLayer : MapLayer
         last_enabled = true;
         Monitor.Enter(lock_pixels);
         to_update = true;
-        var tmp = pixels;
-        pixels = tmp_pixels;
-        tmp_pixels = tmp;
+        (pixels, tmp_pixels) = (tmp_pixels, pixels);
         Monitor.Exit(lock_pixels);
         ExitForceRedraw();
     }
