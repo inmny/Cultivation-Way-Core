@@ -9,10 +9,11 @@ namespace Cultivation_Way.UI.prefabs;
 
 public class BloodLibraryGrid : APrefab<BloodLibraryGrid>
 {
-    public SimpleButton clear_button;
-    public RectTransform GridTransform;
+    public  SimpleButton                             clear_button;
+    public  RectTransform                            GridTransform;
     private ObjectPoolGenericMono<SimpleBloodButton> blood_button_pool;
-    private InputField title_input;
+    private InputField                               title_input;
+    public  string                                   id { get; private set; }
 
     public void AddBloodNode(Dictionary<string, float> pBlood)
     {
@@ -27,16 +28,20 @@ public class BloodLibraryGrid : APrefab<BloodLibraryGrid>
 
         clear_button = transform.Find("Top/ClearButton").GetComponent<SimpleButton>();
         clear_button.Setup(() => { WindowBloodLibrary.Instance.DissolveGroup(this); },
-            SpriteTextureLoader.getSprite("ui/icons/worldrules/icon_rebellion"), pTipType: "normal",
-            pTipData: new TooltipData
-            {
-                tip_name = "dissolve",
-                tip_description = "dissolve_group"
-            }, pSize: new Vector2(18, 18));
+                           SpriteTextureLoader.getSprite("ui/icons/worldrules/icon_rebellion"), pTipType: "normal",
+                           pTipData: new TooltipData
+                           {
+                               tip_name = "dissolve",
+                               tip_description = "dissolve_group"
+                           }, pSize: new Vector2(18, 18));
 
         title_input = transform.Find("Top/Title/InputField").GetComponent<InputField>();
         transform.Find("Top/Title").GetComponent<TextInput>().Setup("Group Name",
-            new_title => { WindowBloodLibrary.Instance.RenameGroup(this, new_title); });
+                                                                    new_title =>
+                                                                    {
+                                                                        WindowBloodLibrary.Instance.RenameGroup(
+                                                                            this, new_title);
+                                                                    });
         GridTransform = transform.Find("Grid").GetComponent<RectTransform>();
         blood_button_pool =
             new ObjectPoolGenericMono<SimpleBloodButton>(SimpleBloodButton.Prefab, GridTransform);
@@ -46,9 +51,16 @@ public class BloodLibraryGrid : APrefab<BloodLibraryGrid>
     public void Setup(string pTitle)
     {
         Init();
+        id = pTitle;
         name = pTitle;
         title_input.text = pTitle;
         blood_button_pool.clear();
+    }
+
+    public void Rename(string pNewName)
+    {
+        name = pNewName;
+        title_input.text = pNewName;
     }
 
     private static void _init()
@@ -74,7 +86,7 @@ public class BloodLibraryGrid : APrefab<BloodLibraryGrid>
         top.AddChild(clear_button.gameObject);
 
         var grid = root.BeginGridGroup(5, pSize: default, pSpacing: new Vector2(4, 4),
-            pCellSize: new Vector2(36, 36));
+                                       pCellSize: new Vector2(36,                  36));
         grid.name = "Grid";
         grid.fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
         grid.fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;

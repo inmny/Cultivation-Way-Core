@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Cultivation_Way.Constants;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
@@ -16,23 +18,23 @@ namespace Cultivation_Way.UI;
 
 public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibraryWindow<Dictionary<string, float>>
 {
-    private readonly Dictionary<string, BloodLibraryGrid> blood_grids = new();
+    private readonly Dictionary<string, BloodLibraryGrid>                blood_grids = new();
     private readonly Dictionary<string, List<Dictionary<string, float>>> blood_group = new();
-    public readonly Dictionary<string, BloodNodeAsset> node_dict = new();
-    private bool all_enabled = true;
+    private          bool                                                all_enabled = true;
 
     private ObjectPoolGenericMono<BloodLibraryGrid> blood_grid_pool;
-    private BloodMergePanel blood_merge_panel;
-    private GameObject create_group_obj;
+    private BloodMergePanel                         blood_merge_panel;
+    private GameObject                              create_group_obj;
 
     private BloodLibraryGrid DefaultGroup;
 
     private int group_code;
 
-    private bool is_dirty;
-    private int skip_frame = 4;
-    public RectTransform background_transform => BackgroundTransform as RectTransform;
-    public static WindowBloodLibrary Instance { get; private set; }
+    private       bool                               is_dirty;
+    private       int                                skip_frame = 4;
+    public        Dictionary<string, BloodNodeAsset> node_dict            { get; private set; } = new();
+    public        RectTransform                      background_transform => BackgroundTransform as RectTransform;
+    public static WindowBloodLibrary                 Instance             { get; private set; }
 
     private void Update()
     {
@@ -71,10 +73,41 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
 
         foreach (var blood_id in bloods_to_remove)
             node_dict.Remove(blood_id);
+
+        File.WriteAllText(Paths.BloodLibraryPath,     GeneralHelper.to_json(blood_group, true));
+        File.WriteAllText(Paths.BloodNodeLibraryPath, GeneralHelper.to_json(node_dict,   true));
     }
 
     public void LoadData()
     {
+        if (!File.Exists(Paths.BloodLibraryPath)) return;
+        node_dict =
+            GeneralHelper.from_json<Dictionary<string, BloodNodeAsset>>(File.ReadAllText(Paths.BloodNodeLibraryPath));
+        var read_data =
+            GeneralHelper.from_json<Dictionary<string, List<Dictionary<string, float>>>>(
+                File.ReadAllText(Paths.BloodLibraryPath));
+
+        foreach (var group_id in read_data.Keys)
+        {
+            var group = read_data[group_id];
+            if (!blood_grids.TryGetValue(group_id, out BloodLibraryGrid group_grid))
+            {
+                CreateGroup(group_id);
+                group_grid = blood_grids[group_id];
+            }
+
+            if (!blood_group.TryGetValue(group_id, out var group_bloods))
+            {
+                blood_group[group_id] = new List<Dictionary<string, float>>();
+                group_bloods = blood_group[group_id];
+            }
+
+            foreach (var blood in group)
+            {
+                group_bloods.Add(blood);
+                group_grid.AddBloodNode(blood);
+            }
+        }
     }
 
     public void PushData(Dictionary<string, float> pData)
@@ -92,7 +125,6 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
             node_dict[copy.id] = copy;
         }
 
-        Data.Add(pData);
         DefaultGroup.AddBloodNode(pData);
     }
 
@@ -103,15 +135,29 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
         layout.enabled = all_enabled;
     }
 
-    [Hotfixable]
     private void CreateGroup()
     {
+        CreateGroup(null);
+    }
+
+    [Hotfixable]
+    private void CreateGroup(string pOverrideID)
+    {
         var group = blood_grid_pool.getNext();
-        group.Setup($"group_{group_code++}");
+        if (!string.IsNullOrEmpty(pOverrideID))
+        {
+            group.Setup(pOverrideID);
+        }
+        else
+        {
+            while (blood_group.ContainsKey($"group_{group_code}")) group_code++;
+            group.Setup($"group_{group_code++}");
+        }
+
         group.transform.SetAsLastSibling();
 
-        blood_group.Add(group.name, new List<Dictionary<string, float>>());
-        blood_grids.Add(group.name, group);
+        blood_group.Add(group.id, new List<Dictionary<string, float>>());
+        blood_grids.Add(group.id, group);
 
         is_dirty = true;
     }
@@ -120,41 +166,34 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
     {
         if (pGroup == DefaultGroup) return;
 
-        blood_grids.Remove(pGroup.name);
+        blood_grids.Remove(pGroup.id);
 
-        var bloods = blood_group[pGroup.name];
-        blood_group.Remove(pGroup.name);
+        var bloods = blood_group[pGroup.id];
+        blood_group.Remove(pGroup.id);
 
         blood_grid_pool.InactiveObj(pGroup);
 
-        blood_group[DefaultGroup.name].AddRange(bloods);
+        blood_group[DefaultGroup.id].AddRange(bloods);
 
         is_dirty = true;
     }
 
     internal void RenameGroup(BloodLibraryGrid pGroup, string pNewName)
     {
-        blood_grids.Remove(pGroup.name);
-        blood_grids.Add(pNewName, pGroup);
-
-        var bloods = blood_group[pGroup.name];
-        blood_group.Remove(pGroup.name);
-        blood_group.Add(pNewName, bloods);
-
-        pGroup.name = pNewName;
+        pGroup.Rename(pNewName);
     }
 
     internal bool CheckOnReceiver(SimpleBloodButton pButton)
     {
         if (RectTransformUtility.RectangleContainsScreenPoint(blood_merge_panel.input_rect_left,
-                pButton.transform.position)
+                                                              pButton.transform.position)
             || RectTransformUtility.RectangleContainsScreenPoint(blood_merge_panel.input_rect_right,
-                pButton.transform.position))
+                                                                 pButton.transform.position))
             return true;
 
         foreach (var grid in blood_grids.Values)
             if (RectTransformUtility.RectangleContainsScreenPoint(grid.GetComponent<RectTransform>(),
-                    pButton.transform.position))
+                                                                  pButton.transform.position))
                 return true;
         return false;
     }
@@ -170,14 +209,14 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
         var set = false;
 
         if (RectTransformUtility.RectangleContainsScreenPoint(blood_merge_panel.input_rect_left,
-                pButton.transform.position))
+                                                              pButton.transform.position))
         {
             blood_merge_panel.input_left = pButton;
             pButton.transform.SetParent(blood_merge_panel.input_rect_left);
             set = true;
         }
         else if (RectTransformUtility.RectangleContainsScreenPoint(blood_merge_panel.input_rect_right,
-                     pButton.transform.position))
+                                                                   pButton.transform.position))
         {
             blood_merge_panel.input_right = pButton;
             pButton.transform.SetParent(blood_merge_panel.input_rect_right);
@@ -186,8 +225,8 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
         else
         {
             foreach (var grid_id in blood_grids.Keys.Where(grid_id => RectTransformUtility.RectangleContainsScreenPoint(
-                         blood_grids[grid_id].GetComponent<RectTransform>(),
-                         pButton.transform.position)))
+                                                               blood_grids[grid_id].GetComponent<RectTransform>(),
+                                                               pButton.transform.position)))
             {
                 if (!blood_group[grid_id].Contains(pButton.Blood))
                 {
@@ -229,7 +268,8 @@ public class WindowBloodLibrary : AutoLayoutWindow<WindowBloodLibrary>, ILibrary
         var grid_part = this.BeginVertGroup();
         blood_grid_pool = new ObjectPoolGenericMono<BloodLibraryGrid>(BloodLibraryGrid.Prefab, grid_part.transform);
         var default_grid = blood_grid_pool.getNext(0);
-        default_grid.Setup(LM.Get("default"));
+        default_grid.Setup("default");
+        default_grid.Rename(LM.Get("default"));
         default_grid.clear_button.Button.enabled = false;
         DefaultGroup = default_grid;
         grid_part.AddChild(default_grid.gameObject);

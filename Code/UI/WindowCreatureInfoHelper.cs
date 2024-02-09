@@ -16,8 +16,8 @@ namespace Cultivation_Way.UI;
 
 internal class CultiProgress : MonoBehaviour
 {
-    private StatBar bar;
-    private Image bar_image;
+    private StatBar   bar;
+    private Image     bar_image;
     private TipButton tip_button;
 
     private void Awake()
@@ -68,10 +68,10 @@ internal class CultiProgress : MonoBehaviour
 
         bar_image.color = type switch
         {
-            CultisysType.BODY => Color.red,
-            CultisysType.SOUL => Color.gray,
+            CultisysType.BODY  => Color.red,
+            CultisysType.SOUL  => Color.gray,
             CultisysType.WAKAN => Color.blue,
-            _ => Color.white
+            _                  => Color.white
         };
         if (cultisys.culti_energy != null)
         {
@@ -108,13 +108,13 @@ internal class WindowCreatureInfoHelper
     public static CultiProgress soul_progress;
     public static CultiProgress wakan_progress;
 
-    public static Transform content_transform;
-    public static Transform background_transform;
-    public static Transform stat_icons_transform;
-    private static bool initialized;
-    private static bool first_open = true;
-    public static RectTransform drag_receiver;
-    private static Text drag_receiver_text;
+    public static  Transform     content_transform;
+    public static  Transform     background_transform;
+    public static  Transform     stat_icons_transform;
+    private static bool          initialized;
+    private static bool          first_open = true;
+    public static  RectTransform drag_receiver;
+    private static Text          drag_receiver_text;
 
     private static SubSelectWindow award_select_window;
 
@@ -210,20 +210,20 @@ internal class WindowCreatureInfoHelper
 
         GameObject left_part = new("Left", typeof(Image), typeof(GridLayoutGroup));
         left_part.transform.SetParent(background_transform);
-        left_part.transform.localScale = new Vector3(1, 1);
+        left_part.transform.localScale = new Vector3(1,       1);
         left_part.transform.localPosition = new Vector3(-250, 0, 0);
         left_part.GetComponent<Image>().sprite = FastVisit.get_square_frame();
         left_part.GetComponent<Image>().type = Image.Type.Sliced;
         left_part.GetComponent<RectTransform>().sizeDelta = new Vector2(40, 128);
-        element = Object.Instantiate(Prefabs.tip_button_prefab, left_part.transform);
+        element = Object.Instantiate(Prefabs.tip_button_prefab,   left_part.transform);
         cultibook = Object.Instantiate(Prefabs.tip_button_prefab, left_part.transform);
-        blood = Object.Instantiate(Prefabs.tip_button_prefab, left_part.transform);
+        blood = Object.Instantiate(Prefabs.tip_button_prefab,     left_part.transform);
         element.name = "element";
         cultibook.name = "cultibook";
         blood.name = "blood";
         grid_layout_group = left_part.GetComponent<GridLayoutGroup>();
         grid_layout_group.cellSize = new Vector2(32, 32);
-        grid_layout_group.spacing = new Vector2(4, 4);
+        grid_layout_group.spacing = new Vector2(4,   4);
         grid_layout_group.padding = new RectOffset(4, 4, 8, 4);
         grid_layout_group.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         grid_layout_group.constraintCount = 1;
@@ -231,34 +231,34 @@ internal class WindowCreatureInfoHelper
         #endregion
 
         body_progress = Object.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
-            .AddComponent<CultiProgress>();
+                              .AddComponent<CultiProgress>();
         body_progress.name = "BodyCultiProgress";
         body_progress.transform.localPosition = new Vector3(-165, 50, 0);
         body_progress.GetComponent<Image>().sprite = FastVisit.get_square_frame();
         body_progress.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 21);
         body_progress.transform.Find("Background").localPosition += new Vector3(7, 0);
-        body_progress.transform.Find("Mask").localPosition += new Vector3(7, 0);
-        body_progress.transform.Find("Icon").localPosition += new Vector3(7, 0);
+        body_progress.transform.Find("Mask").localPosition += new Vector3(7,       0);
+        body_progress.transform.Find("Icon").localPosition += new Vector3(7,       0);
         //body_progress.transform.Find("Text").localPosition += new Vector3(7, 0);
         wakan_progress = Object.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
-            .AddComponent<CultiProgress>();
+                               .AddComponent<CultiProgress>();
         wakan_progress.name = "WakanCultiProgress";
         wakan_progress.transform.localPosition = new Vector3(-165, 0, 0);
         wakan_progress.GetComponent<Image>().sprite = FastVisit.get_square_frame();
         wakan_progress.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 21);
         wakan_progress.transform.Find("Background").localPosition += new Vector3(7, 0);
-        wakan_progress.transform.Find("Mask").localPosition += new Vector3(7, 0);
-        wakan_progress.transform.Find("Icon").localPosition += new Vector3(7, 0);
+        wakan_progress.transform.Find("Mask").localPosition += new Vector3(7,       0);
+        wakan_progress.transform.Find("Icon").localPosition += new Vector3(7,       0);
         //wakan_progress.transform.Find("Text").localPosition += new Vector3(7, 0);
         soul_progress = Object.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
-            .AddComponent<CultiProgress>();
+                              .AddComponent<CultiProgress>();
         soul_progress.name = "SoulCultiProgress";
         soul_progress.transform.localPosition = new Vector3(-165, -50, 0);
         soul_progress.GetComponent<Image>().sprite = FastVisit.get_square_frame();
         soul_progress.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 21);
         soul_progress.transform.Find("Background").localPosition += new Vector3(7, 0);
-        soul_progress.transform.Find("Mask").localPosition += new Vector3(7, 0);
-        soul_progress.transform.Find("Icon").localPosition += new Vector3(7, 0);
+        soul_progress.transform.Find("Mask").localPosition += new Vector3(7,       0);
+        soul_progress.transform.Find("Icon").localPosition += new Vector3(7,       0);
         //soul_progress.transform.Find("Text").localPosition += new Vector3(7, 0);
 
         GameObject receiver = new("Drag Receiver", typeof(Image));
@@ -290,15 +290,15 @@ internal class WindowCreatureInfoHelper
         award_select_window.transform.localPosition = Vector3.zero;
         award_select_window.gameObject.SetActive(false);
 
-        var element_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
+        var element_award_entry = Object.Instantiate(SimpleButton.Prefab,   null);
         var cultibook_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
         var equipment_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
-        var elixir_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
-        var blood_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
-        var cultisys_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
-        var spell_award_entry = Object.Instantiate(SimpleButton.Prefab, null);
-        var possession_entry = Object.Instantiate(SimpleButton.Prefab, null);
-        var child_born_entry = Object.Instantiate(SimpleButton.Prefab, null);
+        var elixir_award_entry = Object.Instantiate(SimpleButton.Prefab,    null);
+        var blood_award_entry = Object.Instantiate(SimpleButton.Prefab,     null);
+        var cultisys_award_entry = Object.Instantiate(SimpleButton.Prefab,  null);
+        var spell_award_entry = Object.Instantiate(SimpleButton.Prefab,     null);
+        var possession_entry = Object.Instantiate(SimpleButton.Prefab,      null);
+        var child_born_entry = Object.Instantiate(SimpleButton.Prefab,      null);
 
         element_award_entry.Setup([Hotfixable]() =>
         {
@@ -308,34 +308,38 @@ internal class WindowCreatureInfoHelper
             scroll_window.GetComponent<WindowCreatureInfo>().OnEnable();
             WorldTip.showNow(
                 LM.Get("ElementAdjust Result").Replace("$element$",
-                    LM.Get(Config.selectedUnit.data.GetElement().GetElementType().id)), false, "top");
+                                                       LM.Get(Config.selectedUnit.data.GetElement().GetElementType()
+                                                                    .id)), false, "top");
         }, SpriteTextureLoader.getSprite("ui/icons/iconElement"), pSize: new Vector2(32, 32), pTipData: new TooltipData
         {
             tip_name = "ElementAdjust",
             tip_description = "ElementAdjust Description"
         }, pTipType: "normal");
         cultibook_award_entry.Setup(() =>
-            {
-                ScrollWindow.moveAllToLeftAndRemove();
-                ScrollWindow.showWindow(nameof(WindowCultibookLibrary));
-                CW_Core.mod_state.is_awarding = true;
-            }, SpriteTextureLoader.getSprite("ui/icons/iconCultiBook_immortal"), pSize: new Vector2(32, 32),
-            pTipData: new TooltipData
-            {
-                tip_name = nameof(WindowCultibookLibrary),
-                tip_description = nameof(WindowCultibookLibrary) + Constants.Core.new_desc_suffix
-            }, pTipType: "normal");
+                                    {
+                                        ScrollWindow.moveAllToLeftAndRemove();
+                                        ScrollWindow.showWindow(nameof(WindowCultibookLibrary));
+                                        CW_Core.mod_state.is_awarding = true;
+                                    }, SpriteTextureLoader.getSprite("ui/icons/iconCultiBook_immortal"),
+                                    pSize: new Vector2(32, 32),
+                                    pTipData: new TooltipData
+                                    {
+                                        tip_name = nameof(WindowCultibookLibrary),
+                                        tip_description = nameof(WindowCultibookLibrary) +
+                                                          Constants.Core.new_desc_suffix
+                                    }, pTipType: "normal");
         equipment_award_entry.Setup(() =>
-            {
-                ScrollWindow.moveAllToLeftAndRemove();
-                ScrollWindow.showWindow(nameof(WindowItemLibrary));
-                CW_Core.mod_state.is_awarding = true;
-            }, SpriteTextureLoader.getSprite("ui/icons/items/icon_紫金葫芦_violet_gold"), pSize: new Vector2(32, 32),
-            pTipData: new TooltipData
-            {
-                tip_name = nameof(WindowItemLibrary),
-                tip_description = nameof(WindowItemLibrary) + Constants.Core.new_desc_suffix
-            }, pTipType: "normal");
+                                    {
+                                        ScrollWindow.moveAllToLeftAndRemove();
+                                        ScrollWindow.showWindow(nameof(WindowItemLibrary));
+                                        CW_Core.mod_state.is_awarding = true;
+                                    }, SpriteTextureLoader.getSprite("ui/icons/items/icon_紫金葫芦_violet_gold"),
+                                    pSize: new Vector2(32, 32),
+                                    pTipData: new TooltipData
+                                    {
+                                        tip_name = nameof(WindowItemLibrary),
+                                        tip_description = nameof(WindowItemLibrary) + Constants.Core.new_desc_suffix
+                                    }, pTipType: "normal");
         elixir_award_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();
@@ -343,16 +347,16 @@ internal class WindowCreatureInfoHelper
             CW_Core.mod_state.is_awarding = true;
         }, SpriteTextureLoader.getSprite("ui/icons/elixirs/iconNormal"), pSize: new Vector2(32, 32));
         blood_award_entry.Setup(() =>
-            {
-                ScrollWindow.moveAllToLeftAndRemove();
-                ScrollWindow.showWindow(nameof(WindowBloodLibrary));
-                CW_Core.mod_state.is_awarding = true;
-            }, SpriteTextureLoader.getSprite("ui/icons/iconWus"), pSize: new Vector2(32, 32),
-            pTipData: new TooltipData
-            {
-                tip_name = nameof(WindowBloodLibrary),
-                tip_description = nameof(WindowBloodLibrary) + Constants.Core.new_desc_suffix
-            }, pTipType: "normal");
+                                {
+                                    ScrollWindow.moveAllToLeftAndRemove();
+                                    ScrollWindow.showWindow(nameof(WindowBloodLibrary));
+                                    CW_Core.mod_state.is_awarding = true;
+                                }, SpriteTextureLoader.getSprite("ui/icons/iconWus"), pSize: new Vector2(32, 32),
+                                pTipData: new TooltipData
+                                {
+                                    tip_name = nameof(WindowBloodLibrary),
+                                    tip_description = nameof(WindowBloodLibrary) + Constants.Core.new_desc_suffix
+                                }, pTipType: "normal");
         cultisys_award_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();
@@ -396,7 +400,7 @@ internal class WindowCreatureInfoHelper
 
 
         var award_entry = Object.Instantiate(SimpleButton.Prefab, background_transform);
-        award_entry.transform.localPosition = new Vector3(-125, 100);
+        award_entry.transform.localPosition = new Vector3(-150, 83);
         award_entry.transform.localScale = Vector3.one;
         award_entry.Setup([Hotfixable]() =>
         {
@@ -409,7 +413,7 @@ internal class WindowCreatureInfoHelper
         var anim = award_entry.gameObject.AddComponent<IconRotationAnimation>();
         anim.image = award_entry.Background;
         anim.delay = 1.5f;
-        anim.initScale = new Vector3(1, 1, 1);
+        anim.initScale = new Vector3(1,  1,    1);
         anim.scaleTo = new Vector3(1.1f, 1.1f, 1.1f);
 
 
