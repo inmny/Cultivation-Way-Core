@@ -11,6 +11,7 @@ using Cultivation_Way.Others;
 using HarmonyLib;
 using NeoModLoader.api.attributes;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Cultivation_Way.HarmonySpace;
 
@@ -29,6 +30,26 @@ internal static class H_Actor
     public static void createJobs_patch(BatchActors __instance)
     {
         JobManagerTools.add_actor_update_month_job(__instance);
+    }
+
+    [HarmonyPostfix]
+    [HarmonyPatch(typeof(Actor), nameof(Actor.newKillAction))]
+    private static void newKillAction_patch(Actor __instance, Actor pDeadUnit, Kingdom pPrevKingdom)
+    {
+        if (__instance.city == null) return;
+        CW_Actor dead_unit = pDeadUnit.CW();
+        if (dead_unit == null) return;
+        CW_ActorAsset dead_unit_asset = dead_unit.cw_asset;
+        if (dead_unit_asset.dropped_resources == null || dead_unit_asset.dropped_resources.Count == 0) return;
+
+        foreach (CW_ActorAsset.DroppedResource dropped_resource in dead_unit_asset.dropped_resources)
+        {
+            if (!Toolbox.randomChance(dropped_resource.chance)) continue;
+
+            __instance.city.data.storage.change(dropped_resource.resource_id,
+                                                Toolbox.randomInt(dropped_resource.min_count,
+                                                                  dropped_resource.max_count));
+        }
     }
 
     #region 人物属性更新 目的在于应用模组中新的人物属性加成
@@ -55,7 +76,8 @@ internal static class H_Actor
     {
         List<CodeInstruction> codes = instructions.ToList();
         int index = codes.FindIndex(instr =>
-            instr.opcode == OpCodes.Stfld && ((FieldInfo)instr.operand).Name == "has_status_frozen");
+                                        instr.opcode                    == OpCodes.Stfld &&
+                                        ((FieldInfo)instr.operand).Name == "has_status_frozen");
         if (index == -1)
         {
             CW_Core.LogWarning("updateStats_Transpiler: index not found");
@@ -64,7 +86,8 @@ internal static class H_Actor
 
         codes.Insert(index + 1, new CodeInstruction(OpCodes.Ldarg_0));
         codes.Insert(index + 2,
-            new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(H_Actor), nameof(cw_updateStats))));
+                     new CodeInstruction(OpCodes.Callvirt,
+                                         AccessTools.Method(typeof(H_Actor), nameof(cw_updateStats))));
         return codes;
     }
 
@@ -167,7 +190,7 @@ internal static class H_Actor
     [HarmonyPrefix]
     [HarmonyPatch(typeof(ActorManager), nameof(ActorManager.createNewUnit))]
     public static bool createNewUnit_patch(ActorManager __instance, string pStatsID, WorldTile pTile, float pZHeight,
-        ref Actor __result)
+                                           ref Actor    __result)
     {
         ActorAsset asset = AssetManager.actor_library.get(pStatsID);
         if (asset == null)
@@ -196,7 +219,7 @@ internal static class H_Actor
     [HarmonyPrefix]
     [HarmonyPatch(typeof(ActorManager), nameof(ActorManager.spawnPopPoint))]
     public static bool spawnPopPoint_patch(ActorManager __instance, ActorData pData, WorldTile pTile, City pCity,
-        ref Actor __result)
+                                           ref Actor    __result)
     {
         ActorAsset asset = AssetManager.actor_library.get(pData.asset_id);
         if (asset == null)
@@ -362,8 +385,8 @@ internal static class H_Actor
     /// </summary>
     [HarmonyPrefix]
     [HarmonyPatch(typeof(Actor), nameof(Actor.tryToAttack))]
-    public static bool tryToAttack_prefix(Actor __instance, BaseSimObject pTarget, ref bool pDoChecks,
-        ref bool __result)
+    public static bool tryToAttack_prefix(Actor    __instance, BaseSimObject pTarget, ref bool pDoChecks,
+                                          ref bool __result)
     {
         if (((CW_Actor)__instance).data_spells.Count == 0) return true;
 

@@ -35,6 +35,11 @@ public class CW_ActorAsset : Asset
     public float culti_velo;
 
     /// <summary>
+    ///     死亡掉落资源
+    /// </summary>
+    public List<DroppedResource> dropped_resources = new();
+
+    /// <summary>
     ///     预设名
     /// </summary>
     public string fixed_name = null;
@@ -79,6 +84,29 @@ public class CW_ActorAsset : Asset
     public void add_force_cultisys(string cultisys_id)
     {
         force_cultisys_ids.Add(cultisys_id);
+    }
+
+    public class DroppedResource
+    {
+        /// <summary>
+        ///     [0, 1]掉落几率, 1为100%, 大于1为
+        /// </summary>
+        public float chance;
+
+        /// <summary>
+        ///     掉落时，最多掉落数量
+        /// </summary>
+        public int max_count;
+
+        /// <summary>
+        ///     掉落时，最少掉落数量
+        /// </summary>
+        public int min_count;
+
+        /// <summary>
+        ///     掉落资源ID
+        /// </summary>
+        public string resource_id;
     }
 }
 
@@ -136,16 +164,17 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
 
     public override CW_ActorAsset add(CW_ActorAsset pAsset)
     {
-        if (pAsset.vanllia_asset != null && !AssetManager.actor_library.dict.ContainsKey(pAsset.vanllia_asset.id))
+        if (pAsset.vanllia_asset == null) return base.add(pAsset);
+        if (!AssetManager.actor_library.dict.ContainsKey(pAsset.vanllia_asset.id))
         {
             AssetManager.actor_library.add(pAsset.vanllia_asset);
         }
 
-        if (pAsset.vanllia_asset != null && (pAsset.vanllia_asset.traits == null ||
-                                             (!pAsset.vanllia_asset.traits.Contains(Constants.Core.mod_prefix +
-                                                  "positive_creature")
-                                              && !pAsset.vanllia_asset.traits.Contains(Constants.Core.mod_prefix +
-                                                  "negative_creature"))))
+        if (pAsset.vanllia_asset.traits == null ||
+            (!pAsset.vanllia_asset.traits.Contains(Constants.Core.mod_prefix +
+                                                   "positive_creature")
+             && !pAsset.vanllia_asset.traits.Contains(Constants.Core.mod_prefix +
+                                                      "negative_creature")))
         {
             pAsset.vanllia_asset.traits ??= new List<string>();
             if (pAsset.vanllia_asset.race == SK.undead || pAsset.vanllia_asset.kingdom == SK.undead)
