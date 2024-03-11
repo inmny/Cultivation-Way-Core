@@ -13,17 +13,17 @@ public class CW_ResourceAsset : Asset
     /// <summary>
     ///     原版的资源信息
     /// </summary>
-    public ResourceAsset vanllia_asset;
+    public ResourceAsset vanilla_asset;
 
     /// <summary>
     ///     阴阳属性, 0为阴, 1为阳
     /// </summary>
     public float yin_yang;
 
-    internal CW_ResourceAsset(ResourceAsset vanllia_asset)
+    internal CW_ResourceAsset(ResourceAsset pVanillaAsset)
     {
-        id = vanllia_asset.id;
-        this.vanllia_asset = vanllia_asset;
+        id = pVanillaAsset.id;
+        vanilla_asset = pVanillaAsset;
         element = new CW_Element(new[] { 20, 20, 20, 20, 20 }, comp_type: false);
         yin_yang = 0.5f;
     }
