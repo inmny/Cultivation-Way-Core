@@ -2,38 +2,49 @@
 using NeoModLoader.api.attributes;
 using NeoModLoader.General;
 using NeoModLoader.General.UI.Prefabs;
+using NeoModLoader.utils;
 using UnityEngine;
 using UnityEngine.UI;
+
 namespace Cultivation_Way.UI.prefabs;
 
 public class StatSliderBar : APrefab<StatSliderBar>
 {
-    private SliderBar slider_bar;
-    private Text stat_name;
-    private Text stat_value;
+    private float              max;
+    private float              min;
+    private SliderBar          slider_bar;
+    private Text               stat_name;
+    private TextInput          stat_value;
+    private BaseStatsContainer stats;
+
     private void Awake()
     {
         if (!Initialized) Init();
     }
+
     protected override void Init()
     {
         if (Initialized) return;
         base.Init();
         slider_bar = transform.Find("SliderBar").GetComponent<SliderBar>();
         stat_name = transform.Find("Title/Name").GetComponent<Text>();
-        stat_value = transform.Find("Title/Value").GetComponent<Text>();
+        stat_value = transform.Find("Title/Value").GetComponent<TextInput>();
     }
+
     [Hotfixable]
     public void Setup(BaseStatsContainer stats, float min, float max, Vector2 size = default)
     {
         Init();
 
         SetSize(size);
-        slider_bar.Setup(stats.value, min, max, [Hotfixable](val) =>
-        {
-            stats.value = val;
-            stat_value.text = val.ToString();
-        }, default);
+
+        this.min = min;
+        this.max = max;
+        this.stats = stats;
+        slider_bar.Setup(stats.value, min, max, UpdateValue);
+        stat_value.Setup(stats.value.ToString(), UpdateValue);
+        stat_value.transform.Find("Icon").GetComponent<Image>().enabled = false;
+
         stat_name.text = LM.Get(AssetManager.base_stats_library.get(stats.id).translation_key);
         if (string.IsNullOrEmpty(stat_name.text))
         {
@@ -43,8 +54,39 @@ public class StatSliderBar : APrefab<StatSliderBar>
                 stat_name.text = "ID: " + stats.id;
             }
         }
-        stat_value.text = stats.value.ToString();
     }
+
+    private bool CheckValue(float value)
+    {
+        if (value < min || value > max)
+        {
+            stat_value.text.color = Color.red;
+            return false;
+        }
+
+        stat_value.text.color = Color.white;
+        return true;
+    }
+
+    private void UpdateValue(string value)
+    {
+        if (OtherUtils.CalledBy(nameof(UpdateValue), typeof(StatSliderBar), true)) return;
+
+        if (!float.TryParse(value, out var v)) stat_value.text.color = Color.red;
+
+        if (!CheckValue(v)) return;
+        stats.value = v;
+        stat_value.text.text = value;
+    }
+
+    private void UpdateValue(float value)
+    {
+        if (OtherUtils.CalledBy(nameof(UpdateValue), typeof(StatSliderBar), true)) return;
+        if (!CheckValue(value)) return;
+        stats.value = value;
+        stat_value.text.text = value.ToString();
+    }
+
     [Hotfixable]
     public void SetSize(Vector2 size)
     {
@@ -52,10 +94,11 @@ public class StatSliderBar : APrefab<StatSliderBar>
         RectTransform rect = GetComponent<RectTransform>();
         rect.sizeDelta = size;
         stat_name.GetComponent<RectTransform>().sizeDelta = new Vector2(size.x / 2 * 0.95f, size.y / 2 * 0.9f);
-        stat_value.GetComponent<RectTransform>().sizeDelta = new Vector2(size.x / 2 * 0.95f, size.y / 2 * 0.9f);
 
-        slider_bar.SetSize(new Vector2(size.x * 0.95f, size.y / 2 * 0.9f));
+        stat_value.SetSize(new Vector2(size.x / 2 * 0.95f, size.y / 2 * 0.9f));
+        slider_bar.SetSize(new Vector2(size.x     * 0.95f, size.y / 2 * 0.9f));
     }
+
     internal static void _init()
     {
         GameObject obj = new GameObject("StatSliderBar", typeof(Image), typeof(VerticalLayoutGroup));
@@ -72,7 +115,8 @@ public class StatSliderBar : APrefab<StatSliderBar>
         root_layout.padding = new RectOffset(2, 2, 2, 2);
         root_layout.spacing = 2;
 
-        GameObject title = new GameObject("Title", typeof(RectTransform), typeof(ContentSizeFitter), typeof(HorizontalLayoutGroup));
+        GameObject title = new GameObject("Title", typeof(RectTransform), typeof(ContentSizeFitter),
+                                          typeof(HorizontalLayoutGroup));
         title.transform.SetParent(obj.transform);
         title.transform.localScale = Vector3.one;
         ContentSizeFitter title_fitter = title.GetComponent<ContentSizeFitter>();
@@ -98,11 +142,8 @@ public class StatSliderBar : APrefab<StatSliderBar>
         stat_name.transform.localScale = Vector3.one;
         stat_name.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 20);
 
-        GameObject stat_value = Instantiate(stat_name, title.transform);
+        GameObject stat_value = Instantiate(TextInput.Prefab.gameObject, title.transform);
         stat_value.name = "Value";
-        stat_value.GetComponent<Text>().text = "0";
-        stat_value.GetComponent<Text>().alignment = TextAnchor.MiddleRight;
-        stat_value.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 20);
 
 
         SliderBar bar = Instantiate(SliderBar.Prefab, obj.transform);
