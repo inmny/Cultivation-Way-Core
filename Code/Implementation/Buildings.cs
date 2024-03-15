@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cultivation_Way.Abstract;
 using UnityEngine;
 
 namespace Cultivation_Way.Implementation;
 
-internal static class Buildings
+internal sealed class Buildings : ExtendedLibrary<BuildingAsset, Buildings>
 {
-    public static void init()
+    internal Buildings()
     {
         add_eastern_human();
         add_yao();
@@ -16,12 +17,12 @@ internal static class Buildings
         fix_bugs();
     }
 
-    private static void add_wu()
+    private void add_wu()
     {
         clone_human_buildings(Content_Constants.wu_race);
     }
 
-    private static void add_ming()
+    private void add_ming()
     {
         clone_human_buildings(Content_Constants.ming_race);
 
@@ -29,42 +30,42 @@ internal static class Buildings
         bonfire.race = Content_Constants.ming_race;
         AssetManager.buildings.loadSprites(bonfire);
 
-        AssetManager.buildings.get("tent_ming").fundament = new BuildingFundament(1, 1, 1, 0);
-        AssetManager.buildings.get("house_ming_0").fundament = new BuildingFundament(3, 3, 4, 0);
-        AssetManager.buildings.get("house_ming_1").fundament = new BuildingFundament(3, 3, 4, 0);
-        AssetManager.buildings.get("house_ming_2").fundament = new BuildingFundament(3, 3, 4, 0);
-        AssetManager.buildings.get("house_ming_3").fundament = new BuildingFundament(4, 4, 6, 0);
-        AssetManager.buildings.get("house_ming_4").fundament = new BuildingFundament(5, 5, 9, 0);
-        AssetManager.buildings.get("house_ming_5").fundament = new BuildingFundament(5, 5, 9, 0);
-        AssetManager.buildings.get("hall_ming_0").fundament = new BuildingFundament(4, 4, 7, 0);
-        AssetManager.buildings.get("hall_ming_1").fundament = new BuildingFundament(5, 5, 9, 0);
-        AssetManager.buildings.get("hall_ming_2").fundament = new BuildingFundament(8, 8, 14, 0);
-        AssetManager.buildings.get("temple_ming").fundament = new BuildingFundament(3, 3, 5, 0);
-        AssetManager.buildings.get("barracks_ming").fundament = new BuildingFundament(3, 3, 7, 0);
-        AssetManager.buildings.get("windmill_ming_0").fundament = new BuildingFundament(2, 1, 2, 0);
-        AssetManager.buildings.get("windmill_ming_1").fundament = new BuildingFundament(2, 2, 2, 0);
-        AssetManager.buildings.get("watch_tower_ming").fundament = new BuildingFundament(2, 2, 3, 0);
+        AssetManager.buildings.get("tent_ming").fundament = new BuildingFundament(1,        1, 1,  0);
+        AssetManager.buildings.get("house_ming_0").fundament = new BuildingFundament(3,     3, 4,  0);
+        AssetManager.buildings.get("house_ming_1").fundament = new BuildingFundament(3,     3, 4,  0);
+        AssetManager.buildings.get("house_ming_2").fundament = new BuildingFundament(3,     3, 4,  0);
+        AssetManager.buildings.get("house_ming_3").fundament = new BuildingFundament(4,     4, 6,  0);
+        AssetManager.buildings.get("house_ming_4").fundament = new BuildingFundament(5,     5, 9,  0);
+        AssetManager.buildings.get("house_ming_5").fundament = new BuildingFundament(5,     5, 9,  0);
+        AssetManager.buildings.get("hall_ming_0").fundament = new BuildingFundament(4,      4, 7,  0);
+        AssetManager.buildings.get("hall_ming_1").fundament = new BuildingFundament(5,      5, 9,  0);
+        AssetManager.buildings.get("hall_ming_2").fundament = new BuildingFundament(8,      8, 14, 0);
+        AssetManager.buildings.get("temple_ming").fundament = new BuildingFundament(3,      3, 5,  0);
+        AssetManager.buildings.get("barracks_ming").fundament = new BuildingFundament(3,    3, 7,  0);
+        AssetManager.buildings.get("windmill_ming_0").fundament = new BuildingFundament(2,  1, 2,  0);
+        AssetManager.buildings.get("windmill_ming_1").fundament = new BuildingFundament(2,  2, 2,  0);
+        AssetManager.buildings.get("watch_tower_ming").fundament = new BuildingFundament(2, 2, 3,  0);
     }
 
-    private static void fix_bugs()
+    private void fix_bugs()
     {
         // 修复树阻止建筑升级
         foreach (BuildingAsset building in AssetManager.buildings.list)
         {
-            if (building.type == "trees") building.priority = -1;
-            if (building.kingdom == "nature") building.upgradeLevel -= 1;
+            if (building.type         == "trees") building.priority = -1;
+            if (building.kingdom      == "nature") building.upgradeLevel -= 1;
             if (building.upgradeLevel >= 0) building.priority = Math.Max(building.priority, building.upgradeLevel);
         }
     }
 
-    private static void add_yao()
+    private void add_yao()
     {
         clone_human_buildings(Content_Constants.yao_race);
         AssetManager.buildings.get("windmill_yao_0").fundament = new BuildingFundament(2, 2, 1, 0);
         AssetManager.buildings.get("windmill_yao_1").fundament = new BuildingFundament(3, 3, 1, 0);
     }
 
-    private static void add_eastern_human()
+    private void add_eastern_human()
     {
         var race_order = AssetManager.race_build_orders.get(Content_Constants.eastern_human_race);
 
@@ -92,10 +93,10 @@ internal static class Buildings
         AssetManager.buildings.loadSprites(bonfire);
     }
 
-    private static void clone_human_buildings(string race)
+    private void clone_human_buildings(string race)
     {
         List<BuildingAsset> human_buildings = AssetManager.buildings.list
-            .Where(building => building.race == "human").ToList();
+                                                          .Where(building => building.race == "human").ToList();
 
         foreach (BuildingAsset building in human_buildings)
         {
@@ -106,7 +107,7 @@ internal static class Buildings
 
             BuildingAsset new_building =
                 AssetManager.buildings.clone(building.id.Replace(SK.human, race),
-                    building.id);
+                                             building.id);
 
             new_building.race = race;
 

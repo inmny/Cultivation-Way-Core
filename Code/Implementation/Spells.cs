@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Cultivation_Way.Abstract;
 using Cultivation_Way.Animation;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
@@ -16,9 +17,81 @@ using Debug = System.Diagnostics.Debug;
 
 namespace Cultivation_Way.Implementation;
 
-internal static class Spells
+public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
 {
-    public static void init()
+    public static readonly CW_SpellAsset fall_heng1_mountain;
+    public static readonly CW_SpellAsset fall_heng2_mountain;
+    public static readonly CW_SpellAsset fall_hua_mountain;
+    public static readonly CW_SpellAsset fall_tai_mountain;
+    public static readonly CW_SpellAsset fall_song_mountain;
+
+    public static readonly CW_SpellAsset violet_gold_gourd;
+
+    public static readonly CW_SpellAsset call_ancestor;
+
+    public static readonly CW_SpellAsset gold_escape;
+
+    public static readonly CW_SpellAsset ground_escape;
+    public static readonly CW_SpellAsset wood_escape;
+    public static readonly CW_SpellAsset water_escape;
+    public static readonly CW_SpellAsset fire_escape;
+
+    public static readonly CW_SpellAsset gold_blade;
+    public static readonly CW_SpellAsset water_blade;
+    public static readonly CW_SpellAsset fire_blade;
+    public static readonly CW_SpellAsset wind_blade;
+
+    public static readonly CW_SpellAsset basalt_armor;
+    public static readonly CW_SpellAsset gloong_scale;
+    public static readonly CW_SpellAsset rosefinch_feather;
+    public static readonly CW_SpellAsset unicorn_horn;
+    public static readonly CW_SpellAsset wtiger_tooth;
+
+    public static readonly CW_SpellAsset gold_sword;
+    public static readonly CW_SpellAsset wood_sword;
+    public static readonly CW_SpellAsset water_sword;
+
+    public static readonly CW_SpellAsset tornado;
+
+    public static readonly CW_SpellAsset regen;
+
+    public static readonly CW_SpellAsset fall_wood;
+
+    public static readonly CW_SpellAsset fall_rock;
+
+    public static readonly CW_SpellAsset ground_thorn;
+
+    public static readonly CW_SpellAsset wood_thorn;
+
+    public static readonly CW_SpellAsset vine_bound;
+
+    public static readonly CW_SpellAsset landificate;
+
+    public static readonly CW_SpellAsset ice_bound;
+
+    public static readonly CW_SpellAsset wind_polo;
+
+    public static readonly CW_SpellAsset lightning_polo;
+
+    public static readonly CW_SpellAsset water_polo;
+
+    public static readonly CW_SpellAsset fire_polo;
+
+    public static readonly CW_SpellAsset negative_quintuple_lightning;
+
+    public static readonly CW_SpellAsset positive_quintuple_lightning;
+
+    public static readonly CW_SpellAsset default_lightning;
+
+    public static readonly CW_SpellAsset void_fire;
+
+    public static readonly CW_SpellAsset samadhi_fire;
+
+    public static readonly CW_SpellAsset loltus_fire;
+
+    public static readonly CW_SpellAsset fen_fire;
+
+    internal Spells()
     {
         // TODO: 调整法术消耗
         add_track_projectile_spells();
@@ -63,7 +136,7 @@ internal static class Spells
         add_violet_gold_gourd_spell();
     }
 
-    private static void add_violet_gold_gourd_spell()
+    private void add_violet_gold_gourd_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -73,8 +146,8 @@ internal static class Spells
             trace_grad = 8f,
             free_val = 40f,
             layer_name = "Objects",
-            frame_action = [Hotfixable](int idx, ref Vector2 vec, ref Vector2 dst_vec,
-                Animation.SpriteAnimation anim) =>
+            frame_action = [Hotfixable](int                       idx, ref Vector2 vec, ref Vector2 dst_vec,
+                                        Animation.SpriteAnimation anim) =>
             {
                 if (anim.data.hasFlag("go_back")) return;
                 if (anim.dst_object == null || !anim.dst_object.isActor() || !anim.dst_object.isAlive())
@@ -95,7 +168,7 @@ internal static class Spells
                 {
                     var target_z_angle =
                         Toolbox.getAngle(curr_pos.x, curr_pos.y, dst_actor.currentPosition.x,
-                            dst_actor.currentPosition.y + dst_actor.zPosition.y) *
+                                         dst_actor.currentPosition.y + dst_actor.zPosition.y) *
                         57.29578f - 45;
                     if (target_z_angle < 0) target_z_angle += 360;
                     var current_z_angle = anim.gameObject.transform.rotation.eulerAngles.z;
@@ -114,13 +187,14 @@ internal static class Spells
 
                 dst_actor.currentPosition =
                     new Vector2(Mathf.Lerp(anim.src_object.currentPosition.x, curr_pos.x, anim.cur_elapsed * 10),
-                        Mathf.Lerp(anim.src_object.currentPosition.y, curr_pos.y - anim.setting.free_val,
-                            anim.cur_elapsed * 10));
+                                Mathf.Lerp(anim.src_object.currentPosition.y, curr_pos.y - anim.setting.free_val,
+                                           anim.cur_elapsed * 10));
                 dst_actor.zPosition.y = Mathf.Lerp(dst_actor.zPosition.y, anim.setting.free_val, anim.cur_elapsed * 10);
 
                 dst_actor.findCurrentTile();
                 dst_actor.transform.localPosition = new Vector3(dst_actor.currentPosition.x,
-                    dst_actor.currentPosition.y + dst_actor.zPosition.y, dst_actor.zPosition.y);
+                                                                dst_actor.currentPosition.y + dst_actor.zPosition.y,
+                                                                dst_actor.zPosition.y);
 
                 if (anim.data.hasFlag("refining"))
                 {
@@ -129,7 +203,7 @@ internal static class Spells
 
 
                     anim.data.get("shake_time", out float shake_time, -1);
-                    anim.data.get("shake_dir", out var shake_dir, 1);
+                    anim.data.get("shake_dir",  out var shake_dir,    1);
                     if (shake_time <= 0)
                     {
                         shake_dir = -shake_dir;
@@ -138,7 +212,7 @@ internal static class Spells
 
                     shake_time -= anim.cur_elapsed;
                     anim.data.set("shake_time", shake_time);
-                    anim.data.set("shake_dir", shake_dir);
+                    anim.data.set("shake_dir",  shake_dir);
                     anim.gameObject.transform.Rotate(0, 0, shake_time * shake_dir);
 
                     dst_actor.getHit(spell_cost, false, (AttackType)CW_AttackType.Spell, anim.src_object, false);
@@ -156,7 +230,7 @@ internal static class Spells
                 }
 
                 if (Toolbox.Dist(curr_pos.x, curr_pos.y, dst_actor.currentPosition.x,
-                        dst_actor.currentPosition.y + dst_actor.zPosition.y) < 3f)
+                                 dst_actor.currentPosition.y + dst_actor.zPosition.y) < 3f)
                 {
                     anim.data.addFlag("refining");
                     anim.data.addFlag("stop_rotate");
@@ -171,7 +245,7 @@ internal static class Spells
             }
         };
         anim_setting.set_trace([Hotfixable](ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim,
-            ref float delta_x, ref float delta_y) =>
+                                            ref float   delta_x, ref float   delta_y) =>
         {
             var curr_pos = anim.gameObject.transform.position;
             if (anim.data.hasFlag("go_back"))
@@ -205,7 +279,7 @@ internal static class Spells
         });
 
         EffectManager.instance.load_as_controller("violet_gold_gourd_anim", "effects/violet_gold_gourd/",
-            controller_setting: anim_setting, base_scale: 0.25f);
+                                                  controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell_asset = new()
         {
             id = "violet_gold_gourd",
@@ -229,10 +303,10 @@ internal static class Spells
         {
             SpellTriggerTag.ATTACK, SpellTriggerTag.NAMED_DEFEND
         });
-        Library.Manager.spells.add(spell_asset);
+        Add(spell_asset);
     }
 
-    private static void add_call_spells()
+    private void add_call_spells()
     {
         CW_SpellAsset call_ancestor = new()
         {
@@ -300,18 +374,18 @@ internal static class Spells
         {
             SpellTriggerTag.ATTACK, SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND
         });
-        Library.Manager.spells.add(call_ancestor);
+        Add(call_ancestor);
     }
 
     /// <summary>
     ///     添加简单的遁术
     /// </summary>
-    private static void add_escape_spell(
-        string spell_id, int rarity,
-        int[] element,
-        string anim_id, string anim_path,
+    private void add_escape_spell(
+        string                        spell_id, int rarity,
+        int[]                         element,
+        string                        anim_id, string anim_path,
         KeyValuePair<string, float>[] spell_cost_list,
-        int tran_frame_idx
+        int                           tran_frame_idx
     )
     {
         CW_SpellAsset spell_asset = new()
@@ -332,7 +406,7 @@ internal static class Spells
             SpellTriggerTag.NAMED_DEFEND, SpellTriggerTag.UNNAMED_DEFEND
         });
         spell_asset.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell_asset);
+        Add(spell_asset);
 
         AnimationSetting anim_setting = new()
         {
@@ -384,12 +458,12 @@ internal static class Spells
     /// <summary>
     ///     添加金刃相似法术
     /// </summary>
-    private static void add_blade_spell(
-        string spell_id, int rarity,
-        int[] element,
-        string anim_id, string anim_path,
+    private void add_blade_spell(
+        string                        spell_id, int rarity,
+        int[]                         element,
+        string                        anim_id, string anim_path,
         KeyValuePair<string, float>[] spell_cost_list,
-        float range, AnimFrameAction anim_frame_action)
+        float                         range, AnimFrameAction anim_frame_action)
     {
         CW_SpellAsset spell_asset = new()
         {
@@ -406,7 +480,7 @@ internal static class Spells
         };
         spell_asset.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell_asset.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell_asset);
+        Add(spell_asset);
 
         AnimationSetting anim_setting = new()
         {
@@ -426,7 +500,7 @@ internal static class Spells
     }
 
     [SuppressMessage("ReSharper", "JoinDeclarationAndInitializer")]
-    private static void add_escape_spells()
+    private void add_escape_spells()
     {
         add_escape_spell(
             "gold_escape", 5,
@@ -496,7 +570,7 @@ internal static class Spells
     }
 
     [SuppressMessage("ReSharper", "JoinDeclarationAndInitializer")]
-    private static void add_blade_spells()
+    private void add_blade_spells()
     {
         add_blade_spell(
             "gold_blade", 3, new[]
@@ -524,7 +598,7 @@ internal static class Spells
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
                     GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
-                        anim.src_object, CW_AttackType.Spell);
+                                                  anim.src_object, CW_AttackType.Spell);
                 }
                 else
                 {
@@ -558,7 +632,7 @@ internal static class Spells
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
                     GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
-                        anim.src_object, CW_AttackType.Spell);
+                                                  anim.src_object, CW_AttackType.Spell);
 
                     float dist = Toolbox.DistVec2Float(vec, dst_vec);
                     float force_x = (dst_vec.x - vec.x) / dist * 0.4f;
@@ -602,7 +676,7 @@ internal static class Spells
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
                     GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
-                        anim.src_object, CW_AttackType.Spell);
+                                                  anim.src_object, CW_AttackType.Spell);
                 }
                 else
                 {
@@ -636,7 +710,7 @@ internal static class Spells
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
                     GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
-                        anim.src_object, CW_AttackType.Spell);
+                                                  anim.src_object, CW_AttackType.Spell);
 
                     foreach (Actor target_unit in tiles.SelectMany(target_tile => target_tile._units))
                     {
@@ -652,7 +726,7 @@ internal static class Spells
     }
 
     [SuppressMessage("ReSharper", "JoinDeclarationAndInitializer")]
-    private static void add_give_self_status_spells()
+    private void add_give_self_status_spells()
     {
         CW_SpellAsset spell_asset;
         EffectController effect_controller;
@@ -787,7 +861,7 @@ internal static class Spells
     }
 
     [SuppressMessage("ReSharper", "JoinDeclarationAndInitializer")]
-    private static void add_track_projectile_spells()
+    private void add_track_projectile_spells()
     {
         CW_SpellAsset spell_asset;
         EffectController effect_controller;
@@ -866,7 +940,7 @@ internal static class Spells
     }
 
     // 飓风术
-    private static void add_tornado_spell()
+    private void add_tornado_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -877,12 +951,12 @@ internal static class Spells
             layer_name = "Objects",
             trace_grad = 20f,
             free_val = 0.2f,
-            frame_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec,
-                Animation.SpriteAnimation anim) =>
+            frame_action = (int                       idx, ref Vector2 vec, ref Vector2 dst_vec,
+                            Animation.SpriteAnimation anim) =>
             {
                 float cur_scale = anim.get_scale();
                 if (anim.setting.loop_time_limit - anim.play_time > 32 * anim.setting.frame_interval &&
-                    anim.setting.free_val > cur_scale)
+                    anim.setting.free_val                         > cur_scale)
                 {
                     anim.change_scale(0.3f * (anim.setting.free_val - cur_scale) + 1);
                 }
@@ -903,13 +977,13 @@ internal static class Spells
                 }
 
                 WorldTile center = MapBox.instance.GetTile((int)(anim.gameObject.transform.position.x - 0.5f),
-                    (int)(anim.gameObject.transform.position.y - 0.5f));
+                                                           (int)(anim.gameObject.transform.position.y - 0.5f));
                 if (center == null) return;
 
                 BrushData brush = Brush.get((int)(cur_scale * 6f));
                 for (int i = 0; i < brush.pos.Length; i++)
                 {
-                    int num = center.x + brush.pos[i].x;
+                    int num = center.x  + brush.pos[i].x;
                     int num2 = center.y + brush.pos[i].y;
                     if (num < 0 || num >= MapBox.width || num2 < 0 || num2 >= MapBox.height) continue;
 
@@ -939,7 +1013,7 @@ internal static class Spells
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("simple_tornado_anim", "effects/simple_tornado/",
-            controller_setting: anim_setting, base_scale: 0.25f);
+                                                  controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
             id = "tornado",
@@ -961,11 +1035,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 复苏
-    private static void add_regen_spell()
+    private void add_regen_spell()
     {
         CW_SpellAsset spell = new()
         {
@@ -990,11 +1064,11 @@ internal static class Spells
         spell.add_trigger_tag(SpellTriggerTag.UNNAMED_DEFEND);
         spell.add_trigger_tag(SpellTriggerTag.NAMED_DEFEND);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 落木
-    private static void add_fall_wood()
+    private void add_fall_wood()
     {
         AnimationSetting anim_setting = new()
         {
@@ -1008,8 +1082,8 @@ internal static class Spells
             always_roll_axis = new Vector3(0, 0, 1),
             roll_angle_per_frame = 1000,
             layer_name = "Objects",
-            end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec,
-                Animation.SpriteAnimation anim) =>
+            end_action = (int                       idx, ref Vector2 vec, ref Vector2 dst_vec,
+                          Animation.SpriteAnimation anim) =>
             {
                 if (anim.src_object == null || !anim.src_object.isAlive())
                 {
@@ -1029,14 +1103,14 @@ internal static class Spells
                     actor.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell, pAttacker: anim.src_object);
                     if (actor.objectType != MapObjectType.Actor) continue;
                     ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force,
-                        (actor.currentPosition.y - dst_vec.y) / force, 1 / force);
+                                               (actor.currentPosition.y - dst_vec.y) / force, 1 / force);
                 }
             }
         };
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("fall_wood_anim", "effects/fall_wood/",
-            controller_setting: anim_setting, base_scale: 0.25f);
+                                                  controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
             id = "fall_wood",
@@ -1059,11 +1133,11 @@ internal static class Spells
 
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 落石
-    private static void add_fall_rock()
+    private void add_fall_rock()
     {
         AnimationSetting anim_setting = new()
         {
@@ -1094,14 +1168,14 @@ internal static class Spells
                     actor.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell, pAttacker: anim.src_object);
                     if (actor.objectType != MapObjectType.Actor) continue;
                     ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force,
-                        (actor.currentPosition.y - dst_vec.y) / force, 1 / force);
+                                               (actor.currentPosition.y - dst_vec.y) / force, 1 / force);
                 }
             }
         };
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("fall_rock_anim", "effects/fall_rock/",
-            controller_setting: anim_setting, base_scale: 0.25f);
+                                                  controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
             id = "fall_rock",
@@ -1123,10 +1197,10 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
-    private static void add_fall_mountain(string name)
+    private void add_fall_mountain(string name)
     {
         AnimationSetting anim_setting = new()
         {
@@ -1137,8 +1211,8 @@ internal static class Spells
             free_val = 60f,
             froze_time_after_end = 0.3f,
             layer_name = "Objects",
-            frame_action = [Hotfixable](int idx, ref Vector2 vec, ref Vector2 dst_vec,
-                Animation.SpriteAnimation anim) =>
+            frame_action = [Hotfixable](int                       idx, ref Vector2 vec, ref Vector2 dst_vec,
+                                        Animation.SpriteAnimation anim) =>
             {
                 if (anim.data.hasFlag("end"))
                 {
@@ -1183,7 +1257,7 @@ internal static class Spells
                     actor.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell, pAttacker: anim.src_object);
                     if (actor.objectType != MapObjectType.Actor) continue;
                     ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force,
-                        (actor.currentPosition.y - dst_vec.y) / force, 1 / force);
+                                               (actor.currentPosition.y - dst_vec.y) / force, 1 / force);
                 }
 
                 EffectsLibrary.spawnExplosionWave(dst_vec, radius / 2);
@@ -1195,7 +1269,7 @@ internal static class Spells
             }
         };
         anim_setting.set_trace([Hotfixable](ref Vector2 src_vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim,
-            ref float delta_x, ref float delta_y) =>
+                                            ref float   delta_x, ref float   delta_y) =>
         {
             if (anim.has_end) return;
             if (!anim.data.hasFlag("started"))
@@ -1259,7 +1333,7 @@ internal static class Spells
         });
 
         EffectManager.instance.load_as_controller($"fall_{name}_anim", $"effects/fall_{name}_mountain/",
-            controller_setting: anim_setting, base_scale: 0.25f);
+                                                  controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
             id = $"fall_{name}_mountain",
@@ -1281,11 +1355,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 地刺
-    private static void add_ground_thorn_spell()
+    private void add_ground_thorn_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -1328,7 +1402,7 @@ internal static class Spells
         anim_setting.set_trace(AnimationTraceType.NONE);
 
         EffectManager.instance.load_as_controller("ground_thorn_anim", "effects/ground_thorn/",
-            controller_setting: anim_setting, base_scale: 0.3f);
+                                                  controller_setting: anim_setting, base_scale: 0.3f);
         CW_SpellAsset spell = new()
         {
             id = "ground_thorn",
@@ -1350,11 +1424,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 木刺
-    private static void add_wood_thorn_spell()
+    private void add_wood_thorn_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -1387,7 +1461,7 @@ internal static class Spells
                         foreach (BaseSimObject actor in targets)
                         {
                             actor.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell,
-                                pAttacker: anim.src_object);
+                                         pAttacker: anim.src_object);
                         }
                     }
                     else
@@ -1400,7 +1474,7 @@ internal static class Spells
         anim_setting.set_trace(AnimationTraceType.NONE);
 
         EffectManager.instance.load_as_controller("wood_thorn_anim", "effects/wood_thorn/",
-            controller_setting: anim_setting, base_scale: 0.3f);
+                                                  controller_setting: anim_setting, base_scale: 0.3f);
         CW_SpellAsset spell = new()
         {
             id = "wood_thorn",
@@ -1422,11 +1496,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 藤缚
-    private static void add_vine_bound_spell()
+    private void add_vine_bound_spell()
     {
         CW_SpellAsset spell = new()
         {
@@ -1450,11 +1524,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 石化
-    private static void add_landificate_spell()
+    private void add_landificate_spell()
     {
         CW_SpellAsset spell = new()
         {
@@ -1478,11 +1552,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 冰封
-    private static void add_ice_bound_spell()
+    private void add_ice_bound_spell()
     {
         CW_SpellAsset spell = new()
         {
@@ -1506,11 +1580,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 风丸
-    private static void add_wind_polo_spell()
+    private void add_wind_polo_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -1544,7 +1618,7 @@ internal static class Spells
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("wind_polo_anim", "effects/wind_polo/",
-            controller_setting: anim_setting, base_scale: 0.08f);
+                                                  controller_setting: anim_setting, base_scale: 0.08f);
         CW_SpellAsset spell = new()
         {
             id = "wind_polo",
@@ -1566,11 +1640,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 雷丸
-    private static void add_lightning_polo_spell()
+    private void add_lightning_polo_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -1601,7 +1675,7 @@ internal static class Spells
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("lightning_polo_anim", "effects/lightning_polo/",
-            controller_setting: anim_setting, base_scale: 0.08f);
+                                                  controller_setting: anim_setting, base_scale: 0.08f);
         CW_SpellAsset spell = new()
         {
             id = "lightning_polo",
@@ -1623,11 +1697,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 水球
-    private static void add_water_polo_spell()
+    private void add_water_polo_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -1664,7 +1738,7 @@ internal static class Spells
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("water_polo_anim", "effects/water_polo/",
-            controller_setting: anim_setting, base_scale: 0.08f);
+                                                  controller_setting: anim_setting, base_scale: 0.08f);
         CW_SpellAsset spell = new()
         {
             id = "water_polo",
@@ -1686,11 +1760,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 火球
-    private static void add_fire_polo_spell()
+    private void add_fire_polo_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -1718,19 +1792,19 @@ internal static class Spells
                 {
                     actor.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell, pAttacker: anim.src_object);
                     if (actor.objectType != MapObjectType.Actor) continue;
-                    ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force,
-                        (actor.currentPosition.y - dst_vec.y) / force,
-                        Toolbox.DistVec2Float(actor.currentPosition, dst_vec) / force);
+                    ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x)                 / force,
+                                               (actor.currentPosition.y - dst_vec.y)                 / force,
+                                               Toolbox.DistVec2Float(actor.currentPosition, dst_vec) / force);
                 }
             }
         };
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("fire_polo_anim", "effects/fire_polo/",
-            controller_setting: anim_setting, base_scale: 0.08f);
+                                                  controller_setting: anim_setting, base_scale: 0.08f);
         EffectManager.instance.load_as_controller("explosion_anim", "effects/explosion/",
-            controller_setting: new AnimationSetting(),
-            base_scale: 1f);
+                                                  controller_setting: new AnimationSetting(),
+                                                  base_scale: 1f);
         CW_SpellAsset spell = new()
         {
             id = "fire_polo",
@@ -1752,11 +1826,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 太阴五雷
-    private static void add_negative_quintuple_lightning_spell()
+    private void add_negative_quintuple_lightning_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -1790,7 +1864,7 @@ internal static class Spells
             }
         };
         EffectManager.instance.load_as_controller("negative_quintuple_lightning_anim", "effects/default_lightning/",
-            controller_setting: anim_setting, base_scale: 0.125f);
+                                                  controller_setting: anim_setting, base_scale: 0.125f);
 
         CW_SpellAsset spell = new()
         {
@@ -1813,11 +1887,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 太阳五雷
-    private static void add_positive_quintuple_lightning_spell()
+    private void add_positive_quintuple_lightning_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -1848,7 +1922,7 @@ internal static class Spells
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) => { }
         };
         EffectManager.instance.load_as_controller("positive_quintuple_lightning_anim", "effects/default_lightning/",
-            controller_setting: anim_setting, base_scale: 0.125f);
+                                                  controller_setting: anim_setting, base_scale: 0.125f);
 
         CW_SpellAsset spell = new()
         {
@@ -1871,11 +1945,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 雷法
-    private static void add_default_lightning_spell()
+    private void add_default_lightning_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -1903,7 +1977,7 @@ internal static class Spells
             }
         };
         EffectManager.instance.load_as_controller("default_lightning_anim", "effects/default_lightning/",
-            controller_setting: anim_setting, base_scale: 0.125f);
+                                                  controller_setting: anim_setting, base_scale: 0.125f);
 
         CW_SpellAsset spell = new()
         {
@@ -1926,11 +2000,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 虚无之火
-    private static void add_void_fire_spell()
+    private void add_void_fire_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -1960,7 +2034,7 @@ internal static class Spells
         anim_setting.set_trace(AnimationTraceType.TRACK);
 
         EffectManager.instance.load_as_controller("void_fire_anim", "effects/void_fire/", 10,
-            controller_setting: anim_setting, base_scale: 0.12f);
+                                                  controller_setting: anim_setting, base_scale: 0.12f);
 
         anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
         anim_setting.loop_time_limit = 3f;
@@ -1989,7 +2063,7 @@ internal static class Spells
                 {
                     // 拖拽
                     ((CW_Actor)enemy).addForce((dst_vec.x - enemy.currentPosition.x) * 0.1f,
-                        (dst_vec.y - enemy.currentPosition.y) * 0.1f, 0.05f);
+                                               (dst_vec.y - enemy.currentPosition.y) * 0.1f, 0.05f);
                 }
             }
         };
@@ -1997,7 +2071,7 @@ internal static class Spells
         anim_setting.end_action = null;
         anim_setting.set_trace(AnimationTraceType.NONE);
         EffectManager.instance.load_as_controller("anti_matter_anim", "effects/anti_matter/", 10,
-            controller_setting: anim_setting, base_scale: 0.12f);
+                                                  controller_setting: anim_setting, base_scale: 0.12f);
 
         CW_SpellAsset spell = new()
         {
@@ -2020,11 +2094,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 三昧真火
-    private static void add_samadhi_fire_spell()
+    private void add_samadhi_fire_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -2052,7 +2126,7 @@ internal static class Spells
         anim_setting.set_trace(AnimationTraceType.TRACK);
 
         EffectManager.instance.load_as_controller("samadhi_fire_anim", "effects/samadhi_fire/", 10,
-            controller_setting: anim_setting, base_scale: 0.12f);
+                                                  controller_setting: anim_setting, base_scale: 0.12f);
         CW_SpellAsset spell = new()
         {
             id = "samadhi_fire",
@@ -2074,11 +2148,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 红莲业火
-    private static void add_loltus_fire_spell()
+    private void add_loltus_fire_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -2099,8 +2173,8 @@ internal static class Spells
                 CW_Actor dst_obj = (CW_Actor)anim.dst_object;
                 CW_StatusEffectData status_data = dst_obj
                     .AddStatus("status_loltus_fire", anim.src_object,
-                        Library.Manager.statuses.get("status_loltus_fire").duration *
-                        (0.1f + dst_obj.data.kills / 10f));
+                               Library.Manager.statuses.get("status_loltus_fire").duration *
+                               (0.1f + dst_obj.data.kills / 10f));
                 if (status_data == null) return;
                 anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                 status_data.effect_val = spell_cost;
@@ -2109,7 +2183,7 @@ internal static class Spells
         anim_setting.set_trace(AnimationTraceType.TRACK);
 
         EffectManager.instance.load_as_controller("loltus_fire_anim", "effects/loltus_fire/", 10,
-            controller_setting: anim_setting, base_scale: 0.12f);
+                                                  controller_setting: anim_setting, base_scale: 0.12f);
         CW_SpellAsset spell = new()
         {
             id = "loltus_fire",
@@ -2131,11 +2205,11 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 
     // 九幽冥焰
-    private static void add_fen_fire_spell()
+    private void add_fen_fire_spell()
     {
         AnimationSetting anim_setting = new()
         {
@@ -2163,7 +2237,7 @@ internal static class Spells
         anim_setting.set_trace(AnimationTraceType.TRACK);
 
         EffectManager.instance.load_as_controller("fen_fire_anim", "effects/fen_fire/", 10,
-            controller_setting: anim_setting, base_scale: 0.12f);
+                                                  controller_setting: anim_setting, base_scale: 0.12f);
         CW_SpellAsset spell = new()
         {
             id = "fen_fire",
@@ -2185,6 +2259,6 @@ internal static class Spells
         };
         spell.add_trigger_tag(SpellTriggerTag.ATTACK);
         spell.add_cultisys_require(CultisysType.WAKAN);
-        Library.Manager.spells.add(spell);
+        Add(spell);
     }
 }

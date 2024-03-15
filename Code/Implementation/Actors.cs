@@ -1,32 +1,34 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cultivation_Way.Abstract;
 using Cultivation_Way.Constants;
 using Cultivation_Way.General.AboutUI;
 using Cultivation_Way.Library;
 
 namespace Cultivation_Way.Implementation;
 
-internal static class Actors
+internal sealed class Actors : ExtendedLibrary<CW_ActorAsset, Actors>
 {
     public static readonly List<string> yao_ids = new();
 
-    public static void init()
+    internal Actors()
     {
+        cached_library = Library.Manager.actors;
         add_eastern_human();
         add_yaos();
         add_ming();
         add_wu();
     }
 
-    private static void add_wu()
+    private void add_wu()
     {
         ActorAsset asset =
             AssetManager.actor_library.clone(
                 Content_Constants.wu_id, SA.unit_human
             );
         CW_ActorAsset cw_actor_asset = new(asset);
-        add(cw_actor_asset);
+        Add(cw_actor_asset);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.bushido_id);
         cw_actor_asset.add_force_cultisys(Content_Constants.blood_id);
 
@@ -56,7 +58,7 @@ internal static class Actors
 
         ActorAsset baby_asset =
             AssetManager.actor_library.clone(Content_Constants.wu_id.Replace("unit", "baby"),
-                Content_Constants.wu_id);
+                                             Content_Constants.wu_id);
 
         baby_asset.take_items = false;
         baby_asset.use_items = false;
@@ -69,21 +71,21 @@ internal static class Actors
         baby_asset.traits.Add("peaceful");
 
         cw_actor_asset = new CW_ActorAsset(baby_asset);
-        add(cw_actor_asset);
+        Add(cw_actor_asset);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.bushido_id);
         cw_actor_asset.add_force_cultisys(Content_Constants.blood_id);
         AssetManager.actor_library.cloneColorSetFrom(Content_Constants.wu_id);
         AssetManager.actor_library.loadShadow(baby_asset);
     }
 
-    private static void add_ming()
+    private void add_ming()
     {
         ActorAsset asset =
             AssetManager.actor_library.clone(
                 Content_Constants.ming_id, SA.unit_human
             );
         CW_ActorAsset cw_actor_asset = new(asset);
-        add(cw_actor_asset);
+        Add(cw_actor_asset);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.immortal_id);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.soul_id);
 
@@ -121,7 +123,7 @@ internal static class Actors
 
         ActorAsset baby_asset =
             AssetManager.actor_library.clone(Content_Constants.ming_id.Replace("unit", "baby"),
-                Content_Constants.ming_id);
+                                             Content_Constants.ming_id);
 
         baby_asset.take_items = false;
         baby_asset.use_items = false;
@@ -140,21 +142,21 @@ internal static class Actors
         baby_asset.traits.Add("peaceful");
 
         cw_actor_asset = new CW_ActorAsset(baby_asset);
-        add(cw_actor_asset);
+        Add(cw_actor_asset);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.immortal_id);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.soul_id);
         AssetManager.actor_library.cloneColorSetFrom(Content_Constants.ming_id);
         AssetManager.actor_library.loadShadow(baby_asset);
     }
 
-    private static void add_yaos()
+    private void add_yaos()
     {
         ActorAsset _yao_asset =
             AssetManager.actor_library.clone(
                 Content_Constants.yao_postfix, SA.unit_human
             );
         CW_ActorAsset _cw_yao_asset = new(_yao_asset);
-        add(_cw_yao_asset);
+        Add(_cw_yao_asset);
         _cw_yao_asset.add_allowed_cultisys(Content_Constants.immortal_id);
         _cw_yao_asset.add_allowed_cultisys(Content_Constants.bushido_id);
         _cw_yao_asset.culti_velo = 0.85f;
@@ -186,27 +188,27 @@ internal static class Actors
 
         #region 加入具体妖族单位
 
-        add_yao("bear"); // 熊
+        add_yao("bear");    // 熊
         add_yao("buffalo"); // 野牛
-        add_yao("cat"); // 猫
+        add_yao("cat");     // 猫
         add_yao("chicken"); // 鸡
-        add_yao("cow"); // 牛
+        add_yao("cow");     // 牛
         //add_yao("crab");      // 螃蟹
         //add_yao("crocodile");   // 鳄鱼
         //add_yao("deer");        // 鹿
-        add_yao("dog"); // 狗
-        add_yao("fox"); // 狐狸
+        add_yao("dog");  // 狗
+        add_yao("fox");  // 狐狸
         add_yao("frog"); // 青蛙
         //add_yao("horse");       // 马
         add_yao("hyena"); // 鬣狗
         //add_yao("lion");        // 狮
-        add_yao("monkey"); // 猴
+        add_yao("monkey");  // 猴
         add_yao("penguin"); // 企鹅
         //add_yao("pig");         // 猪
-        add_yao("rabbit"); // 兔
-        add_yao("rat"); // 鼠
+        add_yao("rabbit");  // 兔
+        add_yao("rat");     // 鼠
         add_yao("ratKing"); // 鼠王
-        add_yao("rhino"); // 犀牛
+        add_yao("rhino");   // 犀牛
         //add_yao("rooster");     // 公鸡
         add_yao("sheep"); // 羊
         add_yao("snake"); // 蛇
@@ -223,7 +225,7 @@ internal static class Actors
         #endregion
     }
 
-    private static CW_ActorAsset add_yao(string id)
+    private CW_ActorAsset add_yao(string id)
     {
         CW_ActorAsset cw_yao_asset =
             Library.Manager.actors.clone(id + Content_Constants.yao_postfix, Content_Constants.yao_postfix);
@@ -248,14 +250,14 @@ internal static class Actors
         return cw_yao_asset;
     }
 
-    private static void add_eastern_human()
+    private void add_eastern_human()
     {
         ActorAsset asset =
             AssetManager.actor_library.clone(
                 Content_Constants.eastern_human_id, SA.unit_human
             );
         CW_ActorAsset cw_actor_asset = new(asset);
-        add(cw_actor_asset);
+        Add(cw_actor_asset);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.immortal_id);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.bushido_id);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.soul_id);
@@ -284,7 +286,7 @@ internal static class Actors
 
         ActorAsset baby_asset =
             AssetManager.actor_library.clone(Content_Constants.eastern_human_id.Replace("unit", "baby"),
-                Content_Constants.eastern_human_id);
+                                             Content_Constants.eastern_human_id);
 
         baby_asset.take_items = false;
         baby_asset.use_items = false;
@@ -297,16 +299,11 @@ internal static class Actors
         baby_asset.traits.Add("peaceful");
 
         cw_actor_asset = new CW_ActorAsset(baby_asset);
-        add(cw_actor_asset);
+        Add(cw_actor_asset);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.immortal_id);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.bushido_id);
         cw_actor_asset.add_allowed_cultisys(Content_Constants.soul_id);
         AssetManager.actor_library.cloneColorSetFrom(Content_Constants.eastern_human_id);
         AssetManager.actor_library.loadShadow(baby_asset);
-    }
-
-    private static void add(CW_ActorAsset actor_asset)
-    {
-        Library.Manager.actors.add(actor_asset);
     }
 }

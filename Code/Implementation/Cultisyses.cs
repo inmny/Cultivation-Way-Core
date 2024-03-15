@@ -1,4 +1,5 @@
-﻿using Cultivation_Way.Constants;
+﻿using Cultivation_Way.Abstract;
+using Cultivation_Way.Constants;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using NeoModLoader.api.attributes;
@@ -6,15 +7,15 @@ using UnityEngine;
 
 namespace Cultivation_Way.Implementation;
 
-internal static class Cultisyses
+internal sealed class Cultisyses : ExtendedLibrary<CultisysAsset, Cultisyses>
 {
-    public static CultisysAsset immortal;
-    public static CultisysAsset bushido;
-    public static CultisysAsset soul;
-    public static CultisysAsset body;
-    public static float[] immortal_power_co = new float[Content_Constants.immortal_max_level];
+    public static readonly CultisysAsset cw_cultisys_immortal;
+    public static readonly CultisysAsset cw_cultisys_bushido;
+    public static readonly CultisysAsset cw_cultisys_soul;
+    public static readonly CultisysAsset cw_cultisys_body;
+    public static          float[]       immortal_power_co = new float[Content_Constants.immortal_max_level];
 
-    public static void init()
+    internal Cultisyses()
     {
         add_immortal();
         add_bushido();
@@ -22,7 +23,7 @@ internal static class Cultisyses
         add_blood();
     }
 
-    private static void add_blood()
+    private void add_blood()
     {
         [Hotfixable]
         void init_blood(CultisysAsset cultisys)
@@ -33,22 +34,21 @@ internal static class Cultisyses
         var max_progress = new float[Content_Constants.blood_max_level];
         for (var i = 0; i < Content_Constants.blood_max_level; i++) max_progress[i] = (i + 1) * 0.05f;
         CultisysAsset cultisys = new(Content_Constants.blood_id, Content_Constants.energy_blood_id, CultisysType.BLOOD,
-            Content_Constants.blood_max_level, init_blood)
+                                     Content_Constants.blood_max_level, init_blood)
         {
             sprite_path = "ui/Icons/iconWus",
             curr_progress = (actor, asset, level) => actor.data.GetMainBloodPurity(),
-            max_progress = (actor, asset, level) => max_progress[level],
+            max_progress = (actor,  asset, level) => max_progress[level],
             power_base = 1000,
             can_levelup = (actor, asset, level) =>
                 asset.curr_progress(actor, asset, level) >= asset.max_progress(actor, asset, level),
             allow = (actor, asset, level) => true
         };
 
-        Library.Manager.cultisys.add(cultisys);
-        body = cultisys;
+        Add(cultisys);
     }
 
-    private static void add_immortal()
+    private void add_immortal()
     {
         [Hotfixable]
         void init_immortal(CultisysAsset cultisys)
@@ -61,22 +61,22 @@ internal static class Cultisyses
                 cultisys.bonus_stats[i][S.mod_health] = i;
 
                 cultisys.bonus_stats[i][CW_S.wakan] = Mathf.Pow(1.4f, i) * 100 / (i * i + 1);
-                cultisys.bonus_stats[i][CW_S.mod_wakan] = i * i;
+                cultisys.bonus_stats[i][CW_S.mod_wakan] = i                    * i;
 
                 cultisys.bonus_stats[i][CW_S.spell_armor] = Mathf.Pow(1.2787536f, i) / (i * i + 1);
-                cultisys.bonus_stats[i][CW_S.mod_spell_armor] = i * i;
+                cultisys.bonus_stats[i][CW_S.mod_spell_armor] = i                    * i;
 
                 cultisys.bonus_stats[i][CW_S.wakan_regen] = Mathf.Pow(2f, i);
                 cultisys.bonus_stats[i][S.armor] = i;
                 cultisys.bonus_stats[i][S.mod_armor] = Mathf.Pow(1.2f, i) * 0.2f;
-                cultisys.bonus_stats[i][S.damage] = Mathf.Pow(1.2f, i) * 9;
-                cultisys.bonus_stats[i][S.max_age] = i * i * 10;
+                cultisys.bonus_stats[i][S.damage] = Mathf.Pow(1.2f,    i) * 9;
+                cultisys.bonus_stats[i][S.max_age] = i                    * i * 10;
                 immortal_power_co[i] = Mathf.Pow(cultisys.power_base, cultisys.power_level[i]);
             }
         }
 
         CultisysAsset cultisys = new("cw_cultisys_immortal", Content_Constants.energy_wakan_id, CultisysType.WAKAN,
-            Content_Constants.immortal_max_level, init_immortal)
+                                     Content_Constants.immortal_max_level, init_immortal)
         {
             sprite_path = "ui/Icons/iconCultiBook_immortal",
             power_base = 1000,
@@ -86,9 +86,10 @@ internal static class Cultisyses
                 return wakan;
             },
             max_progress = (actor, culti, level) => actor.stats[CW_S.wakan],
-            allow = (actor, culti, level) => actor.data.GetElement().GetElementType().id != "cw_common",
+            allow = (actor,        culti, level) => actor.data.GetElement().GetElementType().id != "cw_common",
             can_levelup = (actor, culti, level) =>
-                immortal.curr_progress(actor, immortal, 0) >= immortal.max_progress(actor, immortal, 0),
+                cw_cultisys_immortal.curr_progress(actor, cw_cultisys_immortal, 0) >=
+                cw_cultisys_immortal.max_progress(actor, cw_cultisys_immortal, 0),
             monthly_update_action = (actor, culti, level) =>
             {
                 float regen_wakan_line = actor.stats[CW_S.wakan] * Content_Constants.immortal_max_wakan_regen;
@@ -123,11 +124,10 @@ internal static class Cultisyses
             }
         };
 
-        Library.Manager.cultisys.add(cultisys);
-        immortal = cultisys;
+        Add(cultisys);
     }
 
-    private static void add_bushido()
+    private void add_bushido()
     {
         [Hotfixable]
         void init_bushido(CultisysAsset cultisys)
@@ -141,24 +141,24 @@ internal static class Cultisyses
                 cultisys.bonus_stats[i][CW_S.health_regen] = i;
 
                 cultisys.bonus_stats[i][S.damage] = Mathf.Pow(1.4f, i) * 100 / (i * i + 1);
-                cultisys.bonus_stats[i][S.mod_damage] = i * i;
+                cultisys.bonus_stats[i][S.mod_damage] = i                    * i;
 
                 cultisys.bonus_stats[i][CW_S.spell_armor] = Mathf.Pow(1.2787536f, i) / (i * i + 1);
                 cultisys.bonus_stats[i][CW_S.mod_spell_armor] = i;
 
                 cultisys.bonus_stats[i][S.armor] = Mathf.Pow(1.2787536f, i) / (i * i + 1);
-                cultisys.bonus_stats[i][S.mod_armor] = i * i;
+                cultisys.bonus_stats[i][S.mod_armor] = i                    * i;
 
                 cultisys.bonus_stats[i][S.max_age] = (i + 1) * (i + 1);
             }
         }
 
         CultisysAsset cultisys = new("cw_cultisys_bushido", Content_Constants.energy_bushido_id, CultisysType.BODY,
-            Content_Constants.bushido_max_level, init_bushido)
+                                     Content_Constants.bushido_max_level, init_bushido)
         {
             sprite_path = "ui/Icons/iconCultiBook_bushido",
             curr_progress = (actor, culti, level) => actor.data.health,
-            max_progress = (actor, asset, level) => actor.stats[S.health],
+            max_progress = (actor,  asset, level) => actor.stats[S.health],
             power_base = 1000,
             can_levelup = [Hotfixable](actor, asset, level) =>
             {
@@ -202,27 +202,26 @@ internal static class Cultisyses
         };
 
 
-        Library.Manager.cultisys.add(cultisys);
-        bushido = cultisys;
+        Add(cultisys);
     }
 
-    private static void add_soul_cultisys()
+    private void add_soul_cultisys()
     {
         [Hotfixable]
         void init_soul(CultisysAsset cultisys)
         {
             for (int i = 0; i < Content_Constants.soul_max_level; i++)
             {
-                cultisys.power_level[i] = 1 + i * 0.1f;
-                cultisys.bonus_stats[i][CW_S.soul] = 1 + i * i * 99;
+                cultisys.power_level[i] = 1                     + i    * 0.1f;
+                cultisys.bonus_stats[i][CW_S.soul] = 1          + i    * i       * 99;
                 cultisys.bonus_stats[i][CW_S.soul_regen] = 0.1f + 0.1f * (i + 1) * (i + 1);
-                cultisys.bonus_stats[i][S.max_age] = (i + 1) * (i + 1) / 2;
-                cultisys.bonus_stats[i][S.health] = i * 30;
+                cultisys.bonus_stats[i][S.max_age] = (i                     + 1) * (i + 1) / 2;
+                cultisys.bonus_stats[i][S.health] = i                                      * 30;
             }
         }
 
         CultisysAsset cultisys = new("cw_cultisys_soul", Content_Constants.energy_soul_id, CultisysType.SOUL,
-            Content_Constants.soul_max_level, init_soul)
+                                     Content_Constants.soul_max_level, init_soul)
         {
             sprite_path = "ui/Icons/iconCultiBook_immortal",
             curr_progress = (actor, asset, level) =>
@@ -240,7 +239,6 @@ internal static class Cultisyses
             allow = (actor, asset, level) => { return true; }
         };
 
-        Library.Manager.cultisys.add(cultisys);
-        soul = cultisys;
+        Add(cultisys);
     }
 }

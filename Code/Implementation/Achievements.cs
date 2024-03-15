@@ -1,18 +1,19 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using Cultivation_Way.Abstract;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 
 namespace Cultivation_Way.Implementation;
 
-internal static class Achievements
+public sealed class Achievements : ExtendedLibrary<Achievement, Achievements>
 {
-    public static Achievement lost;
-    public static Achievement complete;
+    public static readonly Achievement lost;
+    public static readonly Achievement complete;
 
-    public static void init()
+    internal Achievements()
     {
         AchievementGroupAsset cw_group = new()
         {
@@ -28,10 +29,9 @@ internal static class Achievements
             id = Constants.Core.mod_prefix + "achievementLost",
             hidden = true,
             icon = "iconAbout",
-            group = "cw_achievement_group"
+            group = cw_group.id
         };
-        add(achievement);
-        lost = achievement;
+        Add(achievement);
         achievement = new Achievement
         {
             playStoreID = "CgkIia6M98wfEAIQAg",
@@ -39,7 +39,7 @@ internal static class Achievements
             id = Constants.Core.mod_prefix + "achievementComplete",
             hidden = true,
             icon = "iconAbout",
-            group = "cw_achievement_group",
+            group = cw_group.id,
             action = (city, actor, power) =>
             {
                 if (Config.selectedUnit == null) return false;
@@ -106,8 +106,8 @@ internal static class Achievements
                 result_str.Append(BitConverter.ToString(hash).Replace("-", ""));
                 // 期望结果, 总共160位, 只需要32位相同即可
                 // 这里分割只是为了好看, 并不是有实际意义的分割, 如果你不信, 那就随你吧
-                string expected_result = "8F3775FFDCB19E793D700BD73FB7290F15CA5895FF" +
-                                         "36856E88CA2927BCF99F5983FE735" +
+                string expected_result = "8F3775FFDCB19E793D700BD73FB7290F15CA5895FF"                      +
+                                         "36856E88CA2927BCF99F5983FE735"                                   +
                                          "88B42954383031DEBA8698479FC450260A382F37681593FB56BD7647EA6A137" +
                                          "3C80813DC431D96743704E0A2B";
 
@@ -150,13 +150,13 @@ internal static class Achievements
                 return false;
             }
         };
-        add(achievement);
-        complete = achievement;
+        Add(achievement);
     }
 
-    private static void add(Achievement a)
+    protected override Achievement Add(Achievement a)
     {
-        AssetManager.achievements.add(a);
+        base.Add(a);
         AssetManager.achievementGroups.get(a.group).achievementList.Add(a);
+        return a;
     }
 }

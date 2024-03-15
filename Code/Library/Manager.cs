@@ -5,20 +5,20 @@ namespace Cultivation_Way.Library;
 
 public class Manager
 {
-    public static Manager instance;
-    public static readonly CW_ActorAssetLibrary actors = new();
-    public static readonly BloodNodeLibrary bloods = new();
-    public static readonly CultibookLibrary cultibooks = new();
-    public static readonly CultisysLibrary cultisys = new();
-    public static readonly ElementLibrary elements = new();
-    public static readonly ElixirLibrary elixirs = new();
-    public static readonly EnergyLibrary energies = new();
-    public static readonly CW_ItemLibrary items = new();
-    public static readonly CW_ItemMaterialLibrary item_materials = new();
-    public static readonly CW_ResourceLibrary resources = new();
-    public static readonly CW_StatusEffectLibrary statuses = new();
-    public static readonly CW_SpellLibrary spells = new();
-    public static readonly Dictionary<string, BaseAssetLibrary> libraries = new();
+    public static          Manager                              instance;
+    public static readonly CW_ActorAssetLibrary                 actors         = new();
+    public static readonly BloodNodeLibrary                     bloods         = new();
+    public static readonly CultibookLibrary                     cultibooks     = new();
+    public static readonly CultisysLibrary                      cultisys       = new();
+    public static readonly ElementLibrary                       elements       = new();
+    public static readonly ElixirLibrary                        elixirs        = new();
+    public static readonly EnergyLibrary                        energies       = new();
+    public static readonly CW_ItemLibrary                       items          = new();
+    public static readonly CW_ItemMaterialLibrary               item_materials = new();
+    public static readonly CW_ResourceLibrary                   resources      = new();
+    public static readonly CW_StatusEffectLibrary               statuses       = new();
+    public static readonly CW_SpellLibrary                      spells         = new();
+    public static readonly Dictionary<string, BaseAssetLibrary> libraries      = new();
 
     public void init()
     {
@@ -37,18 +37,18 @@ public class Manager
         CW_Drops.init();
         CW_Options.init();
         CW_TooltipAssets.init();
-        add(actors, "actors");
-        add(bloods, "bloods");
-        add(cultibooks, "cultibooks");
-        add(cultisys, "cultisys");
-        add(elements, "elements");
-        add(elixirs, "elixirs");
-        add(energies, "energies");
-        add(items, "items");
+        add(actors,         "actors");
+        add(bloods,         "bloods");
+        add(cultibooks,     "cultibooks");
+        add(cultisys,       "cultisys");
+        add(elements,       "elements");
+        add(elixirs,        "elixirs");
+        add(energies,       "energies");
+        add(items,          "items");
         add(item_materials, "item_materials");
-        add(resources, "resources");
-        add(statuses, "statuses");
-        add(spells, "spells");
+        add(resources,      "resources");
+        add(statuses,       "statuses");
+        add(spells,         "spells");
     }
 
     public void update_per_while()
@@ -70,8 +70,7 @@ public class Manager
     private void add(BaseAssetLibrary library, string name = "")
     {
         if (string.IsNullOrEmpty(name)) name = library.GetType().Name;
-        library.init();
-        library.id = name;
+        AssetManager.instance.add(library, name);
         libraries.Add(name, library);
     }
 }

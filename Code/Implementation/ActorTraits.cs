@@ -1,12 +1,13 @@
+using Cultivation_Way.Abstract;
 using Cultivation_Way.Core;
 using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 
 namespace Cultivation_Way.Implementation;
 
-internal static class ActorTraits
+internal sealed class ActorTraits : ExtendedLibrary<ActorTrait, ActorTraits>
 {
-    public static void init()
+    internal ActorTraits()
     {
         ActorTrait trait;
 
@@ -17,7 +18,7 @@ internal static class ActorTraits
             group_id = TraitGroup.body,
             path_icon = "ui/icons/iconCurseImmune"
         };
-        add(trait);
+        Add(trait);
         trait = AssetManager.traits.get("cursed");
         if (string.IsNullOrEmpty(trait.opposite))
         {
@@ -65,11 +66,6 @@ internal static class ActorTraits
                 return true;
             }
         };
-        add(trait);
-    }
-
-    private static void add(ActorTrait trait)
-    {
-        AssetManager.traits.add(trait);
+        Add(trait);
     }
 }
