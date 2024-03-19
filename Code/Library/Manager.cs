@@ -70,6 +70,7 @@ public class Manager
     private void add(BaseAssetLibrary library, string name = "")
     {
         if (string.IsNullOrEmpty(name)) name = library.GetType().Name;
+        name = Constants.Core.mod_prefix + name;
         AssetManager.instance.add(library, name);
         libraries.Add(name, library);
     }

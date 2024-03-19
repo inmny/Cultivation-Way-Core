@@ -21,13 +21,13 @@ namespace Cultivation_Way.UI;
 public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWindow<ItemData>
 {
     private SimpleEquipmentButton _button;
-    private ConfirmWindow _confirm_window;
+    private ConfirmWindow         _confirm_window;
 
-    private ItemData _item_data;
-    private ObjectPoolGenericMono<SimpleEquipmentButton>[] _item_pools;
-    private AutoGridLayoutGroup[] _item_stage_groups;
-    public static WindowItemLibrary Instance { get; private set; }
-    public List<ItemData> Data { get; set; } = new();
+    private       ItemData                                       _item_data;
+    private       ObjectPoolGenericMono<SimpleEquipmentButton>[] _item_pools;
+    private       AutoGridLayoutGroup[]                          _item_stage_groups;
+    public static WindowItemLibrary                              Instance { get; private set; }
+    public        List<ItemData>                                 Data     { get; set; } = new();
 
     public void SaveData()
     {
@@ -106,7 +106,7 @@ public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWi
             );
             _item_pools[i] =
                 new ObjectPoolGenericMono<SimpleEquipmentButton>(SimpleEquipmentButton.Prefab,
-                    _item_stage_groups[i].transform);
+                                                                 _item_stage_groups[i].transform);
 
             _item_stage_groups[i].layout.padding = new RectOffset(5, 5, 5, 5);
             Image bg = _item_stage_groups[i].gameObject.AddComponent<Image>();
@@ -130,7 +130,7 @@ public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWi
         _confirm_window = Instantiate(ConfirmWindow.Prefab, BackgroundTransform);
         _confirm_window.Setup(
             LM.Get("confirm_award"),
-            LM.Get("confirm_award_intro"),
+            LM.Get("confirm_award_item_info"),
             result =>
             {
                 if (result) GiveItem();
