@@ -12,7 +12,7 @@ public class ElementAsset : Asset
     /// </summary>
     public BaseStats base_stats;
 
-    internal ElementAsset(string id, int[] base_elements, float promot = 1.0f, float rarity = 1.0f,
+    public ElementAsset(string id, int[] base_elements, float promot = 1.0f, float rarity = 1.0f,
         BaseStats base_stats = null)
     {
         if (base_elements is not { Length: Constants.Core.element_type_nr } || promot < 0.01f ||
@@ -32,7 +32,7 @@ public class ElementAsset : Asset
         this.base_stats = base_stats ?? new BaseStats();
     }
 
-    internal ElementAsset(string id, int water, int fire, int wood, int iron, int ground, float promot = 1.0f,
+    public ElementAsset(string id, int water, int fire, int wood, int iron, int ground, float promot = 1.0f,
         float rarity = 1.0f, BaseStats base_stats = null, float mod_culti_velo = 0)
     {
         if (promot < 0.01f || rarity < 0.99f)

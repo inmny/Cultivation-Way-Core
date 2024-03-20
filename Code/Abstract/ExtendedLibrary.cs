@@ -50,7 +50,10 @@ public abstract class ExtendedLibrary<TAsset, TLibrary>
         _init();
 
         TAsset pObj = cached_library.clone(pNew, pFrom);
-
+        
+        t = pObj;
+        added_assets.Add(pObj);
+        
         _set_field(pObj);
         return pObj;
     }
