@@ -11,13 +11,13 @@ internal static class H_Achievement
     public static void unlock_lost(LogType type)
     {
         if (type != LogType.Error && type != LogType.Exception && type != LogType.Assert) return;
-        Achievements.lost.check();
+        Achievements.cw_achievementLost.check();
     }
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(WindowCreatureInfo), nameof(WindowCreatureInfo.OnEnable))]
     public static void unlock_complete()
     {
-        Achievements.complete.check();
+        Achievements.cw_achievementComplete.check();
     }
 }

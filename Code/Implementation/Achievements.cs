@@ -10,8 +10,8 @@ namespace Cultivation_Way.Implementation;
 
 public sealed class Achievements : ExtendedLibrary<Achievement, Achievements>
 {
-    public static readonly Achievement lost;
-    public static readonly Achievement complete;
+    public static readonly Achievement cw_achievementLost;
+    public static readonly Achievement cw_achievementComplete;
 
     internal Achievements()
     {
