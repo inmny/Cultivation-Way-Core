@@ -44,6 +44,24 @@ public abstract class ExtendedLibrary<TAsset, TLibrary>
 
         return cached_library.add(pObj);
     }
+    /// <summary>
+    /// 如果已经存在则替换，否则添加
+    /// </summary>
+    protected virtual TAsset TryAdd(TAsset pObj)
+    {
+        _init();
+        
+        if (cached_library.dict.ContainsKey(pObj.id))
+        {
+            Replace(pObj);
+        }
+        else
+        {
+            Add(pObj);
+        }
+
+        return pObj;
+    }
 
     protected virtual TAsset Clone(string pNew, string pFrom)
     {
@@ -61,10 +79,14 @@ public abstract class ExtendedLibrary<TAsset, TLibrary>
     protected virtual void Replace(TAsset pNew)
     {
         _init();
+        t = pNew;
+        added_assets.Add(pNew);
+        
         if (cached_library.dict.TryGetValue(pNew.id, out TAsset old)) cached_library.list.Remove(old);
-
+        
         cached_library.list.Add(pNew);
         cached_library.dict[pNew.id] = pNew;
+        pNew.setHash(BaseAssetLibrary._latest_hash++);
 
         _set_field(pNew);
     }
