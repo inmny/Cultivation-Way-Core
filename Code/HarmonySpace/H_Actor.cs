@@ -311,6 +311,7 @@ internal static class H_Actor
         int num = pData.health;
         CW_Actor actor_prefab = FastVisit.get_actor_prefab("actors/" + actorAsset.prefab).GetComponent<CW_Actor>();
         Actor actor2 = ActorManager_base_loadObject(__instance, pData, actor_prefab);
+        actor2.asset = actorAsset;
         CW_Actor cw_actor = (CW_Actor)actor2;
         cw_actor.cw_asset = Library.Manager.actors.get(actorAsset.id);
 
