@@ -49,7 +49,8 @@ public class CW_ActorAsset : Asset
     /// </summary>
     internal List<CultisysAsset> force_cultisys = new();
 
-    internal List<string> force_cultisys_ids = new();
+    internal List<string>            force_cultisys_ids            = new();
+    internal Dictionary<string, int> force_cultisys_initial_levels = new();
 
     /// <summary>
     ///     偏好元素
@@ -84,6 +85,17 @@ public class CW_ActorAsset : Asset
     public void add_force_cultisys(string cultisys_id)
     {
         force_cultisys_ids.Add(cultisys_id);
+    }
+
+    public void force_cultisys_initial_level(string cultisys_id, int level)
+    {
+        if (level < 0)
+        {
+            Logger.Warn($"CW_ActorAsset {id} force_cultisys_initial_level {cultisys_id} level {level} < 0!");
+            return;
+        }
+
+        force_cultisys_initial_levels[cultisys_id] = level;
     }
 
     public class DroppedResource
@@ -152,8 +164,11 @@ public class CW_ActorAssetLibrary : CW_Library<CW_ActorAsset>
         // 由于访问权限问题, 需要手动拷贝
         new_asset.allowed_cultisys_ids = new List<string>();
         new_asset.force_cultisys_ids = new List<string>();
+        new_asset.force_cultisys_initial_levels = new Dictionary<string, int>();
         new_asset.allowed_cultisys_ids.AddRange(from_asset.allowed_cultisys_ids);
         new_asset.force_cultisys_ids.AddRange(from_asset.force_cultisys_ids);
+        foreach (var pair in from_asset.force_cultisys_initial_levels)
+            new_asset.force_cultisys_initial_levels[pair.Key] = pair.Value;
         // 由于clone是采用JSON实现的, 默认值会为null, 此时需要手动初始化
         new_asset.born_spells ??= new List<string>();
         new_asset.force_cultisys ??= new List<CultisysAsset>();

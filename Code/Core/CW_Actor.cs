@@ -174,7 +174,7 @@ public partial class CW_Actor : Actor
     /// <returns></returns>
     [Hotfixable]
     public CW_StatusEffectData AddStatus(string pStatusID, BaseSimObject pFrom = null, float pRewriteEffectTime = -1,
-        string pAsID = null)
+                                         string pAsID = null)
     {
         if (!isAlive()) return null;
         CW_StatusEffect status_asset = Manager.statuses.get(pStatusID);
@@ -214,7 +214,8 @@ public partial class CW_Actor : Actor
             if (!string.IsNullOrEmpty(status_asset.anim_id))
             {
                 status.anim = EffectManager.instance.spawn_anim(status_asset.anim_id,
-                    pFrom == null ? Vector2.zero : pFrom.currentPosition, currentPosition, pFrom, this);
+                                                                pFrom == null ? Vector2.zero : pFrom.currentPosition,
+                                                                currentPosition, pFrom, this);
                 if (status.anim is { isOn: true })
                 {
                     status.anim.change_scale(stats[S.scale]);
@@ -262,7 +263,7 @@ public partial class CW_Actor : Actor
     public bool HasStatus(string id)
     {
         return (activeStatus_dict is { Count: > 0 } && activeStatus_dict.ContainsKey(id)) ||
-               (statuses is { Count: > 0 } && statuses.ContainsKey(id));
+               (statuses is { Count         : > 0 } && statuses.ContainsKey(id));
     }
 
     /// <summary>
@@ -378,7 +379,7 @@ public partial class CW_Actor : Actor
 
         // 修炼体系的月度更新
         foreach (CultisysAsset cultisys in Manager.cultisys.list.Where(cultisys =>
-                     cultisys.monthly_update_action != null))
+                                                                           cultisys.monthly_update_action != null))
         {
             data.get(cultisys.id, out int level, -1);
             if (level < 0) continue;
@@ -390,8 +391,8 @@ public partial class CW_Actor : Actor
     ///     重写getHit, 并应用属性
     /// </summary>
     [Hotfixable]
-    public override void getHit(float pDamage, bool pFlash = true, AttackType pAttackType = AttackType.Other,
-        BaseSimObject pAttacker = null, bool pSkipIfShake = true, bool pMetallicWeapon = false)
+    public override void getHit(float         pDamage, bool pFlash = true, AttackType pAttackType = AttackType.Other,
+                                BaseSimObject pAttacker = null, bool pSkipIfShake = true, bool pMetallicWeapon = false)
     {
         attackedBy = null;
         CW_AttackType attack_type = (CW_AttackType)pAttackType;
@@ -414,7 +415,7 @@ public partial class CW_Actor : Actor
 
         #endregion
 
-        if (pAttacker != null && pAttacker.isActor() && pAttacker.isAlive() &&
+        if (pAttacker != null                                   && pAttacker.isActor() && pAttacker.isAlive() &&
             ((CW_Actor)pAttacker).cw_asset.addition_soul_damage && attack_type != CW_AttackType.Soul)
         {
             // 此处递归调用不会产生死循环
@@ -492,7 +493,7 @@ public partial class CW_Actor : Actor
                 {
                     data.get(cultisys.id, out defender_level);
                     level_reduce = Mathf.Min(level_reduce,
-                        Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
+                                             Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
                 }
 
                 cultisys = data.GetCultisys(CultisysType.WAKAN);
@@ -500,14 +501,16 @@ public partial class CW_Actor : Actor
                 {
                     data.get(cultisys.id, out defender_level);
                     level_reduce = Mathf.Min(level_reduce,
-                        Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
+                                             Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
                 }
 
                 break;
         }
 
         DamageRecordManager.AddDamageRecord(attack_type, pDamage, attacker_level, defender_level,
-            attack_type == CW_AttackType.Spell ? stats[CW_S.spell_armor] : stats[S.armor], armor_reduce, level_reduce);
+                                            attack_type == CW_AttackType.Spell
+                                                ? stats[CW_S.spell_armor]
+                                                : stats[S.armor], armor_reduce, level_reduce);
 
         pDamage *= armor_reduce * level_reduce;
 
@@ -841,7 +844,7 @@ public partial class CW_Actor : Actor
         // 尝试学习
         foreach (KeyValuePair<CW_SpellAsset, float> spell_chance in
                  ordered_spell_chances.Where(spell_chance =>
-                     Toolbox.randomChance(spell_chance.Value)))
+                                                 Toolbox.randomChance(spell_chance.Value)))
         {
             LearnSpell(spell_chance.Key);
             return;
@@ -918,17 +921,18 @@ public partial class CW_Actor : Actor
     public void CheckGetCultisys()
     {
         uint allow_cultisys_types = 0b11111;
-        if (data.GetCultisys(CultisysType.WAKAN) != null) allow_cultisys_types &= ~(uint)CultisysType.WAKAN;
-        if (data.GetCultisys(CultisysType.SOUL) != null) allow_cultisys_types &= ~(uint)CultisysType.SOUL;
-        if (data.GetCultisys(CultisysType.BODY) != null) allow_cultisys_types &= ~(uint)CultisysType.BODY;
-        if (data.GetCultisys(CultisysType.BLOOD) != null) allow_cultisys_types &= ~(uint)CultisysType.BLOOD;
+        if (data.GetCultisys(CultisysType.WAKAN)  != null) allow_cultisys_types &= ~(uint)CultisysType.WAKAN;
+        if (data.GetCultisys(CultisysType.SOUL)   != null) allow_cultisys_types &= ~(uint)CultisysType.SOUL;
+        if (data.GetCultisys(CultisysType.BODY)   != null) allow_cultisys_types &= ~(uint)CultisysType.BODY;
+        if (data.GetCultisys(CultisysType.BLOOD)  != null) allow_cultisys_types &= ~(uint)CultisysType.BLOOD;
         if (data.GetCultisys(CultisysType.HIDDEN) != null) allow_cultisys_types &= ~(uint)CultisysType.HIDDEN;
         // 强制添加的修炼体系
         foreach (CultisysAsset cultisys in cw_asset.force_cultisys)
         {
             if ((allow_cultisys_types & (uint)cultisys.type) == 0) continue;
+            cw_asset.force_cultisys_initial_levels.TryGetValue(cultisys.id, out var initial_level);
             data.set(cultisys.type.ToString(), cultisys.id);
-            data.set(cultisys.id, 0);
+            data.set(cultisys.id,              initial_level);
             allow_cultisys_types &= ~(uint)cultisys.type;
         }
 
@@ -936,8 +940,9 @@ public partial class CW_Actor : Actor
         {
             if ((allow_cultisys_types & (uint)cultisys.type) == 0 || !cultisys.allow(this, cultisys, 0))
                 continue;
+            cw_asset.force_cultisys_initial_levels.TryGetValue(cultisys.id, out var initial_level);
             data.set(cultisys.type.ToString(), cultisys.id);
-            data.set(cultisys.id, 0);
+            data.set(cultisys.id,              initial_level);
             allow_cultisys_types &= ~(uint)cultisys.type;
         }
     }
