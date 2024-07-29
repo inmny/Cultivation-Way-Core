@@ -131,7 +131,7 @@ internal static class H_Actor
         if (cw_actor.statuses != null)
         {
             foreach (CW_StatusEffectData effect_data in cw_actor.statuses.Values.Where(effect_data =>
-                         !effect_data.finished))
+                             !effect_data.finished))
             {
                 actor.stats.mergeStats(effect_data.bonus_stats);
             }
@@ -338,7 +338,8 @@ internal static class H_Actor
         actor2.updateStats();
         num = Mathf.Clamp(num, 1, actor2.getMaxHealth());
         actor2.data.health = num;
-        return actor2;
+        __result = actor2;
+        return false;
     }
 
     #endregion
