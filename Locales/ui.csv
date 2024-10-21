@@ -1,45 +1,45 @@
-key,cz,en
-Award,旧神馈赠,The Old Gods Gift
-Award Description,来自旧神的馈赠\n少年，你渴望力量吗？,A gift from the Old Gods
-WindowModInfo,模组信息,Mod Info
-Element,灵根,Element
-Element Description,灵根是生物的固有属性,Element is the inherent attribute of the creature
-Cultisys,修炼体系,Cultivation System
-Cultisys Description,修炼体系是生物的修炼方式,Cultivation System is the way of cultivation of creatures
-Cultibook,功法,Cultibook
-Cultibook Description,功法辅助修炼,Cultibook assist cultivation
-Energy,源气,Energy
-Energy Description,源气是基本的修炼资源,Energy is the basic cultivation resource
-Blood,血脉,Blood
-Blood Description,血脉传承一切,Blood inheritance everything
-Item,法宝,Magic Equipment
-Item Description,法宝护卫修炼之路,Magic equipment guards the way of cultivation
-Spell,法术,Spell
-Spell Description,法术护卫修炼之路,Spell guards the way of cultivation
-Elixir,丹药,Elixir
-Elixir Description,丹药是修炼的辅助资源,Elixir is the auxiliary resource of cultivation
-Status,状态效果,Status Effect
-Other,其他,Other
-WindowItemLibrary,异宝阁,Item Library
-WindowItemLibrary Description,天道的宝库,The treasure house of the god
-WindowCultibookLibrary,百法录,The Cultibook Library
-WindowCultibookLibrary Description,天道的珍藏功法,The Cultibook Library of the god
-WindowActorLibrary,群仙阁,The Actor Library
-WindowActorLibrary Description,群仙画卷还是旧神的收纳袋？,The Actor Library of the god
-WindowBloodLibrary,血脉图谱,Blood Library
-WindowBloodLibrary Description,血脉标本库？杂交试验场？,Blood Specimen Library? Hybridization Experiment Field?
-CreateBloodGroup,创建血脉分组,Create Blood Group
-MergeBlood,融合血脉,Merge Blood
-ElementAdjust,灵根重置,Element Reset
-ElementAdjust Description,再来搏一搏运气？,Try your luck again?
-ElementAdjust Result,恭喜呢\n$element$,Congratulations\n$element$
-DragItemOrActorHere,拖拽装备或功法拖到这里进行收纳,Drag cultibook or item here to store
-default,默认,Default
-placeholder,占位符,Placeholder
-confirm,确定,Confirm
-cancel,取消,Cancel
-dissolve,解散,Dissolve
-dissolve_group,解散分组,Dissolve Group
-confirm_award,确定馈赠,Confirm
-confirm_award_item_info,确定馈赠$item$？\n馈赠后，该生物对应装备栏将会被直接替换,Confirm the gift $item$?\nAfter the gift，the corresponding equipment slot will be replaced directly
-confirm_award_cultibook_info,确定馈赠$cultibook$？\n馈赠后，该生物对应功法栏将会被直接替换,Confirm the gift $cultibook$?\nAfter the gift，the corresponding cultibook slot will be replaced directly
+key,cz,en,ru
+Award,旧神馈赠,The Old Gods Gift,Дар Древних Богов
+Award Description,来自旧神的馈赠\n少年，你渴望力量吗？,A gift from the Old Gods,"Дар от Древних Богов\nМальчик， ты жаждешь силы?"
+WindowModInfo,模组信息,Mod Info,Информация о моде
+Element,灵根,Element,Элемент
+Element Description,灵根是生物的固有属性,Element is the inherent attribute of the creature,Элемент — это врожденное свойство существа
+Cultisys,修炼体系,Cultivation System,Система культивации
+Cultisys Description,修炼体系是生物的修炼方式,Cultivation System is the way of cultivation of creatures,Система культивации — это способ совершенствования существ
+Cultibook,功法,Cultibook,Книга культивации
+Cultibook Description,功法辅助修炼,Cultibook assist cultivation,Книга культивации помогает в совершенствовании
+Energy,源气,Energy,Энергия
+Energy Description,源气是基本的修炼资源,Energy is the basic cultivation resource,Энергия — это основной ресурс для совершенствования
+Blood,血脉,Blood,Кровь
+Blood Description,血脉传承一切,Blood inheritance everything,Кровь передает все наследие
+Item,法宝,Magic Equipment,Магическое снаряжение
+Item Description,法宝护卫修炼之路,Magic equipment guards the way of cultivation,Магическое снаряжение охраняет путь совершенствования
+Spell,法术,Spell,Заклинание
+Spell Description,法术护卫修炼之路,Spell guards the way of cultivation,Заклинания защищают путь совершенствования
+Elixir,丹药,Elixir,Эликсир
+Elixir Description,丹药是修炼的辅助资源,Elixir is the auxiliary resource of cultivation,Эликсир — это вспомогательный ресурс для совершенствования
+Status,状态效果,Status Effect,Эффект состояния
+Other,其他,Other,Прочее
+WindowItemLibrary,异宝阁,Item Library,Библиотека предметов
+WindowItemLibrary Description,天道的宝库,The treasure house of the god,Сокровищница Небес
+WindowCultibookLibrary,百法录,The Cultibook Library,Библиотека культивационных книг
+WindowCultibookLibrary Description,天道的珍藏功法,The Cultibook Library of the god,Сокровищница культивационных книг Небес
+WindowActorLibrary,群仙阁,The Actor Library,Библиотека персонажей
+WindowActorLibrary Description,群仙画卷还是旧神的收纳袋？,The Actor Library of the god,Библиотека персонажей Небес или сумка древних богов?
+WindowBloodLibrary,血脉图谱,Blood Library,Библиотека крови
+WindowBloodLibrary Description,血脉标本库？杂交试验场？,Blood Specimen Library? Hybridization Experiment Field?,Библиотека образцов крови? Экспериментальный центр гибридизации?
+CreateBloodGroup,创建血脉分组,Create Blood Group,Создать группу крови
+MergeBlood,融合血脉,Merge Blood,Слить кровь
+ElementAdjust,灵根重置,Element Reset,Сброс элемента
+ElementAdjust Description,再来搏一搏运气？,Try your luck again?,Еще раз попытать удачу?
+ElementAdjust Result,恭喜呢\n$element$,Congratulations\n$element$,Поздравляю\n$element$
+DragItemOrActorHere,拖拽装备或功法拖到这里进行收纳,Drag cultibook or item here to store,Перетащите предмет или книгу сюда для хранения
+default,默认,Default,По умолчанию
+placeholder,占位符,Placeholder,Заполнитель
+confirm,确定,Confirm,Подтвердить
+cancel,取消,Cancel,Отмена
+dissolve,解散,Dissolve,Распустить
+dissolve_group,解散分组,Dissolve Group,Распустить группу
+confirm_award,确定馈赠,Confirm,Подтвердить дар
+confirm_award_item_info,确定馈赠$item$？\n馈赠后，该生物对应装备栏将会被直接替换,Confirm the gift $item$?\nAfter the gift，the corresponding equipment slot will be replaced directly,Подтвердить дар $item$?\nПосле дара соответствующий слот снаряжения будет заменен
+confirm_award_cultibook_info,确定馈赠$cultibook$？\n馈赠后，该生物对应功法栏将会被直接替换,Confirm the gift $cultibook$?\nAfter the gift，the corresponding cultibook slot will be replaced directly,Подтвердить дар $cultibook$?\nПосле дара соответствующий слот культивационной книги будет заменен

@@ -1,3 +1,3 @@
-key,cz,en
-blood,血脉,Blood
-blood_desc,$main_blood_name$占优，纯度$main_blood_purity$,Main blood is $main_blood_name$ with purity $main_blood_purity$
+key,cz,en,ru
+blood,血脉,Blood,Кровь
+blood_desc,$main_blood_name$占优，纯度$main_blood_purity$,Main blood is $main_blood_name$ with purity $main_blood_purity$,Основная кровь — это $main_blood_name$ с чистотой $main_blood_purity$
