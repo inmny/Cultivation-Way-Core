@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Cultivation_Way.Core;
+using Cultivation_Way.Extension;
 using Cultivation_Way.Library;
 using Cultivation_Way.Others;
 using DG.Tweening;
@@ -10,12 +11,13 @@ using ReflectionUtility;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
+
 namespace Cultivation_Way.UI;
 
 internal class CW_TipButton : MonoBehaviour
 {
-    public Button button;
-    public Image image;
+    public  Button  button;
+    public  Image   image;
     private Vector3 origin_scale = new(-1, -1);
     private Action<GameObject> tooltip_action;
 
@@ -108,7 +110,7 @@ internal abstract class SimpleInfo : MonoBehaviour
 internal class SimpleCreatureInfo : SimpleInfo
 {
     public StatBar health_bar;
-    public Text value_text;
+    public Text  value_text;
     public Image value_icon;
 
     public override void load_obj(object obj, string value, string icon_path = "")
@@ -137,18 +139,21 @@ internal class SimpleCreatureInfo : SimpleInfo
 
 internal class SimpleCultibookInfo : SimpleInfo
 {
-    public Text author_text;
-    public Text value_text;
-    public Image value_icon;
-    public Text pop_text;
-    public Button cultibook_button;
+    public  Text      author_text;
+    public  Text      value_text;
+    public  Image     value_icon;
+    public  Text      pop_text;
+    public  Button    cultibook_button;
+    private Cultibook cultibook;
 
     public override void load_obj(object obj, string value, string icon_path = "")
     {
-        Cultibook cultibook = (Cultibook)obj;
+        cultibook = (Cultibook)obj;
         object_name.text = cultibook.name;
         pop_text.text = Toolbox.formatNumber(cultibook.cur_users);
         value_text.text = value;
+        cultibook_button.onClick.RemoveAllListeners();
+        cultibook_button.onClick.AddListener(InspectRelatedActor);
         cultibook_button.OnHover(() =>
         {
             Tooltip.show(obj, Constants.Core.mod_prefix + "cultibook", new TooltipData
@@ -169,6 +174,18 @@ internal class SimpleCultibookInfo : SimpleInfo
         }
 
         base.load_obj(obj, value, icon_path);
+    }
+
+    public void InspectRelatedActor()
+    {
+        var units = World.world.units.getSimpleList();
+        foreach (Actor a in units)
+            if (a.data.GetCultibook() == cultibook)
+            {
+                Config.selectedUnit = a;
+                ScrollWindow.showWindow("inspect_unit");
+                return;
+            }
     }
 }
 
@@ -448,8 +465,8 @@ internal static class Prefabs
         text_component.resizeTextMaxSize = 10;
     }
 
-    public static GameObject instantiate_input_field(Sprite sprite, Vector2 field_size, Vector2 padding,
-        Transform parent)
+    public static GameObject instantiate_input_field(Sprite    sprite, Vector2 field_size, Vector2 padding,
+                                                     Transform parent)
     {
         GameObject obj = Object.Instantiate(input_field_prefab, parent);
         obj.transform.GetComponent<Image>().sprite = sprite;
