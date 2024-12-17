@@ -22,10 +22,10 @@ internal class EnergyTileData
 internal class SavedDataVerCur : AbstractSavedData
 {
     public Dictionary<string, ActorAdditionSave> actor_addition_savedata = new();
-    public List<BloodNodeAsset> bloods = new();
-    public Dictionary<string, CityAdditionSave> city_addition_savedata = new();
-    public List<Cultibook> cultibooks = new();
-    public Dictionary<string, EnergyTileData[,]> energy_tiles = new();
+    public List<BloodNodeAsset>                  bloods                 = new();
+    public Dictionary<string, CityAdditionSave>  city_addition_savedata = new();
+    public List<Cultibook>                       cultibooks             = new();
+    public Dictionary<string, EnergyTileData[,]> energy_tiles           = new();
 
     public void Initialize(SavedMap pSavedMap)
     {
@@ -146,6 +146,9 @@ internal class SavedDataVerCur : AbstractSavedData
         var actors = World.world.units.getSimpleList();
         foreach (var actor in actors)
         {
+            CW_Actor cw_actor = actor.CW();
+            cw_actor.data_spells.Clear();
+            cw_actor.data_spells.UnionWith(cw_actor.data.GetSpells());
             CountCultisysLevel(actor, CultisysType.BODY);
             CountCultisysLevel(actor, CultisysType.SOUL);
             CountCultisysLevel(actor, CultisysType.BLOOD);
@@ -183,9 +186,9 @@ internal class SavedDataVerCur : AbstractSavedData
             item.addition_stats.AfterDeserialize();
 
         foreach (var item in from addition_data in city_addition_savedata.Values
-                 from equipments in addition_data.CW_Equipments.Values
-                 from item in equipments
-                 select item)
+                             from equipments in addition_data.CW_Equipments.Values
+                             from item in equipments
+                             select item)
             item.addition_stats.AfterDeserialize();
     }
 
