@@ -67,6 +67,15 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
             {
                 // 在所有附属初始化完毕后, 进行后续处理
                 CWTab.post_init();
+                action_on_windows("init");
+                WindowItemLibrary.CreateWindow(nameof(WindowItemLibrary),
+                    nameof(WindowItemLibrary));
+                WindowCultibookLibrary.CreateWindow(nameof(WindowCultibookLibrary),
+                    nameof(WindowCultibookLibrary));
+                WindowBloodLibrary.CreateWindow(nameof(WindowBloodLibrary),
+                    nameof(WindowBloodLibrary));
+                WindowModInfo.CreateWindow(nameof(WindowModInfo), nameof(WindowModInfo));
+
                 action_on_windows("post_init");
                 state.library_manager.post_init();
                 state.energy_map_manager.init(256, 256);
@@ -196,14 +205,6 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         HarmonySpace.Manager.init();
         state.library_manager.init();
         CWTab.init();
-        action_on_windows("init");
-        WindowItemLibrary.CreateWindow(nameof(WindowItemLibrary),
-            nameof(WindowItemLibrary));
-        WindowCultibookLibrary.CreateWindow(nameof(WindowCultibookLibrary),
-            nameof(WindowCultibookLibrary));
-        WindowBloodLibrary.CreateWindow(nameof(WindowBloodLibrary),
-            nameof(WindowBloodLibrary));
-        WindowModInfo.CreateWindow(nameof(WindowModInfo), nameof(WindowModInfo));
 
         new Thread(() =>
         {
@@ -283,18 +284,18 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
 
     public class ModState
     {
-        internal List<IMod> addons;
-        public bool addons_initialized;
-        public bool all_initialized;
-        public EffectManager anim_manager;
-        public bool core_initialized;
-        internal bool editor_inmny;
-        public CW_EnergyMapLayer energy_map_layer;
-        public CW_EnergyMapManager energy_map_manager;
-        internal bool is_awarding;
-        public Manager library_manager;
-        internal Info mod_info;
-        internal SpellManager spell_manager;
-        internal long update_nr;
+        internal List<IMod>          addons;
+        public   bool                addons_initialized;
+        public   bool                all_initialized;
+        public   EffectManager       anim_manager;
+        public   bool                core_initialized;
+        internal bool                editor_inmny;
+        public   CW_EnergyMapLayer   energy_map_layer;
+        public   CW_EnergyMapManager energy_map_manager;
+        internal bool                is_awarding;
+        public   Manager             library_manager;
+        internal Info                mod_info;
+        internal SpellManager        spell_manager;
+        internal long                update_nr;
     }
 }

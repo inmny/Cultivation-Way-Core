@@ -21,11 +21,11 @@ public class WindowCultibookLibrary : AutoLayoutWindow<WindowCultibookLibrary>, 
     private SimpleCultibookButton _button;
     private ConfirmWindow _confirm_window;
 
-    private Cultibook _cultibook;
-    private ObjectPoolGenericMono<SimpleCultibookButton>[] _cultibook_pools;
-    private AutoGridLayoutGroup[] _cultibook_stage_groups;
-    public static WindowCultibookLibrary Instance { get; private set; }
-    public List<Cultibook> Data { get; set; } = new();
+    private       Cultibook                                      _cultibook;
+    private       ObjectPoolGenericMono<SimpleCultibookButton>[] _cultibook_pools;
+    private       AutoGridLayoutGroup[]                          _cultibook_stage_groups;
+    public static WindowCultibookLibrary                         Instance { get; private set; }
+    public        List<Cultibook>                                Data     { get; set; } = new();
 
     public void SaveData()
     {
@@ -128,6 +128,7 @@ public class WindowCultibookLibrary : AutoLayoutWindow<WindowCultibookLibrary>, 
         );
         _confirm_window.gameObject.SetActive(false);
         Instance = this;
+        LoadData();
     }
 
     private void GiveCultibook()

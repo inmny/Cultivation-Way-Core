@@ -106,7 +106,7 @@ public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWi
             );
             _item_pools[i] =
                 new ObjectPoolGenericMono<SimpleEquipmentButton>(SimpleEquipmentButton.Prefab,
-                                                                 _item_stage_groups[i].transform);
+                    _item_stage_groups[i].transform);
 
             _item_stage_groups[i].layout.padding = new RectOffset(5, 5, 5, 5);
             Image bg = _item_stage_groups[i].gameObject.AddComponent<Image>();
@@ -138,6 +138,7 @@ public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWi
         );
         _confirm_window.gameObject.SetActive(false);
         Instance = this;
+        LoadData();
     }
 
     public static void CollectItem(ItemData pItemData)
