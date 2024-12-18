@@ -22,10 +22,10 @@ internal class EnergyTileData
 internal class SavedDataVerCur : AbstractSavedData
 {
     public Dictionary<string, ActorAdditionSave> actor_addition_savedata = new();
-    public List<BloodNodeAsset>                  bloods                 = new();
-    public Dictionary<string, CityAdditionSave>  city_addition_savedata = new();
-    public List<Cultibook>                       cultibooks             = new();
-    public Dictionary<string, EnergyTileData[,]> energy_tiles           = new();
+    public List<BloodNodeAsset>                  bloods                  = new();
+    public Dictionary<string, CityAdditionSave>  city_addition_savedata  = new();
+    public List<Cultibook>                       cultibooks              = new();
+    public Dictionary<string, EnergyTileData[,]> energy_tiles            = new();
 
     public void Initialize(SavedMap pSavedMap)
     {
@@ -148,7 +148,7 @@ internal class SavedDataVerCur : AbstractSavedData
         {
             CW_Actor cw_actor = actor.CW();
             cw_actor.data_spells.Clear();
-            cw_actor.data_spells.UnionWith(cw_actor.data.GetSpells());
+            cw_actor.data_spells.UnionWith(cw_actor.data.GetSpells() ?? new());
             CountCultisysLevel(actor, CultisysType.BODY);
             CountCultisysLevel(actor, CultisysType.SOUL);
             CountCultisysLevel(actor, CultisysType.BLOOD);
