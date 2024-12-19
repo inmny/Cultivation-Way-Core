@@ -231,7 +231,7 @@ internal class WindowCreatureInfoHelper
         #endregion
 
         body_progress = Object.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
-                              .AddComponent<CultiProgress>();
+            .AddComponent<CultiProgress>();
         body_progress.name = "BodyCultiProgress";
         body_progress.transform.localPosition = new Vector3(-165, 50, 0);
         body_progress.GetComponent<Image>().sprite = FastVisit.get_square_frame();
@@ -241,7 +241,7 @@ internal class WindowCreatureInfoHelper
         body_progress.transform.Find("Icon").localPosition += new Vector3(7,       0);
         //body_progress.transform.Find("Text").localPosition += new Vector3(7, 0);
         wakan_progress = Object.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
-                               .AddComponent<CultiProgress>();
+            .AddComponent<CultiProgress>();
         wakan_progress.name = "WakanCultiProgress";
         wakan_progress.transform.localPosition = new Vector3(-165, 0, 0);
         wakan_progress.GetComponent<Image>().sprite = FastVisit.get_square_frame();
@@ -251,7 +251,7 @@ internal class WindowCreatureInfoHelper
         wakan_progress.transform.Find("Icon").localPosition += new Vector3(7,       0);
         //wakan_progress.transform.Find("Text").localPosition += new Vector3(7, 0);
         soul_progress = Object.Instantiate(content_transform.Find("Part 3/HealthBar").gameObject, background_transform)
-                              .AddComponent<CultiProgress>();
+            .AddComponent<CultiProgress>();
         soul_progress.name = "SoulCultiProgress";
         soul_progress.transform.localPosition = new Vector3(-165, -50, 0);
         soul_progress.GetComponent<Image>().sprite = FastVisit.get_square_frame();
@@ -305,41 +305,43 @@ internal class WindowCreatureInfoHelper
             var element = Config.selectedUnit.data.GetElement();
             element.ReRandom();
             Config.selectedUnit.data.SetElement(element);
+            Config.selectedUnit.setStatsDirty();
+            Config.selectedUnit.updateStats();
             scroll_window.GetComponent<WindowCreatureInfo>().OnEnable();
             WorldTip.showNow(
                 LM.Get("ElementAdjust Result").Replace("$element$",
-                                                       LM.Get(Config.selectedUnit.data.GetElement().GetElementType()
-                                                                    .id)), false, "top");
+                    LM.Get(Config.selectedUnit.data.GetElement().GetElementType()
+                        .id)), false, "top");
         }, SpriteTextureLoader.getSprite("ui/icons/iconElement"), pSize: new Vector2(32, 32), pTipData: new TooltipData
         {
             tip_name = "ElementAdjust",
             tip_description = "ElementAdjust Description"
         }, pTipType: "normal");
         cultibook_award_entry.Setup(() =>
-                                    {
-                                        ScrollWindow.moveAllToLeftAndRemove();
-                                        ScrollWindow.showWindow(nameof(WindowCultibookLibrary));
-                                        CW_Core.mod_state.is_awarding = true;
-                                    }, SpriteTextureLoader.getSprite("ui/icons/iconCultiBook_immortal"),
-                                    pSize: new Vector2(32, 32),
-                                    pTipData: new TooltipData
-                                    {
-                                        tip_name = nameof(WindowCultibookLibrary),
-                                        tip_description = nameof(WindowCultibookLibrary) +
-                                                          Constants.Core.new_desc_suffix
-                                    }, pTipType: "normal");
+            {
+                ScrollWindow.moveAllToLeftAndRemove();
+                ScrollWindow.showWindow(nameof(WindowCultibookLibrary));
+                CW_Core.mod_state.is_awarding = true;
+            }, SpriteTextureLoader.getSprite("ui/icons/iconCultiBook_immortal"),
+            pSize: new Vector2(32, 32),
+            pTipData: new TooltipData
+            {
+                tip_name = nameof(WindowCultibookLibrary),
+                tip_description = nameof(WindowCultibookLibrary) +
+                                  Constants.Core.new_desc_suffix
+            }, pTipType: "normal");
         equipment_award_entry.Setup(() =>
-                                    {
-                                        ScrollWindow.moveAllToLeftAndRemove();
-                                        ScrollWindow.showWindow(nameof(WindowItemLibrary));
-                                        CW_Core.mod_state.is_awarding = true;
-                                    }, SpriteTextureLoader.getSprite("ui/icons/items/icon_紫金葫芦_violet_gold"),
-                                    pSize: new Vector2(32, 32),
-                                    pTipData: new TooltipData
-                                    {
-                                        tip_name = nameof(WindowItemLibrary),
-                                        tip_description = nameof(WindowItemLibrary) + Constants.Core.new_desc_suffix
-                                    }, pTipType: "normal");
+            {
+                ScrollWindow.moveAllToLeftAndRemove();
+                ScrollWindow.showWindow(nameof(WindowItemLibrary));
+                CW_Core.mod_state.is_awarding = true;
+            }, SpriteTextureLoader.getSprite("ui/icons/items/icon_紫金葫芦_violet_gold"),
+            pSize: new Vector2(32, 32),
+            pTipData: new TooltipData
+            {
+                tip_name = nameof(WindowItemLibrary),
+                tip_description = nameof(WindowItemLibrary) + Constants.Core.new_desc_suffix
+            }, pTipType: "normal");
         elixir_award_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();
@@ -347,16 +349,16 @@ internal class WindowCreatureInfoHelper
             CW_Core.mod_state.is_awarding = true;
         }, SpriteTextureLoader.getSprite("ui/icons/elixirs/iconNormal"), pSize: new Vector2(32, 32));
         blood_award_entry.Setup(() =>
-                                {
-                                    ScrollWindow.moveAllToLeftAndRemove();
-                                    ScrollWindow.showWindow(nameof(WindowBloodLibrary));
-                                    CW_Core.mod_state.is_awarding = true;
-                                }, SpriteTextureLoader.getSprite("ui/icons/iconWus"), pSize: new Vector2(32, 32),
-                                pTipData: new TooltipData
-                                {
-                                    tip_name = nameof(WindowBloodLibrary),
-                                    tip_description = nameof(WindowBloodLibrary) + Constants.Core.new_desc_suffix
-                                }, pTipType: "normal");
+            {
+                ScrollWindow.moveAllToLeftAndRemove();
+                ScrollWindow.showWindow(nameof(WindowBloodLibrary));
+                CW_Core.mod_state.is_awarding = true;
+            }, SpriteTextureLoader.getSprite("ui/icons/iconWus"), pSize: new Vector2(32, 32),
+            pTipData: new TooltipData
+            {
+                tip_name = nameof(WindowBloodLibrary),
+                tip_description = nameof(WindowBloodLibrary) + Constants.Core.new_desc_suffix
+            }, pTipType: "normal");
         cultisys_award_entry.Setup(() =>
         {
             ScrollWindow.moveAllToLeftAndRemove();

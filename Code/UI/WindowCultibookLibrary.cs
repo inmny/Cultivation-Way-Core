@@ -141,6 +141,7 @@ public class WindowCultibookLibrary : AutoLayoutWindow<WindowCultibookLibrary>, 
 
         Config.selectedUnit.data.SetCultibook(copy);
         Config.selectedUnit.setStatsDirty();
+        Config.selectedUnit.updateStats();
 
         ScrollWindowComponent.clickBack();
     }

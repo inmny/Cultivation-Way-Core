@@ -207,6 +207,7 @@ public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWi
         Config.selectedUnit.equipment.getSlot(asset.equipmentType).setItem(_item_data);
         Config.selectedUnit.setStatsDirty();
         Config.selectedUnit.dirty_sprite_item = true;
+        Config.selectedUnit.updateStats();
         Data.Remove(_item_data);
 
         ScrollWindowComponent.clickBack();
