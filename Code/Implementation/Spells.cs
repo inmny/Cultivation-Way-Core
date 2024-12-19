@@ -168,7 +168,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                 {
                     var target_z_angle =
                         Toolbox.getAngle(curr_pos.x, curr_pos.y, dst_actor.currentPosition.x,
-                                         dst_actor.currentPosition.y + dst_actor.zPosition.y) *
+                            dst_actor.currentPosition.y + dst_actor.zPosition.y) *
                         57.29578f - 45;
                     if (target_z_angle < 0) target_z_angle += 360;
                     var current_z_angle = anim.gameObject.transform.rotation.eulerAngles.z;
@@ -187,14 +187,14 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
 
                 dst_actor.currentPosition =
                     new Vector2(Mathf.Lerp(anim.src_object.currentPosition.x, curr_pos.x, anim.cur_elapsed * 10),
-                                Mathf.Lerp(anim.src_object.currentPosition.y, curr_pos.y - anim.setting.free_val,
-                                           anim.cur_elapsed * 10));
+                        Mathf.Lerp(anim.src_object.currentPosition.y, curr_pos.y - anim.setting.free_val,
+                            anim.cur_elapsed * 10));
                 dst_actor.zPosition.y = Mathf.Lerp(dst_actor.zPosition.y, anim.setting.free_val, anim.cur_elapsed * 10);
 
                 dst_actor.findCurrentTile();
                 dst_actor.transform.localPosition = new Vector3(dst_actor.currentPosition.x,
-                                                                dst_actor.currentPosition.y + dst_actor.zPosition.y,
-                                                                dst_actor.zPosition.y);
+                    dst_actor.currentPosition.y + dst_actor.zPosition.y,
+                    dst_actor.zPosition.y);
 
                 if (anim.data.hasFlag("refining"))
                 {
@@ -230,7 +230,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                 }
 
                 if (Toolbox.Dist(curr_pos.x, curr_pos.y, dst_actor.currentPosition.x,
-                                 dst_actor.currentPosition.y + dst_actor.zPosition.y) < 3f)
+                        dst_actor.currentPosition.y + dst_actor.zPosition.y) < 3f)
                 {
                     anim.data.addFlag("refining");
                     anim.data.addFlag("stop_rotate");
@@ -279,11 +279,11 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         });
 
         EffectManager.instance.load_as_controller("violet_gold_gourd_anim", "effects/violet_gold_gourd/",
-                                                  controller_setting: anim_setting, base_scale: 0.25f);
+            controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell_asset = new()
         {
             id = "violet_gold_gourd",
-            rarity = 99,
+            rarity = 999,
             element = new CW_Element(new[]
             {
                 30, 30, 0, 40, 0
@@ -295,7 +295,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
             target_type = SpellTargetType.ACTOR,
             spell_cost_action = CostChecks.generate_spell_cost_action(new KeyValuePair<string, float>[]
             {
-                new(DataS.wakan, Content_Constants.default_spell_cost)
+                new(DataS.wakan, 0.3f)
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
@@ -598,7 +598,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
                     GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
-                                                  anim.src_object, CW_AttackType.Spell);
+                        anim.src_object, CW_AttackType.Spell);
                 }
                 else
                 {
@@ -632,7 +632,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
                     GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
-                                                  anim.src_object, CW_AttackType.Spell);
+                        anim.src_object, CW_AttackType.Spell);
 
                     float dist = Toolbox.DistVec2Float(vec, dst_vec);
                     float force_x = (dst_vec.x - vec.x) / dist * 0.4f;
@@ -676,7 +676,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
                     GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
-                                                  anim.src_object, CW_AttackType.Spell);
+                        anim.src_object, CW_AttackType.Spell);
                 }
                 else
                 {
@@ -710,7 +710,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                     anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                     List<WorldTile> tiles = GeneralHelper.get_tiles_in_square(tile, 1);
                     GeneralHelper.damage_to_tiles(tiles, MiscUtils.WakanCostToDamage(spell_cost, anim.src_object),
-                                                  anim.src_object, CW_AttackType.Spell);
+                        anim.src_object, CW_AttackType.Spell);
 
                     foreach (Actor target_unit in tiles.SelectMany(target_tile => target_tile._units))
                     {
@@ -977,7 +977,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                 }
 
                 WorldTile center = MapBox.instance.GetTile((int)(anim.gameObject.transform.position.x - 0.5f),
-                                                           (int)(anim.gameObject.transform.position.y - 0.5f));
+                    (int)(anim.gameObject.transform.position.y                                        - 0.5f));
                 if (center == null) return;
 
                 BrushData brush = Brush.get((int)(cur_scale * 6f));
@@ -1013,7 +1013,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("simple_tornado_anim", "effects/simple_tornado/",
-                                                  controller_setting: anim_setting, base_scale: 0.25f);
+            controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
             id = "tornado",
@@ -1103,14 +1103,14 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                     actor.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell, pAttacker: anim.src_object);
                     if (actor.objectType != MapObjectType.Actor) continue;
                     ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force,
-                                               (actor.currentPosition.y - dst_vec.y) / force, 1 / force);
+                        (actor.currentPosition.y                        - dst_vec.y) / force, 1 / force);
                 }
             }
         };
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("fall_wood_anim", "effects/fall_wood/",
-                                                  controller_setting: anim_setting, base_scale: 0.25f);
+            controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
             id = "fall_wood",
@@ -1168,14 +1168,14 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                     actor.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell, pAttacker: anim.src_object);
                     if (actor.objectType != MapObjectType.Actor) continue;
                     ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force,
-                                               (actor.currentPosition.y - dst_vec.y) / force, 1 / force);
+                        (actor.currentPosition.y                        - dst_vec.y) / force, 1 / force);
                 }
             }
         };
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("fall_rock_anim", "effects/fall_rock/",
-                                                  controller_setting: anim_setting, base_scale: 0.25f);
+            controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
             id = "fall_rock",
@@ -1257,7 +1257,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                     actor.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell, pAttacker: anim.src_object);
                     if (actor.objectType != MapObjectType.Actor) continue;
                     ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force,
-                                               (actor.currentPosition.y - dst_vec.y) / force, 1 / force);
+                        (actor.currentPosition.y                        - dst_vec.y) / force, 1 / force);
                 }
 
                 EffectsLibrary.spawnExplosionWave(dst_vec, radius / 2);
@@ -1333,7 +1333,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         });
 
         EffectManager.instance.load_as_controller($"fall_{name}_anim", $"effects/fall_{name}_mountain/",
-                                                  controller_setting: anim_setting, base_scale: 0.25f);
+            controller_setting: anim_setting, base_scale: 0.25f);
         CW_SpellAsset spell = new()
         {
             id = $"fall_{name}_mountain",
@@ -1402,7 +1402,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         anim_setting.set_trace(AnimationTraceType.NONE);
 
         EffectManager.instance.load_as_controller("ground_thorn_anim", "effects/ground_thorn/",
-                                                  controller_setting: anim_setting, base_scale: 0.3f);
+            controller_setting: anim_setting, base_scale: 0.3f);
         CW_SpellAsset spell = new()
         {
             id = "ground_thorn",
@@ -1461,7 +1461,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                         foreach (BaseSimObject actor in targets)
                         {
                             actor.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell,
-                                         pAttacker: anim.src_object);
+                                pAttacker: anim.src_object);
                         }
                     }
                     else
@@ -1474,7 +1474,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         anim_setting.set_trace(AnimationTraceType.NONE);
 
         EffectManager.instance.load_as_controller("wood_thorn_anim", "effects/wood_thorn/",
-                                                  controller_setting: anim_setting, base_scale: 0.3f);
+            controller_setting: anim_setting, base_scale: 0.3f);
         CW_SpellAsset spell = new()
         {
             id = "wood_thorn",
@@ -1618,7 +1618,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("wind_polo_anim", "effects/wind_polo/",
-                                                  controller_setting: anim_setting, base_scale: 0.08f);
+            controller_setting: anim_setting, base_scale: 0.08f);
         CW_SpellAsset spell = new()
         {
             id = "wind_polo",
@@ -1675,7 +1675,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("lightning_polo_anim", "effects/lightning_polo/",
-                                                  controller_setting: anim_setting, base_scale: 0.08f);
+            controller_setting: anim_setting, base_scale: 0.08f);
         CW_SpellAsset spell = new()
         {
             id = "lightning_polo",
@@ -1738,7 +1738,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("water_polo_anim", "effects/water_polo/",
-                                                  controller_setting: anim_setting, base_scale: 0.08f);
+            controller_setting: anim_setting, base_scale: 0.08f);
         CW_SpellAsset spell = new()
         {
             id = "water_polo",
@@ -1792,19 +1792,19 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                 {
                     actor.getHit(spell_cost, pType: (AttackType)CW_AttackType.Spell, pAttacker: anim.src_object);
                     if (actor.objectType != MapObjectType.Actor) continue;
-                    ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x)                 / force,
-                                               (actor.currentPosition.y - dst_vec.y)                 / force,
-                                               Toolbox.DistVec2Float(actor.currentPosition, dst_vec) / force);
+                    ((CW_Actor)actor).addForce((actor.currentPosition.x - dst_vec.x) / force,
+                        (actor.currentPosition.y                        - dst_vec.y) / force,
+                        Toolbox.DistVec2Float(actor.currentPosition, dst_vec)        / force);
                 }
             }
         };
         anim_setting.set_trace(AnimationTraceType.LINE);
 
         EffectManager.instance.load_as_controller("fire_polo_anim", "effects/fire_polo/",
-                                                  controller_setting: anim_setting, base_scale: 0.08f);
+            controller_setting: anim_setting, base_scale: 0.08f);
         EffectManager.instance.load_as_controller("explosion_anim", "effects/explosion/",
-                                                  controller_setting: new AnimationSetting(),
-                                                  base_scale: 1f);
+            controller_setting: new AnimationSetting(),
+            base_scale: 1f);
         CW_SpellAsset spell = new()
         {
             id = "fire_polo",
@@ -1864,7 +1864,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
             }
         };
         EffectManager.instance.load_as_controller("negative_quintuple_lightning_anim", "effects/default_lightning/",
-                                                  controller_setting: anim_setting, base_scale: 0.125f);
+            controller_setting: anim_setting, base_scale: 0.125f);
 
         CW_SpellAsset spell = new()
         {
@@ -1922,7 +1922,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
             end_action = (int idx, ref Vector2 vec, ref Vector2 dst_vec, Animation.SpriteAnimation anim) => { }
         };
         EffectManager.instance.load_as_controller("positive_quintuple_lightning_anim", "effects/default_lightning/",
-                                                  controller_setting: anim_setting, base_scale: 0.125f);
+            controller_setting: anim_setting, base_scale: 0.125f);
 
         CW_SpellAsset spell = new()
         {
@@ -1977,7 +1977,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
             }
         };
         EffectManager.instance.load_as_controller("default_lightning_anim", "effects/default_lightning/",
-                                                  controller_setting: anim_setting, base_scale: 0.125f);
+            controller_setting: anim_setting, base_scale: 0.125f);
 
         CW_SpellAsset spell = new()
         {
@@ -2034,7 +2034,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         anim_setting.set_trace(AnimationTraceType.TRACK);
 
         EffectManager.instance.load_as_controller("void_fire_anim", "effects/void_fire/", 10,
-                                                  controller_setting: anim_setting, base_scale: 0.12f);
+            controller_setting: anim_setting, base_scale: 0.12f);
 
         anim_setting.loop_limit_type = AnimationLoopLimitType.TIME_LIMIT;
         anim_setting.loop_time_limit = 3f;
@@ -2063,7 +2063,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                 {
                     // 拖拽
                     ((CW_Actor)enemy).addForce((dst_vec.x - enemy.currentPosition.x) * 0.1f,
-                                               (dst_vec.y - enemy.currentPosition.y) * 0.1f, 0.05f);
+                        (dst_vec.y                        - enemy.currentPosition.y) * 0.1f, 0.05f);
                 }
             }
         };
@@ -2071,7 +2071,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         anim_setting.end_action = null;
         anim_setting.set_trace(AnimationTraceType.NONE);
         EffectManager.instance.load_as_controller("anti_matter_anim", "effects/anti_matter/", 10,
-                                                  controller_setting: anim_setting, base_scale: 0.12f);
+            controller_setting: anim_setting, base_scale: 0.12f);
 
         CW_SpellAsset spell = new()
         {
@@ -2126,7 +2126,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         anim_setting.set_trace(AnimationTraceType.TRACK);
 
         EffectManager.instance.load_as_controller("samadhi_fire_anim", "effects/samadhi_fire/", 10,
-                                                  controller_setting: anim_setting, base_scale: 0.12f);
+            controller_setting: anim_setting, base_scale: 0.12f);
         CW_SpellAsset spell = new()
         {
             id = "samadhi_fire",
@@ -2173,8 +2173,8 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
                 CW_Actor dst_obj = (CW_Actor)anim.dst_object;
                 CW_StatusEffectData status_data = dst_obj
                     .AddStatus("status_loltus_fire", anim.src_object,
-                               Library.Manager.statuses.get("status_loltus_fire").duration *
-                               (0.1f + dst_obj.data.kills / 10f));
+                        Library.Manager.statuses.get("status_loltus_fire").duration *
+                        (0.1f + dst_obj.data.kills / 10f));
                 if (status_data == null) return;
                 anim.data.get(DataS.spell_cost, out float spell_cost, 1f);
                 status_data.effect_val = spell_cost;
@@ -2183,7 +2183,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         anim_setting.set_trace(AnimationTraceType.TRACK);
 
         EffectManager.instance.load_as_controller("loltus_fire_anim", "effects/loltus_fire/", 10,
-                                                  controller_setting: anim_setting, base_scale: 0.12f);
+            controller_setting: anim_setting, base_scale: 0.12f);
         CW_SpellAsset spell = new()
         {
             id = "loltus_fire",
@@ -2237,7 +2237,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
         anim_setting.set_trace(AnimationTraceType.TRACK);
 
         EffectManager.instance.load_as_controller("fen_fire_anim", "effects/fen_fire/", 10,
-                                                  controller_setting: anim_setting, base_scale: 0.12f);
+            controller_setting: anim_setting, base_scale: 0.12f);
         CW_SpellAsset spell = new()
         {
             id = "fen_fire",
