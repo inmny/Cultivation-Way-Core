@@ -6,12 +6,14 @@ using NeoModLoader.api.attributes;
 using NeoModLoader.General;
 using Newtonsoft.Json;
 using UnityEngine;
+
 namespace Cultivation_Way.Core;
 
 public class CW_ItemData : ItemData
 {
-    [JsonIgnore] private bool _sprite_dirty = true;
-    public BaseStats addition_stats = new();
+    [JsonIgnore] private bool      _sprite_dirty  = true;
+    public               BaseStats addition_stats = new();
+
     public CW_Element element = new(new[]
     {
         20, 20, 20, 20, 20
@@ -80,6 +82,8 @@ public class CW_ItemData : ItemData
         {
             Spells.UnionWith(asset.BaseSpells);
         }
+
+        if (Toolbox.randomChance(0.1f)) addition_stats[S.damage_range] += 0.1f;
 
         foreach (string material_id in pCost.Keys)
         {

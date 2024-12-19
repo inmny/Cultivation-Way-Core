@@ -14,6 +14,7 @@ internal static class Items
     {
         add_materials();
         CW_ItemAsset item = new CW_MeleeWeaponAsset("赤血戟", CW_MeleeWeaponType.戟);
+        item.base_stats[S.damage_range] = 0.1f;
         item.VanillaAsset =
             ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
                 new List<string> { "adamantine" }, equipment_value: 100, name_class: "item_class_halberd");
@@ -34,6 +35,7 @@ internal static class Items
     {
         CW_ItemAsset item;
         item = new CW_SpecialWeaponAsset("紫金葫芦", CW_SpecialWeaponType.葫芦);
+        item.base_stats[S.damage_range] = 0.9f;
         item.VanillaAsset =
             ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
                 new List<string> { "base" }, equipment_value: 1000, name_class: "item_class_gourd");
@@ -50,6 +52,7 @@ internal static class Items
     {
         CW_ItemAsset item;
         item = new CW_SpecialWeaponAsset("衡山印", CW_SpecialWeaponType.印);
+        item.base_stats[S.damage_range] = 0.7f;
         item.VanillaAsset =
             ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
                 new List<string> { "base" }, equipment_value: 1000, name_class: "item_class_seal");
@@ -64,6 +67,7 @@ internal static class Items
 
 
         item = new CW_SpecialWeaponAsset("华山印", CW_SpecialWeaponType.印);
+        item.base_stats[S.damage_range] = 0.7f;
         item.VanillaAsset =
             ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
                 new List<string> { "base" }, equipment_value: 1000, name_class: "item_class_seal");
@@ -78,6 +82,7 @@ internal static class Items
 
 
         item = new CW_SpecialWeaponAsset("恒山印", CW_SpecialWeaponType.印);
+        item.base_stats[S.damage_range] = 0.7f;
         item.VanillaAsset =
             ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
                 new List<string> { "base" }, equipment_value: 1000, name_class: "item_class_seal");
@@ -92,6 +97,7 @@ internal static class Items
 
 
         item = new CW_SpecialWeaponAsset("泰山印", CW_SpecialWeaponType.印);
+        item.base_stats[S.damage_range] = 0.7f;
         item.VanillaAsset =
             ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
                 new List<string> { "base" }, equipment_value: 1000, name_class: "item_class_seal");
@@ -106,6 +112,7 @@ internal static class Items
 
 
         item = new CW_SpecialWeaponAsset("嵩山印", CW_SpecialWeaponType.印);
+        item.base_stats[S.damage_range] = 0.7f;
         item.VanillaAsset =
             ItemAssetCreator.CreateMeleeWeapon(item.id, item.base_stats,
                 new List<string> { "base" }, equipment_value: 1000, name_class: "item_class_seal");
