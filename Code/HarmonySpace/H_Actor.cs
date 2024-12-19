@@ -47,8 +47,8 @@ internal static class H_Actor
             if (!Toolbox.randomChance(dropped_resource.chance)) continue;
 
             __instance.city.data.storage.change(dropped_resource.resource_id,
-                                                Toolbox.randomInt(dropped_resource.min_count,
-                                                                  dropped_resource.max_count));
+                Toolbox.randomInt(dropped_resource.min_count,
+                    dropped_resource.max_count));
         }
     }
 
@@ -76,8 +76,8 @@ internal static class H_Actor
     {
         List<CodeInstruction> codes = instructions.ToList();
         int index = codes.FindIndex(instr =>
-                                        instr.opcode                    == OpCodes.Stfld &&
-                                        ((FieldInfo)instr.operand).Name == "has_status_frozen");
+            instr.opcode                    == OpCodes.Stfld &&
+            ((FieldInfo)instr.operand).Name == "has_status_frozen");
         if (index == -1)
         {
             CW_Core.LogWarning("updateStats_Transpiler: index not found");
@@ -86,8 +86,8 @@ internal static class H_Actor
 
         codes.Insert(index + 1, new CodeInstruction(OpCodes.Ldarg_0));
         codes.Insert(index + 2,
-                     new CodeInstruction(OpCodes.Callvirt,
-                                         AccessTools.Method(typeof(H_Actor), nameof(cw_updateStats))));
+            new CodeInstruction(OpCodes.Callvirt,
+                AccessTools.Method(typeof(H_Actor), nameof(cw_updateStats))));
         return codes;
     }
 
@@ -98,13 +98,18 @@ internal static class H_Actor
         int[] cultisys_levels = actor.data.GetAllCultisysLevels();
         bool has_cultisys = false;
 
+        BaseStats cultisys_stats = null;
         for (int i = 0; i < cultisys_levels.Length; i++)
         {
             if (cultisys_levels[i] < 0) continue;
+            if (!has_cultisys) cultisys_stats = new BaseStats();
+
             has_cultisys = true;
             CultisysAsset cultisys = Library.Manager.cultisys.list[i];
-            actor.stats.mergeStats(cultisys.get_bonus_stats((CW_Actor)actor, cultisys_levels[i]));
+            cultisys_stats.Max(cultisys.get_bonus_stats((CW_Actor)actor, cultisys_levels[i]));
         }
+
+        if (has_cultisys) actor.stats.mergeStats(cultisys_stats);
 
         // 载入功法的加成
         Cultibook cultibook = actor.data.GetCultibook();
@@ -131,7 +136,7 @@ internal static class H_Actor
         if (cw_actor.statuses != null)
         {
             foreach (CW_StatusEffectData effect_data in cw_actor.statuses.Values.Where(effect_data =>
-                             !effect_data.finished))
+                         !effect_data.finished))
             {
                 actor.stats.mergeStats(effect_data.bonus_stats);
             }
