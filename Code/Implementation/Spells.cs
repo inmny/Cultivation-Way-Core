@@ -299,6 +299,7 @@ public sealed class Spells : ExtendedLibrary<CW_SpellAsset, Spells>
             }),
             spell_learn_check = LearnChecks.default_learn_check
         };
+        spell_asset.add_cultisys_require(CultisysType.LIMIT);
         spell_asset.add_trigger_tags(new[]
         {
             SpellTriggerTag.ATTACK, SpellTriggerTag.NAMED_DEFEND
