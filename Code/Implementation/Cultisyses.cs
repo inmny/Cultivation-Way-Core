@@ -34,7 +34,7 @@ internal sealed class Cultisyses : ExtendedLibrary<CultisysAsset, Cultisyses>
         var max_progress = new float[Content_Constants.blood_max_level];
         for (var i = 0; i < Content_Constants.blood_max_level; i++) max_progress[i] = (i + 1) * 0.05f;
         CultisysAsset cultisys = new(Content_Constants.blood_id, Content_Constants.energy_blood_id, CultisysType.BLOOD,
-                                     Content_Constants.blood_max_level, init_blood)
+            Content_Constants.blood_max_level, init_blood)
         {
             sprite_path = "ui/Icons/iconWus",
             curr_progress = (actor, asset, level) => actor.data.GetMainBloodPurity(),
@@ -67,16 +67,16 @@ internal sealed class Cultisyses : ExtendedLibrary<CultisysAsset, Cultisyses>
                 cultisys.bonus_stats[i][CW_S.mod_spell_armor] = i                    * i;
 
                 cultisys.bonus_stats[i][CW_S.wakan_regen] = Mathf.Pow(2f, i);
-                cultisys.bonus_stats[i][S.armor] = i;
-                cultisys.bonus_stats[i][S.mod_armor] = Mathf.Pow(1.2f, i) * 0.2f;
-                cultisys.bonus_stats[i][S.damage] = Mathf.Pow(1.2f,    i) * 9;
-                cultisys.bonus_stats[i][S.max_age] = i                    * i * 10;
+                cultisys.bonus_stats[i][S.armor] = Mathf.Pow(1.2f, i)  * 0.2f;
+                cultisys.bonus_stats[i][S.mod_armor] = i               * i;
+                cultisys.bonus_stats[i][S.damage] = Mathf.Pow(1.2f, i) * 9;
+                cultisys.bonus_stats[i][S.max_age] = i                 * i * 10;
                 immortal_power_co[i] = Mathf.Pow(cultisys.power_base, cultisys.power_level[i]);
             }
         }
 
         CultisysAsset cultisys = new("cw_cultisys_immortal", Content_Constants.energy_wakan_id, CultisysType.WAKAN,
-                                     Content_Constants.immortal_max_level, init_immortal)
+            Content_Constants.immortal_max_level, init_immortal)
         {
             sprite_path = "ui/Icons/iconCultiBook_immortal",
             power_base = 1000,
@@ -154,7 +154,7 @@ internal sealed class Cultisyses : ExtendedLibrary<CultisysAsset, Cultisyses>
         }
 
         CultisysAsset cultisys = new("cw_cultisys_bushido", Content_Constants.energy_bushido_id, CultisysType.BODY,
-                                     Content_Constants.bushido_max_level, init_bushido)
+            Content_Constants.bushido_max_level, init_bushido)
         {
             sprite_path = "ui/Icons/iconCultiBook_bushido",
             curr_progress = (actor, culti, level) => actor.data.health,
@@ -221,7 +221,7 @@ internal sealed class Cultisyses : ExtendedLibrary<CultisysAsset, Cultisyses>
         }
 
         CultisysAsset cultisys = new("cw_cultisys_soul", Content_Constants.energy_soul_id, CultisysType.SOUL,
-                                     Content_Constants.soul_max_level, init_soul)
+            Content_Constants.soul_max_level, init_soul)
         {
             sprite_path = "ui/Icons/iconCultiBook_immortal",
             curr_progress = (actor, asset, level) =>
