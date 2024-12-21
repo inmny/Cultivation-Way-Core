@@ -214,8 +214,8 @@ public partial class CW_Actor : Actor
             if (!string.IsNullOrEmpty(status_asset.anim_id))
             {
                 status.anim = EffectManager.instance.spawn_anim(status_asset.anim_id,
-                                                                pFrom == null ? Vector2.zero : pFrom.currentPosition,
-                                                                currentPosition, pFrom, this);
+                    pFrom == null ? Vector2.zero : pFrom.currentPosition,
+                    currentPosition, pFrom, this);
                 if (status.anim is { isOn: true })
                 {
                     status.anim.change_scale(stats[S.scale]);
@@ -379,7 +379,7 @@ public partial class CW_Actor : Actor
 
         // 修炼体系的月度更新
         foreach (CultisysAsset cultisys in Manager.cultisys.list.Where(cultisys =>
-                                                                           cultisys.monthly_update_action != null))
+                     cultisys.monthly_update_action != null))
         {
             data.get(cultisys.id, out int level, -1);
             if (level < 0) continue;
@@ -493,7 +493,7 @@ public partial class CW_Actor : Actor
                 {
                     data.get(cultisys.id, out defender_level);
                     level_reduce = Mathf.Min(level_reduce,
-                                             Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
+                        Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
                 }
 
                 cultisys = data.GetCultisys(CultisysType.WAKAN);
@@ -501,16 +501,16 @@ public partial class CW_Actor : Actor
                 {
                     data.get(cultisys.id, out defender_level);
                     level_reduce = Mathf.Min(level_reduce,
-                                             Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
+                        Mathf.Pow(cultisys.power_base, -cultisys.power_level[defender_level] + 1));
                 }
 
                 break;
         }
 
         DamageRecordManager.AddDamageRecord(attack_type, pDamage, attacker_level, defender_level,
-                                            attack_type == CW_AttackType.Spell
-                                                ? stats[CW_S.spell_armor]
-                                                : stats[S.armor], armor_reduce, level_reduce);
+            attack_type == CW_AttackType.Spell
+                ? stats[CW_S.spell_armor]
+                : stats[S.armor], armor_reduce, level_reduce);
 
         pDamage *= armor_reduce * level_reduce;
 
@@ -582,7 +582,7 @@ public partial class CW_Actor : Actor
 
         #region 攻击额外效果
 
-        timer_action = 0.002f;
+        //timer_action = 0.002f;
         if (pFlash) startColorEffect(ActorColorEffect.Red);
         if (data.health <= 0 || curr_soul <= 0)
         {
@@ -844,7 +844,7 @@ public partial class CW_Actor : Actor
         // 尝试学习
         foreach (KeyValuePair<CW_SpellAsset, float> spell_chance in
                  ordered_spell_chances.Where(spell_chance =>
-                                                 Toolbox.randomChance(spell_chance.Value)))
+                     Toolbox.randomChance(spell_chance.Value)))
         {
             LearnSpell(spell_chance.Key);
             return;
