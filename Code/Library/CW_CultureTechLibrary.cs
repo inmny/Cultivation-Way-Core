@@ -15,7 +15,7 @@ internal static class CW_CultureTechLibrary
             required_level = 50,
             requirements = new List<string>
             {
-                "weaponsmith"
+                "weapon_production", "armor_production"
             }
         };
         AssetManager.culture_tech.add(tech);
