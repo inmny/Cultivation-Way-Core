@@ -38,12 +38,12 @@ public static class NameGenerateUtils
 #else
     public static string GenerateCultibookName(Cultibook pCultibook, CW_Actor pEditor)
     {
-        return "";
+        return pEditor.getName() + "的功法";
     }
 
     public static string GenerateItemName(CW_ItemData pItemData, CW_ItemAsset pItemAsset, CW_Actor pCreator)
     {
-        return "";
+        return pItemAsset.GetTypeName();
     }
 #endif
 }
