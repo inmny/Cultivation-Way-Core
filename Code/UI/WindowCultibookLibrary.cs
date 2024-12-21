@@ -46,7 +46,7 @@ public class WindowCultibookLibrary : AutoLayoutWindow<WindowCultibookLibrary>, 
     public void LoadData()
     {
         if (!File.Exists(Paths.CultibookLibraryPath)) return;
-        var read_data = GeneralHelper.from_json<List<Cultibook>>(File.ReadAllText(Paths.CultibookLibraryPath));
+        var read_data = GeneralHelper.from_json<List<Cultibook>>(File.ReadAllText(Paths.CultibookLibraryPath), true);
         Data.Clear();
         foreach (var data in read_data)
         {

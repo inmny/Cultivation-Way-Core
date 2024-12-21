@@ -48,7 +48,7 @@ public class WindowItemLibrary : AutoLayoutWindow<WindowItemLibrary>, ILibraryWi
     public void LoadData()
     {
         if (!File.Exists(Paths.ItemLibraryPath)) return;
-        var read_data = GeneralHelper.from_json<List<CW_ItemData>>(File.ReadAllText(Paths.ItemLibraryPath));
+        var read_data = GeneralHelper.from_json<List<CW_ItemData>>(File.ReadAllText(Paths.ItemLibraryPath), true);
         Data.Clear();
         foreach (var data in read_data)
             if (Manager.items.contains(data.id))
