@@ -686,7 +686,7 @@ public partial class CW_Actor : Actor
         Cultibook new_cultibook = new();
         if (old_cultibook != null)
         {
-            if (!Toolbox.randomChance((1 + data.intelligence) / (old_cultibook.level + 5)))
+            if (!Toolbox.randomChance((1 + data.intelligence) / (float)(old_cultibook.level + 5)))
             {
                 return;
             }
