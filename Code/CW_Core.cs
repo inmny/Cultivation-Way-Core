@@ -103,7 +103,8 @@ public class CW_Core : BasicMod<CW_Core>, IReloadable
         _last_year = current_year;
 
         state.update_nr++;
-        state.spell_manager.deal_all();
+        for (var i = 0; i < (int)Mathf.Max(1, Config.timeScale); i++) state.spell_manager.deal_all(Time.deltaTime);
+
         if (state.update_nr % 256 == 0)
         {
             Factories.recycle_items();
