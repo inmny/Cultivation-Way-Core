@@ -152,7 +152,7 @@ public class WindowCultibookLibrary : AutoLayoutWindow<WindowCultibookLibrary>, 
         foreach (var item in Manager.cultibooks.static_list)
         {
             SimpleCultibookButton button;
-            var pool = _cultibook_pools[(item.level - 1) / Constants.Core.cultibook_level_per_stage];
+            var pool = _cultibook_pools[item.Stage];
             button = pool.getNext(0);
             button.Setup(item, new Vector2(32, 36));
         }
@@ -160,7 +160,7 @@ public class WindowCultibookLibrary : AutoLayoutWindow<WindowCultibookLibrary>, 
         foreach (var item in Data)
         {
             SimpleCultibookButton button;
-            var pool = _cultibook_pools[(item.level - 1) / Constants.Core.cultibook_level_per_stage];
+            var pool = _cultibook_pools[item.Stage];
             button = pool.getNext(0);
             button.Setup(item, new Vector2(32, 36));
         }

@@ -46,6 +46,12 @@ public class Cultibook : Asset
     /// </summary>
     public List<string> spells = new();
 
+    public int Stage => Math.Min((level       - 1) / Constants.Core.cultibook_level_per_stage,
+        (Constants.Core.cultibook_level_count - 1) / Constants.Core.cultibook_level_per_stage);
+
+    public int LevelInStage => Math.Min(level    - Stage * Constants.Core.cultibook_level_per_stage,
+        Constants.Core.cultibook_level_per_stage - 1);
+
     /// <summary>
     ///     当前使用人数
     /// </summary>

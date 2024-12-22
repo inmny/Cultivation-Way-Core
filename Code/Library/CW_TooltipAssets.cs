@@ -230,13 +230,17 @@ internal static class CW_TooltipAssets
         tooltip.name.text = cultibook.name;
         StringBuilder str_builder = new();
         str_builder.AppendLine($"{cultibook.author_name} 著");
-        str_builder.AppendLine($"{cultibook.editor_name} 编");
+        str_builder.AppendLine($"{cultibook.editor_name} 最后修改");
 
         if (!string.IsNullOrEmpty(cultibook.description))
         {
             str_builder.AppendLine("");
             str_builder.AppendLine(cultibook.description);
         }
+
+        str_builder.AppendLine("");
+        str_builder.AppendLine(LM.Get($"cultibook_order_{cultibook.Stage}") +
+                               LM.Get($"item_level_{cultibook.LevelInStage}"));
 
         tooltip.addDescription(str_builder.ToString());
 
