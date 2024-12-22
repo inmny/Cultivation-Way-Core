@@ -87,7 +87,18 @@ public class CW_ItemData : ItemData
         }
 
         if (Toolbox.randomChance(0.1f)) addition_stats[S.damage_range] += 0.1f;
-
+        HashSet<string> new_spells = new();
+        var add_spell_from_creator =
+            Toolbox.randomChance(1 - 10 /
+                (10 +
+                 Mathf.Log10(
+                     Mathf.Max(
+                         Mathf.Max(1, pCreator.stats[S.intelligence]),
+                         pCreator.data.GetSpellImprintExp()
+                     )
+                 )
+                )
+            );
         foreach (string material_id in pCost.Keys)
         {
             CW_ItemMaterialAsset material_asset = Manager.item_materials.get(material_id);
@@ -102,15 +113,27 @@ public class CW_ItemData : ItemData
             _sprite_dirty = true;
 
             if (Level < Constants.Core.item_level_per_stage) continue;
-            if (material_asset.possible_spells_on_slot[equip_type].Count == 0) continue;
-
-            HashSet<string> new_spells =
-                new(material_asset.possible_spells_on_slot[equip_type]);
-            new_spells.ExceptWith(Spells);
-            new_spells.RemoveWhere(spell_id =>
-                !Manager.spells.get(spell_id)?.spell_classes.Overlaps(asset.AllowedSpellClasses) ?? true);
-
-            Spells.Add(new_spells.GetRandom());
+            new_spells.UnionWith(material_asset.possible_spells_on_slot[equip_type]);
         }
+
+        if (add_spell_from_creator)
+            foreach (var spell in pCreator.CW().data_spells)
+            {
+                CW_SpellAsset spell_asset = Manager.spells.get(spell);
+                if (spell_asset == null) continue;
+                if (Toolbox.randomChance(Level / (float)spell_asset.rarity)
+                    && Toolbox.randomChance(CW_Element.get_similarity(spell_asset.element, element)))
+                    new_spells.Add(spell);
+            }
+
+        new_spells.ExceptWith(Spells);
+        new_spells.RemoveWhere(spell_id =>
+            !Manager.spells.get(spell_id)?.spell_classes.Overlaps(asset.AllowedSpellClasses) ?? true);
+        if (new_spells.Count == 0) return;
+
+        var spell_to_add = new_spells.GetRandom();
+        Spells.Add(spell_to_add);
+        if (add_spell_from_creator && pCreator.CW().data_spells.Contains(spell_to_add))
+            pCreator.data.IncreaseSpellImprintExp(Manager.spells.get(spell_to_add).rarity);
     }
 }

@@ -316,7 +316,7 @@ public class CW_Element : FactoryItem<CW_Element>
         }
 
         //if (modulus_1 * modulus_2 == 0) return 1;
-        return mul_result * mul_result / (float)(modulus_1 * modulus_2);
+        return mul_result * mul_result / Mathf.Sqrt(modulus_1 * modulus_2);
     }
 
     public static float get_similarity(CW_Element e1, CW_Element e2)

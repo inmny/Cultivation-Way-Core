@@ -10,6 +10,18 @@ namespace Cultivation_Way.Extension;
 
 public static class ActorDataTools
 {
+    public static float GetSpellImprintExp(this ActorData pData)
+    {
+        pData.get(DataS.spell_imprint_exp, out var exp, 0f);
+        return exp;
+    }
+
+    public static void IncreaseSpellImprintExp(this ActorData pData, float pExp)
+    {
+        pData.get(DataS.spell_imprint_exp, out var exp, 0f);
+        pData.set(DataS.spell_imprint_exp, exp + pExp);
+    }
+
     /// <summary>
     ///     设置灵根比例
     /// </summary>
@@ -120,8 +132,8 @@ public static class ActorDataTools
     {
         string pTypeStr = pType switch
         {
-            CultisysType.BODY => "BODY",
-            CultisysType.SOUL => "SOUL",
+            CultisysType.BODY  => "BODY",
+            CultisysType.SOUL  => "SOUL",
             CultisysType.WAKAN => "WAKAN",
             CultisysType.BLOOD => "BLOOD",
             CultisysType.HIDDEN => "HIDDEN",
