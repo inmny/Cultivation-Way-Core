@@ -15,11 +15,11 @@ public class CW_Element : FactoryItem<CW_Element>
 {
     private static readonly BaseStats tmp_stats = new();
 
-    private static readonly Color water  = Color.blue;
-    private static readonly Color fire   = Color.red;
-    private static readonly Color wood   = Color.green;
-    private static readonly Color iron   = Color.yellow;
-    private static readonly Color ground = Toolbox.makeColor("#603700");
+    private static readonly Color   water          = Color.blue;
+    private static readonly Color   fire           = Color.red;
+    private static readonly Color   wood           = Color.green;
+    private static readonly Color   iron           = Color.yellow;
+    private static readonly Color   ground         = Toolbox.makeColor("#603700");
     private static readonly Color[] element_colors = { water, fire, wood, iron, ground };
 
     [JsonProperty("base_elements")] public int[] BaseElements = new int[Constants.Core.element_type_nr];
@@ -241,13 +241,13 @@ public class CW_Element : FactoryItem<CW_Element>
         // 火
         real_content = BaseElements[Constants.Core.BASE_TYPE_FIRE] + BaseElements[Constants.Core.BASE_TYPE_WOOD] -
                        BaseElements[Constants.Core.BASE_TYPE_WATER];
-        combine_bonus[S.critical_chance] += real_content * 0.2f * promot / 100;
-        combine_bonus[S.mod_crit] += real_content        * promot        / 100;
+        combine_bonus[S.critical_chance] += real_content            * 0.2f * promot / 100;
+        combine_bonus[S.mod_crit] += real_content                   * promot        / 100;
         combine_bonus[S.critical_damage_multiplier] += real_content * 1.5f * promot / 100;
         // 土
         real_content = BaseElements[Constants.Core.BASE_TYPE_GROUND] + BaseElements[Constants.Core.BASE_TYPE_FIRE] -
                        BaseElements[Constants.Core.BASE_TYPE_WOOD];
-        combine_bonus[S.mod_armor] += real_content * promot / 100;
+        combine_bonus[S.mod_armor] += real_content          * promot / 100;
         combine_bonus[CW_S.mod_spell_armor] += real_content * promot / 100;
         // 金
         real_content = BaseElements[Constants.Core.BASE_TYPE_IRON] + BaseElements[Constants.Core.BASE_TYPE_GROUND] -
@@ -262,7 +262,7 @@ public class CW_Element : FactoryItem<CW_Element>
         // 木
         real_content = BaseElements[Constants.Core.BASE_TYPE_WOOD] + BaseElements[Constants.Core.BASE_TYPE_WATER] -
                        BaseElements[Constants.Core.BASE_TYPE_IRON];
-        combine_bonus[S.mod_health] += real_content * promot / 100;
+        combine_bonus[S.mod_health] += real_content          * promot        / 100;
         combine_bonus[CW_S.mod_health_regen] += real_content * 1.5f * promot / 100;
 
         return combine_bonus;
@@ -311,12 +311,12 @@ public class CW_Element : FactoryItem<CW_Element>
         for (int j = 0; j < Constants.Core.element_type_nr; j++)
         {
             mul_result += e1[j] * e2[j];
-            modulus_1 += e1[j] * e1[j];
-            modulus_2 += e2[j] * e2[j];
+            modulus_1 += e1[j]  * e1[j];
+            modulus_2 += e2[j]  * e2[j];
         }
 
         //if (modulus_1 * modulus_2 == 0) return 1;
-        return mul_result * mul_result / Mathf.Sqrt(modulus_1 * modulus_2);
+        return mul_result * mul_result / (float)(modulus_1 * modulus_2);
     }
 
     public static float get_similarity(CW_Element e1, CW_Element e2)
