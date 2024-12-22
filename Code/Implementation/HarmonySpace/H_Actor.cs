@@ -18,7 +18,7 @@ internal static class H_Actor
         get_soul *= 0.7f;
         __instance.data.get(DataS.soul, out float soul);
         soul += get_soul;
-        soul = Mathf.Min(soul, __instance.stats[CW_S.soul]);
+        soul = Mathf.Clamp(soul, 0, __instance.stats[CW_S.soul]);
         __instance.data.set(DataS.soul, soul);
     }
 
@@ -68,25 +68,20 @@ internal static class H_Actor
                 goto BUSHIDO_CHECK;
             }
 
-            float culti_wakan = actor.cw_asset.culti_velo * Mathf.Pow(10, energy_tile.density) *
-                                (1 + actor.stats[CW_S.mod_cultivelo]) *
-                                Content_Constants.immortal_base_cultivelo *
-                                actor.data.GetElement().GetElementType().rarity *
-                                Cultisyses.immortal_power_co[level];
+            var culti_wakan = actor.cw_asset.culti_velo                 * Mathf.Pow(10, energy_tile.density) *
+                              (1 + actor.stats[CW_S.mod_cultivelo])     *
+                              Content_Constants.immortal_base_cultivelo *
+                              actor.data.GetElement().GetElementType().rarity *
+                              Cultisyses.immortal_power_co[level];
 
             culti_wakan = culti_wakan > energy_tile.value ? energy_tile.value : culti_wakan;
 
             max_wakan *= Cultisyses.immortal_power_co[level];
             wakan *= Cultisyses.immortal_power_co[level];
-            if (wakan + culti_wakan >= max_wakan)
-            {
-                wakan = max_wakan;
-                culti_wakan = max_wakan - wakan;
-            }
-            else
-            {
-                wakan += culti_wakan;
-            }
+
+            var new_wakan = Mathf.Clamp(wakan + culti_wakan, 0, max_wakan);
+            culti_wakan = new_wakan - wakan;
+            wakan = new_wakan;
 
             energy_tile.value -= culti_wakan;
 

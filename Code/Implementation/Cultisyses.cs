@@ -97,15 +97,7 @@ internal sealed class Cultisyses : ExtendedLibrary<CultisysAsset, Cultisyses>
 
                 if (wakan >= regen_wakan_line) return 0;
 
-
-                if (regen_wakan_line - wakan > actor.stats[CW_S.wakan_regen])
-                {
-                    wakan += actor.stats[CW_S.wakan_regen];
-                }
-                else
-                {
-                    wakan = regen_wakan_line;
-                }
+                wakan = Mathf.Clamp(wakan + actor.stats[CW_S.wakan_regen], 0, regen_wakan_line);
 
                 actor.data.set(DataS.wakan, wakan);
                 return 0;
