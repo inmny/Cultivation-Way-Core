@@ -163,14 +163,8 @@ internal sealed class Cultisyses : ExtendedLibrary<CultisysAsset, Cultisyses>
                 float regen_health_line = actor.stats[S.health] * Content_Constants.bushido_max_health_regen;
                 if (!(actor.data.health >= regen_health_line)) return 0;
 
-                if (actor.data.health > regen_health_line + actor.stats[CW_S.health_regen])
-                {
-                    actor.data.health -= (int)actor.stats[CW_S.health_regen];
-                }
-                else
-                {
-                    actor.data.health = (int)regen_health_line;
-                }
+                actor.data.health = (int)Mathf.Clamp(actor.data.health + actor.stats[CW_S.health_regen], 0,
+                    regen_health_line);
 
                 return 0;
             },

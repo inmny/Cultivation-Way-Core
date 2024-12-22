@@ -107,14 +107,7 @@ internal static class H_Actor
             culti_health *= actor.cw_asset.culti_velo * (1 + actor.stats[CW_S.mod_cultivelo]) *
                             Content_Constants.bushido_base_cultivelo;
 
-            if (health + culti_health >= max_health)
-            {
-                health = max_health;
-            }
-            else
-            {
-                health += culti_health;
-            }
+            health = Mathf.Clamp(health + culti_health, 1, max_health);
 
             actor.data.health = (int)health;
 
