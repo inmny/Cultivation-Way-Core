@@ -29,6 +29,29 @@ internal static class Items
 
         add_five_mountain_seals();
         add_violet_gold_gourd();
+        add_xtdy();
+    }
+
+    private static void add_xtdy()
+    {
+        CW_ItemAsset item;
+        item = new CW_AmuletAccessoryAsset("先天道玉", CW_AmuletAccessoryType.佩);
+        item.VanillaAsset =
+            ItemAssetCreator.CreateArmorOrAccessory(item.id, EquipmentType.Amulet, item.base_stats,
+                new List<string> { "base" }, equipment_value: 129600, name_class: "item_class_dy");
+        item.BaseLevel = 36;
+        item.MainMaterials[CW_SR.hunyuan] = 99;
+        item.NecessaryResourceCost[CW_SR.hunyuan] = 12;
+        item.BaseElement = new CW_Element(new[] { 20, 20, 20, 20, 20 });
+        item.on_dead_action = (actor, item_data) =>
+        {
+            var possible_spells = actor.data_spells;
+            if (possible_spells.Count == 0) return;
+            var spell = actor.data_spells.GetRandom();
+            item_data.Spells.Add(spell);
+        };
+
+        Library.Manager.items.add(item);
     }
 
     private static void add_violet_gold_gourd()

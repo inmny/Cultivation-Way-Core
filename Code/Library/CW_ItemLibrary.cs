@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Cultivation_Way.Constants;
 using Cultivation_Way.Core;
+using NeoModLoader.General;
+
 namespace Cultivation_Way.Library;
+
+public delegate void OnKillDelegate(CW_Actor actor, CW_Actor target, CW_ItemData item);
+
+public delegate void OnDeadDelegate(CW_Actor actor, CW_ItemData item);
 
 public class CW_ItemAsset : Asset
 {
@@ -24,12 +30,16 @@ public class CW_ItemAsset : Asset
         new List<Dictionary<string, int>>[Constants.Core.item_level_count];
 
     public BaseStats base_stats = new();
+
     public CW_Element BaseElement = new(new[]
     {
         20, 20, 20, 20, 20
     });
-    public int BaseLevel = 0;
-    public ItemAsset VanillaAsset;
+
+    public int            BaseLevel = 0;
+    public OnDeadDelegate on_dead_action;
+    public OnKillDelegate on_kill_action;
+    public ItemAsset      VanillaAsset;
 
     public CW_ItemAsset()
     {
@@ -78,6 +88,14 @@ public class CW_ItemAsset : Asset
         }
     }
 
+    public string GetDesc()
+    {
+        var key = "item_desc_" + id;
+        if (LocalizedTextManager.stringExists(key))
+            return LM.Get(key);
+        return "";
+    }
+
     [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
     public string GetTypeName()
     {
@@ -95,7 +113,7 @@ public class CW_ItemAsset : Asset
                 CW_ArmorType.Helmet => (this as CW_HelmetArmorAsset).type.ToString(),
                 CW_ArmorType.Breastplate => (this as CW_BreastplateArmorAsset).type.ToString(),
                 CW_ArmorType.Boots => (this as CW_BootsArmorAsset).type.ToString(),
-                _ => throw new ArgumentOutOfRangeException()
+                _                  => throw new ArgumentOutOfRangeException()
             },
             CW_ItemType.Accessory => (this as CW_ItemAccessoryAsset).AccessoryType switch
             {
@@ -119,10 +137,12 @@ public class CW_ItemAsset : Asset
 public class CW_ItemLibrary : CW_Library<CW_ItemAsset>
 {
     private readonly HashSet<CW_ItemAsset> creatable_items = new();
+
     public bool IsCreatable(CW_ItemAsset item)
     {
         return creatable_items.Contains(item);
     }
+
     public CW_ItemAsset FindAssetToCraft(Actor pActor)
     {
         return creatable_items.GetRandom();

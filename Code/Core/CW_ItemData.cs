@@ -11,8 +11,9 @@ namespace Cultivation_Way.Core;
 
 public class CW_ItemData : ItemData
 {
-    [JsonIgnore] private bool      _sprite_dirty  = true;
-    public               BaseStats addition_stats = new();
+    [JsonIgnore] private CW_ItemAsset _asset;
+    [JsonIgnore] private bool         _sprite_dirty  = true;
+    public               BaseStats    addition_stats = new();
 
     public CW_Element element = new(new[]
     {
@@ -55,6 +56,8 @@ public class CW_ItemData : ItemData
 
         element.Set(pAsset.BaseElement);
     }
+
+    public CW_ItemAsset Asset => _asset ??= Manager.items.get(id);
 
     [JsonIgnore] public Sprite CachedSprite { get; private set; }
 

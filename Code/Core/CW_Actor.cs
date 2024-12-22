@@ -586,7 +586,16 @@ public partial class CW_Actor : Actor
         if (pFlash) startColorEffect(ActorColorEffect.Red);
         if (data.health <= 0 || curr_soul <= 0)
         {
-            if (!(pAttacker != null && pAttacker != this && pAttacker.isActor() && pAttacker.isAlive()))
+            if (isAlive() && equipment != null)
+                foreach (ActorEquipmentSlot slot in equipment.slots)
+                {
+                    if (slot == null || slot.isEmpty()) continue;
+                    var item = slot.data as CW_ItemData;
+                    if (item == null) continue;
+                    item.Asset.on_dead_action?.Invoke(this, item);
+                }
+
+            if (pAttacker == null || pAttacker == this || !pAttacker.isActor() || !pAttacker.isAlive())
             {
                 killHimself(false, pAttackType);
                 return;

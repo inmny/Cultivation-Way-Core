@@ -78,9 +78,10 @@ internal static class CW_TooltipAssets
         }
 
         Text head_description_text = pTooltip.transform.Find("HeadDescription").GetComponent<Text>();
-        if (LocalizedTextManager.stringExists($"item_desc_{cw_item.id}"))
+        var desc = cw_item_asset.GetDesc();
+        if (!string.IsNullOrEmpty(desc))
         {
-            head_description_text.text = LM.Get($"item_desc_{cw_item.id}");
+            head_description_text.text = desc;
             head_description_text.gameObject.SetActive(true);
         }
         else
@@ -142,6 +143,7 @@ internal static class CW_TooltipAssets
         head_description_text.font = pTooltip.name.font;
         head_description_text.fontSize = 6;
         head_description_text.color = Colors.default_color;
+        head_description_text.alignment = TextAnchor.MiddleCenter;
     }
 
     [Hotfixable]

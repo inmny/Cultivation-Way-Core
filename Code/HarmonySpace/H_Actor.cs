@@ -37,6 +37,14 @@ internal static class H_Actor
     private static void newKillAction_patch(Actor __instance, Actor pDeadUnit, Kingdom pPrevKingdom)
     {
         if (__instance.city == null) return;
+        if (__instance.equipment != null)
+            foreach (ActorEquipmentSlot slot in __instance.equipment.slots)
+            {
+                var item = slot?.data as CW_ItemData;
+                if (item == null) continue;
+                item.Asset.on_kill_action?.Invoke(__instance.CW(), pDeadUnit.CW(), item);
+            }
+
         CW_Actor dead_unit = pDeadUnit.CW();
         if (dead_unit == null) return;
         CW_ActorAsset dead_unit_asset = dead_unit.cw_asset;
