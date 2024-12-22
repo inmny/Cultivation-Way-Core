@@ -208,6 +208,15 @@ public class CW_SpellLibrary : CW_Library<CW_SpellAsset>
         {
             spell.spell_cultisys_level_require ??= new List<KeyValuePair<string, int>>();
 
+            if (spell.spell_classes.Count == 0)
+            {
+                if (spell.can_trigger(SpellTriggerTag.ATTACK)) spell.spell_classes.Add(SpellClass.attack);
+
+                if (spell.can_trigger(SpellTriggerTag.NAMED_DEFEND) ||
+                    spell.can_trigger(SpellTriggerTag.UNNAMED_DEFEND))
+                    spell.spell_classes.Add(SpellClass.defense);
+            }
+
             foreach (string class_name in spell.spell_classes)
             {
                 if (!spell_classes_spells.ContainsKey(class_name))

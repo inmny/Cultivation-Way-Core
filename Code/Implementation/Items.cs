@@ -24,6 +24,7 @@ internal static class Items
         item.NecessaryResourceCost[SR.silver] = 8;
         item.BaseSpells.Add("fire_blade");
         item.BaseElement = new CW_Element(new[] { 0, 80, 0, 15, 5 });
+        item.AllowedSpellClasses.UnionWith([SpellClass.attack]);
 
         Library.Manager.items.AddCreatableItem(item);
 
