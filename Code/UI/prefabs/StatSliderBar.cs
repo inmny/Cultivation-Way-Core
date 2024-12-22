@@ -58,10 +58,17 @@ public class StatSliderBar : APrefab<StatSliderBar>
 
     private bool CheckValue(float value)
     {
-        if (value < min || value > max)
+        BaseStatAsset asset = stats.getAsset();
+        if (asset.normalize && (value < asset.normalize_min || value > asset.normalize_max))
         {
             stat_value.text.color = Color.red;
             return false;
+        }
+
+        if (value < min || value > max)
+        {
+            stat_value.text.color = Color.yellow;
+            return true;
         }
 
         stat_value.text.color = Color.white;
@@ -116,7 +123,7 @@ public class StatSliderBar : APrefab<StatSliderBar>
         root_layout.spacing = 2;
 
         GameObject title = new GameObject("Title", typeof(RectTransform), typeof(ContentSizeFitter),
-                                          typeof(HorizontalLayoutGroup));
+            typeof(HorizontalLayoutGroup));
         title.transform.SetParent(obj.transform);
         title.transform.localScale = Vector3.one;
         ContentSizeFitter title_fitter = title.GetComponent<ContentSizeFitter>();
