@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cultivation_Way.Constants;
+using Cultivation_Way.Extension;
 using Cultivation_Way.Factory;
 using Cultivation_Way.Library;
 using NeoModLoader.api.attributes;
@@ -14,10 +15,10 @@ public class CW_Element : FactoryItem<CW_Element>
 {
     private static readonly BaseStats tmp_stats = new();
 
-    private static readonly Color water = Color.blue;
-    private static readonly Color fire = Color.red;
-    private static readonly Color wood = Color.green;
-    private static readonly Color iron = Color.yellow;
+    private static readonly Color water  = Color.blue;
+    private static readonly Color fire   = Color.red;
+    private static readonly Color wood   = Color.green;
+    private static readonly Color iron   = Color.yellow;
     private static readonly Color ground = Toolbox.makeColor("#603700");
     private static readonly Color[] element_colors = { water, fire, wood, iron, ground };
 
@@ -59,8 +60,8 @@ public class CW_Element : FactoryItem<CW_Element>
     /// <param name="comp_type">是否即时确定元素类型</param>
     /// <param name="prefer_elements">偏好元素</param>
     /// <param name="prefer_scale">偏好系数</param>
-    public CW_Element(bool random_generate = true, bool normalize = true, int normalize_ceil = 100,
-        bool comp_type = true, int[] prefer_elements = null, float prefer_scale = 0f)
+    public CW_Element(bool random_generate = true, bool  normalize       = true, int   normalize_ceil = 100,
+                      bool comp_type       = true, int[] prefer_elements = null, float prefer_scale   = 0f)
     {
         BaseElements = new int[Constants.Core.element_type_nr];
         if (random_generate)
@@ -210,8 +211,8 @@ public class CW_Element : FactoryItem<CW_Element>
     /// <param name="comp_type">是否即时确定元素类型</param>
     /// <param name="prefer_elements">偏好元素</param>
     /// <param name="prefer_scale">偏好系数</param>
-    public void ReRandom(bool normalize = true, int normalize_ceil = 100, bool comp_type = true,
-        int[] prefer_elements = null, float prefer_scale = 0f)
+    public void ReRandom(bool  normalize       = true, int   normalize_ceil = 100, bool comp_type = true,
+                         int[] prefer_elements = null, float prefer_scale   = 0f)
     {
         __random_generate(normalize_ceil);
         if (prefer_elements != null && prefer_scale >= 0.01f) __prefer_to(prefer_elements, prefer_scale);
@@ -241,7 +242,7 @@ public class CW_Element : FactoryItem<CW_Element>
         real_content = BaseElements[Constants.Core.BASE_TYPE_FIRE] + BaseElements[Constants.Core.BASE_TYPE_WOOD] -
                        BaseElements[Constants.Core.BASE_TYPE_WATER];
         combine_bonus[S.critical_chance] += real_content * 0.2f * promot / 100;
-        combine_bonus[S.mod_crit] += real_content * promot / 100;
+        combine_bonus[S.mod_crit] += real_content        * promot        / 100;
         combine_bonus[S.critical_damage_multiplier] += real_content * 1.5f * promot / 100;
         // 土
         real_content = BaseElements[Constants.Core.BASE_TYPE_GROUND] + BaseElements[Constants.Core.BASE_TYPE_FIRE] -
@@ -255,9 +256,9 @@ public class CW_Element : FactoryItem<CW_Element>
         // 水
         real_content = BaseElements[Constants.Core.BASE_TYPE_WATER] + BaseElements[Constants.Core.BASE_TYPE_IRON] -
                        BaseElements[Constants.Core.BASE_TYPE_GROUND];
-        combine_bonus[CW_S.mod_shield] += real_content * 2f * promot / 100;
-        combine_bonus[CW_S.mod_shield_regen] += real_content * promot / 100;
-        combine_bonus[S.knockback_reduction] += real_content * promot / 100;
+        combine_bonus[CW_S.mod_shield] += real_content       * 2f * promot / 100;
+        combine_bonus[CW_S.mod_shield_regen] += real_content * promot      / 100;
+        combine_bonus[S.knockback_reduction] += real_content * promot      / 100;
         // 木
         real_content = BaseElements[Constants.Core.BASE_TYPE_WOOD] + BaseElements[Constants.Core.BASE_TYPE_WATER] -
                        BaseElements[Constants.Core.BASE_TYPE_IRON];
@@ -401,11 +402,20 @@ public class CW_Element : FactoryItem<CW_Element>
 
     public void Set(ActorData data)
     {
-        int data_receiver;
+        var data_receiver = -1;
         for (int i = 0; i < Constants.Core.element_type_nr; i++)
         {
             data.get(DataS.element_list[i], out data_receiver, -1);
+            if (data_receiver == -1) break;
+
             BaseElements[i] = data_receiver;
+        }
+
+        if (data_receiver == -1)
+        {
+            __random_generate();
+            __normalize(100);
+            data.SetElement(this);
         }
 
         data.get(DataS.element_type_id, out type_id, Constants.Core.uniform_type);
