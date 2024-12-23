@@ -6,22 +6,39 @@
                 "format": "$creator_family_name$#氏功法#"
             },
             {
-                "format": "<$spell_element$>{功法后缀}"
+                "format": "$creator_family_name$#家宝典#"
             },
             {
-                "format": "<$spell_element$>{功法后缀}"
+                "format": "<$spell_element$功法前缀>{功法后缀}",
+                "weight": 4
             },
             {
-                "format": "<$main_bonus_stat$>{功法后缀}"
+                "format": "<$main_bonus_stat$>{功法后缀}",
+                "weight": 4
             },
             {
-                "format": "<$main_bonus_stat$>{功法后缀}"
+                "format": "<$spell_element$功法前缀><$main_bonus_stat$>{功法后缀}",
+                "weight": 4
             },
             {
-                "format": "<$spell_element$><$main_bonus_stat$>{功法后缀}"
+                "format": "{随机功法前缀}{功法后缀}",
+                "weight": 4
             },
             {
-                "format": "<$spell_element$><$main_bonus_stat$>{功法后缀}"
+                "format": "{随机功法前缀}<$spell_element$功法前缀>{功法后缀}",
+                "weight": 5
+            },
+            {
+                "format": "{随机功法前缀}<$main_bonus_stat$>{功法后缀}",
+                "weight": 5
+            },
+            {
+                "format": "<$spell_element$功法前缀>{随机功法前缀}{功法后缀}",
+                "weight": 5
+            },
+            {
+                "format": "<$main_bonus_stat$>{随机功法前缀}{功法后缀}",
+                "weight": 5
             }
         ]
     }

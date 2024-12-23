@@ -27,17 +27,17 @@
         },
         {
             "Path": "walk_1_item.png",
-            "PivotX": 2.8,
+            "PivotX": 12.8,
             "PivotY": 3.2
         },
         {
             "Path": "walk_2_item.png",
-            "PivotX": 2.8,
+            "PivotX": 12.8,
             "PivotY": 3
         },
         {
             "Path": "walk_3_item.png",
-            "PivotX": 2.8,
+            "PivotX": 12.8,
             "PivotY": 2.8
         }
     ]

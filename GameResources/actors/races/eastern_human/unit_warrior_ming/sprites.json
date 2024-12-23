@@ -23,22 +23,22 @@
         {
             "Path": "walk_0_item.png",
             "PivotX": 2.8,
-            "PivotY": 2.8
+            "PivotY": 8
         },
         {
             "Path": "walk_1_item.png",
             "PivotX": 2.8,
-            "PivotY": 3.2
+            "PivotY": 8.4
         },
         {
             "Path": "walk_2_item.png",
             "PivotX": 2.8,
-            "PivotY": 3
+            "PivotY": 8.2
         },
         {
             "Path": "walk_3_item.png",
             "PivotX": 2.8,
-            "PivotY": 2.8
+            "PivotY": 8
         }
     ]
 }

@@ -2,11 +2,11 @@
     "worldlaw_energy_grid": [
         {
             "Id": "energy_change_scale",
-            "Type": "SLIDER",
+            "Type": "INT_SLIDER",
             "IconPath": "ui/icons/iconWakan_increase",
-            "FloatVal": 1,
-            "MinFloatVal": 1,
-            "MaxFloatVal": 20
+            "IntVal": 1,
+            "MinIntVal": 1,
+            "MaxIntVal": 20
         }
     ]
 }
