@@ -1,0 +1,44 @@
+{
+    "Specific": [
+        {
+            "Path": "walk_0_head.png",
+            "PivotX": 4,
+            "PivotY": 6
+        },
+        {
+            "Path": "walk_1_head.png",
+            "PivotX": 4,
+            "PivotY": 8
+        },
+        {
+            "Path": "walk_2_head.png",
+            "PivotX": 4,
+            "PivotY": 8
+        },
+        {
+            "Path": "walk_3_head.png",
+            "PivotX": 4,
+            "PivotY": 6
+        },
+        {
+            "Path": "walk_0_item.png",
+            "PivotX": 12.8,
+            "PivotY": 3.8
+        },
+        {
+            "Path": "walk_1_item.png",
+            "PivotX": 2.8,
+            "PivotY": 3.2
+        },
+        {
+            "Path": "walk_2_item.png",
+            "PivotX": 2.8,
+            "PivotY": 3
+        },
+        {
+            "Path": "walk_3_item.png",
+            "PivotX": 2.8,
+            "PivotY": 2.8
+        }
+    ]
+}

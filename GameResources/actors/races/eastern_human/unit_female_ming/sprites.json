@@ -1,0 +1,44 @@
+{
+    "Specific": [
+        {
+            "Path": "walk_0_head.png",
+            "PivotX": 4,
+            "PivotY": 6
+        },
+        {
+            "Path": "walk_1_head.png",
+            "PivotX": 4,
+            "PivotY": 8
+        },
+        {
+            "Path": "walk_2_head.png",
+            "PivotX": 4,
+            "PivotY": 8
+        },
+        {
+            "Path": "walk_3_head.png",
+            "PivotX": 4,
+            "PivotY": 6
+        },
+        {
+            "Path": "walk_0_item.png",
+            "PivotX": 0,
+            "PivotY": 4
+        },
+        {
+            "Path": "walk_1_item.png",
+            "PivotX": 0,
+            "PivotY": 7
+        },
+        {
+            "Path": "walk_2_item.png",
+            "PivotX": 0,
+            "PivotY": 7
+        },
+        {
+            "Path": "walk_3_item.png",
+            "PivotX": 0,
+            "PivotY": 7
+        }
+    ]
+}

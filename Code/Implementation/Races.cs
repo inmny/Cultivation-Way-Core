@@ -108,9 +108,24 @@ internal static class Races
         eastern_human.nameLocale = Content_Constants.eastern_human_name_locale;
         eastern_human.build_order_id = eastern_human.id;
         eastern_human.nomad_kingdom_id = Content_Constants.nomad_kingdom_prefix + Content_Constants.eastern_human_race;
-        eastern_human.skin_citizen_male = new List<string> { "unit_male_1" };
-        eastern_human.skin_citizen_female = new List<string> { "unit_female_1" };
-        eastern_human.skin_warrior = new List<string> { "unit_warrior_1" };
+        eastern_human.skin_citizen_male = new List<string>
+        {
+            "unit_male_1", "unit_male_chaoxian", "unit_male_chunqiu", "unit_male_fusang", "unit_male_ming",
+            "unit_male_qing", "unit_male_song",
+            "unit_male_tang", "unit_male_yuan"
+        };
+        eastern_human.skin_citizen_female = new List<string>
+        {
+            "unit_female_1", "unit_female_chaoxian", "unit_female_chunqiu", "unit_female_fusang", "unit_female_ming",
+            "unit_female_qing", "unit_female_song",
+            "unit_female_tang", "unit_female_yuan"
+        };
+        eastern_human.skin_warrior = new List<string>
+        {
+            "unit_warrior_1", "unit_warrior_chaoxian", "unit_warrior_chunqiu", "unit_warrior_fusang",
+            "unit_warrior_ming", "unit_warrior_qing", "unit_warrior_song",
+            "unit_warrior_tang", "unit_warrior_yuan"
+        };
 #if 一米_中文名
         eastern_human.name_template_city = "eastern_human_city";
         eastern_human.name_template_clan = "eastern_human_clan";
